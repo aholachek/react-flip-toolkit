@@ -18,11 +18,15 @@
     "test:coverage": "nwb test-react --coverage",
     "test:watch": "nwb test-react --server"
   },
-  "dependencies": {},
+  "dependencies": {
+    "flipping": "^1.0.0",
+    "popmotion": "^8.2.3"
+  },
   "peerDependencies": {
     "react": "16.x"
   },
   "devDependencies": {
+    "normalize.css": "^8.0.0",
     "nwb": "0.21.x",
     "react": "^16.4.0",
     "react-dom": "^16.4.0"

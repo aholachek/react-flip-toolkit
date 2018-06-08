@@ -1,0 +1,119 @@
+body {
+    font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.grid {
+    display: grid;
+    list-style: none;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-auto-rows: 250px;
+    grid-gap: 1rem;
+    background-color: rgb(228, 228, 228);
+    padding: 1rem;
+    min-height: 100vh;
+}
+
+.gridItem {
+    background-color: white;
+    text-align: center;
+    margin: 0;
+    cursor: pointer;
+    height: 100%;
+    transform-origin: 0 0;
+    overflow: hidden;
+}
+
+.gridItem > div {
+    padding: 1rem;
+}
+
+.gridItemTitle {
+    font-size: 1.2rem;
+}
+
+.gridItemAvatar {
+    border-radius: 100px;
+    width: 3rem;
+    height: 3rem;
+    transform-origin: 0 0;
+    background-color: blue;
+    margin: 0 auto;
+}
+
+.gridItemFocused {
+    width: 50vw;
+    height: 50vh;
+    z-index: 3;
+    background-color: white;
+    text-align: center;
+    transform-origin: 0 0;
+    overflow: hidden;
+}
+
+.gridItemFocusedClose {
+    position: absolute;
+    padding: 1rem 2rem;
+    top: 1rem;
+    right: 1rem;
+    cursor: pointer;
+    background-color: transparent;
+    font-size: 3rem;
+    border: none;
+}
+
+.gridItemFocusedClose:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.focusedItemBackground {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 2;
+    pointer-events: none;
+    animation: fadeIn .5s forwards;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.gridItemJob {
+    font-size: 1rem;
+}
+
+.gridItemDescription {
+    height: 0;
+    max-width: 30rem;
+    margin: 0 auto;
+}
+
+.gridItemFocused .gridItemAvatar {
+    width: 12rem;
+    height: 12rem;
+    background: blue;
+}
+
+.gridItemFocused .gridItemJob {
+    font-size: 2rem;
+}
+
+*[data-fade-in] {
+  opacity: 0;
+}

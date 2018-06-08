@@ -1,15 +1,43 @@
-import React, {Component} from 'react'
-import {render} from 'react-dom'
+import React, { Component } from "react"
+import { render } from "react-dom"
+import "normalize.css"
+import styles from "./styles.css"
 
-import Example from '../../src'
+import { Flipper } from "../../src"
+import userData from "./userData.json"
+import UserGrid from "./UserGrid"
+import FocusedUser from "./FocusedUser"
 
 class Demo extends Component {
+  state = { focusedIndex: undefined }
+  setFocusedIndex = index => {
+    this.setState({
+      focusedIndex: index
+    })
+  }
   render() {
-    return <div>
-      <h1>react-flip-primitives Demo</h1>
-      <Example/>
-    </div>
+    return (
+      <Flipper flipKey={this.state.focusedIndex} duration={1000}>
+        <h1>react-flip-primitives Demo</h1>
+        <UserGrid
+          data={userData}
+          setFocusedIndex={this.setFocusedIndex}
+          focusedIndex={this.state.focusedIndex}
+        />
+        <FocusedUser
+          index={this.state.focusedIndex}
+          close={() => {
+            this.setState({ focusedIndex: null })
+          }}
+          data={
+            typeof this.state.focusedIndex === "number"
+              ? userData[this.state.focusedIndex]
+              : null
+          }
+        />
+      </Flipper>
+    )
   }
 }
 
-render(<Demo/>, document.querySelector('#demo'))
+render(<Demo />, document.querySelector("#demo"))
