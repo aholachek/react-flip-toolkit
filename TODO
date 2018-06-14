@@ -1,0 +1,3 @@
+- fix styles
+- preserving transforms using rematrix https://github.com/jlmakes/rematrix
+- implement per-flipped component options

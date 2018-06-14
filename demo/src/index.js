@@ -17,8 +17,8 @@ class Demo extends Component {
   }
   render() {
     return (
-      <Flipper flipKey={this.state.focusedIndex} duration={1000}>
-        <h1>react-flip-primitives Demo</h1>
+      <Flipper flipKey={this.state.focusedIndex} duration={6000}>
+        <h1>react-flip-toolkit demo</h1>
         <UserGrid
           data={userData}
           setFocusedIndex={this.setFocusedIndex}

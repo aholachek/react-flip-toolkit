@@ -1,5 +1,6 @@
 body {
     font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
+    color: #333366;
 }
 
 * {
@@ -10,9 +11,9 @@ body {
     display: grid;
     list-style: none;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    grid-auto-rows: 250px;
+    grid-auto-rows: 180px;
     grid-gap: 1rem;
-    background-color: rgb(228, 228, 228);
+    background-color: #404b69;
     padding: 1rem;
     min-height: 100vh;
 }
@@ -23,13 +24,19 @@ body {
     margin: 0;
     cursor: pointer;
     height: 100%;
-    transform-origin: 0 0;
-    overflow: hidden;
+    /* overflow: hidden; */
+    position: relative;
+    border-radius: 3px;
 }
 
-.gridItem > div {
+.gridItem>div:first-of-type {
     padding: 1rem;
+    position: relative;
+    z-index: 1;
+    background: #bada55;
+    width: 100%;
 }
+
 
 .gridItemTitle {
     font-size: 1.2rem;
@@ -40,18 +47,29 @@ body {
     width: 3rem;
     height: 3rem;
     transform-origin: 0 0;
-    background-color: blue;
+    background-color: #5c657b;
     margin: 0 auto;
 }
 
+.gridItemBackground {
+    position: absolute;
+    height: 200%;
+    top: 50%;
+    bottom: 0;
+    left: -100%;
+    width: 300%;
+    z-index: 0;
+}
+
 .gridItemFocused {
-    width: 50vw;
-    height: 50vh;
+    width: 1000px;
+    height: 1000px;
+    max-width: 35rem;
+    max-height: 35rem;
     z-index: 3;
-    background-color: white;
-    text-align: center;
-    transform-origin: 0 0;
-    overflow: hidden;
+    position: relative;
+    display: flex;
+    justify-content: center;
 }
 
 .gridItemFocusedClose {
@@ -69,26 +87,13 @@ body {
     background-color: rgba(0, 0, 0, 0.1);
 }
 
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-
-    100% {
-        opacity: 1;
-    }
-}
-
 .focusedItemBackground {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.3);
     z-index: 2;
-    pointer-events: none;
-    animation: fadeIn .5s forwards;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -99,21 +104,25 @@ body {
 }
 
 .gridItemDescription {
-    height: 0;
     max-width: 30rem;
     margin: 0 auto;
+}
+
+.gridItemFocused .gridItemBackground {
+    top:0%;
+}
+
+.gridItemFocused .gridItemTitle {
+    font-size: 2.5rem;
+    margin-top: 5rem;
 }
 
 .gridItemFocused .gridItemAvatar {
     width: 12rem;
     height: 12rem;
-    background: blue;
+    background: #5c657b;
 }
 
 .gridItemFocused .gridItemJob {
     font-size: 2rem;
-}
-
-*[data-fade-in] {
-  opacity: 0;
 }

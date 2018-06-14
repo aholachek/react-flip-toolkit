@@ -1,13 +1,16 @@
 import React, { Component } from "react"
-import PropTypes from "prop-types"
 import { Flipped } from "../../src/index"
 import { tween, styler, easing, stagger } from "popmotion"
 
 class FocusedUser extends Component {
-  animateIn = () => {
-    const elements = [].slice.apply(this.el.querySelectorAll("*[data-fade-in]"))
+  hideElements = (el, startId) => {
+    const elements = [].slice.apply(el.querySelectorAll("*[data-fade-in]"))
+    elements.forEach(el => (el.style.opacity = "0"))
+  }
+  animateIn = el => {
+    const elements = [].slice.apply(el.querySelectorAll("*[data-fade-in]"))
 
-    const animations = elements.map((el) => {
+    const animations = elements.map(() => {
       return tween({
         from: {
           opacity: 0,
@@ -33,19 +36,24 @@ class FocusedUser extends Component {
     if (typeof index !== "number") return null
 
     return (
-      <div className="focusedItemBackground">
+      <div className="focusedItemBackground" key={parentFlipId}>
         <Flipped
           flipId={parentFlipId}
-          all
-          transformOriginTopLeft
+          transformOrigin="0 0"
+          onStart={this.hideElements}
           onComplete={this.animateIn}
+          componentId="focusedUser"
         >
           <div
-            className="gridItemFocused"
+            className="gridItem gridItemFocused"
             role="button"
             ref={el => (this.el = el)}
           >
-            <Flipped inverseFlipId={parentFlipId} all transformOriginTopLeft>
+            <Flipped
+              inverseFlipId={parentFlipId}
+              transformOrigin="0 0"
+              componentId="focusedUser"
+            >
               <div>
                 <button
                   className="gridItemFocusedClose"
@@ -59,8 +67,8 @@ class FocusedUser extends Component {
                 </h2>
                 <Flipped
                   flipId={`${parentFlipId}-avatar`}
-                  all
-                  transformOriginTopLeft
+                  transformOrigin="0 0"
+                  componentId="focusedUserAvatar"
                 >
                   <img
                     src={data.avatar}
@@ -75,6 +83,16 @@ class FocusedUser extends Component {
                 </p>
               </div>
             </Flipped>
+            {/* <Flipped
+              flipId={`${parentFlipId}-background`}
+              componentId="focusedUserBackground"
+              transformOrigin="50% 100%"
+            >
+              <div
+                className="gridItemBackground"
+                style={{ backgroundColor: data.color }}
+              />
+            </Flipped> */}
           </div>
         </Flipped>
       </div>

@@ -20,7 +20,8 @@
   },
   "dependencies": {
     "flipping": "^1.0.0",
-    "popmotion": "^8.2.3"
+    "popmotion": "^8.2.3",
+    "rematrix": "^0.2.2"
   },
   "peerDependencies": {
     "react": "16.x"
