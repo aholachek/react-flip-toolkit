@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import PropTypes from "prop-types"
-import { Flipped } from "../../src/index"
+import { Flipped } from "../../../src/index"
 import { tween, styler, easing, stagger } from "popmotion"
 
 class UserGrid extends Component {
@@ -46,6 +46,8 @@ class UserGrid extends Component {
                 onStart={this.hideElements}
                 onComplete={this.animateIn}
                 componentId="gridItem"
+                transformOrigin="0 0"
+                ease="backOut"
               >
                 <div
                   className="gridItem"
@@ -65,6 +67,7 @@ class UserGrid extends Component {
                         flipId={`${parentFlipId}-avatar`}
                         transformOrigin="0 0"
                         componentIdFilter="focusedUserAvatar"
+                        ease="backOut"
                       >
                         <img
                           src={d.avatar}
@@ -75,17 +78,19 @@ class UserGrid extends Component {
                       <h2 className="gridItemJob" data-fade-in>
                         {d.job}
                       </h2>
+
+                      <Flipped
+                        flipId={`${parentFlipId}-background`}
+                        componentIdFilter="focusedUserBackground"
+                        transformOrigin="0 0"
+                      >
+                        <div
+                          className="gridItemBackground"
+                          style={{ backgroundColor: d.color }}
+                        />
+                      </Flipped>
                     </div>
                   </Flipped>
-                  {/* <Flipped
-                    flipId={`${parentFlipId}-background`}
-                    componentIdFilter="focusedUserBackground"
-                  >
-                    <div
-                      className="gridItemBackground"
-                      style={{ backgroundColor: d.color }}
-                    />
-                  </Flipped> */}
                 </div>
               </Flipped>
             </li>

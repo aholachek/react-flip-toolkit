@@ -1,5 +1,4 @@
 import tween from "popmotion/animations/tween"
-import styler from "stylefire"
 import { easing as popmotionEasing } from "popmotion"
 
 const getInvertedChildren = (element, id) =>
@@ -15,10 +14,20 @@ const passesComponentFilter = (flipFilters, flipId) => {
   return true
 }
 
+const applyStyles = (
+  element,
+  { opacity, translateX, translateY, scaleX, scaleY }
+) => {
+  element.style.opacity = opacity
+  element.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scaleX}, ${scaleY})`
+}
 const shouldApplyTransform = (element, flipStartId, flipEndId) => {
   if (
     element.dataset.flipComponentIdFilter &&
-    !passesComponentFilter(element.dataset.flipComponentIdFilter, flipStartId) &&
+    !passesComponentFilter(
+      element.dataset.flipComponentIdFilter,
+      flipStartId
+    ) &&
     !passesComponentFilter(element.dataset.flipComponentIdFilter, flipEndId)
   ) {
     return false
@@ -31,7 +40,7 @@ const shouldApplyTransform = (element, flipStartId, flipEndId) => {
 const invertTransformsForChildren = (
   childElements,
   { translateX, translateY, scaleY, scaleX },
-  { flipStartId, flipEndId, immediate } = {}
+  { flipStartId, flipEndId } = {}
 ) => {
   childElements.forEach(child => {
     if (!shouldApplyTransform(child, flipStartId, flipEndId)) return
@@ -42,8 +51,9 @@ const invertTransformsForChildren = (
     if (child.dataset.scaleX) inverseVals.scaleX = 1 / scaleX
     if (child.dataset.scaleY) inverseVals.scaleY = 1 / scaleY
 
-    const setter = styler(child).set(inverseVals)
-    if (immediate) setter.render()
+    child.style.transform = `translate(${inverseVals.translateX}px, ${
+      inverseVals.translateY
+    }px) scale(${inverseVals.scaleX}, ${inverseVals.scaleY})`
   })
 }
 
@@ -54,6 +64,7 @@ export const getFlippedElementPositions = element => {
       child.dataset.flipKey,
       {
         rect: child.getBoundingClientRect(),
+        opacity: parseFloat(window.getComputedStyle(child).opacity),
         flipComponentId: child.dataset.flipComponentId
       }
     ])
@@ -79,24 +90,34 @@ export const animateMove = ({
 }) => {
   const body = document.querySelector("body")
   const newFlipChildrenPositions = getFlippedElementPositions(containerEl)
-  const defaultVals = { translateX: 0, translateY: 0, scaleY: 1, scaleX: 1 }
+  const defaultVals = {
+    translateX: 0,
+    translateY: 0,
+    scaleY: 1,
+    scaleX: 1,
+    opacity: 1
+  }
 
   Object.keys(newFlipChildrenPositions).forEach(id => {
     if (!cachedFlipChildrenPositions[id] || !newFlipChildrenPositions[id]) {
       return
     }
+
     const prevRect = cachedFlipChildrenPositions[id].rect
     const currentRect = newFlipChildrenPositions[id].rect
+    const prevOpacity = cachedFlipChildrenPositions[id].opacity
+    const currentOpacity = newFlipChildrenPositions[id].opacity
     // don't animate invisible elements
     if (!rectInViewport(prevRect) && !rectInViewport(currentRect)) {
       return
     }
-    // don't animate elements that didn't move
+    // don't animate elements that didn't change
     if (
       prevRect.left === currentRect.left &&
       prevRect.top === currentRect.top &&
       prevRect.width === currentRect.width &&
-      prevRect.height === currentRect.height
+      prevRect.height === currentRect.height &&
+      prevOpacity === currentOpacity
     ) {
       return
     }
@@ -107,8 +128,8 @@ export const animateMove = ({
 
     if (!shouldApplyTransform(element, flipStartId, flipEndId)) return
 
-    const elStyler = styler(element)
     const toVals = { ...defaultVals }
+    if (element.dataset.opacity) toVals.opacity = currentOpacity
     const fromVals = { ...defaultVals }
     // we're only going to animate the values that the child wants animated,
     // based on its data-* attributes
@@ -120,19 +141,21 @@ export const animateMove = ({
       fromVals.scaleX = prevRect.width / Math.max(currentRect.width, 0.0001)
     if (element.dataset.scaleY)
       fromVals.scaleY = prevRect.height / Math.max(currentRect.height, 0.0001)
+    if (element.dataset.opacity) fromVals.opacity = prevOpacity
 
-    let cachedTransformOrigin
     if (element.dataset.transformOrigin) {
-      cachedTransformOrigin = element.style.transformOrigin
-      element.style.transformOrigin = element.dataset.transformOrigin || "0 0"
+      element.style.transformOrigin = element.dataset.transformOrigin
     }
+    getInvertedChildren(element, id).forEach(child => {
+      if (child.dataset.transformOrigin) {
+        child.style.transformOrigin = child.dataset.transformOrigin
+      }
+    })
 
     if (inProgressAnimations[id]) {
       inProgressAnimations[id].stop()
       delete inProgressAnimations[id]
     }
-
-    debugger
 
     // const elementAlreadyHasTransform = window
     //   .getComputedStyle(element)
@@ -147,9 +170,9 @@ export const animateMove = ({
 
     // before animating, immediately apply FLIP styles to prevent flicker
     // (which was only detectable on Safari)
-    elStyler.set(fromVals).render()
+    // not sure why but opacity transforms break when included in this first render
+    applyStyles(element, fromVals)
     invertTransformsForChildren(getInvertedChildren(element, id), fromVals, {
-      immediate: true,
       flipStartId,
       flipEndId
     })
@@ -161,21 +184,29 @@ export const animateMove = ({
     const { stop } = tween({
       from: fromVals,
       to: toVals,
-      duration,
-      ease: popmotionEasing[ease]
+      // element can specify its own duration
+      duration: element.dataset.flipDuration || duration,
+      // element can specify its own easing
+      ease:
+        (element.dataset.flipEase &&
+          popmotionEasing[element.dataset.flipEase]) ||
+        popmotionEasing[ease]
     }).start({
-      update: transforms => {
+      // transforms can include opacity
+      update: tweenVals => {
         // just to be safe: if the component has been removed from the DOM
         // immediately cancel any in-progress animations
         if (!body.contains(element)) {
           stop && stop()
           return
         }
-        elStyler.set(transforms)
+
+        applyStyles(element, tweenVals)
+
         // for children that requested it, cancel out the transform by applying the inverse transform
         invertTransformsForChildren(
           getInvertedChildren(element, id),
-          transforms,
+          tweenVals,
           { flipStartId, flipEndId }
         )
       },
@@ -183,12 +214,12 @@ export const animateMove = ({
         delete inProgressAnimations[id]
         requestAnimationFrame(() => {
           element.style.transform = ""
-          element.style.transformOrigin = cachedTransformOrigin
         })
         if (flipCallbacks[id] && flipCallbacks[id].onComplete)
           flipCallbacks[id].onComplete(element, flipStartId)
       }
     })
+    // in case we have to cancel
     inProgressAnimations[id] = { stop }
   })
   return inProgressAnimations

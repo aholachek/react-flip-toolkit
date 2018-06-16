@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Expanding Grid Item Animation | Codrops</title>
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<meta name="author" content="Codrops" />
+		<link rel="shortcut icon" href="favicon.ico">
+		<link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,700" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="css/base.css" />
+		<link rel="stylesheet" type="text/css" href="pater/pater.css" />
+		<script>document.documentElement.className="js";var supportsCssVars=function(){var e,t=document.createElement("style");return t.innerHTML="root: { --tmp-var: bold; }",document.head.appendChild(t),e=!!(window.CSS&&window.CSS.supports&&window.CSS.supports("font-weight","var(--tmp-var)")),t.parentNode.removeChild(t),e};supportsCssVars()||alert("Please view this demo in a modern browser that supports CSS Variables.");</script>
+	</head>
+	<body class="loading">
+		<svg class="hidden">
+			<symbol id="icon-arrow" viewBox="0 0 24 24">
+				<title>arrow</title>
+				<polygon points="6.3,12.8 20.9,12.8 20.9,11.2 6.3,11.2 10.2,7.2 9,6 3.1,12 9,18 10.2,16.8 "/>
+			</symbol>
+			<symbol id="icon-drop" viewBox="0 0 24 24">
+				<title>drop</title>
+				<path d="M12,21c-3.6,0-6.6-3-6.6-6.6C5.4,11,10.8,4,11.4,3.2C11.6,3.1,11.8,3,12,3s0.4,0.1,0.6,0.3c0.6,0.8,6.1,7.8,6.1,11.2C18.6,18.1,15.6,21,12,21zM12,4.8c-1.8,2.4-5.2,7.4-5.2,9.6c0,2.9,2.3,5.2,5.2,5.2s5.2-2.3,5.2-5.2C17.2,12.2,13.8,7.3,12,4.8z"/><path d="M12,18.2c-0.4,0-0.7-0.3-0.7-0.7s0.3-0.7,0.7-0.7c1.3,0,2.4-1.1,2.4-2.4c0-0.4,0.3-0.7,0.7-0.7c0.4,0,0.7,0.3,0.7,0.7C15.8,16.5,14.1,18.2,12,18.2z"/>
+			</symbol>
+			<symbol id="icon-cross" viewBox="0 0 24 24">
+				<title>cross</title>
+				<path d="M 5.5,2.5 C 5.372,2.5 5.244,2.549 5.146,2.646 L 2.646,5.146 C 2.451,5.341 2.451,5.659 2.646,5.854 L 8.793,12 2.646,18.15 C 2.451,18.34 2.451,18.66 2.646,18.85 L 5.146,21.35 C 5.341,21.55 5.659,21.55 5.854,21.35 L 12,15.21 18.15,21.35 C 18.24,21.45 18.37,21.5 18.5,21.5 18.63,21.5 18.76,21.45 18.85,21.35 L 21.35,18.85 C 21.55,18.66 21.55,18.34 21.35,18.15 L 15.21,12 21.35,5.854 C 21.55,5.658 21.55,5.342 21.35,5.146 L 18.85,2.646 C 18.66,2.451 18.34,2.451 18.15,2.646 L 12,8.793 5.854,2.646 C 5.756,2.549 5.628,2.5 5.5,2.5 Z"/>
+			</symbol>
+			<symbol id="icon-menu" viewBox="0 0 24 24">
+				<title>menu</title>
+				<path d="M23.8,6H0.1V3h23.7C23.8,3,23.8,6,23.8,6z M23.8,10.5H0.1v3h23.7C23.8,13.5,23.8,10.5,23.8,10.5z M24,18H10v3h14V18z"/>
+			</symbol>
+			<!-- Magnifier by Gregor Cresnar https://www.flaticon.com/authors/gregor-cresnar -->
+			<symbol id="icon-magnifier" viewBox="0 0 490.8 490.8">
+				<title>magnifier</title>
+				<path d="M364.8,299.55c46.3-75.8,36.9-176.3-28.6-241.9c-76.8-76.8-201.8-76.8-278.6,0s-76.8,201.8,0,278.5c65.5,65.5,166,74.9,241.9,28.6L412,477.25c18,18,47.3,18,65.3,0s18-47.3,0-65.3L364.8,299.55z M295.5,295.55c-54.4,54.4-142.8,54.4-197.1,0c-54.4-54.4-54.4-142.8,0-197.1c54.4-54.4,142.8-54.4,197.1,0C349.8,152.75,349.8,241.15,295.5,295.55z M220,171.95h59.4v45.3H220v59.4h-45.3v-59.4h-59.3v-45.3h59.4v-59.4h45.3v59.4H220z"/>
+			</symbol>
+		<main>
+			<div class="content">
+				<header class="codrops-header">
+					<div class="codrops-links">
+						<a class="codrops-icon codrops-icon--prev" href="https://tympanus.net/Development/KyloRenPreloader/" title="Previous Demo"><svg class="icon icon--arrow"><use xlink:href="#icon-arrow"></use></svg></a>
+						<a class="codrops-icon codrops-icon--drop" href="https://tympanus.net/codrops/?p=32944" title="Back to the article"><svg class="icon icon--drop"><use xlink:href="#icon-drop"></use></svg></a>
+					</div>
+					<h1 class="codrops-header__title">Expanding Grid Item Animation</h1>
+					<span class="info">Based on the Dribbble shot <a href="https://dribbble.com/shots/3879463-Surf-Project">Surf Project</a> by <a href="https://dribbble.com/filipslovacek">Filip Slov&#225;&#269;ek</a></span>
+				</header>
+				<a class="pater" href="http://synd.co/2yatEfN" rel="nofollow" onClick="recordOutboundLink(this, 'Outbound Links', 'Storyblocks08112017');return false;">
+					<img src="pater/storyblocks.jpg" class="pater__img" alt="Storyblocks"/>
+					<h3 class="pater__title">​7 Days of Free Images with Storyblocks</h3>
+					<p class="pater__desc">Download anything you want from over 400,000 photos, vectors, and backgrounds! <strong>Start downloading now &rarr;</strong></p>
+				</a>
+			</div>
+			<button class="dummy-menu"><svg class="icon icon--menu"><use xlink:href="#icon-menu"></use></svg></button>
+			<div class="content">
+				<div class="grid">
+					<div class="grid__item">
+						<div class="product">
+							<div class="product__bg"></div>
+							<img class="product__img" src="img/1.png" alt="img 01"/>
+							<h2 class="product__title">Marble Dream</h2>
+							<h3 class="product__subtitle">Constantin Frecker</h3>
+							<p class="product__description">Hashtag cred air plant drinking vinegar. Leggings yuccie chambray pop-up tousled hell of. Portland wolf mumblecore, synth cold-pressed polaroid poke cardigan gochujang farm-to-table photo booth.</p>
+							<div class="product__price">$129</div>
+						</div>
+					</div>
+					<div class="grid__item">
+						<div class="product">
+							<div class="product__bg"></div>
+							<img class="product__img" src="img/2.png" alt="img 02"/>
+							<h2 class="product__title">Space Fantasy</h2>
+							<h3 class="product__subtitle">Danica Green</h3>
+							<p class="product__description">Man bun banjo pop-up meh hammock. Skateboard hammock tousled retro, etsy taiyaki narwhal gentrify fixie food truck microdosing sustainable dreamcatcher.</p>
+							<div class="product__price">$199</div>
+						</div>
+					</div>
+					<div class="grid__item">
+						<div class="product">
+							<div class="product__bg"></div>
+							<img class="product__img" src="img/3.png" alt="img 03"/>
+							<h2 class="product__title">Mighty Eighties</h2>
+							<h3 class="product__subtitle">Elizabeth Smith</h3>
+							<p class="product__description">Air plant affogato microdosing banjo, palo santo squid craft beer vexillologist chambray everyday carry cronut aesthetic intelligentsia. </p>
+							<div class="product__price">$159</div>
+						</div>
+					</div>
+					<div class="grid__item">
+						<div class="product">
+							<div class="product__bg"></div>
+							<img class="product__img" src="img/4.png" alt="img 04"/>
+							<h2 class="product__title">Diamond Crafter</h2>
+							<h3 class="product__subtitle">Fred House</h3>
+							<p class="product__description">Crucifix shoreditch tumblr heirloom irony tbh gastropub migas sartorial mustache direct trade plaid readymade ramps hammock.</p>
+							<div class="product__price">$199</div>
+						</div>
+					</div>
+					<div class="grid__item">
+						<div class="product">
+							<div class="product__bg"></div>
+							<img class="product__img" src="img/5.png" alt="img 05"/>
+							<h2 class="product__title">Disco Fever</h2>
+							<h3 class="product__subtitle">Alice Muller</h3>
+							<p class="product__description">Single-origin coffee air plant kitsch paleo iPhone vegan cold-pressed slow-carb cornhole dreamcatcher palo santo salvia lo-fi. </p>
+							<div class="product__price">$99</div>
+						</div>
+					</div>
+					<div class="grid__item">
+						<div class="product">
+							<div class="product__bg"></div>
+							<img class="product__img" src="img/6.png" alt="img 06"/>
+							<h2 class="product__title">Little Boxes</h2>
+							<h3 class="product__subtitle">Xavier Brighton</h3>
+							<p class="product__description">Drinking vinegar lumbersexual 90's flexitarian. Live-edge man bun air plant XOXO. Master cleanse vaporware keffiyeh.</p>
+							<div class="product__price">$299</div>
+						</div>
+					</div>
+					<div class="grid__item">
+						<div class="product">
+							<div class="product__bg"></div>
+							<img class="product__img" src="img/7.png" alt="img 07"/>
+							<h2 class="product__title">Fractal Love</h2>
+							<h3 class="product__subtitle">Walter Perry</h3>
+							<p class="product__description">Leggings green juice DIY, flannel tattooed selvage plaid yr sartorial chia. Scenester you probably haven't heard of them locavore.</p>
+							<div class="product__price">$129</div>
+						</div>
+					</div>
+					<div class="grid__item">
+						<div class="product">
+							<div class="product__bg"></div>
+							<img class="product__img" src="img/8.png" alt="img 08"/>
+							<h2 class="product__title">Liquidia</h2>
+							<h3 class="product__subtitle">Lidia Greenwood</h3>
+							<p class="product__description">Helvetica la croix readymade, butcher viral pitchfork chillwave pork belly vaporware blue bottle iceland semiotics subway tile irony.</p>
+							<div class="product__price">$249</div>
+						</div>
+					</div>
+					<div class="grid__item">
+						<div class="product">
+							<div class="product__bg"></div>
+							<img class="product__img" src="img/9.png" alt="img 09"/>
+							<h2 class="product__title">The Buzz</h2>
+							<h3 class="product__subtitle">Sarah Grand</h3>
+							<p class="product__description">Celiac distillery man braid venmo, selfies you probably haven't heard of them tote bag forage fanny pack activated charcoal kale chips lo-fi before they sold out.</p>
+							<div class="product__price">$399</div>
+						</div>
+					</div>
+					<div class="grid__item">
+						<div class="product">
+							<div class="product__bg"></div>
+							<img class="product__img" src="img/10.png" alt="img 10"/>
+							<h2 class="product__title">Sweet Escape</h2>
+							<h3 class="product__subtitle">Peter Gradia</h3>
+							<p class="product__description">Mumblecore bespoke blog raw denim, authentic VHS sustainable +1 freegan neutra small batch paleo. Schlitz chicharrones pork belly palo santo.</p>
+							<div class="product__price">$199</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<section class="content content--related">
+				<p>Find this project on <a href="https://github.com/codrops/ExpandingGridItemAnimation/">GitHub</a>.</p>
+				<p>If you enjoyed this demo you might also like:</p>
+				<a class="media-item" href="https://tympanus.net/Development/AnimatedGridLayout/">
+					<img class="media-item__img" src="img/related/GridItemAnimation.jpg">
+					<h3 class="media-item__title">Grid Item Animation Layout</h3>
+				</a>
+				<a class="media-item" href="https://tympanus.net/Development/ImageGridEffects/">
+					<img class="media-item__img" src="img/related/ImageGridEffects.png">
+					<h3 class="media-item__title">Effect Ideas for Image Grids</h3>
+				</a>
+				<p>Guitar vector <a href="http://www.freepik.com">designed by Freepik</a>.</p>
+				<p>Patterns by <a href="https://pixelbuddha.net/">Pixel Buddha</a>.</p>
+			</section>
+		</main>
+		<script src="js/imagesloaded.pkgd.min.js"></script>
+		<script src="js/anime.min.js"></script>
+		<script src="js/main.js"></script>
+	</body>
+</html>

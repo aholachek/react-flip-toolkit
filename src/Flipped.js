@@ -6,17 +6,18 @@ const propTypes = {
   children: PropTypes.node.isRequired,
   flipId: PropTypes.string,
   inverseFlipId: PropTypes.string,
+  opacity: PropTypes.bool,
   translateX: PropTypes.bool,
   translateY: PropTypes.bool,
   scaleX: PropTypes.bool,
   scaleY: PropTypes.bool,
   transformOrigin: PropTypes.string,
   delay: PropTypes.number,
-  easing: PropTypes.string,
-  duration: PropTypes.string,
+  ease: PropTypes.string,
+  duration: PropTypes.number,
   onStart: PropTypes.func,
   onComplete: PropTypes.func,
-  componentIdFilter: PropTypes.string,
+  componentIdFilter: PropTypes.string
 }
 // This wrapper creates child components for the main Flipper component
 function Flipped({ children, flipId, onStart, onComplete, ...rest }) {
@@ -26,13 +27,14 @@ function Flipped({ children, flipId, onStart, onComplete, ...rest }) {
   } catch (e) {
     throw new Error("Each Flipped element must wrap a single child")
   }
-  // if nothing is being transformed, assume everything is beign animated
+  // if nothing is being transformed, assume everything is being animated
   if (
     !rest.scale &&
     !rest.translate &&
     !rest.translateX &&
     !rest.translateY &&
     !rest.scaleX &&
+    !rest.opacity &&
     !rest.scaleY
   ) {
     rest.all = true
@@ -44,7 +46,8 @@ function Flipped({ children, flipId, onStart, onComplete, ...rest }) {
       translateX: true,
       translateY: true,
       scaleX: true,
-      scaleY: true
+      scaleY: true,
+      opacity: true
     })
   } else if (rest.scale) {
     delete rest.scale
@@ -65,12 +68,13 @@ function Flipped({ children, flipId, onStart, onComplete, ...rest }) {
       r[0]
         .replace("translate", "data-translate-")
         .replace("scale", "data-scale-")
+        .replace("opacity", "data-opacity")
         .replace("inverseFlipId", "data-inverse-flip-id")
         .replace("transformOrigin", "data-transform-origin")
         .replace("componentIdFilter", "data-flip-component-id-filter")
         .replace("componentId", "data-flip-component-id")
         .replace("delay", "data-flip-delay")
-        .replace("easing", "data-flip-easing")
+        .replace("ease", "data-flip-ease")
         .replace("duration", "data-flip-duration")
         .toLowerCase(),
       r[1]

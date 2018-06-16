@@ -1,21 +1,33 @@
-body {
-    font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
-    color: #333366;
+:root {
+    --primary-color: #4F3BE5;
+    --text-color:#19122C;
+    --grey:#F6F6F8;
 }
 
 * {
     box-sizing: border-box;
 }
 
+
+body {
+    font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
+    color: var(--text-color);
+}
+
+
 .grid {
     display: grid;
     list-style: none;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     grid-auto-rows: 180px;
-    grid-gap: 1rem;
-    background-color: #404b69;
-    padding: 1rem;
+    grid-gap: 2rem;
+    background-color: var(--grey);
+    padding: 2rem;
     min-height: 100vh;
+}
+
+.header {
+    padding: 1rem 0 0 2rem;
 }
 
 .gridItem {
@@ -24,19 +36,27 @@ body {
     margin: 0;
     cursor: pointer;
     height: 100%;
-    /* overflow: hidden; */
+    overflow: hidden;
     position: relative;
     border-radius: 3px;
+    box-shadow: 0 0 18px #0000000d;
+    transition: box-shadow .3s;
 }
 
-.gridItem>div:first-of-type {
-    padding: 1rem;
-    position: relative;
-    z-index: 1;
-    background: #bada55;
+.gridItem:hover {
+    box-shadow: 0 0 35px #00000023;
+}
+
+.gridItem > div {
     width: 100%;
+    height: 100%;
 }
 
+.gridItem > div:first-of-type {
+    padding: 1rem;
+    z-index: 1;
+    position: relative;
+}
 
 .gridItemTitle {
     font-size: 1.2rem;
@@ -46,8 +66,6 @@ body {
     border-radius: 100px;
     width: 3rem;
     height: 3rem;
-    transform-origin: 0 0;
-    background-color: #5c657b;
     margin: 0 auto;
 }
 
@@ -58,7 +76,17 @@ body {
     bottom: 0;
     left: -100%;
     width: 300%;
-    z-index: 0;
+    z-index: -1;
+    background-color: var(--primary-color);
+    opacity:.3;
+}
+
+.backgroundContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
 .gridItemFocused {
@@ -68,8 +96,7 @@ body {
     max-height: 35rem;
     z-index: 3;
     position: relative;
-    display: flex;
-    justify-content: center;
+    text-align: center;
 }
 
 .gridItemFocusedClose {
@@ -81,6 +108,7 @@ body {
     background-color: transparent;
     font-size: 3rem;
     border: none;
+    color: white;
 }
 
 .gridItemFocusedClose:hover {
@@ -101,20 +129,25 @@ body {
 
 .gridItemJob {
     font-size: 1rem;
+    font-weight: normal;
 }
 
 .gridItemDescription {
     max-width: 30rem;
     margin: 0 auto;
+    color: white;
+    line-height: 1.6;
 }
 
 .gridItemFocused .gridItemBackground {
-    top:0%;
+    top: 0%;
+    opacity:1;
 }
 
 .gridItemFocused .gridItemTitle {
     font-size: 2.5rem;
     margin-top: 5rem;
+    color: white;
 }
 
 .gridItemFocused .gridItemAvatar {
@@ -124,5 +157,6 @@ body {
 }
 
 .gridItemFocused .gridItemJob {
-    font-size: 2rem;
+    font-size: 1.3rem;
+    color: white;
 }

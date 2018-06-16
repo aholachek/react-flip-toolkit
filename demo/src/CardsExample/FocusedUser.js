@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { Flipped } from "../../src/index"
+import { Flipped } from "../../../src/index"
 import { tween, styler, easing, stagger } from "popmotion"
 
 class FocusedUser extends Component {
@@ -43,6 +43,8 @@ class FocusedUser extends Component {
           onStart={this.hideElements}
           onComplete={this.animateIn}
           componentId="focusedUser"
+          duration={4000}
+          ease="backOut"
         >
           <div
             className="gridItem gridItemFocused"
@@ -69,6 +71,8 @@ class FocusedUser extends Component {
                   flipId={`${parentFlipId}-avatar`}
                   transformOrigin="0 0"
                   componentId="focusedUserAvatar"
+                  ease="backOut"
+                  duration={4000}
                 >
                   <img
                     src={data.avatar}
@@ -77,22 +81,23 @@ class FocusedUser extends Component {
                   />
                 </Flipped>
 
-                <h2 data-fade-in>{data.job}</h2>
+                <h2 data-fade-in className="gridItemJob">{data.job}</h2>
                 <p data-fade-in className="gridItemDescription">
                   {data.text}
                 </p>
+                <Flipped
+                  flipId={`${parentFlipId}-background`}
+                  componentId="focusedUserBackground"
+                  transformOrigin="0 0"
+                  duration={4000}
+                >
+                  <div
+                    className="gridItemBackground"
+                    style={{ backgroundColor: data.color }}
+                  />
+                </Flipped>
               </div>
             </Flipped>
-            {/* <Flipped
-              flipId={`${parentFlipId}-background`}
-              componentId="focusedUserBackground"
-              transformOrigin="50% 100%"
-            >
-              <div
-                className="gridItemBackground"
-                style={{ backgroundColor: data.color }}
-              />
-            </Flipped> */}
           </div>
         </Flipped>
       </div>
