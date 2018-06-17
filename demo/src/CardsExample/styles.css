@@ -1,19 +1,17 @@
 :root {
     --primary-color: #4F3BE5;
-    --text-color:#19122C;
-    --grey:#F6F6F8;
+    --text-color: #19122C;
+    --grey: #F6F6F8;
 }
 
 * {
     box-sizing: border-box;
 }
 
-
 body {
     font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
     color: var(--text-color);
 }
-
 
 .grid {
     display: grid;
@@ -47,12 +45,12 @@ body {
     box-shadow: 0 0 35px #00000023;
 }
 
-.gridItem > div {
+.gridItem>div {
     width: 100%;
     height: 100%;
 }
 
-.gridItem > div:first-of-type {
+.gridItem>div:first-of-type {
     padding: 1rem;
     z-index: 1;
     position: relative;
@@ -78,7 +76,7 @@ body {
     width: 300%;
     z-index: -1;
     background-color: var(--primary-color);
-    opacity:.3;
+    opacity: .3;
 }
 
 .backgroundContainer {
@@ -141,7 +139,7 @@ body {
 
 .gridItemFocused .gridItemBackground {
     top: 0%;
-    opacity:1;
+    opacity: 1;
 }
 
 .gridItemFocused .gridItemTitle {

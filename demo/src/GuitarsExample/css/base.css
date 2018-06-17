@@ -146,6 +146,7 @@ main {
 .info {
 	color: var(--color-info);
 	text-align: center;
+	margin-bottom: 1rem;
 }
 
 .github {
@@ -243,7 +244,6 @@ main {
 
 .details > * {
 	position: relative;
-	opacity: 0;
 }
 
 .details__bg {
@@ -269,6 +269,7 @@ main {
 	top: 10vh;
 	right: 10vw;
 	height: 80vh;
+	min-width: 30vh;
 }
 
 .details__bg,

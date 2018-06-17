@@ -35,6 +35,8 @@ class FocusedUser extends Component {
 
     if (typeof index !== "number") return null
 
+    const duration = 1000
+
     return (
       <div className="focusedItemBackground" key={parentFlipId}>
         <Flipped
@@ -43,7 +45,7 @@ class FocusedUser extends Component {
           onStart={this.hideElements}
           onComplete={this.animateIn}
           componentId="focusedUser"
-          duration={4000}
+          duration={duration}
           ease="backOut"
         >
           <div
@@ -72,7 +74,7 @@ class FocusedUser extends Component {
                   transformOrigin="0 0"
                   componentId="focusedUserAvatar"
                   ease="backOut"
-                  duration={4000}
+                  duration={duration}
                 >
                   <img
                     src={data.avatar}
@@ -89,7 +91,8 @@ class FocusedUser extends Component {
                   flipId={`${parentFlipId}-background`}
                   componentId="focusedUserBackground"
                   transformOrigin="0 0"
-                  duration={4000}
+                  duration={duration}
+                  ease='backOut'
                 >
                   <div
                     className="gridItemBackground"

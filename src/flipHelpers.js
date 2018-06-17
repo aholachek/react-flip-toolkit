@@ -1,5 +1,6 @@
 import tween from "popmotion/animations/tween"
-import { easing as popmotionEasing } from "popmotion"
+import { easing as popmotionEasing, parallel } from "popmotion"
+import * as Rematrix from "rematrix"
 
 const getInvertedChildren = (element, id) =>
   [].slice.call(element.querySelectorAll(`*[data-inverse-flip-id="${id}"]`))
@@ -14,13 +15,11 @@ const passesComponentFilter = (flipFilters, flipId) => {
   return true
 }
 
-const applyStyles = (
-  element,
-  { opacity, translateX, translateY, scaleX, scaleY }
-) => {
+const applyStyles = (element, { matrix, opacity }) => {
+  element.style.transform = `matrix3d(${matrix.join(", ")})`
   element.style.opacity = opacity
-  element.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scaleX}, ${scaleY})`
 }
+
 const shouldApplyTransform = (element, flipStartId, flipEndId) => {
   if (
     element.dataset.flipComponentIdFilter &&
@@ -39,11 +38,16 @@ const shouldApplyTransform = (element, flipStartId, flipEndId) => {
 // apply the inverse of the transforms so that the children don't distort
 const invertTransformsForChildren = (
   childElements,
-  { translateX, translateY, scaleY, scaleX },
+  matrix,
   { flipStartId, flipEndId } = {}
 ) => {
   childElements.forEach(child => {
     if (!shouldApplyTransform(child, flipStartId, flipEndId)) return
+
+    const translateX = matrix[12]
+    const translateY = matrix[13]
+    const scaleX = matrix[0]
+    const scaleY = matrix[5]
 
     const inverseVals = {}
     if (child.dataset.translateX) inverseVals.translateX = -translateX / scaleX
@@ -59,9 +63,9 @@ const invertTransformsForChildren = (
 
 export const getFlippedElementPositions = element => {
   return [].slice
-    .apply(element.querySelectorAll("*[data-flip-key]"))
+    .apply(element.querySelectorAll("*[data-flip-id]"))
     .map(child => [
-      child.dataset.flipKey,
+      child.dataset.flipId,
       {
         rect: child.getBoundingClientRect(),
         opacity: parseFloat(window.getComputedStyle(child).opacity),
@@ -90,13 +94,6 @@ export const animateMove = ({
 }) => {
   const body = document.querySelector("body")
   const newFlipChildrenPositions = getFlippedElementPositions(containerEl)
-  const defaultVals = {
-    translateX: 0,
-    translateY: 0,
-    scaleY: 1,
-    scaleX: 1,
-    opacity: 1
-  }
 
   Object.keys(newFlipChildrenPositions).forEach(id => {
     if (!cachedFlipChildrenPositions[id] || !newFlipChildrenPositions[id]) {
@@ -122,26 +119,45 @@ export const animateMove = ({
       return
     }
 
-    const element = containerEl.querySelector(`*[data-flip-key="${id}"]`)
+    const element = containerEl.querySelector(`*[data-flip-id="${id}"]`)
+
     const flipStartId = cachedFlipChildrenPositions[id].flipComponentId
     const flipEndId = element.dataset.flipComponentId
 
     if (!shouldApplyTransform(element, flipStartId, flipEndId)) return
 
-    const toVals = { ...defaultVals }
-    if (element.dataset.opacity) toVals.opacity = currentOpacity
-    const fromVals = { ...defaultVals }
+    const currentTransform = Rematrix.parse(
+      getComputedStyle(element)["transform"]
+    )
+
+    const toVals = { matrix: currentTransform }
+
+    const fromVals = {}
+    const transformsArray = [currentTransform]
     // we're only going to animate the values that the child wants animated,
     // based on its data-* attributes
-    if (element.dataset.translateX)
-      fromVals.translateX = prevRect.left - currentRect.left
-    if (element.dataset.translateY)
-      fromVals.translateY = prevRect.top - currentRect.top
-    if (element.dataset.scaleX)
-      fromVals.scaleX = prevRect.width / Math.max(currentRect.width, 0.0001)
-    if (element.dataset.scaleY)
-      fromVals.scaleY = prevRect.height / Math.max(currentRect.height, 0.0001)
-    if (element.dataset.opacity) fromVals.opacity = prevOpacity
+    if (element.dataset.translateX) {
+      transformsArray.push(
+        Rematrix.translateX(prevRect.left - currentRect.left)
+      )
+    }
+    if (element.dataset.translateY) {
+      transformsArray.push(Rematrix.translateY(prevRect.top - currentRect.top))
+    }
+    if (element.dataset.scaleX) {
+      transformsArray.push(
+        Rematrix.scaleX(prevRect.width / Math.max(currentRect.width, 0.0001))
+      )
+    }
+    if (element.dataset.scaleY) {
+      transformsArray.push(
+        Rematrix.scaleY(prevRect.height / Math.max(currentRect.height, 0.0001))
+      )
+    }
+    if (element.dataset.opacity) {
+      fromVals.opacity = prevOpacity
+      toVals.opacity = currentOpacity
+    }
 
     if (element.dataset.transformOrigin) {
       element.style.transformOrigin = element.dataset.transformOrigin
@@ -157,20 +173,9 @@ export const animateMove = ({
       delete inProgressAnimations[id]
     }
 
-    // const elementAlreadyHasTransform = window
-    //   .getComputedStyle(element)
-    //   .getPropertyValue("transform")
-    //   .match(/matrix\(1, 0, 0, 1, (.*), (.*)\)/)
-    // if (elementAlreadyHasTransform) {
-    //   toVals.translateX = parseFloat(elementAlreadyHasTransform[1])
-    //   fromVals.translateX = fromVals.translateX + toVals.translateX
-    //   toVals.translateY = parseFloat(elementAlreadyHasTransform[2])
-    //   fromVals.translateY = fromVals.translateY + toVals.translateY
-    // }
+    fromVals.matrix = transformsArray.reduce(Rematrix.multiply)
 
     // before animating, immediately apply FLIP styles to prevent flicker
-    // (which was only detectable on Safari)
-    // not sure why but opacity transforms break when included in this first render
     applyStyles(element, fromVals)
     invertTransformsForChildren(getInvertedChildren(element, id), fromVals, {
       flipStartId,
@@ -180,35 +185,39 @@ export const animateMove = ({
     if (flipCallbacks[id] && flipCallbacks[id].onStart)
       flipCallbacks[id].onStart(element, flipStartId)
 
-    // now start the animation
-    const { stop } = tween({
-      from: fromVals,
-      to: toVals,
-      // element can specify its own duration
+    const settings = {
       duration: element.dataset.flipDuration || duration,
-      // element can specify its own easing
       ease:
         (element.dataset.flipEase &&
           popmotionEasing[element.dataset.flipEase]) ||
         popmotionEasing[ease]
-    }).start({
-      // transforms can include opacity
-      update: tweenVals => {
-        // just to be safe: if the component has been removed from the DOM
-        // immediately cancel any in-progress animations
+    }
+
+    // now start the animation
+    const { stop } = parallel(
+      tween({
+        from: fromVals.matrix,
+        to: toVals.matrix,
+        ...settings
+      }),
+      tween({
+        from: { opacity: fromVals.opacity },
+        to: { opacity: toVals.opacity },
+        ...settings
+      })
+    ).start({
+      update: ([matrix, otherVals]) => {
         if (!body.contains(element)) {
           stop && stop()
           return
         }
-
-        applyStyles(element, tweenVals)
+        applyStyles(element, { ...otherVals, matrix })
 
         // for children that requested it, cancel out the transform by applying the inverse transform
-        invertTransformsForChildren(
-          getInvertedChildren(element, id),
-          tweenVals,
-          { flipStartId, flipEndId }
-        )
+        invertTransformsForChildren(getInvertedChildren(element, id), matrix, {
+          flipStartId,
+          flipEndId
+        })
       },
       complete: () => {
         delete inProgressAnimations[id]

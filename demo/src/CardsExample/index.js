@@ -1,7 +1,4 @@
 import React, { Component } from "react"
-import { render } from "react-dom"
-import styles from "./styles.css"
-
 import { Flipper } from "../../../src"
 import userData from "./userData.json"
 import UserGrid from "./UserGrid"
@@ -14,11 +11,14 @@ export default class CardsExample extends Component {
       focusedIndex: index
     })
   }
+  componentDidMount() {
+    require("./styles.css")
+  }
   render() {
     return (
       <Flipper flipKey={this.state.focusedIndex} duration={500}>
-        <div className='header'>
-        <h1>react-flip-toolkit demo #1</h1>
+        <div className="header">
+          <h1>react-flip-toolkit demo</h1>
         </div>
         <UserGrid
           data={userData}

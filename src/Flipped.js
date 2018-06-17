@@ -81,7 +81,7 @@ function Flipped({ children, flipId, onStart, onComplete, ...rest }) {
     ])
     .reduce((acc, curr) => ({ ...acc, [curr[0]]: curr[1] }), {})
 
-  if (flipId) props["data-flip-key"] = flipId
+  if (flipId) props["data-flip-id"] = flipId
 
   return (
     <FlipContext.Consumer>
