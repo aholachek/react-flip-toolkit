@@ -105,7 +105,10 @@ button:focus {
 main {
 	position: relative;
 	width: 100%;
+	/* keep scroll position */
+	min-height: 2470px;
 }
+
 
 .content {
 	position: relative;

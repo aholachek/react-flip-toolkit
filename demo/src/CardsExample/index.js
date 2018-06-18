@@ -19,6 +19,12 @@ export default class CardsExample extends Component {
       <Flipper flipKey={this.state.focusedIndex} duration={500}>
         <div className="header">
           <h1>react-flip-toolkit demo</h1>
+          <p>A slightly overcomplicated example meant to show off some of the advanced features:</p>
+          <ul>
+            <li>The non-active cards move towards their new positions in the grid when a card is clicked</li>
+            <li>There are multiple nested transitions in the card</li>
+            <li>The background opacity is animated in addition to the position</li>
+          </ul>
         </div>
         <UserGrid
           data={userData}

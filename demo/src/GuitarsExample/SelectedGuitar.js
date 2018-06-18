@@ -21,7 +21,7 @@ class SelectedGuitar extends Component {
           opacity: 1,
           translateY: 0
         },
-        duration: 250
+        duration: 200,
       })
     })
 
@@ -52,7 +52,7 @@ class SelectedGuitar extends Component {
         <Flipped
           flipId={`${parentId}-guitarImg`}
           ease="backOut"
-          duration={800}
+          duration={600}
         >
           <img
             className="details__img"

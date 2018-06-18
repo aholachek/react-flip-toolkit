@@ -3,7 +3,7 @@ module.exports = {
   npm: {
     esModules: true,
     umd: {
-      global: 'ReactFlipPrimitives',
+      global: 'ReactFlipToolkit',
       externals: {
         react: 'React'
       }

@@ -12,7 +12,6 @@ const propTypes = {
   scaleX: PropTypes.bool,
   scaleY: PropTypes.bool,
   transformOrigin: PropTypes.string,
-  delay: PropTypes.number,
   ease: PropTypes.string,
   duration: PropTypes.number,
   onStart: PropTypes.func,
@@ -73,7 +72,6 @@ function Flipped({ children, flipId, onStart, onComplete, ...rest }) {
         .replace("transformOrigin", "data-transform-origin")
         .replace("componentIdFilter", "data-flip-component-id-filter")
         .replace("componentId", "data-flip-component-id")
-        .replace("delay", "data-flip-delay")
         .replace("ease", "data-flip-ease")
         .replace("duration", "data-flip-duration")
         .toLowerCase(),

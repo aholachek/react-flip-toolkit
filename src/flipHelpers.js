@@ -16,7 +16,15 @@ const passesComponentFilter = (flipFilters, flipId) => {
 }
 
 const applyStyles = (element, { matrix, opacity }) => {
-  element.style.transform = `matrix3d(${matrix.join(", ")})`
+  // because matrix3d screws with opacity animations in Chrome (why??)
+  element.style.transform = `matrix(${[
+    matrix[0],
+    matrix[1],
+    matrix[4],
+    matrix[5],
+    matrix[12],
+    matrix[13]
+  ].join(", ")})`
   element.style.opacity = opacity
 }
 

@@ -24,7 +24,7 @@ class FocusedUser extends Component {
       })
     })
 
-    stagger(animations, 150).start(values => {
+    stagger(animations, 100).start(values => {
       elements.forEach((el, i) => styler(el).set(values[i]))
     })
   }
@@ -35,7 +35,7 @@ class FocusedUser extends Component {
 
     if (typeof index !== "number") return null
 
-    const duration = 1000
+    const duration = 500
 
     return (
       <div className="focusedItemBackground" key={parentFlipId}>
@@ -59,46 +59,50 @@ class FocusedUser extends Component {
               componentId="focusedUser"
             >
               <div>
-                <button
-                  className="gridItemFocusedClose"
-                  onClick={close}
-                  data-fade-in
-                >
-                  ✖
-                </button>
-                <h2 className="gridItemTitle" data-fade-in>
-                  {data.name}
-                </h2>
-                <Flipped
-                  flipId={`${parentFlipId}-avatar`}
-                  transformOrigin="0 0"
-                  componentId="focusedUserAvatar"
-                  ease="backOut"
-                  duration={duration}
-                >
-                  <img
-                    src={data.avatar}
-                    alt={`user profile for ${data.name}`}
-                    className="gridItemAvatar"
-                  />
-                </Flipped>
+                <div>
+                  <button
+                    className="gridItemFocusedClose"
+                    onClick={close}
+                    data-fade-in
+                  >
+                    ✖
+                  </button>
+                  <h2 className="gridItemTitle" data-fade-in>
+                    {data.name}
+                  </h2>
+                  <Flipped
+                    flipId={`${parentFlipId}-avatar`}
+                    transformOrigin="0 0"
+                    componentId="focusedUserAvatar"
+                    ease="backOut"
+                    duration={duration}
+                  >
+                    <img
+                      src={data.avatar}
+                      alt={`user profile for ${data.name}`}
+                      className="gridItemAvatar"
+                    />
+                  </Flipped>
 
-                <h2 data-fade-in className="gridItemJob">{data.job}</h2>
-                <p data-fade-in className="gridItemDescription">
-                  {data.text}
-                </p>
-                <Flipped
-                  flipId={`${parentFlipId}-background`}
-                  componentId="focusedUserBackground"
-                  transformOrigin="0 0"
-                  duration={duration}
-                  ease='backOut'
-                >
-                  <div
-                    className="gridItemBackground"
-                    style={{ backgroundColor: data.color }}
-                  />
-                </Flipped>
+                  <h2 data-fade-in className="gridItemJob">
+                    {data.job}
+                  </h2>
+                  <p data-fade-in className="gridItemDescription">
+                    {data.text}
+                  </p>
+                  <Flipped
+                    flipId={`${parentFlipId}-background`}
+                    componentId="focusedUserBackground"
+                    transformOrigin="0 0"
+                    duration={duration}
+                    ease="backOut"
+                  >
+                    <div
+                      className="gridItemBackground"
+                      style={{ backgroundColor: data.color }}
+                    />
+                  </Flipped>
+                </div>
               </div>
             </Flipped>
           </div>

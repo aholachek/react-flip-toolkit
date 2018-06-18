@@ -88,13 +88,16 @@ body {
 }
 
 .gridItemFocused {
-    width: 1000px;
-    height: 1000px;
-    max-width: 35rem;
-    max-height: 35rem;
+    width: 100vw;
+    height: 100vh;
     z-index: 3;
     position: relative;
-    text-align: center;
+}
+
+.gridItemFocused > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .gridItemFocusedClose {
@@ -131,10 +134,12 @@ body {
 }
 
 .gridItemDescription {
-    max-width: 30rem;
+    max-width: 40rem;
     margin: 0 auto;
     color: white;
     line-height: 1.6;
+    font-size: 1.2rem;
+    margin-top: 2rem;
 }
 
 .gridItemFocused .gridItemBackground {
@@ -143,9 +148,9 @@ body {
 }
 
 .gridItemFocused .gridItemTitle {
-    font-size: 2.5rem;
-    margin-top: 5rem;
+    font-size: 3.2rem;
     color: white;
+    margin-top: 0;
 }
 
 .gridItemFocused .gridItemAvatar {
@@ -155,6 +160,6 @@ body {
 }
 
 .gridItemFocused .gridItemJob {
-    font-size: 1.3rem;
+    font-size: 1.8rem;
     color: white;
 }
