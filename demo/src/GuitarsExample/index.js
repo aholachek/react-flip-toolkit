@@ -3,6 +3,8 @@ import { Flipper } from "../../../src"
 import GuitarItem from "./GuitarItem"
 import SelectedGuitar from "./SelectedGuitar"
 import guitarsData from "./guitarsData"
+import "./css/base.css"
+import "./pater/pater.css"
 
 class GuitarExample extends Component {
   static defaultProps = {}
@@ -12,11 +14,6 @@ class GuitarExample extends Component {
   state = {
     focusedGuitarIndex: null
   }
-  componentDidMount() {
-    require("./css/base.css")
-    require("./pater/pater.css")
-  }
-
   render() {
     return (
       <Flipper flipKey={this.state.focusedGuitarIndex}>

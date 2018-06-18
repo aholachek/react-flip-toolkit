@@ -13,7 +13,7 @@ body {
     color: var(--text-color);
 }
 
-.grid {
+.cardGrid {
     display: grid;
     list-style: none;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));

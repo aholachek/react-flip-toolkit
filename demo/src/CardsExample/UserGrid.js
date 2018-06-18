@@ -35,7 +35,7 @@ class UserGrid extends Component {
   }
   render() {
     return (
-      <ul className="grid">
+      <ul className="cardGrid">
         {this.props.data.map((d, i) => {
           const parentFlipId = `card-${i}`
           if (i === this.props.focusedIndex) return null
