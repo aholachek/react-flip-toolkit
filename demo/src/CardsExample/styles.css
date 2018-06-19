@@ -13,6 +13,15 @@ body {
     color: var(--text-color);
 }
 
+label:first-of-type {
+    margin-left: 1rem;
+}
+
+label+label {
+    margin-left: 1rem;
+}
+
+
 .cardGrid {
     display: grid;
     list-style: none;
@@ -25,7 +34,12 @@ body {
 }
 
 .header {
-    padding: 1rem 0 0 2rem;
+    padding: 0 0 0 2rem;
+}
+
+.header h1 {
+    font-size: 1.6rem;
+
 }
 
 .gridItem {
@@ -39,6 +53,7 @@ body {
     border-radius: 3px;
     box-shadow: 0 0 18px #0000000d;
     transition: box-shadow .3s;
+    will-change: transform;
 }
 
 .gridItem:hover {
@@ -94,7 +109,7 @@ body {
     position: relative;
 }
 
-.gridItemFocused > div {
+.gridItemFocused>div {
     display: flex;
     justify-content: center;
     align-items: center;

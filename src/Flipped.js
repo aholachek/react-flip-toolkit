@@ -9,14 +9,17 @@ const propTypes = {
   opacity: PropTypes.bool,
   translateX: PropTypes.bool,
   translateY: PropTypes.bool,
+  translate: PropTypes.bool,
   scaleX: PropTypes.bool,
   scaleY: PropTypes.bool,
+  scale: PropTypes.bool,
   transformOrigin: PropTypes.string,
   ease: PropTypes.string,
   duration: PropTypes.number,
   onStart: PropTypes.func,
   onComplete: PropTypes.func,
-  componentIdFilter: PropTypes.string
+  componentIdFilter: PropTypes.string,
+  componentId: PropTypes.string,
 }
 // This wrapper creates child components for the main Flipper component
 function Flipped({ children, flipId, onStart, onComplete, ...rest }) {

@@ -1,7 +1,7 @@
 {
   "name": "react-flip-toolkit",
   "version": "1.0.0",
-  "description": "FLIP helpers for React",
+  "description": "Configurable FLIP animation helpers for React",
   "main": "lib/index.js",
   "module": "es/index.js",
   "files": [
@@ -18,8 +18,11 @@
     "test:coverage": "nwb test-react --coverage",
     "test:watch": "nwb test-react --server"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aholachek/react-flip-toolkit"
+  },
   "dependencies": {
-    "flipping": "^1.0.0",
     "popmotion": "^8.2.3",
     "rematrix": "^0.2.2"
   },
@@ -32,11 +35,12 @@
     "react": "^16.4.0",
     "react-dom": "^16.4.0"
   },
-  "author": "",
-  "homepage": "",
+  "author": "Alex Holachek",
   "license": "MIT",
-  "repository": "",
   "keywords": [
-    "react-component"
+    "react-component",
+    "FLIP",
+    "transition",
+    "animation"
   ]
 }

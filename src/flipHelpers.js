@@ -1,5 +1,6 @@
 import tween from "popmotion/animations/tween"
-import { easing as popmotionEasing, parallel } from "popmotion"
+import * as popmotionEasing from "popmotion/easing"
+import parallel from "popmotion/compositors/parallel"
 import * as Rematrix from "rematrix"
 
 const getInvertedChildren = (element, id) =>
@@ -178,6 +179,7 @@ export const animateMove = ({
 
     if (inProgressAnimations[id]) {
       inProgressAnimations[id].stop()
+      inProgressAnimations[id].onComplete()
       delete inProgressAnimations[id]
     }
 
@@ -201,7 +203,13 @@ export const animateMove = ({
         popmotionEasing[ease]
     }
 
+    let onComplete = () => {}
+    if (flipCallbacks[id] && flipCallbacks[id].onComplete) {
+      onComplete = () => flipCallbacks[id].onComplete(element, flipStartId)
+    }
+
     // now start the animation
+
     const { stop } = parallel(
       tween({
         from: fromVals.matrix,
@@ -232,12 +240,11 @@ export const animateMove = ({
         requestAnimationFrame(() => {
           element.style.transform = ""
         })
-        if (flipCallbacks[id] && flipCallbacks[id].onComplete)
-          flipCallbacks[id].onComplete(element, flipStartId)
+        onComplete()
       }
     })
     // in case we have to cancel
-    inProgressAnimations[id] = { stop }
+    inProgressAnimations[id] = { stop, onComplete }
   })
   return inProgressAnimations
 }

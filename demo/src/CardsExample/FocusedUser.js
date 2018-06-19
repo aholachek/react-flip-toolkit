@@ -30,12 +30,12 @@ class FocusedUser extends Component {
   }
 
   render() {
-    const { data, index, close } = this.props
+    const { data, index, close, speed } = this.props
     const parentFlipId = `card-${index}`
 
     if (typeof index !== "number") return null
 
-    const duration = 500
+    const duration = speed === "normal" ? 500 : 1500
 
     return (
       <div className="focusedItemBackground" key={parentFlipId}>

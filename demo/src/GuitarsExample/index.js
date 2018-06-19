@@ -32,9 +32,6 @@ class GuitarExample extends Component {
             </header>
           </div>
           <button className="dummy-menu">
-            {/* <svg className="icon icon--menu">
-            <use xlink:href="#icon-menu" />
-          </svg> */}
           </button>
           <div className="content">
             {typeof this.state.focusedGuitarIndex !== "number" && (
