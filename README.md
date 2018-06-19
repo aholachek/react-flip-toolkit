@@ -68,7 +68,7 @@ The problem with scale animations has to do with children -- if you scale a div 
 <Flipped flipId={parentFlipId}>
   <div>
     <Flipped inverseFlipId={parentFlipId} scale>
-      <div>some text that won't we warped</div>
+      <div>some text that will not be warped</div>
     </Flipped>
   </div>
 </Flipped>
