@@ -61,7 +61,7 @@ In this example, all `Flipped` elements are direct children of the `Flipper` par
 
 ## Scale transitions made eas(ier)
 
-Some other flip libraries just allow you to animate position changes, but things get a lot more interesting once you can animate scale changes as well (check out the two examples above to see what scale animations bring to the table).
+Some other FLIP libraries just allow you to animate position changes, but things get a lot more interesting once you can animate scale changes as well (check out the two examples at the top of the README to see what scale animations bring to the table).
 The problem with scale animations has to do with children -- if you scale a div up 2x, you will warp any children it has by scaling them up too, creating a weird-looking animation. That's why this library allows you to wrap the child with a `Flipped` component that has an `inverseFlipId` to counteract the transforms of the parent:
 
 ```js
@@ -74,7 +74,7 @@ The problem with scale animations has to do with children -- if you scale a div 
 </Flipped>
 ```
 
-By default, not only the scale of the parent will be counteracted, but also the X and Y translates (this allows children components to make their own FLIP animations without being affected by the parent).
+By default, not only the scale of the parent will be counteracted, but also the X and Y translations (this allows children components to make their own FLIP animations without being affected by the parent).
 But for most use cases, you'll want to additionally specify the `scale` prop to limit the transform adjustment to the scale and allow the positioning to move with the parent.
 
 ## Flipper component
@@ -118,7 +118,7 @@ and they will be tweened by `react-flip-toolkit`
 - `onStart(element) : (`func`) called when the FLIP animation starts. It is provided a reference to the DOM element being transitioned as the first argument
 - `onComplete(element)` : (`func`) called when the FLIP animation starts. It is provided a reference to the DOM element being transitioned as the first argument. (If transitions are interruped by new ones, `onComplete` will still be called.)
 
-#### By default the FLIP-ped elements' translate, scale, and opacity properties are all transformed. However, certain effects require more control so if you specify any of these props, _only the specified attributes will be tweened_:
+#### By default the FLIP-ped elements' translate, scale, and opacity properties are all transformed. However, certain effects require more control so if you specify any of these props, _only the specified attribute(s) will be tweened_:
 
 - `translateX`: (`bool`)
 - `translateY`: (`bool`)
@@ -145,4 +145,4 @@ If the animation looks off, try making sure you've specified the correct `transf
 
 ## Other details
 
-`react-flip-toolkit` is 9.16kb minified and gzipped
+`react-flip-toolkit` is 9.17kb minified and gzipped
