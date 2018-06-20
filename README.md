@@ -115,7 +115,7 @@ and they will be tweened by `react-flip-toolkit`
 
 - `inverseFlipId`: (`string`) refer to the id of the parent `Flipped` container whose transform you want to cancel out.
 - `transformOrigin`: (`string`, like `"0 0"` or `"50% 100%"`) this is a convenience method to apply the proper `transform-origin` to the element being FLIPP-ed (for FLIP animations you'll often want to apply `transform-origin: 0 0;` rather than using the default of `50% 50%`.
-- `ease`: (`string`) This string should refer to one of the easings provided by Popmotion, [see the full list here](). This will override the one specified in the parent `Flipped` component.
+- `ease`: (`string`) This string should refer to one of the easings provided by Popmotion, [see the full list here](https://popmotion.io/api/easing/). This will override the one specified in the parent `Flipped` component.
 - `duration`: (`number`) Timing for the individual FLIP transition, this will override the one specified in the parent `Flipped` component
 - `onStart(element) : (`func`) called when the FLIP animation starts. It is provided a reference to the DOM element being transitioned as the first argument
 - `onComplete(element)` : (`func`) called when the FLIP animation starts. It is provided a reference to the DOM element being transitioned as the first argument. (If transitions are interruped by new ones, `onComplete` will still be called.)
