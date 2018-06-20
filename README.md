@@ -145,4 +145,4 @@ If the animation looks off, try making sure you've specified the correct `transf
 
 ## Other details
 
-`react-flip-toolkit` is 9.17kb minified and gzipped
+`react-flip-toolkit` is ~9.2kb minified and gzipped
