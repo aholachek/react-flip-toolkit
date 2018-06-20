@@ -198,7 +198,7 @@ export const animateMove = ({
     const settings = {
       duration: element.dataset.flipDuration || duration,
       ease:
-        (element.dataset.flipEase &&
+        (typeof element.dataset.flipEase === "string" &&
           popmotionEasing[element.dataset.flipEase]) ||
         popmotionEasing[ease]
     }
