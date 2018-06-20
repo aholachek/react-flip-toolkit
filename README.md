@@ -1,7 +1,5 @@
 # react-flip-toolkit
 
-A small React FLIP animation helper library for configurable, advanced transition effects
-
 ## Rationale
 
 I couldn't find a pre-existing, small library that offered me the degree of configurability and control I wanted over complex animations.
@@ -20,29 +18,31 @@ Wrap elements that should be animated with `Flipped` components that have `flipI
 
 ### Simplest example:
 
-```js
-import { Flipper, Flipped } from "react-flip-toolkit"
+[Try it out on Codepen](https://codepen.io/aholachek/pen/zapEjq?editors=0110)
 
-const colors = ["red", "yellow", "blue"]
+```js
+const data = ["#333366", "#ff5f5f", "#f9e75e"];
 
 class Container extends Component {
-  state = { focused: undefined }
+  state = { focused: undefined };
   render() {
     return (
       <Flipper flipKey={this.state.focused}>
         <main>
           {typeof this.state.focused === "string" ? (
-            <Flipped flipId={this.state.focused}>
+            <Flipped flipId={this.state.focused} transformOrigin="0 0">
               <div
+                className="focusedItem"
                 style={{ backgroundColor: this.state.focused }}
                 onClick={() => this.setState({ focused: null })}
               />
             </Flipped>
           ) : (
-            <ul>
-              {colors.map(({ color }) => (
-                <Flipped flipId={color}>
+            <ul className="list">
+              {data.map(color => (
+                <Flipped flipId={color} transformOrigin="0 0">
                   <li
+                    className="listItem"
                     style={{ backgroundColor: color }}
                     onClick={() => this.setState({ focused: color })}
                   />
@@ -52,7 +52,7 @@ class Container extends Component {
           )}
         </main>
       </Flipper>
-    )
+    );
   }
 }
 ```
@@ -74,6 +74,8 @@ The problem with scale animations has to do with children -- if you scale a div 
 </Flipped>
 ```
 
+[Try it out on Codepen](https://codepen.io/aholachek/pen/mKXBJR?editors=0110)
+
 By default, not only the scale of the parent will be counteracted, but also the X and Y translations (this allows children components to make their own FLIP animations without being affected by the parent).
 But for most use cases, you'll want to additionally specify the `scale` prop to limit the transform adjustment to the scale and allow the positioning to move with the parent.
 
@@ -85,7 +87,7 @@ The parent wrapper that contains all the elements to be animated.
 
 - `flipKey`: (`string`, `number`, `bool`) Changing this tells `react-flip-toolkit` to transition elements wrapped in `Flipped` components.
 - `children`: (`node`) One or more element children
-- `ease`: (`string`) Default easing for all FLIP transitions. This string should refer to one of the easings provided by Popmotion, [see the full list here]()
+- `ease`: (`string`) Default easing for all FLIP transitions. This string should refer to one of the easings provided by Popmotion, [see the full list here](https://popmotion.io/api/easing/)
 - `duration`: (`number`) Default duration for all FLIP transitions.
 
 ## Flipped component
