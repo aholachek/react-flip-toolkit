@@ -197,10 +197,7 @@ export const animateMove = ({
 
     const settings = {
       duration: element.dataset.flipDuration || duration,
-      ease:
-        (typeof element.dataset.flipEase === "string" &&
-          popmotionEasing[element.dataset.flipEase]) ||
-        popmotionEasing[ease]
+      ease: popmotionEasing[element.dataset.flipEase] || popmotionEasing[ease]
     }
 
     let onComplete = () => {}
