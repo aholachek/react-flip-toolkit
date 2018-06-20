@@ -139,9 +139,9 @@ export const animateMove = ({
       getComputedStyle(element)["transform"]
     )
 
-    const toVals = { matrix: currentTransform }
+    const toVals = { matrix: currentTransform, opacity: 1 }
 
-    const fromVals = {}
+    const fromVals = { opacity: 1 }
     const transformsArray = [currentTransform]
     // we're only going to animate the values that the child wants animated,
     // based on its data-* attributes
