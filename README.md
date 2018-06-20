@@ -12,6 +12,8 @@ Example 2: [Advanced FLIP with nested transitions](https://literate-fly.surge.sh
 
 ## Quick start
 
+`npm install react-flip-toolkit`
+
 Wrap your container element with a `Flipper` component that has a `flipKey` prop that changes every time an animation should happen.
 
 Wrap elements that should be animated with `Flipped` components that have `flipId` props matching them across renders.
@@ -21,6 +23,8 @@ Wrap elements that should be animated with `Flipped` components that have `flipI
 [Try it out on Codepen](https://codepen.io/aholachek/pen/zapEjq?editors=0110)
 
 ```js
+import { Flipper, Flipped } from 'react-flip-toolkit'
+
 const data = ["#333366", "#ff5f5f", "#f9e75e"];
 
 class Container extends Component {
