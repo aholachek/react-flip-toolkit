@@ -1,7 +1,6 @@
 import React, { Component, createContext } from "react"
 import PropTypes from "prop-types"
 import { animateMove, getFlippedElementPositions } from "./flipHelpers"
-import * as popmotionEasing from "popmotion/easing"
 
 export const FlipContext = React.createContext("flip")
 
@@ -37,7 +36,7 @@ class Flipper extends Component {
         cachedFlipChildrenPositions,
         containerEl: this.el,
         duration: this.props.duration,
-        ease: popmotionEasing[this.props.ease],
+        ease: this.props.ease,
         inProgressAnimations: this.inProgressAnimations,
         flipCallbacks: this.flipCallbacks
       })
