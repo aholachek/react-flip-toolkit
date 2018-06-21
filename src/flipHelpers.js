@@ -1,6 +1,6 @@
-import tween from "popmotion/animations/tween"
-import * as popmotionEasing from "popmotion/easing"
-import parallel from "popmotion/compositors/parallel"
+import tween from "popmotion/lib/animations/tween"
+import * as popmotionEasing from "popmotion/lib/easing"
+import parallel from "popmotion/lib/compositors/parallel"
 import * as Rematrix from "rematrix"
 
 const getInvertedChildren = (element, id) =>
@@ -70,9 +70,17 @@ const invertTransformsForChildren = (
   })
 }
 
-export const getFlippedElementPositions = element => {
+export const getFlippedElementPositions = (element, inProgressAnimations) => {
+  // we only care when this is called in getSnapshotBeforeUpdate
+  const animationsInProgress =
+    inProgressAnimations && Object.keys(inProgressAnimations).length
   return [].slice
     .apply(element.querySelectorAll("*[data-flip-id]"))
+    .map(el => {
+      // allow fully interruptible animations
+      if (animationsInProgress) el.style.transform = ""
+      return el
+    })
     .map(child => [
       child.dataset.flipId,
       {
@@ -234,9 +242,6 @@ export const animateMove = ({
       },
       complete: () => {
         delete inProgressAnimations[id]
-        requestAnimationFrame(() => {
-          element.style.transform = ""
-        })
         onComplete()
       }
     })

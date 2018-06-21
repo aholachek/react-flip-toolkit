@@ -14,7 +14,7 @@
     "build": "nwb build-react-component",
     "clean": "nwb clean-module && nwb clean-demo",
     "start": "nwb serve-react-demo",
-    "test": "nwb test-react",
+    "test": "jest",
     "test:coverage": "nwb test-react --coverage",
     "test:watch": "nwb test-react --server"
   },
@@ -23,17 +23,22 @@
     "url": "https://github.com/aholachek/react-flip-toolkit"
   },
   "dependencies": {
-    "popmotion": "^8.2.3",
+    "popmotion": "^8.2.5",
     "rematrix": "^0.2.2"
   },
   "peerDependencies": {
     "react": "16.x"
   },
   "devDependencies": {
+    "babel-jest": "^23.0.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "jest": "^23.1.0",
     "normalize.css": "^8.0.0",
     "nwb": "0.21.x",
     "react": "^16.4.0",
-    "react-dom": "^16.4.0"
+    "react-dom": "^16.4.0",
+    "react-test-renderer": "^16.4.1"
   },
   "author": "Alex Holachek",
   "license": "MIT",

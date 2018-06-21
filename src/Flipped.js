@@ -19,10 +19,10 @@ const propTypes = {
   onStart: PropTypes.func,
   onComplete: PropTypes.func,
   componentIdFilter: PropTypes.string,
-  componentId: PropTypes.string,
+  componentId: PropTypes.string
 }
 // This wrapper creates child components for the main Flipper component
-function Flipped({ children, flipId, onStart, onComplete, ...rest }) {
+export function Flipped({ children, flipId, onStart, onComplete, ...rest }) {
   let child
   try {
     child = Children.only(children)
@@ -84,19 +84,31 @@ function Flipped({ children, flipId, onStart, onComplete, ...rest }) {
 
   if (flipId) props["data-flip-id"] = flipId
 
-  return (
-    <FlipContext.Consumer>
-      {data => {
-        data[flipId] = {
-          onStart: onStart,
-          onComplete: onComplete
-        }
-        return cloneElement(child, props)
-      }}
-    </FlipContext.Consumer>
-  )
+  return cloneElement(child, props)
 }
 
-Flipped.propTypes = propTypes
+const FlippedWithContext = ({
+  children,
+  flipId,
+  onStart,
+  onComplete,
+  ...rest
+}) => (
+  <FlipContext.Consumer>
+    {data => {
+      data[flipId] = {
+        onStart: onStart,
+        onComplete: onComplete
+      }
+      return (
+        <Flipped flipId={flipId} {...rest}>
+          {children}
+        </Flipped>
+      )
+    }}
+  </FlipContext.Consumer>
+)
 
-export default Flipped
+FlippedWithContext.propTypes = propTypes
+
+export default FlippedWithContext

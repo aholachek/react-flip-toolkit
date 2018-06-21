@@ -2,7 +2,7 @@ import React, { Component, createContext } from "react"
 import PropTypes from "prop-types"
 import { animateMove, getFlippedElementPositions } from "./flipHelpers"
 
-export const FlipContext = React.createContext("flip")
+export const FlipContext = createContext("flip")
 
 class Flipper extends Component {
   static propTypes = {
@@ -25,7 +25,7 @@ class Flipper extends Component {
 
   getSnapshotBeforeUpdate(prevProps) {
     if (prevProps.flipKey !== this.props.flipKey) {
-      return getFlippedElementPositions(this.el)
+      return getFlippedElementPositions(this.el, this.inProgressAnimations)
     }
     return null
   }
