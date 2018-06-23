@@ -79,7 +79,7 @@ The parent wrapper that contains all the elements to be animated.
 
 ### Props:
 
-- ***`children`**: (`node`) you have to wrap a single node child with the `Flipped` component. If the child is a React component rather than an element, make sure it passes down unknown props directly to the rendered element.
+- **`children`**: (`node`) you have to wrap a single node child with the `Flipped` component. If the child is a React component rather than an element, make sure it passes down unknown props directly to the rendered element.
 - **`flipId`**: (`string`) Use this to tell `react-flip-toolkit` how elements should be matched across renders so they can be animated. E.g. in one component you can have
 
 ```js
@@ -98,7 +98,7 @@ and in another you can have
 
 and they will be tweened by `react-flip-toolkit`
 
-- **`inverseFlipId`**: (`string`) refer to the id of the parent `Flipped` container whose transform you want to cancel out.
+- **`inverseFlipId`**: (`string`) refer to the id of the parent `Flipped` container whose transform you want to cancel out. [Read more about canceling out parent transforms here](https://github.com/aholachek/react-flip-toolkit#scale-transitions-made-easier)
 - **`transformOrigin`**: (`string`, like`"50% 100%"`) this is a convenience method to apply the proper CSS `transform-origin` to the element being FLIPP-ed. This will override `react-flip-toolkit`'s default application of `transform-origin: 0 0` if it is provided as a prop.
 - **`ease`**: (`string`) This string should refer to one of the easings provided by Popmotion, [see the full list here](https://popmotion.io/api/easing/). This will override the one specified in the parent `Flipped` component.
 - **`duration`**: (`number`) Timing for the individual FLIP transition, this will override the one specified in the parent `Flipped` component
