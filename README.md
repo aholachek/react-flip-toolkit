@@ -1,7 +1,5 @@
 # react-flip-toolkit
 
-## Rationale
-
 I couldn't find a pre-existing small, versatile library that offered me the degree of configurability and control I wanted over complex animations.
 
 ## Demos
@@ -9,7 +7,7 @@ I couldn't find a pre-existing small, versatile library that offered me the degr
 - [Guitar shop](https://literate-fly.surge.sh/guitar)
 - [Menu with nested transitions](https://codepen.io/aholachek/pen/KeevYN?)
 - [Simplest possible example](https://codepen.io/aholachek/pen/zapEjq?editors=0110)
-- [Somewhat absurd overly complex example](https://literate-fly.surge.sh/cards)
+- [Absurd overly complex example](https://literate-fly.surge.sh/cards)
 
 ## Quick start
 
@@ -102,6 +100,7 @@ and they will be tweened by `react-flip-toolkit`
 - **`transformOrigin`**: (`string`, like`"50% 100%"`) this is a convenience method to apply the proper CSS `transform-origin` to the element being FLIPP-ed. This will override `react-flip-toolkit`'s default application of `transform-origin: 0 0` if it is provided as a prop.
 - **`ease`**: (`string`) This string should refer to one of the easings provided by Popmotion, [see the full list here](https://popmotion.io/api/easing/). This will override the one specified in the parent `Flipped` component.
 - **`duration`**: (`number`) Timing for the individual FLIP transition, this will override the one specified in the parent `Flipped` component
+- **`delay`**: (`number`) Amount of time to wait before tweening the element position.
 - **`onStart(element)`** : (`func`) called when the FLIP animation starts. It is provided a reference to the DOM element being transitioned as the first argument
 - **`onComplete(element)`** : (`func`) called when the FLIP animation starts. It is provided a reference to the DOM element being transitioned as the first argument. (If transitions are interruped by new ones, `onComplete` will still be called.)
 

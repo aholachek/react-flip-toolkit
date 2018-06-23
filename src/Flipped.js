@@ -12,6 +12,7 @@ const propTypes = {
   transformOrigin: PropTypes.string,
   ease: PropTypes.string,
   duration: PropTypes.number,
+  delay: PropTypes.number,
   onStart: PropTypes.func,
   onComplete: PropTypes.func,
   componentIdFilter: PropTypes.string,
@@ -42,14 +43,15 @@ export function Flipped({ children, flipId, onStart, onComplete, ...rest }) {
   const props = Object.entries(rest)
     .map(r => [
       r[0]
-        .replace("translate", "data-translate")
-        .replace("scale", "data-scale")
-        .replace("opacity", "data-opacity")
+        .replace("translate", "data-flip-translate")
+        .replace("scale", "data-flip-scale")
+        .replace("opacity", "data-flip-opacity")
         .replace("inverseFlipId", "data-inverse-flip-id")
         .replace("transformOrigin", "data-transform-origin")
         .replace("componentIdFilter", "data-flip-component-id-filter")
         .replace("componentId", "data-flip-component-id")
         .replace("ease", "data-flip-ease")
+        .replace("delay", "data-flip-delay")
         .replace("duration", "data-flip-duration")
         .toLowerCase(),
       r[1]

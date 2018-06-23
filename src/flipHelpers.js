@@ -1,6 +1,7 @@
 import tween from "popmotion/lib/animations/tween"
 import * as popmotionEasing from "popmotion/lib/easing"
 import parallel from "popmotion/lib/compositors/parallel"
+import delay from "popmotion/lib/compositors/delay"
 import * as Rematrix from "rematrix"
 
 const getInvertedChildren = (element, id) =>
@@ -60,14 +61,15 @@ const invertTransformsForChildren = (
 
     const inverseVals = { translateX: 0, translateY: 0, scaleX: 1, scaleY: 1 }
     let transformString = ""
-    if (child.dataset.translate) {
+    debugger
+    if (child.dataset.flipTranslate) {
       inverseVals.translateX = -translateX / scaleX
       inverseVals.translateY = -translateY / scaleY
       transformString += `translate(${inverseVals.translateX}px, ${
         inverseVals.translateY
       }px)`
     }
-    if (child.dataset.scale) {
+    if (child.dataset.flipScale) {
       inverseVals.scaleX = 1 / scaleX
       inverseVals.scaleY = 1 / scaleY
       transformString += `scale(${inverseVals.scaleX}, ${inverseVals.scaleY})`
@@ -160,14 +162,14 @@ export const animateMove = ({
     const transformsArray = [currentTransform]
     // we're only going to animate the values that the child wants animated,
     // based on its data-* attributes
-    if (element.dataset.translate) {
+    if (element.dataset.flipTranslate) {
       transformsArray.push(
         Rematrix.translateX(prevRect.left - currentRect.left)
       )
       transformsArray.push(Rematrix.translateY(prevRect.top - currentRect.top))
     }
 
-    if (element.dataset.scale) {
+    if (element.dataset.flipScale) {
       transformsArray.push(
         Rematrix.scaleX(prevRect.width / Math.max(currentRect.width, 0.0001))
       )
@@ -176,7 +178,7 @@ export const animateMove = ({
       )
     }
 
-    if (element.dataset.opacity) {
+    if (element.dataset.flipOpacity) {
       fromVals.opacity = prevOpacity
       toVals.opacity = currentOpacity
     }
@@ -230,39 +232,51 @@ export const animateMove = ({
     }
 
     // now start the animation
-
-    const { stop } = parallel(
-      tween({
-        from: fromVals.matrix,
-        to: toVals.matrix,
-        ...settings
-      }),
-      tween({
-        from: { opacity: fromVals.opacity },
-        to: { opacity: toVals.opacity },
-        ...settings
-      })
-    ).start({
-      update: ([matrix, otherVals]) => {
-        if (!body.contains(element)) {
-          stop && stop()
-          return
-        }
-        applyStyles(element, { ...otherVals, matrix })
-
-        // for children that requested it, cancel out the transform by applying the inverse transform
-        invertTransformsForChildren(getInvertedChildren(element, id), matrix, {
-          flipStartId,
-          flipEndId
+    const startAnimation = () => {
+      const { stop } = parallel(
+        tween({
+          from: fromVals.matrix,
+          to: toVals.matrix,
+          ...settings
+        }),
+        tween({
+          from: { opacity: fromVals.opacity },
+          to: { opacity: toVals.opacity },
+          ...settings
         })
-      },
-      complete: () => {
-        delete inProgressAnimations[id]
-        onComplete()
-      }
-    })
-    // in case we have to cancel
-    inProgressAnimations[id] = { stop, onComplete }
+      ).start({
+        update: ([matrix, otherVals]) => {
+          if (!body.contains(element)) {
+            stop && stop()
+            return
+          }
+          applyStyles(element, { ...otherVals, matrix })
+
+          // for children that requested it, cancel out the transform by applying the inverse transform
+          invertTransformsForChildren(
+            getInvertedChildren(element, id),
+            matrix,
+            {
+              flipStartId,
+              flipEndId
+            }
+          )
+        },
+        complete: () => {
+          delete inProgressAnimations[id]
+          onComplete()
+        }
+      })
+      // in case we have to cancel
+      inProgressAnimations[id] = { stop, onComplete }
+    }
+
+    if (element.dataset.flipDelay) {
+      setTimeout(startAnimation, element.dataset.flipDelay)
+    } else {
+      startAnimation()
+    }
   })
+
   return inProgressAnimations
 }
