@@ -79,8 +79,8 @@ The parent wrapper that contains all the elements to be animated.
 
 ### Props:
 
-- *`children`*: (`node`) you have to wrap a single node child with the `Flipped` component. If the child is a React component rather than an element, make sure it passes down unknown props directly to the rendered element.
-- *`flipId`*: (`string`) Use this to tell `react-flip-toolkit` how elements should be matched across renders so they can be animated. E.g. in one component you can have
+- ***`children`**: (`node`) you have to wrap a single node child with the `Flipped` component. If the child is a React component rather than an element, make sure it passes down unknown props directly to the rendered element.
+- **`flipId`**: (`string`) Use this to tell `react-flip-toolkit` how elements should be matched across renders so they can be animated. E.g. in one component you can have
 
 ```js
 <Flipped flipId="coolDiv">
