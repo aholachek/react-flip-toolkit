@@ -1,7 +1,6 @@
 import React, { Component } from "react"
-import PropTypes from "prop-types"
 import { Flipped } from "../../../src/index"
-import { tween, styler, easing, stagger } from "popmotion"
+import { tween, styler, stagger } from "popmotion"
 
 class UserGrid extends Component {
   hideElements = (el, startId) => {
@@ -46,7 +45,6 @@ class UserGrid extends Component {
                 onStart={this.hideElements}
                 onComplete={this.animateIn}
                 componentId="gridItem"
-                transformOrigin="0 0"
                 ease="backOut"
               >
                 <div
@@ -56,7 +54,6 @@ class UserGrid extends Component {
                 >
                   <Flipped
                     inverseFlipId={parentFlipId}
-                    transformOrigin="0 0"
                     componentIdFilter="focusedUser"
                   >
                     <div>
@@ -65,7 +62,6 @@ class UserGrid extends Component {
                       </h2>
                       <Flipped
                         flipId={`${parentFlipId}-avatar`}
-                        transformOrigin="0 0"
                         componentIdFilter="focusedUserAvatar"
                         ease="backOut"
                       >
@@ -82,7 +78,6 @@ class UserGrid extends Component {
                       <Flipped
                         flipId={`${parentFlipId}-background`}
                         componentIdFilter="focusedUserBackground"
-                        transformOrigin="0 0"
                       >
                         <div
                           className="gridItemBackground"

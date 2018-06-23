@@ -13,12 +13,14 @@ class Flipper extends Component {
     ]),
     children: PropTypes.node.isRequired,
     duration: PropTypes.number,
-    ease: PropTypes.string
+    ease: PropTypes.string,
+    applyTransformOrigin: PropTypes.bool
   }
 
   static defaultProps = {
     duration: 250,
-    ease: "easeOut"
+    ease: "easeOut",
+    applyTransformOrigin: true
   }
 
   inProgressAnimations = {}
@@ -38,7 +40,8 @@ class Flipper extends Component {
         duration: this.props.duration,
         ease: this.props.ease,
         inProgressAnimations: this.inProgressAnimations,
-        flipCallbacks: this.flipCallbacks
+        flipCallbacks: this.flipCallbacks,
+        applyTransformOrigin: this.props.applyTransformOrigin
       })
     }
   }

@@ -17,9 +17,9 @@ class PaymentSidebar extends Component {
 
     return (
       <Flipper flipKey={collapsed} duration={800}>
-        <Flipped flipId="container" transformOrigin="0 0">
+        <Flipped flipId="container">
           <div className={sidebarClassName} onClick={this.toggleCollapsed}>
-            <Flipped inverseFlipId="container" transformOrigin="0 0">
+            <Flipped inverseFlipId="container">
               <div>
                 <Flipped flipId="sidebarImg">
                   <div

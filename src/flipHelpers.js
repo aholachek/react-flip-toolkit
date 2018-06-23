@@ -107,7 +107,8 @@ export const animateMove = ({
   flipCallbacks = {},
   containerEl,
   duration,
-  ease
+  ease,
+  applyTransformOrigin
 }) => {
   const body = document.querySelector("body")
   const newFlipChildrenPositions = getFlippedElementPositions(containerEl)
@@ -176,12 +177,19 @@ export const animateMove = ({
       toVals.opacity = currentOpacity
     }
 
+    // transform-origin normalization
+
     if (element.dataset.transformOrigin) {
       element.style.transformOrigin = element.dataset.transformOrigin
+    } else if (applyTransformOrigin) {
+      element.style.transformOrigin = "0 0"
     }
+
     getInvertedChildren(element, id).forEach(child => {
       if (child.dataset.transformOrigin) {
         child.style.transformOrigin = child.dataset.transformOrigin
+      } else if (applyTransformOrigin) {
+        child.style.transformOrigin = "0 0"
       }
     })
 

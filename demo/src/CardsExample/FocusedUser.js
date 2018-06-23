@@ -41,7 +41,6 @@ class FocusedUser extends Component {
       <div className="focusedItemBackground" key={parentFlipId}>
         <Flipped
           flipId={parentFlipId}
-          transformOrigin="0 0"
           onStart={this.hideElements}
           onComplete={this.animateIn}
           componentId="focusedUser"
@@ -55,7 +54,6 @@ class FocusedUser extends Component {
           >
             <Flipped
               inverseFlipId={parentFlipId}
-              transformOrigin="0 0"
               componentId="focusedUser"
             >
               <div>
@@ -72,7 +70,6 @@ class FocusedUser extends Component {
                   </h2>
                   <Flipped
                     flipId={`${parentFlipId}-avatar`}
-                    transformOrigin="0 0"
                     componentId="focusedUserAvatar"
                     ease="backOut"
                     duration={duration}
@@ -93,7 +90,6 @@ class FocusedUser extends Component {
                   <Flipped
                     flipId={`${parentFlipId}-background`}
                     componentId="focusedUserBackground"
-                    transformOrigin="0 0"
                     duration={duration}
                     ease="backOut"
                   >
