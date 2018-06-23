@@ -7,11 +7,7 @@ const propTypes = {
   flipId: PropTypes.string,
   inverseFlipId: PropTypes.string,
   opacity: PropTypes.bool,
-  translateX: PropTypes.bool,
-  translateY: PropTypes.bool,
   translate: PropTypes.bool,
-  scaleX: PropTypes.bool,
-  scaleY: PropTypes.bool,
   scale: PropTypes.bool,
   transformOrigin: PropTypes.string,
   ease: PropTypes.string,
@@ -30,46 +26,24 @@ export function Flipped({ children, flipId, onStart, onComplete, ...rest }) {
     throw new Error("Each Flipped element must wrap a single child")
   }
   // if nothing is being transformed, assume everything is being animated
-  if (
-    !rest.scale &&
-    !rest.translate &&
-    !rest.translateX &&
-    !rest.translateY &&
-    !rest.scaleX &&
-    !rest.opacity &&
-    !rest.scaleY
-  ) {
+  if (!rest.scale && !rest.translate && !rest.opacity) {
     rest.all = true
   }
   // allow some shorthands for convenience
   if (rest.all) {
     delete rest.all
     Object.assign(rest, {
-      translateX: true,
-      translateY: true,
-      scaleX: true,
-      scaleY: true,
+      translate: true,
+      scale: true,
       opacity: true
-    })
-  } else if (rest.scale) {
-    delete rest.scale
-    Object.assign(rest, {
-      scaleX: true,
-      scaleY: true
-    })
-  } else if (rest.translate) {
-    delete rest.translate
-    Object.assign(rest, {
-      translateX: true,
-      translateY: true
     })
   }
   // turn props into DOM data attributes
   const props = Object.entries(rest)
     .map(r => [
       r[0]
-        .replace("translate", "data-translate-")
-        .replace("scale", "data-scale-")
+        .replace("translate", "data-translate")
+        .replace("scale", "data-scale")
         .replace("opacity", "data-opacity")
         .replace("inverseFlipId", "data-inverse-flip-id")
         .replace("transformOrigin", "data-transform-origin")

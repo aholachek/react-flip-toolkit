@@ -9,6 +9,7 @@ I couldn't find a pre-existing small, versatile library that offered me the degr
 - [Guitar shop](https://literate-fly.surge.sh/guitar)
 - [Menu with nested transitions](https://codepen.io/aholachek/pen/KeevYN?)
 - [Simplest possible example](https://codepen.io/aholachek/pen/zapEjq?editors=0110)
+- [Somewhat absurd overly complex example](https://literate-fly.surge.sh/cards)
 
 ## Quick start
 
@@ -33,7 +34,7 @@ class Container extends Component {
       <Flipper flipKey={this.state.focused}>
         <main>
           {typeof this.state.focused === "string" ? (
-            <Flipped flipId={this.state.focused} transformOrigin="0 0">
+            <Flipped flipId={this.state.focused}>
               <div
                 className="focusedItem"
                 style={{ backgroundColor: this.state.focused }}
@@ -43,7 +44,7 @@ class Container extends Component {
           ) : (
             <ul className="list">
               {data.map(color => (
-                <Flipped flipId={color} transformOrigin="0 0">
+                <Flipped flipId={color}>
                   <li
                     className="listItem"
                     style={{ backgroundColor: color }}
@@ -68,18 +69,18 @@ The parent wrapper that contains all the elements to be animated.
 
 ### Props
 
-- `flipKey`: (`string`, `number`, `bool`) Changing this tells `react-flip-toolkit` to transition elements wrapped in `Flipped` components.
-- `children`: (`node`) One or more element children
-- `ease`: (`string`, default: `easeOut`) Default easing for all FLIP transitions. This string should refer to one of the easings provided by Popmotion, [see the full list here](https://popmotion.io/api/easing/)
-- `duration`: (`number`, default: `250`) Default duration in ms for all FLIP transitions.
+- **`flipKey`**: (`string`, `number`, `bool`) Changing this tells `react-flip-toolkit` to transition elements wrapped in `Flipped` components.
+- **`children`**: (`node`) One or more element children
+- **`ease`**: (`string`, default: `easeOut`) Default easing for all FLIP transitions. This string should refer to one of the easings provided by Popmotion, [see the full list here](https://popmotion.io/api/easing/)
+- **`duration`**: (`number`, default: `250`) Default duration in ms for all FLIP transitions.
 - **`applyTransformOrigin`**: (`bool`, default: `true`) Whether or not `react-flip-toolkit` should apply a transform-origin of "0 0" to animating children (this is generally desirable for FLIP animations)
 
 ## Flipped component
 
 ### Props:
 
-- `children`: (`node`) you have to wrap a single node child with the `Flipped` component. If the child is a React component rather than an element, make sure it passes down unknown props directly to the rendered element.
-- `flipId`: (`string`) Use this to tell `react-flip-toolkit` how elements should be matched across renders so they can be animated. E.g. in one component you can have
+- *`children`*: (`node`) you have to wrap a single node child with the `Flipped` component. If the child is a React component rather than an element, make sure it passes down unknown props directly to the rendered element.
+- *`flipId`*: (`string`) Use this to tell `react-flip-toolkit` how elements should be matched across renders so they can be animated. E.g. in one component you can have
 
 ```js
 <Flipped flipId="coolDiv">
@@ -106,12 +107,8 @@ and they will be tweened by `react-flip-toolkit`
 
 #### By default the FLIP-ped elements' translate, scale, and opacity properties are all transformed. However, certain effects require more control so if you specify any of these props, _only the specified attribute(s) will be tweened_:
 
-- **`translateX`**: (`bool`)
-- **`translateY`**: (`bool`)
-- **`translate`**: (`bool`) Tween both `translateX` and `translateY`
-- **`scaleX`**: (`bool`)
-- **`scaleY`**: (`bool`)
-- **`scale`**: (`bool`) Tween both `scaleX` and `scaleY`
+- **`translate`**: (`bool`) Tween `translateX` and `translateY`
+- **`scale`**: (`bool`) Tween `scaleX` and `scaleY`
 - **`opacity`**: (`bool`)
 
 #### Advanced and usually unnecessary:
@@ -122,7 +119,7 @@ and they will be tweened by `react-flip-toolkit`
 
 ## Scale transitions made eas(ier)
 
-Some other FLIP libraries just allow you to animate position changes, but things get a lot more interesting once you can animate scale changes as well (check out the two examples at the top of the README to see what scale animations bring to the table).
+Some other FLIP libraries just allow you to animate position changes, but things get a lot more interesting once you can animate scale changes as well (check out the demos at the top of the README to see what scale animations bring to the table).
 The problem with scale animations has to do with children -- if you scale a div up 2x, you will warp any children it has by scaling them up too, creating a weird-looking animation. That's why this library allows you to wrap the child with a `Flipped` component that has an `inverseFlipId` to counteract the transforms of the parent:
 
 ```js

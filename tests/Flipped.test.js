@@ -2,7 +2,7 @@ import React from "react"
 import { Flipped } from "../src/Flipped"
 import TestRenderer from "react-test-renderer"
 
-describe("Component", () => {
+describe("Flipped Component", () => {
   it("adds a data-flip-id prop", () => {
     const testRenderer = TestRenderer.create(
       <Flipped flipId="foo">
@@ -37,5 +37,33 @@ describe("Component", () => {
     expect(testRenderer.toJSON().props["data-scale-y"]).toBe(undefined)
     expect(testRenderer.toJSON().props["data-translate-x"]).toBe(undefined)
     expect(testRenderer.toJSON().props["data-translate-y"]).toBe(undefined)
+  })
+
+  it("adds both types of scale transforms if one is specified", () => {
+    const testRenderer = TestRenderer.create(
+      <Flipped flipId="foo" scale>
+        <div />
+      </Flipped>
+    )
+
+    expect(testRenderer.toJSON().props["data-scale-x"]).toBe(true)
+    expect(testRenderer.toJSON().props["data-scale-y"]).toBe(true)
+    expect(testRenderer.toJSON().props["data-opacity"]).toBe(undefined)
+    expect(testRenderer.toJSON().props["data-translate-x"]).toBe(undefined)
+    expect(testRenderer.toJSON().props["data-translate-y"]).toBe(undefined)
+  })
+
+  it("adds both types of translate transforms if one is specified", () => {
+    const testRenderer = TestRenderer.create(
+      <Flipped flipId="foo" translate>
+        <div />
+      </Flipped>
+    )
+
+    expect(testRenderer.toJSON().props["data-scale-x"]).toBe(undefined)
+    expect(testRenderer.toJSON().props["data-scale-y"]).toBe(undefined)
+    expect(testRenderer.toJSON().props["data-opacity"]).toBe(undefined)
+    expect(testRenderer.toJSON().props["data-translate-x"]).toBe(true)
+    expect(testRenderer.toJSON().props["data-translate-y"]).toBe(true)
   })
 })

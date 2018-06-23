@@ -58,15 +58,21 @@ const invertTransformsForChildren = (
     const scaleX = matrix[0]
     const scaleY = matrix[5]
 
-    const inverseVals = {}
-    if (child.dataset.translateX) inverseVals.translateX = -translateX / scaleX
-    if (child.dataset.translateY) inverseVals.translateY = -translateY / scaleY
-    if (child.dataset.scaleX) inverseVals.scaleX = 1 / scaleX
-    if (child.dataset.scaleY) inverseVals.scaleY = 1 / scaleY
-
-    child.style.transform = `translate(${inverseVals.translateX}px, ${
-      inverseVals.translateY
-    }px) scale(${inverseVals.scaleX}, ${inverseVals.scaleY})`
+    const inverseVals = { translateX: 0, translateY: 0, scaleX: 1, scaleY: 1 }
+    let transformString = ""
+    if (child.dataset.translate) {
+      inverseVals.translateX = -translateX / scaleX
+      inverseVals.translateY = -translateY / scaleY
+      transformString += `translate(${inverseVals.translateX}px, ${
+        inverseVals.translateY
+      }px)`
+    }
+    if (child.dataset.scale) {
+      inverseVals.scaleX = 1 / scaleX
+      inverseVals.scaleY = 1 / scaleY
+      transformString += `scale(${inverseVals.scaleX}, ${inverseVals.scaleY})`
+    }
+    child.style.transform = transformString
   })
 }
 
@@ -154,24 +160,22 @@ export const animateMove = ({
     const transformsArray = [currentTransform]
     // we're only going to animate the values that the child wants animated,
     // based on its data-* attributes
-    if (element.dataset.translateX) {
+    if (element.dataset.translate) {
       transformsArray.push(
         Rematrix.translateX(prevRect.left - currentRect.left)
       )
-    }
-    if (element.dataset.translateY) {
       transformsArray.push(Rematrix.translateY(prevRect.top - currentRect.top))
     }
-    if (element.dataset.scaleX) {
+
+    if (element.dataset.scale) {
       transformsArray.push(
         Rematrix.scaleX(prevRect.width / Math.max(currentRect.width, 0.0001))
       )
-    }
-    if (element.dataset.scaleY) {
       transformsArray.push(
         Rematrix.scaleY(prevRect.height / Math.max(currentRect.height, 0.0001))
       )
     }
+
     if (element.dataset.opacity) {
       fromVals.opacity = prevOpacity
       toVals.opacity = currentOpacity
@@ -203,10 +207,14 @@ export const animateMove = ({
 
     // before animating, immediately apply FLIP styles to prevent flicker
     applyStyles(element, fromVals)
-    invertTransformsForChildren(getInvertedChildren(element, id), fromVals, {
-      flipStartId,
-      flipEndId
-    })
+    invertTransformsForChildren(
+      getInvertedChildren(element, id),
+      fromVals.matrix,
+      {
+        flipStartId,
+        flipEndId
+      }
+    )
 
     if (flipCallbacks[id] && flipCallbacks[id].onStart)
       flipCallbacks[id].onStart(element, flipStartId)

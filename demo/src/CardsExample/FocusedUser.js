@@ -52,10 +52,7 @@ class FocusedUser extends Component {
             role="button"
             ref={el => (this.el = el)}
           >
-            <Flipped
-              inverseFlipId={parentFlipId}
-              componentId="focusedUser"
-            >
+            <Flipped inverseFlipId={parentFlipId} componentId="focusedUser">
               <div>
                 <div>
                   <button
