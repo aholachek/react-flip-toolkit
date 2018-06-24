@@ -18,8 +18,8 @@ A small, versatile React library that offers tons of configurability and control
 
 `npm install react-flip-toolkit`
 
-1. Wrap your container element with a `Flipper` component that has a `flipKey` prop that changes every time an animation should happen.
-2. Wrap elements that should be animated with `Flipped` components that have `flipId` props matching them across renders.
+1.  Wrap your container element with a `Flipper` component that has a `flipKey` prop that changes every time an animation should happen.
+2.  Wrap elements that should be animated with `Flipped` components that have `flipId` props matching them across renders.
 
 ### Simplest example:
 
@@ -28,7 +28,7 @@ A small, versatile React library that offers tons of configurability and control
 ```js
 import { Flipper, Flipped } from "react-flip-toolkit"
 
-const colors = [ "#ff4f66", "#7971ea", "#5900d8"];
+const colors = ["#ff4f66", "#7971ea", "#5900d8"]
 
 class Container extends Component {
   state = { focused: undefined }
@@ -68,11 +68,17 @@ In this example, all `Flipped` elements are direct children of the `Flipper` par
 
 ## Flipper component
 
-The parent component that contains all the elements to be animated.
+The parent wrapper component that contains all the elements to be animated:
+
+```js
+<Flipper flipkey={someKeyThatChanges}>
+  // children
+</Flipper>
+```
 
 ### Props
 
-- **`flipKey`**: (`string`, `number`, `bool`) Changing this tells `react-flip-toolkit` to transition elements wrapped in `Flipped` components.
+- **`flipKey`**: (`string`, `number`, `bool`) Changing this tells `react-flip-toolkit` to transition child elements wrapped in `Flipped` components.
 - **`children`**: (`node`) One or more element children
 - **`ease`**: (`string`, default: `easeOut`) Default easing for all FLIP transitions. This string should refer to one of the easings provided by Popmotion, [see the full list here](https://popmotion.io/api/easing/)
 - **`duration`**: (`number`, default: `250`) Default duration in ms for all FLIP transitions.
@@ -80,7 +86,13 @@ The parent component that contains all the elements to be animated.
 
 ## Flipped component
 
-A component that wraps an element that needs to be animated.
+A component that wraps an element that needs to be animated:
+
+```js
+<Flipped flipId="coolDiv">
+  <div>animate me</div>
+</Flipped>
+```
 
 ### Props:
 
@@ -121,7 +133,6 @@ and they will be tweened by `react-flip-toolkit`
 
 - **`componentId`**: (`string`) Identify the component
 - **`componentIdFilter`**: (`string`) Only apply FLIP transitions if the transition originates or ends with a component with the specified `componentId`
-
 
 ## Scale transitions made eas(ier)
 
