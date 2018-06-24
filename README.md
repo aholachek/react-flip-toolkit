@@ -3,7 +3,6 @@
 ![logo](./example-assets/rft-logo.gif)
 
 A small, versatile React library that offers tons of configurability and control over complex FLIP animations.
-
 [What is the FLIP technique?](https://aerotwist.com/blog/flip-your-animations/)
 
 ## Demos
