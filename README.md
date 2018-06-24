@@ -1,6 +1,8 @@
 # react-flip-toolkit
 
-I couldn't find a pre-existing small, versatile library that offered me the degree of configurability and control I wanted over complex animations.
+![logo](./example-assets/logo.gif)
+
+I couldn't find a pre-existing small, versatile React library that offered me the degree of configurability and control I wanted over complex FLIP animations, so I made react-flip-toolkit .
 
 ## Demos
 
@@ -8,6 +10,7 @@ I couldn't find a pre-existing small, versatile library that offered me the degr
 - [Menu with nested transitions](https://codepen.io/aholachek/pen/KeevYN?)
 - [Simplest possible example](https://codepen.io/aholachek/pen/zapEjq?editors=0110)
 - [Absurd overly complex example](https://literate-fly.surge.sh/cards)
+- [Logo](https://codepen.io/aholachek/pen/GGGyGe?editors=0110)
 
 ## Quick start
 

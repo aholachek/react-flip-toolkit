@@ -1,7 +1,6 @@
 import tween from "popmotion/lib/animations/tween"
 import * as popmotionEasing from "popmotion/lib/easing"
 import parallel from "popmotion/lib/compositors/parallel"
-import delay from "popmotion/lib/compositors/delay"
 import * as Rematrix from "rematrix"
 
 const getInvertedChildren = (element, id) =>
@@ -228,7 +227,10 @@ export const animateMove = ({
 
     let onComplete = () => {}
     if (flipCallbacks[id] && flipCallbacks[id].onComplete) {
-      onComplete = () => flipCallbacks[id].onComplete(element, flipStartId)
+      // cache it in case it gets overridden if for instance
+      // someone is rapidly toggling the animation back and forth
+      const cachedOnComplete = flipCallbacks[id].onComplete
+      onComplete = () => cachedOnComplete(element, flipStartId)
     }
 
     // now start the animation
