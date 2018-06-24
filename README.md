@@ -5,8 +5,10 @@
 A small, versatile React library that offers tons of configurability and control over complex FLIP animations.
 
 Advantages of react-flip-toolkit over similar libraries:
-1. Non-prescriptive -- makes no assumptions about the types of animations you want to create, such as limiting you to sort and filter animations.
+1. Non-prescriptive &mdash; `react-flip-toolkit` makes no assumptions about the types of animations you want to create, such as limiting you to sort and filter animations.
 2. Tweens the actual DOM elements instead of cloning them and cross-fading them, providing a crisper look
+3. Supports animations for nested elements
+4. Provides an easy way to scale parent containers without warping children
 
 [What is the FLIP technique?](https://aerotwist.com/blog/flip-your-animations/)
 
