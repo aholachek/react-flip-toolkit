@@ -12,7 +12,7 @@ A small, versatile React library that offers tons of configurability and control
 - [Menu with nested transitions](https://codepen.io/aholachek/pen/KeevYN?)
 - [Simplest possible example](https://codepen.io/aholachek/pen/zapEjq?editors=0110)
 - [Absurd overly complex example](https://literate-fly.surge.sh/cards)
-- [React-flip-toolkit logo animation](https://codepen.io/aholachek/pen/GGGyGe?editors=0110)
+- [React-flip-toolkit logo animation](https://codepen.io/aholachek/pen/ERRpEj)
 
 ## Quick start
 
