@@ -64,11 +64,11 @@ class Container extends Component {
 }
 ```
 
-In this example, all `Flipped` elements are direct children of the `Flipper` parent component, but in most cases they will probably be contained in different components.
+In this example, all `Flipped` elements are direct children of the `Flipper` parent component, but in many cases they will be contained in different components.
 
 ## Flipper component
 
-The parent wrapper that contains all the elements to be animated.
+The parent component that contains all the elements to be animated.
 
 ### Props
 
@@ -80,9 +80,11 @@ The parent wrapper that contains all the elements to be animated.
 
 ## Flipped component
 
+A component that wraps an element that needs to be animated.
+
 ### Props:
 
-- **`children`**: (`node`) you have to wrap a single node child with the `Flipped` component. If the child is a React component rather than an element, make sure it passes down unknown props directly to the rendered element.
+- **`children`**: (`node`) you have to wrap a single node child with the `Flipped` component. If the child is a React component rather than an element, make sure it passes down unknown props directly to the rendered DOM element so that `Flipped` can pass down the necessary `data-*` attributes.
 - **`flipId`**: (`string`) Use this to tell `react-flip-toolkit` how elements should be matched across renders so they can be animated. E.g. in one component you can have
 
 ```js
@@ -101,7 +103,7 @@ and in another you can have
 
 and they will be tweened by `react-flip-toolkit`
 
-- **`inverseFlipId`**: (`string`) refer to the id of the parent `Flipped` container whose transform you want to cancel out. [Read more about canceling out parent transforms here](https://github.com/aholachek/react-flip-toolkit#scale-transitions-made-easier)
+- **`inverseFlipId`**: (`string`) refer to the id of the parent `Flipped` container whose transform you want to cancel out. [Read more about canceling out parent transforms here](#scale-transitions-made-easier)
 - **`transformOrigin`**: (`string`, like`"50% 100%"`) this is a convenience method to apply the proper CSS `transform-origin` to the element being FLIPP-ed. This will override `react-flip-toolkit`'s default application of `transform-origin: 0 0` if it is provided as a prop.
 - **`ease`**: (`string`) This string should refer to one of the easings provided by Popmotion, [see the full list here](https://popmotion.io/api/easing/). This will override the one specified in the parent `Flipped` component.
 - **`duration`**: (`number`) Timing for the individual FLIP transition, this will override the one specified in the parent `Flipped` component
@@ -123,7 +125,7 @@ and they will be tweened by `react-flip-toolkit`
 
 ## Scale transitions made eas(ier)
 
-Some other FLIP libraries just allow you to animate position changes, but things get a lot more interesting once you can animate scale changes as well (check out the demos at the top of the README to see what scale animations bring to the table).
+Some other FLIP libraries just allow you to animate position changes, but things get a lot more interesting once you can animate scale changes as well [check out the demos](#demos) to see what scale animations bring to the table).
 The problem with scale animations has to do with children -- if you scale a div up 2x, you will warp any children it has by scaling them up too, creating a weird-looking animation. That's why this library allows you to wrap the child with a `Flipped` component that has an `inverseFlipId` to counteract the transforms of the parent:
 
 ```js
@@ -138,8 +140,8 @@ The problem with scale animations has to do with children -- if you scale a div 
 
 [Try it out on Codepen](https://codepen.io/aholachek/pen/mKXBJR?editors=0110)
 
-By default, not only the scale of the parent will be counteracted, but also the X and Y translations (this allows children components to make their own FLIP animations without being affected by the parent).
-But for most use cases, you'll want to additionally specify the `scale` prop to limit the transform adjustment to the scale and allow the positioning to move with the parent.
+By default, not only the scale of the parent will be counteracted, but also the translations (this allows children components to make their own FLIP animations without being affected by the parent).
+But for many use cases, you'll want to additionally specify the `scale` prop to limit the adjustment to the scale and allow the positioning to move with the parent.
 
 ## Other details
 
