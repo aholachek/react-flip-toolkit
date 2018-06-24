@@ -66,7 +66,7 @@ class Container extends Component {
 
 In this example, all `Flipped` elements are direct children of the `Flipper` parent component, but in many cases they will be contained in different components.
 
-## Flipper component
+## 1. Flipper component
 
 The parent wrapper component that contains all the elements to be animated:
 
@@ -84,7 +84,7 @@ The parent wrapper component that contains all the elements to be animated:
 - **`duration`**: (`number`, default: `250`) Default duration in ms for all FLIP transitions.
 - **`applyTransformOrigin`**: (`bool`, default: `true`) Whether or not `react-flip-toolkit` should apply a transform-origin of "0 0" to animating children (this is generally desirable for FLIP animations)
 
-## Flipped component
+## 2. Flipped component
 
 A component that wraps an element that needs to be animated:
 
