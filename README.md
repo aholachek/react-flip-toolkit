@@ -1,7 +1,6 @@
 # react-flip-toolkit
-<div style='max-width: 550px'>
-<img src="./example-assets/the-logo.gif"/>
-</div>
+
+<img src="./example-assets/the-logo.gif" width='550px' alt='react-flip-toolkit animated logo' />
 
 A small, versatile React library that offers tons of configurability and control over complex FLIP animations.
 [What is the FLIP technique?](https://aerotwist.com/blog/flip-your-animations/)
@@ -71,9 +70,7 @@ In this example, all `Flipped` elements are direct children of the `Flipper` par
 The parent wrapper component that contains all the elements to be animated:
 
 ```js
-<Flipper flipkey={someKeyThatChanges}>
-  // children
-</Flipper>
+<Flipper flipkey={someKeyThatChanges}>// children</Flipper>
 ```
 
 ### Props
