@@ -78,8 +78,8 @@ The parent wrapper component that contains all the elements to be animated:
 
 ### Props
 
-- **`flipKey`**: (`string`, `number`, `bool`) Changing this tells `react-flip-toolkit` to transition child elements wrapped in `Flipped` components.
-- **`children`**: (`node`) One or more element children
+- **required: `flipKey`**: (`string`, `number`, `bool`) Changing this tells `react-flip-toolkit` to transition child elements wrapped in `Flipped` components.
+- **required: `children`**: (`node`) One or more element children
 - **`ease`**: (`string`, default: `easeOut`) Default easing for all FLIP transitions. This string should refer to one of the easings provided by Popmotion, [see the full list here](https://popmotion.io/api/easing/)
 - **`duration`**: (`number`, default: `250`) Default duration in ms for all FLIP transitions.
 - **`applyTransformOrigin`**: (`bool`, default: `true`) Whether or not `react-flip-toolkit` should apply a transform-origin of "0 0" to animating children (this is generally desirable for FLIP animations)
@@ -96,8 +96,8 @@ A component that wraps an element that needs to be animated:
 
 ### Props:
 
-- **`children`**: (`node`) you have to wrap a single child with the `Flipped` component. If the child is a React component, make sure it passes down unknown props directly to the rendered DOM element so that `Flipped` can pass down the necessary `data-*` attributes.
-- **`flipId`**: (`string`) Use this to tell `react-flip-toolkit` how elements should be matched across renders so they can be animated. E.g. in one component you can have
+- **required: `children`**: (`node`) you have to wrap a single child with the `Flipped` component. If the child is a React component, make sure it passes down unknown props directly to the rendered DOM element so that `Flipped` can pass down the necessary `data-*` attributes.
+- **required: `flipId`**: (`string`) Use this to tell `react-flip-toolkit` how elements should be matched across renders so they can be animated. E.g. in one component you can have
 
 ```js
 <Flipped flipId="coolDiv">
