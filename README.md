@@ -76,7 +76,7 @@ In this example, all `Flipped` elements are direct children of the `Flipper` par
 The parent wrapper component that contains all the elements to be animated:
 
 ```js
-<Flipper flipkey={someKeyThatChanges}>
+<Flipper flipKey={someKeyThatChanges}>
   // children
 </Flipper>
 ```
@@ -164,3 +164,8 @@ But for many/most use cases, you'll want to additionally specify the `scale` pro
 - ~9kb minified and gzipped
 - Requires React 16+
 - Tested in latest Chrome, Firefox, Safari + Edge
+
+## FAQ
+- I set up the animations but nothing is animating
+  - Make sure you're updating the `flipKey` attribute in the `Flipper` component when an animation should happen.
+
