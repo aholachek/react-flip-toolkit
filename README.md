@@ -4,9 +4,7 @@
 
 A small, versatile React library that offers tons of configurability and control over complex FLIP animations.
 
-## FLIP
-
-[What is FLIP?](https://aerotwist.com/blog/flip-your-animations/)
+[What is the FLIP technique?](https://aerotwist.com/blog/flip-your-animations/)
 
 ## Demos
 
@@ -14,7 +12,7 @@ A small, versatile React library that offers tons of configurability and control
 - [Menu with nested transitions](https://codepen.io/aholachek/pen/KeevYN?)
 - [Simplest possible example](https://codepen.io/aholachek/pen/zapEjq?editors=0110)
 - [Absurd overly complex example](https://literate-fly.surge.sh/cards)
-- [Logo](https://codepen.io/aholachek/pen/GGGyGe?editors=0110)
+- [React-flip-toolkit logo animation](https://codepen.io/aholachek/pen/GGGyGe?editors=0110)
 
 ## Quick start
 
@@ -30,7 +28,7 @@ A small, versatile React library that offers tons of configurability and control
 ```js
 import { Flipper, Flipped } from "react-flip-toolkit"
 
-const data = ["#333366", "#ff5f5f", "#f9e75e"]
+const colors = [ "#ff4f66", "#7971ea", "#5900d8"];
 
 class Container extends Component {
   state = { focused: undefined }
@@ -48,7 +46,7 @@ class Container extends Component {
             </Flipped>
           ) : (
             <ul className="list">
-              {data.map(color => (
+              {colors.map(color => (
                 <Flipped flipId={color}>
                   <li
                     className="listItem"
