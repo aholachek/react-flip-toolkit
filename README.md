@@ -2,7 +2,11 @@
 
 ![logo](./example-assets/logo.gif)
 
-I couldn't find a pre-existing small, versatile React library that offered me the degree of configurability and control I wanted over complex FLIP animations, so I made react-flip-toolkit .
+A small, versatile React library that offers tons of configurability and control over complex FLIP animations.
+
+## FLIP
+
+[What is FLIP?](https://aerotwist.com/blog/flip-your-animations/)
 
 ## Demos
 
