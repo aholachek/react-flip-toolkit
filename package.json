@@ -25,12 +25,12 @@
   "dependencies": {
     "babel-preset-env": "^1.7.0",
     "popmotion": "^8.2.5",
-    "rematrix": "^0.2.2"
-  },
-  "peerDependencies": {
-    "react": "16.x",
+    "rematrix": "^0.2.2",
     "prop-types": "^15.6.2"
   },
+  "peerDependencies": {
+    "react": "16.x"
+    },
   "devDependencies": {
     "babel-jest": "^23.0.1",
     "babel-preset-react": "^6.24.1",
