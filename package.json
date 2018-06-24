@@ -28,7 +28,8 @@
     "rematrix": "^0.2.2"
   },
   "peerDependencies": {
-    "react": "16.x"
+    "react": "16.x",
+    "prop-types": "^15.6.2"
   },
   "devDependencies": {
     "babel-jest": "^23.0.1",
