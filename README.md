@@ -1,6 +1,6 @@
 # react-flip-toolkit
 
-![logo](./example-assets/logo.gif)
+![logo](./example-assets/rft-logo.gif)
 
 A small, versatile React library that offers tons of configurability and control over complex FLIP animations.
 
