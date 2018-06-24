@@ -28,6 +28,7 @@
     display: inline-block;
     width: 100%;
     margin-bottom: 0.5rem;
+   user-select: none;
 }
 
 .sidebarCollapsedSubheader {

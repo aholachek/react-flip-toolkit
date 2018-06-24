@@ -16,7 +16,7 @@ class PaymentSidebar extends Component {
     const sidebarClassName = `sidebar ${collapsed ? "sidebarCollapsed" : ""}`
 
     return (
-      <Flipper flipKey={collapsed} duration={800}>
+      <Flipper flipKey={collapsed} duration={8000}>
         <Flipped flipId="container">
           <div className={sidebarClassName} onClick={this.toggleCollapsed}>
             <Flipped inverseFlipId="container">

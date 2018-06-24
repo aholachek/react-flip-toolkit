@@ -60,7 +60,6 @@ const invertTransformsForChildren = (
 
     const inverseVals = { translateX: 0, translateY: 0, scaleX: 1, scaleY: 1 }
     let transformString = ""
-    debugger
     if (child.dataset.flipTranslate) {
       inverseVals.translateX = -translateX / scaleX
       inverseVals.translateY = -translateY / scaleY
@@ -77,17 +76,30 @@ const invertTransformsForChildren = (
   })
 }
 
-export const getFlippedElementPositions = (element, inProgressAnimations) => {
+export const getFlippedElementPositions = ({
+  element,
+  inProgressAnimations,
+  removeTransforms
+}) => {
   // we only care when this is called in getSnapshotBeforeUpdate
   const animationsInProgress =
     inProgressAnimations && Object.keys(inProgressAnimations).length
-  return [].slice
-    .apply(element.querySelectorAll("*[data-flip-id]"))
-    .map(el => {
-      // allow fully interruptible animations
-      if (animationsInProgress) el.style.transform = ""
-      return el
-    })
+
+  const flippedElements = [].slice.apply(
+    element.querySelectorAll("[data-flip-id]")
+  )
+
+  const inverseFlippedElements = [].slice.apply(
+    element.querySelectorAll("[data-inverse-flip-id]")
+  )
+  // allow fully interruptible animations by stripping inline style transforms
+  // if we are reading the final position of the element
+  if (animationsInProgress && removeTransforms) {
+    flippedElements
+      .concat(inverseFlippedElements)
+      .forEach(el => (el.style.transform = ""))
+  }
+  return flippedElements
     .map(child => [
       child.dataset.flipId,
       {
@@ -118,7 +130,11 @@ export const animateMove = ({
   applyTransformOrigin
 }) => {
   const body = document.querySelector("body")
-  const newFlipChildrenPositions = getFlippedElementPositions(containerEl)
+  const newFlipChildrenPositions = getFlippedElementPositions({
+    element: containerEl,
+    inProgressAnimations,
+    removeTransforms: true
+  })
 
   Object.keys(newFlipChildrenPositions).forEach(id => {
     if (!cachedFlipChildrenPositions[id] || !newFlipChildrenPositions[id]) {

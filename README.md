@@ -3,6 +3,12 @@
 <img src="./example-assets/the-logo.gif" width='550px' alt='react-flip-toolkit animated logo' />
 
 A small, versatile React library that offers tons of configurability and control over complex FLIP animations.
+
+Advantages of react-flip-toolkit over similar libraries:
+1. Non-prescriptive -- makes no assumptions about the types of animations you want to create, such as limiting you to sort and filter animations.
+2. Tweens the actual DOM elements instead of cloning them and cross-fading them, providing a crisper look
+3.
+
 [What is the FLIP technique?](https://aerotwist.com/blog/flip-your-animations/)
 
 ## Demos
@@ -12,6 +18,7 @@ A small, versatile React library that offers tons of configurability and control
 - [Simplest possible example](https://codepen.io/aholachek/pen/zapEjq?editors=0110)
 - [Absurd overly complex example](https://literate-fly.surge.sh/cards)
 - [React-flip-toolkit logo animation](https://codepen.io/aholachek/pen/ERRpEj)
+- [Sort & Filter](https://codepen.io/aholachek/pen/gKjYNw?editors=0110)
 
 ## Quick start
 
@@ -70,7 +77,9 @@ In this example, all `Flipped` elements are direct children of the `Flipper` par
 The parent wrapper component that contains all the elements to be animated:
 
 ```js
-<Flipper flipkey={someKeyThatChanges}>// children</Flipper>
+<Flipper flipkey={someKeyThatChanges}>
+  // children
+</Flipper>
 ```
 
 ### Props
@@ -113,7 +122,7 @@ and in another you can have
 and they will be tweened by `react-flip-toolkit`
 
 - **`inverseFlipId`**: (`string`) refer to the id of the parent `Flipped` container whose transform you want to cancel out. [Read more about canceling out parent transforms here](#scale-transitions-made-easier)
-- **`transformOrigin`**: (`string`, like`"50% 100%"`) this is a convenience method to apply the proper CSS `transform-origin` to the element being FLIPP-ed. This will override `react-flip-toolkit`'s default application of `transform-origin: 0 0` if it is provided as a prop.
+- **`transformOrigin`**: (`string`, like`"50% 100%"`) this is a convenience method to apply the proper CSS `transform-origin` to the element being FLIP-ped. This will override `react-flip-toolkit`'s default application of `transform-origin: 0 0` if it is provided as a prop.
 - **`ease`**: (`string`) This string should refer to one of the easings provided by Popmotion, [see the full list here](https://popmotion.io/api/easing/). This will override the one specified in the parent `Flipped` component.
 - **`duration`**: (`number`) Timing for the individual FLIP transition, this will override the one specified in the parent `Flipped` component
 - **`delay`**: (`number`) Amount of time to wait before tweening the element position.
@@ -149,8 +158,10 @@ The problem with scale animations has to do with children -- if you scale a div 
 [Try it out on Codepen](https://codepen.io/aholachek/pen/mKXBJR?editors=0110)
 
 By default, not only the scale of the parent will be counteracted, but also the translations (this allows children components to make their own FLIP animations without being affected by the parent).
-But for many use cases, you'll want to additionally specify the `scale` prop to limit the adjustment to the scale and allow the positioning to move with the parent.
+But for many/most use cases, you'll want to additionally specify the `scale` prop to limit the adjustment to the scale and allow the positioning to move with the parent.
 
 ## Other details
 
-`react-flip-toolkit` is ~9kb minified and gzipped
+- ~9kb minified and gzipped
+- Requires React 16+
+- Tested in latest Chrome, Firefox, Safari + Edge

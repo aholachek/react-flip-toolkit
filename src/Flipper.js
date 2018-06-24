@@ -27,7 +27,10 @@ class Flipper extends Component {
 
   getSnapshotBeforeUpdate(prevProps) {
     if (prevProps.flipKey !== this.props.flipKey) {
-      return getFlippedElementPositions(this.el, this.inProgressAnimations)
+      return getFlippedElementPositions({
+        element: this.el,
+        inProgressAnimations: this.inProgressAnimations
+      })
     }
     return null
   }
