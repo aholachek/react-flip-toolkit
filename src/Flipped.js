@@ -71,7 +71,6 @@ const FlippedWithContext = ({
   onAppear,
   onStart,
   onComplete,
-  onAppear,
   ...rest
 }) => (
   <FlipContext.Consumer>
