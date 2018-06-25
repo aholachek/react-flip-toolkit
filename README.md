@@ -5,12 +5,12 @@
 A small, versatile React library that offers tons of configurability and control over complex FLIP animations.
 
 Advantages of react-flip-toolkit over similar libraries:
-1. Non-prescriptive &mdash; `react-flip-toolkit` makes no assumptions about the types of animations you want to create, such as limiting you to sort and filter animations.
+1. Non-prescriptive &mdash; `react-flip-toolkit` makes no assumptions about the types of animations you want to create (such as limiting you to sort and filter animations.)
 2. Tweens the actual DOM elements instead of cloning them and cross-fading them, providing a crisper look
 3. Supports animations for nested elements
 4. Provides an easy way to scale parent containers without warping children
 
-[What is the FLIP technique?](https://aerotwist.com/blog/flip-your-animations/)
+([What is the FLIP technique?](https://aerotwist.com/blog/flip-your-animations/))
 
 ## Demos
 
@@ -164,11 +164,11 @@ But for many/most use cases, you'll want to additionally specify the `scale` pro
 
 ## Other details
 
-- ~9kb minified and gzipped
+- ~9.2kb minified and gzipped
 - Requires React 16+
 - Tested in latest Chrome, Firefox, Safari + Edge
 
 ## FAQ
-- I set up the animations but nothing is animating
-  - Make sure you're updating the `flipKey` attribute in the `Flipper` component when an animation should happen.
+- Q: I set up the animations but nothing is animating
+- A: Make sure you're updating the `flipKey` attribute in the `Flipper` component whenever an animation should happen.
 
