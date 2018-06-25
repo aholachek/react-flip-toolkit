@@ -138,11 +138,11 @@ export const animateMove = ({
 
   const getElement = id => containerEl.querySelector(`*[data-flip-id="${id}"]`)
 
-  Object.keys(newFlipChildrenPositions).forEach(id => {
-    // return because the element either just left or just appeared (or never existed??)
+  Object.keys(newFlipChildrenPositions).forEach((id, i) => {
+    // return because the element either just left or just appeared (or never existed? spooky)
     if (!cachedFlipChildrenPositions[id]) {
       if (newFlipChildrenPositions[id] && flipCallbacks[id].onAppear) {
-        flipCallbacks[id].onAppear(getElement(id))
+        flipCallbacks[id].onAppear(getElement(id), i)
       }
       return
     }
