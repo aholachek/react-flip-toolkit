@@ -15,6 +15,7 @@ const propTypes = {
   delay: PropTypes.number,
   onStart: PropTypes.func,
   onComplete: PropTypes.func,
+  onAppear: PropTypes.func,
   componentIdFilter: PropTypes.string,
   componentId: PropTypes.string
 }

@@ -136,8 +136,14 @@ export const animateMove = ({
     removeTransforms: true
   })
 
+  const getElement = id => containerEl.querySelector(`*[data-flip-id="${id}"]`)
+
   Object.keys(newFlipChildrenPositions).forEach(id => {
-    if (!cachedFlipChildrenPositions[id] || !newFlipChildrenPositions[id]) {
+    // return because the element either just left or just appeared (or never existed??)
+    if (!cachedFlipChildrenPositions[id]) {
+      if (newFlipChildrenPositions[id] && flipCallbacks[id].onAppear) {
+        flipCallbacks[id].onAppear(getElement(id))
+      }
       return
     }
 
@@ -160,7 +166,7 @@ export const animateMove = ({
       return
     }
 
-    const element = containerEl.querySelector(`*[data-flip-id="${id}"]`)
+    const element = getElement(id)
 
     const flipStartId = cachedFlipChildrenPositions[id].flipComponentId
     const flipEndId = element.dataset.flipComponentId
