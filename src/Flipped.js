@@ -74,8 +74,9 @@ const FlippedWithContext = ({
   <FlipContext.Consumer>
     {data => {
       data[flipId] = {
-        onStart: onStart,
-        onComplete: onComplete
+        onStart,
+        onComplete,
+        onAppear
       }
       return (
         <Flipped flipId={flipId} {...rest}>
