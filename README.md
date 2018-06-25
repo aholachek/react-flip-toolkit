@@ -127,7 +127,7 @@ and they will be tweened by `react-flip-toolkit`
 - **`ease`**: (`string`) This string should refer to one of the easings provided by Popmotion, [see the full list here](https://popmotion.io/api/easing/). This will override the one specified in the parent `Flipped` component.
 - **`duration`**: (`number`) Timing for the individual FLIP transition, this will override the one specified in the parent `Flipped` component
 - **`delay`**: (`number`) Amount of time to wait before tweening the element position.
-- **`onAppear(element)`** : (`func`) called when the element first appears. It is provided a reference to the DOM element being transitioned as the first argument, and the index of the element relative to all animating elements as the second.
+- **`onAppear(element)`** : (`func`) called when the element first appears. It is provided a reference to the DOM element being transitioned as the first argument, and the index of the element relative to all appearing elements as the second.
 - **`onStart(element)`** : (`func`) called when the FLIP animation starts. It is provided a reference to the DOM element being transitioned as the first argument
 - **`onComplete(element)`** : (`func`) called when the FLIP animation starts. It is provided a reference to the DOM element being transitioned as the first argument. (If transitions are interruped by new ones, `onComplete` will still be called.)
 
