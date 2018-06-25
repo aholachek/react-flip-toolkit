@@ -136,8 +136,12 @@ export const animateMove = ({
     removeTransforms: true
   })
 
-  Object.keys(newFlipChildrenPositions).forEach(id => {
-    if (!cachedFlipChildrenPositions[id] || !newFlipChildrenPositions[id]) {
+  Object.keys(newFlipChildrenPositions).forEach(((id, i) => {
+    // return because the element either just left or just appeared (or never existed? spooky)
+    if (!cachedFlipChildrenPositions[id]) {
+      if (newFlipChildrenPositions[id] && flipCallbacks[id].onAppear) {
+        flipCallbacks[id].onAppear(getElement(id), i)
+      }
       return
     }
 
