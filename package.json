@@ -1,6 +1,6 @@
 {
   "name": "react-flip-toolkit",
-  "version": "1.1.13-5",
+  "version": "1.1.13-6",
   "description": "Configurable FLIP animation helpers for React",
   "main": "lib/index.js",
   "module": "es/index.js",
