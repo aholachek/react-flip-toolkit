@@ -2,17 +2,18 @@
 
 <img src="./example-assets/the-logo.gif" width='550px' alt='react-flip-toolkit animated logo' />
 
-A small, versatile React library that offers tons of configurability and control over complex FLIP animations.
+### Comparison with other React FLIP libraries
 
-Advantages of `react-flip-toolkit` over similar libraries:
-1. Non-prescriptive &mdash; `react-flip-toolkit` makes no assumptions about the types of animations you want to create (such as limiting you to sort and filter animations.)
-2. Tweens the actual DOM elements instead of cloning them and cross-fading them, providing a crisper look
-3. Supports animations for nested elements
-4. Provides an easy way to scale parent containers without warping children
+| Feature                                        | `react-flip-move` | `react-overdrive` | `react-flip-toolkit` |
+| ---------------------------------------------- | :---------------: | :---------------: | :------------------: |
+| Animate position                               |        ✅         |        ✅         |          ✅          |
+| Animate size                                   |        ❌         |        ✅         |          ✅          |
+| Animate parent's size without warping children |        ❌         |        ❌         |          ✅          |
+| Use real FLIP instead of cloning & crossfading |        ✅         |        ❌         |          ✅          |
+| Enable nested animations                       |        ❌         |        ❌         |          ✅          |
+| Easy to set up/beginner-friendly               |        ✅         |        ✅         |          🤷          |
 
-([What is the FLIP technique?](https://aerotwist.com/blog/flip-your-animations/))
-
-## Demos
+### Demos
 
 - [Guitar shop](https://literate-fly.surge.sh/guitar)
 - [Menu with nested transitions](https://codepen.io/aholachek/pen/KeevYN?)
@@ -20,6 +21,10 @@ Advantages of `react-flip-toolkit` over similar libraries:
 - [Absurd overly complex example](https://literate-fly.surge.sh/cards)
 - [React-flip-toolkit logo animation](https://codepen.io/aholachek/pen/ERRpEj)
 - [Sort & Filter](https://codepen.io/aholachek/pen/gKjYNw?editors=0110)
+
+### What is FLIP?
+
+If you need a refresher, here's an article by the person who created FLIP: [What is the FLIP technique?](https://aerotwist.com/blog/flip-your-animations/)
 
 ## Quick start
 
@@ -78,9 +83,7 @@ In this example, all `Flipped` elements are direct children of the `Flipper` par
 The parent wrapper component that contains all the elements to be animated:
 
 ```js
-<Flipper flipKey={someKeyThatChanges}>
-  // children
-</Flipper>
+<Flipper flipKey={someKeyThatChanges}>// children</Flipper>
 ```
 
 ### Props
@@ -169,6 +172,6 @@ But for many/most use cases, you'll want to additionally specify the `scale` pro
 - Tested in latest Chrome, Firefox, Safari + Edge
 
 ## FAQ
+
 - Q: I set up the animations but nothing is animating
 - A: Make sure you're updating the `flipKey` attribute in the `Flipper` component whenever an animation should happen.
-
