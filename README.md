@@ -83,7 +83,9 @@ In this example, all `Flipped` elements are direct children of the `Flipper` par
 The parent wrapper component that contains all the elements to be animated:
 
 ```js
-<Flipper flipKey={someKeyThatChanges}>// children</Flipper>
+<Flipper flipKey={someKeyThatChanges}>
+  {/* children wrapped in Flipped components*/}
+</Flipper>
 ```
 
 ### Props
