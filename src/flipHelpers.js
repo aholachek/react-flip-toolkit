@@ -1,6 +1,7 @@
 import tween from "popmotion/lib/animations/tween"
 import * as popmotionEasing from "popmotion/lib/easing"
 import parallel from "popmotion/lib/compositors/parallel"
+import { onFrameRender } from "framesync"
 import * as Rematrix from "rematrix"
 
 const getInvertedChildren = (element, id) =>
@@ -29,6 +30,9 @@ const applyStyles = (element, { matrix, opacity }) => {
   element.style.opacity = opacity
 }
 
+const performantApplyStyles = (...args) =>
+  onFrameRender(() => applyStyles(...args))
+
 const shouldApplyTransform = (element, flipStartId, flipEndId) => {
   if (
     element.dataset.flipComponentIdFilter &&
@@ -48,7 +52,7 @@ const shouldApplyTransform = (element, flipStartId, flipEndId) => {
 const invertTransformsForChildren = (
   childElements,
   matrix,
-  { flipStartId, flipEndId } = {}
+  { flipStartId, flipEndId, performant } = {}
 ) => {
   childElements.forEach(child => {
     if (!shouldApplyTransform(child, flipStartId, flipEndId)) return
@@ -72,7 +76,13 @@ const invertTransformsForChildren = (
       inverseVals.scaleY = 1 / scaleY
       transformString += `scale(${inverseVals.scaleX}, ${inverseVals.scaleY})`
     }
-    child.style.transform = transformString
+    if (performant) {
+      onFrameRender(() => {
+        child.style.transform = transformString
+      })
+    } else {
+      child.style.transform = transformString
+    }
   })
 }
 
@@ -289,7 +299,7 @@ export const animateMove = ({
               stop && stop()
               return
             }
-            applyStyles(element, { ...otherVals, matrix })
+            performantApplyStyles(element, { ...otherVals, matrix })
 
             // for children that requested it, cancel out the transform by applying the inverse transform
             invertTransformsForChildren(
@@ -297,7 +307,8 @@ export const animateMove = ({
               matrix,
               {
                 flipStartId,
-                flipEndId
+                flipEndId,
+                performant: true
               }
             )
           },
