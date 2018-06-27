@@ -221,6 +221,11 @@ export const animateMove = ({
         delete inProgressAnimations[id]
       }
 
+      // this could be from a previous transform,
+      // so we don't want to keep it
+      // still not sure if this is the best way to handle
+      if (element.style.transform) element.style.transform = ""
+
       const currentTransform = Rematrix.parse(
         getComputedStyle(element)["transform"]
       )
