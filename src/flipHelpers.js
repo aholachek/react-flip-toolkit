@@ -312,7 +312,7 @@ export const animateMove = ({
           opacity: "linear",
           matrix: getEasingName(element.dataset.flipEase, ease)
         },
-        delay: element.dataset.flipDelay,
+        delay: parseFloat(element.dataset.flipDelay),
         step: ({ matrix, opacity }) => {
           if (!body.contains(element)) {
             tweenable.stop()
