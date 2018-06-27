@@ -3,7 +3,12 @@ import * as Rematrix from "rematrix"
 
 // animejs' influence
 Tweenable.formulas.easeOutElastic = function(t) {
-  var p = 0.8
+  var p = 0.95
+  return Math.pow(2, -10 * t) * Math.sin(((t - p / 4) * (2 * Math.PI)) / p) + 1
+}
+
+Tweenable.formulas.easeOutElasticBig = function(t) {
+  var p = 0.7
   return Math.pow(2, -10 * t) * Math.sin(((t - p / 4) * (2 * Math.PI)) / p) + 1
 }
 
@@ -29,7 +34,9 @@ const convertMatrix3dArrayTo2dString = matrix =>
     matrix[1],
     matrix[4],
     matrix[5],
+    // translation X
     matrix[12],
+    // translation Y
     matrix[13]
   ].join(", ")})`
 
@@ -321,6 +328,8 @@ export const animateMove = ({
               flipEndId
             }
           )
+
+          debugger
         }
       })
 

@@ -42,8 +42,8 @@ class UserGrid extends Component {
             <li>
               <Flipped
                 flipId={parentFlipId}
-                onStart={this.hideElements}
-                onComplete={this.animateIn}
+                // onStart={this.hideElements}
+                // onComplete={this.animateIn}
                 componentId="gridItem"
               >
                 <div
@@ -55,7 +55,7 @@ class UserGrid extends Component {
                     inverseFlipId={parentFlipId}
                     componentIdFilter="focusedUser"
                   >
-                    <div>
+                    <div style={{backgroundColor: 'orange'}}>
                       <h2 className="gridItemTitle" data-fade-in>
                         {d.name}
                       </h2>
@@ -73,15 +73,6 @@ class UserGrid extends Component {
                         {d.job}
                       </h2>
 
-                      <Flipped
-                        flipId={`${parentFlipId}-background`}
-                        componentIdFilter="focusedUserBackground"
-                      >
-                        <div
-                          className="gridItemBackground"
-                          style={{ backgroundColor: d.color }}
-                        />
-                      </Flipped>
                     </div>
                   </Flipped>
                 </div>

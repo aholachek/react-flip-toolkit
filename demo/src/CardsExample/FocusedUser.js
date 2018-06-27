@@ -82,7 +82,7 @@ class FocusedUser extends Component {
                   <p data-fade-in className="gridItemDescription">
                     {data.text}
                   </p>
-                  <Flipped
+                  {/* <Flipped
                     flipId={`${parentFlipId}-background`}
                     componentId="focusedUserBackground"
                     duration={duration}
@@ -91,7 +91,7 @@ class FocusedUser extends Component {
                       className="gridItemBackground"
                       style={{ backgroundColor: data.color }}
                     />
-                  </Flipped>
+                  </Flipped> */}
                 </div>
               </div>
             </Flipped>
