@@ -15,7 +15,7 @@ class SelectedGuitar extends Component {
       return tween({
         from: {
           opacity: 0,
-          translateY: -30
+          translateY: -15
         },
         to: {
           opacity: 1,
@@ -25,7 +25,7 @@ class SelectedGuitar extends Component {
       })
     })
 
-    stagger(animations, 70).start(values => {
+    stagger(animations, 50).start(values => {
       elements.forEach((el, i) => styler(el).set(values[i]))
     })
   }

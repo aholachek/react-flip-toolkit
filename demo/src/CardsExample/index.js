@@ -33,8 +33,8 @@ export default class CardsExample extends Component {
     return (
       <Flipper
         flipKey={this.state.focusedIndex}
-        duration={this.state.speed === "normal" ? 1200 : 2500}
-        // ease="easeOutElastic"
+        duration={this.state.speed === "normal" ? 300 : 2500}
+        ease="easeOutQuart"
       >
         <div className="header" ref={el => (this.el = el)}>
           <h1>react-flip-toolkit demo</h1>
