@@ -1,5 +1,5 @@
 :root {
-    --sidebar-primary: #6176C1;
+    --sidebar-primary: black;
 }
 
 .sidebar {
@@ -7,28 +7,31 @@
     position: relative;
     z-index: 1;
     height: 100vh;
-    width: 50rem;
     overflow: hidden;
     min-height: 50rem;
     background-color: var(--sidebar-primary);
-    cursor:pointer;
-
+    cursor: pointer;
 }
+
+.sidebarContentContainer {
+    height: 100%;
+}
+
 
 .sidebar.sidebarCollapsed {
     min-height: auto;
 }
 
 .sidebarHeader {
-    font-size: 2rem;
+    font-size: 5rem;
     line-height: 1.5;
     font-weight: bold;
     color: #fff;
     transform-origin: 0 0;
     display: inline-block;
     width: 100%;
-    margin-bottom: 0.5rem;
-   user-select: none;
+    margin-bottom: 2rem;
+    user-select: none;
 }
 
 .sidebarCollapsedSubheader {
@@ -41,16 +44,16 @@
 }
 
 .sidebarBody {
-    padding-left: 1.75rem;
-    padding-right: 1.75rem;
     padding-bottom: 1.75rem;
     padding-top: 10vh;
     z-index: 2;
     position: relative;
+    max-width: 40rem;
+    margin: 0 auto;
 }
 
 .decorativeImg {
-    height: 18rem;
+    height: 100%;
     width: 100%;
     background-repeat: no-repeat;
     background-size: cover;
@@ -68,11 +71,7 @@
     right: 0;
     bottom: 0;
     z-index: 1;
-    background: linear-gradient(hsla(0, 0%, 0%, 0.5), var(--sidebar-primary));
-}
-
-.decorativeImg {
-    background-image: url("./assets/pro_img.png") !important;
+    background: linear-gradient(hsla(0, 0%, 0%, 0.5), hsla(0, 0%, 0%, 0.5));
 }
 
 .sidebarBtn {
@@ -83,7 +82,6 @@
     0% {
         opacity: 0;
     }
-
     100% {
         opacity: 1;
     }
@@ -112,7 +110,6 @@
 }
 
 .sidebarCollapsed .decorativeImg {
-    width: 28%;
     height: 100%;
 }
 

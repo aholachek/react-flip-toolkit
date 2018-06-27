@@ -169,7 +169,7 @@ But for many/most use cases, you'll want to additionally specify the `scale` pro
 
 ## Other details
 
-- ~8kb minified and gzipped
+- ~7.6kb minified and gzipped
 - Requires React 16+
 - Tested in latest Chrome, Firefox, Safari + Edge
 

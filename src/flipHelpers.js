@@ -69,7 +69,7 @@ const invertTransformsForChildren = (
   childElements.forEach(child => {
     if (!shouldApplyTransform(child, flipStartId, flipEndId)) return
 
-    const matrixVals = matrix.match(/\d+\.?\d*/g).map(parseFloat)
+    const matrixVals = matrix.match(/-?\d+\.?\d*/g).map(parseFloat)
 
     const scaleX = matrixVals[0]
     const scaleY = matrixVals[3]
@@ -88,7 +88,7 @@ const invertTransformsForChildren = (
     if (child.dataset.flipScale) {
       inverseVals.scaleX = 1 / scaleX
       inverseVals.scaleY = 1 / scaleY
-      transformString += `scale(${inverseVals.scaleX}, ${inverseVals.scaleY})`
+      transformString += ` scale(${inverseVals.scaleX}, ${inverseVals.scaleY})`
     }
     child.style.transform = transformString
   })
@@ -328,8 +328,6 @@ export const animateMove = ({
               flipEndId
             }
           )
-
-          debugger
         }
       })
 
