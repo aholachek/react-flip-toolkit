@@ -1,7 +1,11 @@
-import tween from "popmotion/lib/animations/tween"
-import * as popmotionEasing from "popmotion/lib/easing"
-import parallel from "popmotion/lib/compositors/parallel"
+import { Tweenable } from "shifty"
 import * as Rematrix from "rematrix"
+
+// animejs' influence
+Tweenable.formulas.easeOutElastic = function(t) {
+  var p = 0.8
+  return Math.pow(2, -10 * t) * Math.sin(((t - p / 4) * (2 * Math.PI)) / p) + 1
+}
 
 const getInvertedChildren = (element, id) =>
   [].slice.call(element.querySelectorAll(`*[data-inverse-flip-id="${id}"]`))
@@ -16,9 +20,11 @@ const passesComponentFilter = (flipFilters, flipId) => {
   return true
 }
 
-const applyStyles = (element, { matrix, opacity }) => {
-  // because matrix3d screws with opacity animations in Chrome (why??)
-  element.style.transform = `matrix(${[
+// 3d transforms were causing weird issues in chrome,
+// especially when opacity was also being tweened,
+// so convert to a 2d matrix
+const convertMatrix3dArrayTo2dString = matrix =>
+  `matrix(${[
     matrix[0],
     matrix[1],
     matrix[4],
@@ -26,6 +32,9 @@ const applyStyles = (element, { matrix, opacity }) => {
     matrix[12],
     matrix[13]
   ].join(", ")})`
+
+const applyStyles = (element, { matrix, opacity }) => {
+  element.style.transform = matrix
   element.style.opacity = opacity
 }
 
@@ -53,10 +62,12 @@ const invertTransformsForChildren = (
   childElements.forEach(child => {
     if (!shouldApplyTransform(child, flipStartId, flipEndId)) return
 
-    const translateX = matrix[12]
-    const translateY = matrix[13]
-    const scaleX = matrix[0]
-    const scaleY = matrix[5]
+    const matrixVals = matrix.match(/\d+\.?\d*/g).map(parseFloat)
+
+    const scaleX = matrixVals[0]
+    const scaleY = matrixVals[3]
+    const translateX = matrixVals[4]
+    const translateY = matrixVals[5]
 
     const inverseVals = { translateX: 0, translateY: 0, scaleX: 1, scaleY: 1 }
     let transformString = ""
@@ -76,14 +87,27 @@ const invertTransformsForChildren = (
   })
 }
 
+export const getEasingName = (flippedEase, flipperEase) => {
+  let easeToApply = flippedEase || flipperEase
+
+  if (!Tweenable.formulas[easeToApply]) {
+    console.error(
+      `${easeToApply} was not recognized as a valid easing option, falling back to easeOutSine`
+    )
+    easeToApply = "easeOutSine"
+  }
+  return easeToApply
+}
+
 export const getFlippedElementPositions = ({
   element,
   inProgressAnimations,
   removeTransforms
 }) => {
   // we only care when this is called in getSnapshotBeforeUpdate
-  const animationsInProgress =
+  const animationsInProgress = !!(
     inProgressAnimations && Object.keys(inProgressAnimations).length
+  )
 
   const flippedElements = [].slice.apply(
     element.querySelectorAll("[data-flip-id]")
@@ -184,6 +208,12 @@ export const animateMove = ({
 
       if (!shouldApplyTransform(element, flipStartId, flipEndId)) return
 
+      if (inProgressAnimations[id]) {
+        inProgressAnimations[id].stop()
+        inProgressAnimations[id].onComplete()
+        delete inProgressAnimations[id]
+      }
+
       const currentTransform = Rematrix.parse(
         getComputedStyle(element)["transform"]
       )
@@ -220,7 +250,6 @@ export const animateMove = ({
       }
 
       // transform-origin normalization
-
       if (element.dataset.transformOrigin) {
         element.style.transformOrigin = element.dataset.transformOrigin
       } else if (applyTransformOrigin) {
@@ -235,13 +264,11 @@ export const animateMove = ({
         }
       })
 
-      if (inProgressAnimations[id]) {
-        inProgressAnimations[id].stop()
-        inProgressAnimations[id].onComplete()
-        delete inProgressAnimations[id]
-      }
-
       fromVals.matrix = transformsArray.reduce(Rematrix.multiply)
+
+      // prepare for animation by turning matrix into a string
+      fromVals.matrix = convertMatrix3dArrayTo2dString(fromVals.matrix)
+      toVals.matrix = convertMatrix3dArrayTo2dString(toVals.matrix)
 
       // before animating, immediately apply FLIP styles to prevent flicker
       applyStyles(element, fromVals)
@@ -257,11 +284,6 @@ export const animateMove = ({
       if (flipCallbacks[id] && flipCallbacks[id].onStart)
         flipCallbacks[id].onStart(element, flipStartId)
 
-      const settings = {
-        duration: element.dataset.flipDuration || duration,
-        ease: popmotionEasing[element.dataset.flipEase] || popmotionEasing[ease]
-      }
-
       let onComplete = () => {}
       if (flipCallbacks[id] && flipCallbacks[id].onComplete) {
         // cache it in case it gets overridden if for instance
@@ -271,49 +293,46 @@ export const animateMove = ({
       }
 
       // now start the animation
-      const startAnimation = () => {
-        const { stop } = parallel(
-          tween({
-            from: fromVals.matrix,
-            to: toVals.matrix,
-            ...settings
-          }),
-          tween({
-            from: { opacity: fromVals.opacity },
-            to: { opacity: toVals.opacity },
-            ...settings
-          })
-        ).start({
-          update: ([matrix, otherVals]) => {
-            if (!body.contains(element)) {
-              stop && stop()
-              return
-            }
-            applyStyles(element, { ...otherVals, matrix })
+      const tweenable = new Tweenable()
 
-            // for children that requested it, cancel out the transform by applying the inverse transform
-            invertTransformsForChildren(
-              getInvertedChildren(element, id),
-              matrix,
-              {
-                flipStartId,
-                flipEndId
-              }
-            )
-          },
-          complete: () => {
-            delete inProgressAnimations[id]
-            onComplete()
+      tweenable.setConfig({
+        from: fromVals,
+        to: toVals,
+        duration: parseFloat(element.dataset.flipDuration || duration),
+        easing: {
+          opacity: "linear",
+          matrix: getEasingName(element.dataset.flipEase, ease)
+        },
+        delay: element.dataset.flipDelay,
+        step: ({ matrix, opacity }) => {
+          if (!body.contains(element)) {
+            tweenable.stop()
+            return
           }
-        })
-        // in case we have to cancel
-        inProgressAnimations[id] = { stop, onComplete }
-      }
+          applyStyles(element, { opacity, matrix })
 
-      if (element.dataset.flipDelay) {
-        setTimeout(startAnimation, element.dataset.flipDelay)
-      } else {
-        startAnimation()
+          // for children that requested it, cancel out
+          // the transform by applying the inverse transform
+          invertTransformsForChildren(
+            getInvertedChildren(element, id),
+            matrix,
+            {
+              flipStartId,
+              flipEndId
+            }
+          )
+        }
+      })
+
+      tweenable.tween().then(() => {
+        delete inProgressAnimations[id]
+        onComplete()
+      })
+
+      // in case we have to cancel
+      inProgressAnimations[id] = {
+        stop: tweenable.stop.bind(tweenable),
+        onComplete
       }
     })
 

@@ -48,7 +48,7 @@ label+label {
     margin: 0;
     cursor: pointer;
     height: 100%;
-    overflow: hidden;
+    /* overflow: hidden; */
     position: relative;
     border-radius: 3px;
     box-shadow: 0 0 18px #0000000d;

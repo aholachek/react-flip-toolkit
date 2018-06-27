@@ -18,52 +18,54 @@ describe("Flipped Component", () => {
       </Flipped>
     )
 
-    expect(testRenderer.toJSON().props["data-opacity"]).toBe(true)
-    expect(testRenderer.toJSON().props["data-scale-x"]).toBe(true)
-    expect(testRenderer.toJSON().props["data-scale-y"]).toBe(true)
-    expect(testRenderer.toJSON().props["data-translate-x"]).toBe(true)
-    expect(testRenderer.toJSON().props["data-translate-y"]).toBe(true)
+    expect(testRenderer.toJSON().props["data-flip-opacity"]).toBe(true)
+    expect(testRenderer.toJSON().props["data-flip-scale"]).toBe(true)
+    expect(testRenderer.toJSON().props["data-flip-translate"]).toBe(true)
   })
 
   it("doesn't add any additional transform attributes if at least one was specified", () => {
-    const testRenderer = TestRenderer.create(
-      <Flipped flipId="foo" scaleX>
-        <div />
-      </Flipped>
-    )
-
-    expect(testRenderer.toJSON().props["data-scale-x"]).toBe(true)
-    expect(testRenderer.toJSON().props["data-opacity"]).toBe(undefined)
-    expect(testRenderer.toJSON().props["data-scale-y"]).toBe(undefined)
-    expect(testRenderer.toJSON().props["data-translate-x"]).toBe(undefined)
-    expect(testRenderer.toJSON().props["data-translate-y"]).toBe(undefined)
-  })
-
-  it("adds both types of scale transforms if one is specified", () => {
     const testRenderer = TestRenderer.create(
       <Flipped flipId="foo" scale>
         <div />
       </Flipped>
     )
 
-    expect(testRenderer.toJSON().props["data-scale-x"]).toBe(true)
-    expect(testRenderer.toJSON().props["data-scale-y"]).toBe(true)
-    expect(testRenderer.toJSON().props["data-opacity"]).toBe(undefined)
-    expect(testRenderer.toJSON().props["data-translate-x"]).toBe(undefined)
-    expect(testRenderer.toJSON().props["data-translate-y"]).toBe(undefined)
+    expect(testRenderer.toJSON().props["data-flip-scale"]).toBe(true)
+    expect(testRenderer.toJSON().props["data-flip-opacity"]).toBe(undefined)
+    expect(testRenderer.toJSON().props["data-flip-translate"]).toBe(undefined)
+
+    const testRenderer2 = TestRenderer.create(
+      <Flipped flipId="foo" opacity>
+        <div />
+      </Flipped>
+    )
+
+    expect(testRenderer2.toJSON().props["data-flip-opacity"]).toBe(true)
+    expect(testRenderer2.toJSON().props["data-flip-scale"]).toBe(undefined)
+    expect(testRenderer2.toJSON().props["data-flip-translate"]).toBe(undefined)
   })
 
-  it("adds both types of translate transforms if one is specified", () => {
+  it("adds scale transforms", () => {
+    const testRenderer = TestRenderer.create(
+      <Flipped flipId="foo" scale>
+        <div />
+      </Flipped>
+    )
+
+    expect(testRenderer.toJSON().props["data-flip-scale"]).toBe(true)
+    expect(testRenderer.toJSON().props["data-flip-opacity"]).toBe(undefined)
+    expect(testRenderer.toJSON().props["data-flip-translate"]).toBe(undefined)
+  })
+
+  it("adds translate transforms", () => {
     const testRenderer = TestRenderer.create(
       <Flipped flipId="foo" translate>
         <div />
       </Flipped>
     )
 
-    expect(testRenderer.toJSON().props["data-scale-x"]).toBe(undefined)
-    expect(testRenderer.toJSON().props["data-scale-y"]).toBe(undefined)
-    expect(testRenderer.toJSON().props["data-opacity"]).toBe(undefined)
-    expect(testRenderer.toJSON().props["data-translate-x"]).toBe(true)
-    expect(testRenderer.toJSON().props["data-translate-y"]).toBe(true)
+    expect(testRenderer.toJSON().props["data-flip-scale"]).toBe(undefined)
+    expect(testRenderer.toJSON().props["data-flip-opacity"]).toBe(undefined)
+    expect(testRenderer.toJSON().props["data-flip-translate"]).toBe(true)
   })
 })

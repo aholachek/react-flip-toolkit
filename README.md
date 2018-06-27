@@ -24,7 +24,7 @@
 
 ### What is FLIP?
 
-If you need a refresher, here's an article by the person who created FLIP: [What is the FLIP technique?](https://aerotwist.com/blog/flip-your-animations/)
+If you need a refresher, here's an article by the person who created FLIP: [Flip Your Animations](https://aerotwist.com/blog/flip-your-animations/)
 
 ## Quick start
 
@@ -169,7 +169,7 @@ But for many/most use cases, you'll want to additionally specify the `scale` pro
 
 ## Other details
 
-- ~9kb minified and gzipped
+- ~8kb minified and gzipped
 - Requires React 16+
 - Tested in latest Chrome, Firefox, Safari + Edge
 

@@ -8,7 +8,8 @@ import "./styles.css"
 export default class CardsExample extends Component {
   state = {
     focusedIndex: undefined,
-    speed: "normal"
+    speed: "normal",
+    userData: userData
   }
   setFocusedIndex = index => {
     this.setState({
@@ -16,13 +17,26 @@ export default class CardsExample extends Component {
     })
   }
 
+  componentDidMount() {
+    // setInterval(() => {
+    //   const int = Math.ceil(Math.random() * 5)
+
+    //   this.setState({
+    //     userData: userData.filter((d, i) => {
+    //       return i % int === 0
+    //     })
+    //   })
+    // }, 250)
+  }
+
   render() {
     return (
       <Flipper
         flipKey={this.state.focusedIndex}
-        duration={this.state.speed === "normal" ? 400 : 2500}
+        duration={this.state.speed === "normal" ? 1200 : 2500}
+        // ease="easeOutElastic"
       >
-        <div className="header">
+        <div className="header" ref={el => (this.el = el)}>
           <h1>react-flip-toolkit demo</h1>
           <p>
             An example made somewhat needlessly complicated in order to show off
@@ -74,7 +88,7 @@ export default class CardsExample extends Component {
           </div>
         </div>
         <UserGrid
-          data={userData}
+          data={this.state.userData}
           setFocusedIndex={this.setFocusedIndex}
           focusedIndex={this.state.focusedIndex}
           speed={this.state.speed}

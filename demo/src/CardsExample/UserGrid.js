@@ -45,7 +45,6 @@ class UserGrid extends Component {
                 onStart={this.hideElements}
                 onComplete={this.animateIn}
                 componentId="gridItem"
-                ease="backOut"
               >
                 <div
                   className="gridItem"
@@ -63,7 +62,6 @@ class UserGrid extends Component {
                       <Flipped
                         flipId={`${parentFlipId}-avatar`}
                         componentIdFilter="focusedUserAvatar"
-                        ease="backOut"
                       >
                         <img
                           src={d.avatar}

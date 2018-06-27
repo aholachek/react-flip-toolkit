@@ -51,8 +51,8 @@ class SelectedGuitar extends Component {
         </Flipped>
         <Flipped
           flipId={`${parentId}-guitarImg`}
-          ease="backOut"
-          duration={600}
+          ease="easeOutElastic"
+          duration={1200}
         >
           <img
             className="details__img"

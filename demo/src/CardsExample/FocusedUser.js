@@ -45,7 +45,6 @@ class FocusedUser extends Component {
           onComplete={this.animateIn}
           componentId="focusedUser"
           duration={duration}
-          ease="backOut"
         >
           <div
             className="gridItem gridItemFocused"
@@ -68,7 +67,6 @@ class FocusedUser extends Component {
                   <Flipped
                     flipId={`${parentFlipId}-avatar`}
                     componentId="focusedUserAvatar"
-                    ease="backOut"
                     duration={duration}
                   >
                     <img
@@ -88,7 +86,6 @@ class FocusedUser extends Component {
                     flipId={`${parentFlipId}-background`}
                     componentId="focusedUserBackground"
                     duration={duration}
-                    ease="backOut"
                   >
                     <div
                       className="gridItemBackground"
