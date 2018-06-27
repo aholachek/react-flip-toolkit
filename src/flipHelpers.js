@@ -125,10 +125,12 @@ export const getFlippedElementPositions = ({
   )
   // allow fully interruptible animations by stripping inline style transforms
   // if we are reading the final position of the element
-  if (animationsInProgress && removeTransforms) {
-    flippedElements
-      .concat(inverseFlippedElements)
-      .forEach(el => (el.style.transform = ""))
+  // this should also fix the issue if rematrix applied an inline style
+  // to a previous state of an element
+  if (removeTransforms) {
+    flippedElements.concat(inverseFlippedElements).forEach(el => {
+      if (el.style.transform) el.style.transform = ""
+    })
   }
   return flippedElements
     .map(child => [
@@ -220,11 +222,6 @@ export const animateMove = ({
         inProgressAnimations[id].onComplete()
         delete inProgressAnimations[id]
       }
-
-      // this could be from a previous transform,
-      // so we don't want to keep it
-      // still not sure if this is the best way to handle
-      if (element.style.transform) element.style.transform = ""
 
       const currentTransform = Rematrix.parse(
         getComputedStyle(element)["transform"]
