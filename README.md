@@ -25,6 +25,8 @@
 - [React-flip-toolkit logo animation](https://codepen.io/aholachek/pen/ERRpEj)
 - [Sort & Filter](https://codepen.io/aholachek/pen/gKjYNw?editors=0110)
 <img src="./example-assets/sortfilter.gif" width='550px' alt='react-flip-toolkit animated logo' />
+- [Photo Grid](https://literate-fly.surge.sh/photos)
+<img src="./example-assets/photogrid.gif" width='550px' alt='react-flip-toolkit animated logo' />
 
 ### What is FLIP?
 
@@ -79,8 +81,6 @@ class Container extends Component {
   }
 }
 ```
-
-In this example, all `Flipped` elements are direct children of the `Flipper` parent component, but in many cases they will be contained in different components.
 
 ## 1. Flipper component
 

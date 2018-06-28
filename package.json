@@ -22,7 +22,6 @@
     "url": "https://github.com/aholachek/react-flip-toolkit"
   },
   "dependencies": {
-    "babel-preset-env": "^1.7.0",
     "prop-types": "^15.6.2",
     "rematrix": "^0.2.2",
     "shifty": "^2.3.1"
@@ -31,6 +30,7 @@
     "react": "16.x"
   },
   "devDependencies": {
+    "babel-preset-env": "^1.7.0",
     "animejs": "^2.2.0",
     "babel-preset-react": "^6.24.1",
     "jest": "^23.1.0",
