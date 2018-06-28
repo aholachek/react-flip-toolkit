@@ -211,7 +211,7 @@ html {
 	background: #fff;
 }
 
-*[data-fade-in] {
+#demo *[data-fade-in] {
 	opacity: 0;
 }
 

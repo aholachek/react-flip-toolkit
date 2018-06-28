@@ -10,6 +10,7 @@ class UserGrid extends Component {
     el.style.zIndex = 2
   }
   animateIn = (el, startId) => {
+    debugger
     if (startId !== "focusedUser") return
     anime({
       targets: el.querySelectorAll("*[data-fade-in]"),
