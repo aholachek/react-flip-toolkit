@@ -19,7 +19,7 @@ class Flipper extends Component {
 
   static defaultProps = {
     duration: 250,
-    ease: "easeOutSine",
+    ease: "easeOutExpo",
     applyTransformOrigin: true
   }
 

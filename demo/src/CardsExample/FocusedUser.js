@@ -1,31 +1,20 @@
 import React, { Component } from "react"
 import { Flipped } from "../../../src/index"
-import { tween, styler, easing, stagger } from "popmotion"
+import anime from "animejs"
 
 class FocusedUser extends Component {
-  hideElements = (el, startId) => {
+  hideElements = el => {
     const elements = [].slice.apply(el.querySelectorAll("*[data-fade-in]"))
     elements.forEach(el => (el.style.opacity = "0"))
   }
   animateIn = el => {
-    const elements = [].slice.apply(el.querySelectorAll("*[data-fade-in]"))
-
-    const animations = elements.map(() => {
-      return tween({
-        from: {
-          opacity: 0,
-          translateY: -30
-        },
-        to: {
-          opacity: 1,
-          translateY: 0
-        },
-        duration: 250
-      })
-    })
-
-    stagger(animations, 100).start(values => {
-      elements.forEach((el, i) => styler(el).set(values[i]))
+    anime({
+      targets: el.querySelectorAll("*[data-fade-in]"),
+      translateY: [-30, 0],
+      opacity: [0, 1],
+      duration: 250,
+      easing: 'easeOutSine',
+      delay: (d, i) => i * 75
     })
   }
 
@@ -45,7 +34,6 @@ class FocusedUser extends Component {
           onComplete={this.animateIn}
           componentId="focusedUser"
           duration={duration}
-          ease="backOut"
         >
           <div
             className="gridItem gridItemFocused"
@@ -68,7 +56,7 @@ class FocusedUser extends Component {
                   <Flipped
                     flipId={`${parentFlipId}-avatar`}
                     componentId="focusedUserAvatar"
-                    ease="backOut"
+                    ease="easeOutElastic"
                     duration={duration}
                   >
                     <img
@@ -88,7 +76,6 @@ class FocusedUser extends Component {
                     flipId={`${parentFlipId}-background`}
                     componentId="focusedUserBackground"
                     duration={duration}
-                    ease="backOut"
                   >
                     <div
                       className="gridItemBackground"

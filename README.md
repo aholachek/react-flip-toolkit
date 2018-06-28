@@ -8,6 +8,7 @@
 | ---------------------------------------------- | :---------------: | :---------------: | :------------------: |
 | Animate position                               |        ✅         |        ✅         |          ✅          |
 | Animate size                                   |        ❌         |        ✅         |          ✅          |
+| Animate opacity                                |        ❌         |        ✅         |          ✅          |
 | Animate parent's size without warping children |        ❌         |        ❌         |          ✅          |
 | Use real FLIP instead of cloning & crossfading |        ✅         |        ❌         |          ✅          |
 | Enable nested animations                       |        ❌         |        ❌         |          ✅          |
@@ -15,12 +16,15 @@
 
 ### Demos
 
+
+- [Simplest possible example](https://codepen.io/aholachek/pen/zapEjq?editors=0110)
 - [Guitar shop](https://literate-fly.surge.sh/guitar)
 - [Menu with nested transitions](https://codepen.io/aholachek/pen/KeevYN?)
-- [Simplest possible example](https://codepen.io/aholachek/pen/zapEjq?editors=0110)
+<img src="./example-assets/dropdown.gif" width='550px' alt='react-flip-toolkit animated logo' />
 - [Absurd overly complex example](https://literate-fly.surge.sh/cards)
 - [React-flip-toolkit logo animation](https://codepen.io/aholachek/pen/ERRpEj)
 - [Sort & Filter](https://codepen.io/aholachek/pen/gKjYNw?editors=0110)
+<img src="./example-assets/sortfilter.gif" width='550px' alt='react-flip-toolkit animated logo' />
 
 ### What is FLIP?
 
@@ -33,7 +37,7 @@ If you need a refresher, here's an article by the person who created FLIP: [Flip
 1.  Wrap your container element with a `Flipper` component that has a `flipKey` prop that changes every time an animation should happen.
 2.  Wrap elements that should be animated with `Flipped` components that have `flipId` props matching them across renders.
 
-### Simplest example:
+### Simplest possible example:
 
 [Try it out on Codepen](https://codepen.io/aholachek/pen/zapEjq?editors=0110)
 
@@ -92,7 +96,8 @@ The parent wrapper component that contains all the elements to be animated:
 
 - **required: `flipKey`**: (`string`, `number`, `bool`) Changing this tells `react-flip-toolkit` to transition child elements wrapped in `Flipped` components.
 - **required: `children`**: (`node`) One or more element children
-- **`ease`**: (`string`, default: `easeOut`) Default easing for all FLIP transitions. This string should refer to one of the easings provided by Popmotion, [see the full list here](https://popmotion.io/api/easing/)
+- **`ease`**: (`string`, default: `easeOutExpo`) Set the default easing for all FLIP transitions.
+  [Interactive explorer for all easing options](https://codepen.io/aholachek/full/bKmZbV/)
 - **`duration`**: (`number`, default: `250`) Default duration in ms for all FLIP transitions.
 - **`applyTransformOrigin`**: (`bool`, default: `true`) Whether or not `react-flip-toolkit` should apply a transform-origin of "0 0" to animating children (this is generally desirable for FLIP animations)
 
@@ -129,7 +134,7 @@ and they will be tweened by `react-flip-toolkit`
 
 - **`inverseFlipId`**: (`string`) refer to the id of the parent `Flipped` container whose transform you want to cancel out. [Read more about canceling out parent transforms here](#scale-transitions-made-easier)
 - **`transformOrigin`**: (`string`, like`"50% 100%"`) this is a convenience method to apply the proper CSS `transform-origin` to the element being FLIP-ped. This will override `react-flip-toolkit`'s default application of `transform-origin: 0 0` if it is provided as a prop.
-- **`ease`**: (`string`) This string should refer to one of the easings provided by Popmotion, [see the full list here](https://popmotion.io/api/easing/). This will override the one specified in the parent `Flipped` component.
+- **`ease`**: (`string`) This string should refer to [one of the available easing options]([Interactive explorer for all easing options](https://codepen.io/aholachek/full/bKmZbV/). This prop will override the easing specified in the parent `Flipped` component.
 - **`duration`**: (`number`) Timing for the individual FLIP transition, this will override the one specified in the parent `Flipped` component
 - **`delay`**: (`number`) Amount of time to wait before tweening the element position.
 - **`onAppear(element)`** : (`func`) called when the element first appears. It is provided a reference to the DOM element being transitioned as the first argument, and the index of the element relative to all appearing elements as the second.

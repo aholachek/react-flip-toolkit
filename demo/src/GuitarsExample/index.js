@@ -18,7 +18,7 @@ class GuitarExample extends Component {
     return (
       <Flipper flipKey={this.state.focusedGuitarIndex}>
         <main>
-          <div className="content">
+          <div className="content guitarContainer">
             <header className="codrops-header">
               <h1 className="codrops-header__title">
                 Expanding Grid Item Animation

@@ -34,7 +34,6 @@ export default class CardsExample extends Component {
       <Flipper
         flipKey={this.state.focusedIndex}
         duration={this.state.speed === "normal" ? 300 : 2500}
-        ease="easeOutQuart"
       >
         <div className="header" ref={el => (this.el = el)}>
           <h1>react-flip-toolkit demo</h1>
@@ -51,9 +50,6 @@ export default class CardsExample extends Component {
             <li>
               The card's background opacity is animated in addition to the
               position
-            </li>
-            <li>
-              Various durations and easings are used for different transitions
             </li>
           </ul>
           <p>Slow the animation down to better follow all the transitions:</p>

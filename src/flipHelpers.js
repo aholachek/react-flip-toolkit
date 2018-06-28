@@ -3,12 +3,12 @@ import * as Rematrix from "rematrix"
 
 // animejs' influence
 Tweenable.formulas.easeOutElastic = function(t) {
-  var p = 0.95
+  var p = 0.99
   return Math.pow(2, -10 * t) * Math.sin(((t - p / 4) * (2 * Math.PI)) / p) + 1
 }
 
 Tweenable.formulas.easeOutElasticBig = function(t) {
-  var p = 0.7
+  var p = 0.6
   return Math.pow(2, -10 * t) * Math.sin(((t - p / 4) * (2 * Math.PI)) / p) + 1
 }
 
@@ -219,6 +219,7 @@ export const animateMove = ({
 
       if (inProgressAnimations[id]) {
         inProgressAnimations[id].stop()
+
         inProgressAnimations[id].onComplete()
         delete inProgressAnimations[id]
       }
@@ -333,10 +334,15 @@ export const animateMove = ({
         }
       })
 
-      tweenable.tween().then(() => {
-        delete inProgressAnimations[id]
-        onComplete()
-      })
+      tweenable
+        .tween()
+        .then(() => {
+          delete inProgressAnimations[id]
+          onComplete()
+        })
+        .catch(e => {
+          // hmm
+        })
 
       // in case we have to cancel
       inProgressAnimations[id] = {

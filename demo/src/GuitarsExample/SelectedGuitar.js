@@ -1,34 +1,19 @@
 import React, { Component } from "react"
-import PropTypes from "prop-types"
 import { Flipped } from "../../../src/index"
-import { tween, styler, easing, stagger } from "popmotion"
+import anime from "animejs"
 
 class SelectedGuitar extends Component {
-  hideElements = () => {
-    const elements = [].slice.apply(this.el.querySelectorAll("*[data-fade-in]"))
-    elements.forEach(el => (el.style.opacity = "0"))
-  }
-  animateIn = () => {
-    const elements = [].slice.apply(this.el.querySelectorAll("*[data-fade-in]"))
-
-    const animations = elements.map(() => {
-      return tween({
-        from: {
-          opacity: 0,
-          translateY: -15
-        },
-        to: {
-          opacity: 1,
-          translateY: 0
-        },
-        duration: 200,
-      })
-    })
-
-    stagger(animations, 50).start(values => {
-      elements.forEach((el, i) => styler(el).set(values[i]))
+  animateIn = (el, startId) => {
+    anime({
+      targets: this.el.querySelectorAll("[data-fade-in]"),
+      translateY: [-15, 0],
+      opacity: [0, 1],
+      duration: 200,
+      easing: "easeOutSine",
+      delay: (d, i) => i * 75
     })
   }
+
   render() {
     const {
       title,
@@ -44,7 +29,6 @@ class SelectedGuitar extends Component {
         <div className="details__bg details__bg--up" />
         <Flipped
           flipId={`${parentId}-productBackground`}
-          onStart={this.hideElements}
           onComplete={this.animateIn}
         >
           <div className="details__bg details__bg--down" />

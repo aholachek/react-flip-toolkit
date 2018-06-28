@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:200,400,700');
+.photoGridExample {
+  font-family: Poppins;
+}
+
+.photoGrid {
+  display: grid;
+  grid-gap: 3rem;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  grid-auto-rows: calc(100vh/2 - 6rem);
+  justify-items: center;
+  margin: 3rem;
+}
+
+.photoGridTitle {
+  font-size: 1rem;
+  position: absolute;
+  left: 33%;
+  margin-top: 0;
+}
+
+.photoGridSquare {
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.photoGridShader {
+  background-image: linear-gradient(#ffffffa1, #ffffffce);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  opacity: 1;
+}
+
+.photoGridImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photoGridSquareExpanded {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+}
+
+.photoGridSquareExpanded .photoGridImg {
+  position: absolute
+}
+
+.photoGridContentContainer {
+  width: 830px;
+  margin: auto;
+  position: absolute;
+  top: 8vh;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.5rem;
+}
+
+.photoHeading {
+  font-size: 3rem;
+  margin-bottom: 2rem;
+}
+
+.photoGridHeading {
+  font-size: 1.5rem;
+}
+
+.photoGridShaderHidden {
+  opacity: 0;
+}
+
+.photoGridExample [data-fade-in] {
+  opacity: 0;
+}
+
+.photoGridLead {
+  font-size: 2rem;
+  font-weight: 200;
+  margin-bottom: 2rem;
+}
+
+.photoGridFocused {
+  position: absolute;
+  top: 0;
+  width: 100%;
+}

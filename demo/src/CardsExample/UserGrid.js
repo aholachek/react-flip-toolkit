@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import { Flipped } from "../../../src/index"
-import { tween, styler, stagger } from "popmotion"
+import anime from "animejs"
 
 class UserGrid extends Component {
   hideElements = (el, startId) => {
@@ -11,24 +11,13 @@ class UserGrid extends Component {
   }
   animateIn = (el, startId) => {
     if (startId !== "focusedUser") return
-    const elements = [].slice.apply(el.querySelectorAll("*[data-fade-in]"))
-
-    const animations = elements.map(el => {
-      return tween({
-        from: {
-          opacity: 0,
-          translateY: -30
-        },
-        to: {
-          opacity: 1,
-          translateY: 0
-        },
-        duration: 250
-      })
-    })
-
-    stagger(animations, 150).start(values => {
-      elements.forEach((el, i) => styler(el).set(values[i]))
+    anime({
+      targets: el.querySelectorAll("*[data-fade-in]"),
+      translateY: [-30, 0],
+      opacity: [0, 1],
+      duration: 250,
+      easing: "easeOutSine",
+      delay: (d, i) => i * 75
     })
     el.style.zIndex = 1
   }
@@ -45,7 +34,6 @@ class UserGrid extends Component {
                 onStart={this.hideElements}
                 onComplete={this.animateIn}
                 componentId="gridItem"
-                ease="backOut"
               >
                 <div
                   className="gridItem"
@@ -63,7 +51,6 @@ class UserGrid extends Component {
                       <Flipped
                         flipId={`${parentFlipId}-avatar`}
                         componentIdFilter="focusedUserAvatar"
-                        ease="backOut"
                       >
                         <img
                           src={d.avatar}
