@@ -40,17 +40,10 @@
     "react-dom": "^16.4.0",
     "react-test-renderer": "^16.4.1"
   },
-  "babel": {
-    "presets": [
-      "env",
-      "react",
-      "stage-0"
-    ],
-    "plugins": [
-      "transform-class-properties"
-    ]
-  },
   "jest": {
+    "transform": {
+      "^.+\\.js$": "<rootDir>/jest.transform.js"
+    },
     "transformIgnorePatterns": [
       "/!node_modules/shifty/"
     ]
