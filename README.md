@@ -21,10 +21,13 @@
 - [Guitar shop](https://literate-fly.surge.sh/guitar)
 - [Menu with nested transitions](https://codepen.io/aholachek/pen/KeevYN?)
 <img src="./example-assets/dropdown.gif" width='550px' alt='react-flip-toolkit animated logo' />
+
 - [Absurd overly complex example](https://literate-fly.surge.sh/cards)
 - [React-flip-toolkit logo animation](https://codepen.io/aholachek/pen/ERRpEj)
+
 - [Sort & Filter](https://codepen.io/aholachek/pen/gKjYNw?editors=0110)
 <img src="./example-assets/sortfilter.gif" width='550px' alt='react-flip-toolkit animated logo' />
+
 - [Photo Grid](https://literate-fly.surge.sh/photos)
 <img src="./example-assets/photogrid.gif" width='550px' alt='react-flip-toolkit animated logo' />
 
