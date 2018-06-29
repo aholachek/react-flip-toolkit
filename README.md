@@ -191,8 +191,8 @@ But for many/most use cases, you'll want to additionally specify the `scale` pro
 
 ## FAQ
 
-- Q: Why isn't anything animating?
-- A: Make sure you're updating the `flipKey` attribute in the `Flipper` component whenever an animation should happen.
+- **Why isn't anything animating?**  Make sure you're updating the `flipKey` attribute in the `Flipper` component whenever an animation should happen.
 
-- Q: Why does my animation look "off"?
-- A: Try increasing the duration to something ridiculous like `10000` so that you can catch every detail. When the animations happen quickly it's hard to consciously spot little issues that can interfere with the final effect.
+- **Why does my animation look "off"?** Try increasing the duration to something ridiculous like `10000` so that you can catch every detail. When the animations happen quickly it's hard to consciously spot little issues that can interfere with the final effect.
+
+- **Why is the element animating from or to an unexpected position?** At any point, there can only be 1 element with a specified `flipId` on the page. If there are multiple `Flipped` elements on the page with the same id, things will start to get weird. Check to make sure all `flipId`s are unique.
