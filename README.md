@@ -15,20 +15,26 @@
 | Easy to set up/beginner-friendly               |        ✅         |        ✅         |          🤷          |
 
 ### Demos
+
 (Click to see interactive version)
 
+<p>
 <a href="https://literate-fly.surge.sh/photos">
   <img src="./example-assets/photogrid.gif" width='600px' alt='an animation showing click to expand a photo' />
 </a>
--
+</p>
+
+<p>
 <a href="https://codepen.io/aholachek/pen/KeevYN">
   <img src="./example-assets/dropdown.gif" width='600px' alt='a smoothly transitioning menu dropdown' />
 </a>
--
+</p>
+<p>
 <a href="https://codepen.io/aholachek/pen/gKjYNw?editors=0110">
   <img src="./example-assets/sortfilter.gif" width='600px' alt='an animation demoing sort and filter operations' />
 </a>
--
+</p>
+
 - [Simplest possible example](https://codepen.io/aholachek/pen/zapEjq?editors=0110)
 - [Guitar shop](https://literate-fly.surge.sh/guitar)
 - [Absurd, overly complex, nested example](https://literate-fly.surge.sh/cards)
