@@ -39,7 +39,7 @@ If you need a refresher, here's an article by the person who created FLIP: [Flip
 
 ## Quick start
 
-`npm install react-flip-toolkit` or `yarn install react-flip-toolkit`
+`npm install react-flip-toolkit`
 
 `import { Flipper, Flipped } from 'react-flip-toolkit'`
 
