@@ -186,10 +186,13 @@ But for many/most use cases, you'll want to additionally specify the `scale` pro
 ## Other details
 
 - ~7.6kb minified and gzipped
-- Requires React 16+
+- React 16+
 - Tested in latest Chrome, Firefox, Safari + Edge
 
 ## FAQ
 
-- Q: I set up the animations but nothing is animating
+- Q: Why isn't anything animating?
 - A: Make sure you're updating the `flipKey` attribute in the `Flipper` component whenever an animation should happen.
+
+- Q: Why does my animation look "off"?
+- A: Try increasing the duration to something ridiculous like `10000` so that you can catch every detail. When the animations happen quickly it's hard to consciously spot little issues that can interfere with the final effect.

@@ -18,25 +18,31 @@ const data = [
 
 import "./index.css"
 
+const duration = 500
+
 class PhotoGrid extends Component {
   applyZIndex = (el, startId) => {
     el.style.zIndex = 3
     setTimeout(() => {
-      el.style.zIndex = 1
-    }, 250)
+      el.style.zIndex = ""
+    }, duration)
+  }
+  applyZIndexHeader = (el, startId) => {
+    el.style.zIndex = 4
+    setTimeout(() => {
+      el.style.zIndex = ""
+    }, duration)
   }
   animateIn = (el, startId) => {
     anime({
-      targets: el.querySelectorAll("*[data-fade-in]"),
-      translateY: [30, 0],
+      targets: this.el.querySelectorAll("*[data-fade-in]"),
+      translateY: [50, 0],
       opacity: [0, 1],
       duration: 600,
       elasticity: 0,
       ease: "easeOutSine",
-      delay: (d, i) => 100 + i * 50
+      delay: (d, i) => 150 + i * 50
     })
-
-    el.style.zIndex = 1
   }
 
   state = { focused: false }
@@ -47,88 +53,84 @@ class PhotoGrid extends Component {
     const { focused } = this.state
 
     return (
-      <Flipper flipKey={focused} duration={600}>
-        <div className="photoGridExample">
+      <Flipper flipKey={focused} duration={duration}>
+        <div className="photoGridExample" ref={el => (this.el = el)}>
           <div className="photoGrid">
             {data.map((d, i) => {
               return (
                 <div>
                   {i !== focused && (
-                    <Flipped flipId={`img-${i}`} onStart={this.applyZIndex}>
-                      <div
-                        className="photoGridSquare"
-                        onClick={() => {
-                          this.setState({ focused: i })
-                        }}
+                    <div
+                      className="photoGridSquare"
+                      onClick={() => {
+                        this.setState({ focused: i })
+                      }}
+                    >
+                      <Flipped
+                        flipId={`heading-${i}`}
+                        onStart={this.applyZIndexHeader}
                       >
-                        <Flipped inverseFlipId={`img-${i}`}>
-                          <div>
-                            <Flipped flipId={`heading-${i}`}>
-                              <h1 className="photoGridHeading">
-                                {data[i].title}
-                              </h1>
-                            </Flipped>{" "}
-                          </div>
-                        </Flipped>
+                        <h1 className="photoGridHeading">{data[i].title}</h1>
+                      </Flipped>{" "}
+                      <Flipped flipId={`img-${i}`} onStart={this.applyZIndex}>
                         <img src={d.img} alt="" className="photoGridImg" />
-                        <Flipped opacity flipId={`shader-${i}`}>
-                          <div className="photoGridShader photoGridShaderHidden" />
-                        </Flipped>
-                      </div>
-                    </Flipped>
+                      </Flipped>
+                      <Flipped
+                        flipId={`shader-${i}`}
+                        onStart={this.applyZIndex}
+                      >
+                        <div className="photoGridShader photoGridShaderHidden" />
+                      </Flipped>
+                    </div>
                   )}
                 </div>
               )
             })}
           </div>
           {typeof focused === "number" && (
-            <Flipped flipId={`img-${focused}`} onComplete={this.animateIn}>
-              <div
-                className="photoGridSquareExpanded"
-                onClick={() => {
-                  this.setState({ focused: null })
-                }}
+            <div
+              className="photoGridSquareExpanded"
+              onClick={() => {
+                this.setState({ focused: null })
+              }}
+            >
+              <Flipped
+                flipId={`img-${focused}`}
+                onComplete={this.animateIn}
+                onStart={this.animateZIndex}
               >
                 <img src={data[focused].img} alt="" className="photoGridImg" />
-                <Flipped opacity flipId={`shader-${focused}`} delay={200}>
-                  <div className="photoGridShader" />
-                </Flipped>
-                <Flipped inverseFlipId={`img-${focused}`}>
-                  <div className="photoGridFocused">
-                    <div className="photoGridContentContainer">
-                      <Flipped flipId={`heading-${focused}`}>
-                        <h1 className="photoHeading">{data[focused].title}</h1>
-                      </Flipped>
-                      <p data-fade-in className="photoGridLead">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Dolorum ipsam magni, quibusdam quia dolores iste
-                        blanditiis neque modi. Id voluptatibus tempora itaque
-                        sint est nobis non fugit modi atque quia!
-                      </p>
+              </Flipped>
 
-                      <p data-fade-in>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Dolorum ipsam magni, quibusdam quia dolores iste
-                        blanditiis neque modi. Id voluptatibus tempora itaque
-                        sint est nobis non fugit modi atque quia!
-                      </p>
-                      <p data-fade-in>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Dolorum ipsam magni, quibusdam quia dolores iste
-                        blanditiis neque modi. Id voluptatibus tempora itaque
-                        sint est nobis non fugit modi atque quia!
-                      </p>
-                      <p data-fade-in>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Dolorum ipsam magni, quibusdam quia dolores iste
-                        blanditiis neque modi. Id voluptatibus tempora itaque
-                        sint est nobis non fugit modi atque quia!
-                      </p>
-                    </div>
-                  </div>
-                </Flipped>
+              <Flipped flipId={`shader-${focused}`}>
+                <div className="photoGridShader" />
+              </Flipped>
+              <div className="photoGridFocused">
+                <div className="photoGridContentContainer">
+                  <Flipped flipId={`heading-${focused}`}>
+                    <h1 className="photoHeading">{data[focused].title}</h1>
+                  </Flipped>
+                  <p data-fade-in className="photoGridLead">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Dolorum ipsam magni, quibusdam quia dolores iste blanditiis
+                    neque modi.
+                  </p>
+
+                  <p data-fade-in>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Dolorum ipsam magni, quibusdam quia dolores iste blanditiis
+                    neque modi. Id voluptatibus tempora itaque sint est nobis
+                    non fugit modi atque quia!
+                  </p>
+                  <p data-fade-in>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Dolorum ipsam magni, quibusdam quia dolores iste blanditiis
+                    neque modi. Id voluptatibus tempora itaque sint est nobis
+                    non fugit modi atque quia!
+                  </p>
+                </div>
               </div>
-            </Flipped>
+            </div>
           )}
         </div>
       </Flipper>
