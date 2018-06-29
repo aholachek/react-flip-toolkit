@@ -1,6 +1,6 @@
 # react-flip-toolkit
 
-<img src="./example-assets/the-logo.gif" width='550px' alt='react-flip-toolkit animated logo' />
+<img src="./example-assets/rft-logo.gif" width='550px' alt='react-flip-toolkit animated logo' />
 
 ### Comparison with other React FLIP libraries
 
@@ -15,23 +15,24 @@
 | Easy to set up/beginner-friendly               |        ✅         |        ✅         |          🤷          |
 
 ### Demos
+(Click to see interactive version)
 
+<a href="https://literate-fly.surge.sh/photos">
+  <img src="./example-assets/photogrid.gif" width='600px' alt='an animation showing click to expand a photo' />
+</a>
+-
+<a href="https://codepen.io/aholachek/pen/KeevYN">
+  <img src="./example-assets/dropdown.gif" width='600px' alt='a smoothly transitioning menu dropdown' />
+</a>
+-
+<a href="https://codepen.io/aholachek/pen/gKjYNw?editors=0110">
+  <img src="./example-assets/sortfilter.gif" width='600px' alt='an animation demoing sort and filter operations' />
+</a>
+-
 - [Simplest possible example](https://codepen.io/aholachek/pen/zapEjq?editors=0110)
 - [Guitar shop](https://literate-fly.surge.sh/guitar)
-- [Menu with nested transitions](https://codepen.io/aholachek/pen/KeevYN?)
-
-<img src="./example-assets/dropdown.gif" width='550px' alt='a smoothly transitioning menu dropdown' />
-
-- [Absurd overly complex example](https://literate-fly.surge.sh/cards)
-- [React-flip-toolkit logo animation](https://codepen.io/aholachek/pen/ERRpEj)
-
-- [Sort & Filter](https://codepen.io/aholachek/pen/gKjYNw?editors=0110)
-
-<img src="./example-assets/sortfilter.gif" width='550px' alt='an animation demoing sort and filter operations' />
-
-- [Photo Grid](https://literate-fly.surge.sh/photos)
-
-<img src="./example-assets/photogrid.gif" width='550px' alt='an animation showing click to expand a photo' />
+- [Absurd, overly complex, nested example](https://literate-fly.surge.sh/cards)
+- [React-flip-toolkit logo](https://codepen.io/aholachek/pen/ERRpEj)
 
 ### What is FLIP?
 
@@ -43,18 +44,17 @@ If you need a refresher, here's an article by the person who created FLIP: [Flip
 
 `import { Flipper, Flipped } from 'react-flip-toolkit'`
 
- Wrap your container element with a `Flipper` component that has a `flipKey` prop that changes every time an animation should happen.
+Wrap your container element with a `Flipper` component that has a `flipKey` prop that changes every time an animation should happen.
 
- Wrap elements that should be animated with `Flipped` components that have `flipId` props matching them across renders.
+Wrap elements that should be animated with `Flipped` components that have `flipId` props matching them across renders.
 
 ### Simplest possible example:
 
 [Try it out on Codepen](https://codepen.io/aholachek/pen/zapEjq?editors=0110)
 
-<img src="./example-assets/animated-list-example.png" alt='code snippet for the simplest example of a FLIP-ped animation' />
-
-[Gist](https://gist.github.com/aholachek/e602f005e318cd941c0af8fba04ade44)
-
+<a href="https://gist.github.com/aholachek/e602f005e318cd941c0af8fba04ade44">
+  <img src="./example-assets/animated-list-example.png" alt='code snippet for the simplest example of a FLIP-ped animation' />
+</a>
 
 ## 1. Flipper component
 
@@ -149,7 +149,7 @@ But for many/most use cases, you'll want to additionally specify the `scale` pro
 
 ## FAQ
 
-- **Why isn't anything animating?**  Make sure you're updating the `flipKey` attribute in the `Flipper` component whenever an animation should happen.
+- **Why isn't anything animating?** Make sure you're updating the `flipKey` attribute in the `Flipper` component whenever an animation should happen.
 
 - **Why does my animation look "off"?** Try increasing the duration to something ridiculous like `10000` so that you can catch every detail. When the animations happen quickly it's hard to consciously spot little issues that can interfere with the final effect.
 
