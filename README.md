@@ -20,18 +20,18 @@
 - [Guitar shop](https://literate-fly.surge.sh/guitar)
 - [Menu with nested transitions](https://codepen.io/aholachek/pen/KeevYN?)
 
-<img src="./example-assets/dropdown.gif" width='550px' alt='react-flip-toolkit animated logo' />
+<img src="./example-assets/dropdown.gif" width='550px' alt='a smoothly transitioning menu dropdown' />
 
 - [Absurd overly complex example](https://literate-fly.surge.sh/cards)
 - [React-flip-toolkit logo animation](https://codepen.io/aholachek/pen/ERRpEj)
 
 - [Sort & Filter](https://codepen.io/aholachek/pen/gKjYNw?editors=0110)
 
-<img src="./example-assets/sortfilter.gif" width='550px' alt='react-flip-toolkit animated logo' />
+<img src="./example-assets/sortfilter.gif" width='550px' alt='an animation demoing sort and filter operations' />
 
 - [Photo Grid](https://literate-fly.surge.sh/photos)
 
-<img src="./example-assets/photogrid.gif" width='550px' alt='react-flip-toolkit animated logo' />
+<img src="./example-assets/photogrid.gif" width='550px' alt='an animation showing click to expand a photo' />
 
 ### What is FLIP?
 
@@ -39,59 +39,22 @@ If you need a refresher, here's an article by the person who created FLIP: [Flip
 
 ## Quick start
 
-`npm install react-flip-toolkit`
+`npm install react-flip-toolkit` or `yarn install react-flip-toolkit`
 
-1.  Wrap your container element with a `Flipper` component that has a `flipKey` prop that changes every time an animation should happen.
-2.  Wrap elements that should be animated with `Flipped` components that have `flipId` props matching them across renders.
+`import { Flipper, Flipped } from 'react-flip-toolkit'`
+
+ Wrap your container element with a `Flipper` component that has a `flipKey` prop that changes every time an animation should happen.
+
+ Wrap elements that should be animated with `Flipped` components that have `flipId` props matching them across renders.
 
 ### Simplest possible example:
 
 [Try it out on Codepen](https://codepen.io/aholachek/pen/zapEjq?editors=0110)
 
-```js
-import { Flipper, Flipped } from 'react-flip-toolkit'
+<img src="./example-assets/animated-list-example.png" alt='code snippet for the simplest example of a FLIP-ped animation' />
 
-const colors = ["#ff4f66", "#7971ea", "#5900d8"]
+[Gist](https://gist.github.com/aholachek/e602f005e318cd941c0af8fba04ade44)
 
-class Container extends Component {
-  state = { focused: undefined }
-  render() {
-    return (
-      <Flipper flipKey={this.state.focused}>
-        <div>
-          <ul className="list">
-            {colors.map(color => {
-              return (
-                <li className="listItem">
-                  {color !== this.state.focused && (
-                    <Flipped flipId={color}>
-                      <div
-                        key={color}
-                        className="square"
-                        style={{ backgroundColor: color }}
-                        onClick={() => this.setState({ focused: color })}
-                      />
-                    </Flipped>
-                  )}
-                </li>
-              )
-            })}
-          </ul>
-          {this.state.focused && (
-            <Flipped flipId={this.state.focused}>
-              <div
-                className="focusedItem"
-                style={{ backgroundColor: this.state.focused }}
-                onClick={() => this.setState({ focused: null })}
-              />
-            </Flipped>
-          )}
-        </div>
-      </Flipper>
-    )
-  }
-}
-```
 
 ## 1. Flipper component
 
@@ -114,18 +77,9 @@ The parent wrapper component that contains all the elements to be animated:
 
 ## 2. Flipped component
 
-A component that wraps an element that needs to be animated:
+A component that wraps an element that needs to be animated.
 
-```js
-<Flipped flipId="coolDiv">
-  <div>animate me</div>
-</Flipped>
-```
-
-### Props:
-
-- **required: `children`**: (`node`) you have to wrap a single child with the `Flipped` component. If the child is a React component, make sure it passes down unknown props directly to the rendered DOM element so that `Flipped` can pass down the necessary `data-*` attributes.
-- **required: `flipId`**: (`string`) Use this to tell `react-flip-toolkit` how elements should be matched across renders so they can be animated. E.g. in one component you can have
+E.g. in one component you can have
 
 ```js
 <Flipped flipId="coolDiv">
@@ -133,7 +87,7 @@ A component that wraps an element that needs to be animated:
 </Flipped>
 ```
 
-and in another you can have
+and in another component somewhere else you can have
 
 ```js
 <Flipped flipId="coolDiv">
@@ -141,8 +95,12 @@ and in another you can have
 </Flipped>
 ```
 
-and they will be tweened by `react-flip-toolkit`
+and they will be tweened by `react-flip-toolkit`.
 
+### Props:
+
+- **required: `children`**: (`node`) you have to wrap a single child with the `Flipped` component. If the child is a React component, make sure it passes down unknown props directly to the rendered DOM element so that `Flipped` can pass down the necessary `data-*` attributes.
+- **required: `flipId`**: (`string`) Use this to tell `react-flip-toolkit` how elements should be matched across renders so they can be animated.
 - **`inverseFlipId`**: (`string`) refer to the id of the parent `Flipped` container whose transform you want to cancel out. [Read more about canceling out parent transforms here](#scale-transitions-made-easier)
 - **`transformOrigin`**: (`string`, like`"50% 100%"`) this is a convenience method to apply the proper CSS `transform-origin` to the element being FLIP-ped. This will override `react-flip-toolkit`'s default application of `transform-origin: 0 0` if it is provided as a prop.
 - **`ease`**: (`string`) This string should refer to [one of the available easing options](https://codepen.io/aholachek/full/bKmZbV/)). This prop will override the easing specified in the parent `Flipped` component.
