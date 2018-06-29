@@ -145,7 +145,7 @@ and they will be tweened by `react-flip-toolkit`
 
 - **`inverseFlipId`**: (`string`) refer to the id of the parent `Flipped` container whose transform you want to cancel out. [Read more about canceling out parent transforms here](#scale-transitions-made-easier)
 - **`transformOrigin`**: (`string`, like`"50% 100%"`) this is a convenience method to apply the proper CSS `transform-origin` to the element being FLIP-ped. This will override `react-flip-toolkit`'s default application of `transform-origin: 0 0` if it is provided as a prop.
-- **`ease`**: (`string`) This string should refer to [one of the available easing options]([Interactive explorer for all easing options](https://codepen.io/aholachek/full/bKmZbV/). This prop will override the easing specified in the parent `Flipped` component.
+- **`ease`**: (`string`) This string should refer to [one of the available easing options](https://codepen.io/aholachek/full/bKmZbV/)). This prop will override the easing specified in the parent `Flipped` component.
 - **`duration`**: (`number`) Timing for the individual FLIP transition, this will override the one specified in the parent `Flipped` component
 - **`delay`**: (`number`) Amount of time to wait before tweening the element position.
 - **`onAppear(element)`** : (`func`) called when the element first appears. It is provided a reference to the DOM element being transitioned as the first argument, and the index of the element relative to all appearing elements as the second.
