@@ -16,7 +16,6 @@
 
 ### Demos
 
-
 - [Simplest possible example](https://codepen.io/aholachek/pen/zapEjq?editors=0110)
 - [Guitar shop](https://literate-fly.surge.sh/guitar)
 - [Menu with nested transitions](https://codepen.io/aholachek/pen/KeevYN?)
@@ -50,7 +49,7 @@ If you need a refresher, here's an article by the person who created FLIP: [Flip
 [Try it out on Codepen](https://codepen.io/aholachek/pen/zapEjq?editors=0110)
 
 ```js
-import { Flipper, Flipped } from "react-flip-toolkit"
+import { Flipper, Flipped } from 'react-flip-toolkit'
 
 const colors = ["#ff4f66", "#7971ea", "#5900d8"]
 
@@ -59,8 +58,26 @@ class Container extends Component {
   render() {
     return (
       <Flipper flipKey={this.state.focused}>
-        <main>
-          {typeof this.state.focused === "string" ? (
+        <div>
+          <ul className="list">
+            {colors.map(color => {
+              return (
+                <li className="listItem">
+                  {color !== this.state.focused && (
+                    <Flipped flipId={color}>
+                      <div
+                        key={color}
+                        className="square"
+                        style={{ backgroundColor: color }}
+                        onClick={() => this.setState({ focused: color })}
+                      />
+                    </Flipped>
+                  )}
+                </li>
+              )
+            })}
+          </ul>
+          {this.state.focused && (
             <Flipped flipId={this.state.focused}>
               <div
                 className="focusedItem"
@@ -68,20 +85,8 @@ class Container extends Component {
                 onClick={() => this.setState({ focused: null })}
               />
             </Flipped>
-          ) : (
-            <ul className="list">
-              {colors.map(color => (
-                <Flipped flipId={color}>
-                  <li
-                    className="listItem"
-                    style={{ backgroundColor: color }}
-                    onClick={() => this.setState({ focused: color })}
-                  />
-                </Flipped>
-              ))}
-            </ul>
           )}
-        </main>
+        </div>
       </Flipper>
     )
   }

@@ -13,7 +13,7 @@ Tweenable.formulas.easeOutElasticBig = function(t) {
 }
 
 const getInvertedChildren = (element, id) =>
-  [].slice.call(element.querySelectorAll(`*[data-inverse-flip-id="${id}"]`))
+  [].slice.call(element.querySelectorAll(`[data-inverse-flip-id="${id}"]`))
 
 const passesComponentFilter = (flipFilters, flipId) => {
   if (typeof flipFilters === "string") {
@@ -106,16 +106,7 @@ export const getEasingName = (flippedEase, flipperEase) => {
   return easeToApply
 }
 
-export const getFlippedElementPositions = ({
-  element,
-  inProgressAnimations,
-  removeTransforms
-}) => {
-  // we only care when this is called in getSnapshotBeforeUpdate
-  const animationsInProgress = !!(
-    inProgressAnimations && Object.keys(inProgressAnimations).length
-  )
-
+export const getFlippedElementPositions = ({ element, removeTransforms }) => {
   const flippedElements = [].slice.apply(
     element.querySelectorAll("[data-flip-id]")
   )
@@ -144,12 +135,12 @@ export const getFlippedElementPositions = ({
     .reduce((acc, curr) => ({ ...acc, [curr[0]]: curr[1] }), {})
 }
 
-const rectInViewport = ({ top, bottom, left, right }) => {
+export const rectInViewport = ({ top, bottom, left, right }) => {
   return (
-    bottom > 0 &&
     top < window.innerHeight &&
-    right > 0 &&
-    left < window.innerWidth
+    bottom > 0 &&
+    left < window.innerWidth &&
+    right > 0
   )
 }
 
