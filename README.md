@@ -113,7 +113,7 @@ and they will be tweened by `react-flip-toolkit`.
 | delay                    |      `0`      | `number` | Amount of time to wait before tweening the element position.                                                                                                                                                                        |
 | onAppear(element, index) |               | `func`   | called when the element first appears. It is provided a reference to the DOM element being transitioned as the first argument, and the index of the element relative to all appearing elements as the second.                       |
 | onStart(element)         |               | `func`   | called when the FLIP animation starts. It is provided a reference to the DOM element being transitioned as the first argument                                                                                                       |
-| onComplete(element)      |               | `func`   | called when the FLIP animation starts. It is provided a reference to the DOM element being transitioned as the first argument. (If transitions are interruped by new ones, `onComplete` will still be called.)                      |
+| onComplete(element)      |               | `func`   | called when the FLIP animation completes. It is provided a reference to the DOM element being transitioned as the first argument. (If transitions are interruped by new ones, `onComplete` will still be called.)                      |
 
 #### By default the FLIP-ped elements' translate, scale, and opacity properties are all transformed. However, certain effects require more control so if you specify any of these props, _only the specified attribute(s) will be tweened_:
 
