@@ -16,8 +16,6 @@
 
 ### Demos
 
-(Click to see interactive version)
-
 <p>
 <a href="https://literate-fly.surge.sh/photos">
   <img src="./example-assets/photogrid.gif" width='600px' alt='an animation showing click to expand a photo' />
@@ -35,7 +33,7 @@
 </a>
 </p>
 
-- [Simplest possible example](https://codepen.io/aholachek/pen/zapEjq?editors=0110)
+- [Simplest possible example](https://codepen.io/aholachek/pen/RJvPjL)
 - [Guitar shop](https://literate-fly.surge.sh/guitar)
 - [Absurd, overly complex, nested example](https://literate-fly.surge.sh/cards)
 - [React-flip-toolkit logo](https://codepen.io/aholachek/pen/ERRpEj)
@@ -54,15 +52,26 @@ Wrap your container element with a `Flipper` component that has a `flipKey` prop
 
 Wrap elements that should be animated with `Flipped` components that have `flipId` props matching them across renders.
 
-### Simplest possible example:
+## Simplest example:
+### Tweening a single element
 
-[Try it out on Codepen](https://codepen.io/aholachek/pen/zapEjq?editors=0110)
+(click to view on codepen)
 
-<a href="https://gist.github.com/aholachek/e602f005e318cd941c0af8fba04ade44">
-  <img src="./example-assets/animated-list-example.png" alt='code snippet for the simplest example of a FLIP-ped animation' />
+<a href="https://codepen.io/aholachek/pen/RJvPjL">
+  <img src="./example-assets/simple-example--tweening-single-element.png" alt='a FLIP animation tweening a change in a single elementwidth='600px'' width='600px' />
 </a>
 
-## 1. Flipper component
+## More useful but slightly less simple example:
+### Transitioning two elements
+The power of FLIP lies in smoothly tweening two completely separate elements to appear as if they are one:
+
+<a href="https://codepen.io/aholachek/pen/zapEjq">
+  <img src="./example-assets/simple-example--tweening-2-elements.png" alt='a FLIP animation tweening two separate elements' width='600px' />
+</a>
+
+## The Components
+
+### 1. Flipper component
 
 The parent wrapper component that contains all the elements to be animated:
 
@@ -80,7 +89,7 @@ The parent wrapper component that contains all the elements to be animated:
 | duration                |     `250`     | `number`                   | Default duration in ms for all FLIP transitions                                                                                                      |
 | applyTransformOrigin    |    `true`     | `bool`                     | Whether or not `react-flip-toolkit` should apply a transform-origin of "0 0" to animating children (this is generally desirable for FLIP animations) |
 
-## 2. Flipped component
+### 2. Flipped component
 
 A component that wraps an element that needs to be animated.
 
@@ -138,7 +147,7 @@ Try it out on Codepen:
 </a>
 
 
-Some other FLIP libraries just allow you to animate position changes, but things get a lot more interesting once you can animate scale changes as well ([check out the demos](#demos) to see what scale animations bring to the table).
+Some other FLIP libraries just allow you to animate position changes, but things get a lot more interesting once you can animate scale changes as well ([check out the demos](#demos)) to see what scale animations bring to the table).
 
 The problem with scale animations has to do with children -- if you scale a div up 2x, you will warp any children it has by scaling them up too, creating a weird-looking animation. That's why this library allows you to wrap the child with a `Flipped` component that has an `inverseFlipId` to counteract the transforms of the parent:
 
