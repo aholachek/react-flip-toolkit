@@ -5,6 +5,7 @@ import CardsExample from "./CardsExample"
 import GuitarsExample from "./GuitarsExample"
 import SidebarExample from "./SidebarExample"
 import PhotosExample from "./PhotoGridExample"
+import ListExample from './ListExample'
 
 class Demo extends Component {
   render() {
@@ -12,6 +13,8 @@ class Demo extends Component {
     else if (window.location.pathname === "/guitar") return <GuitarsExample />
     else if (window.location.pathname === "/sidebar") return <SidebarExample />
     else if (window.location.pathname === "/photos") return <PhotosExample />
+    else if (window.location.pathname === "/list") return <ListExample />
+
     else
       return (
         <nav>
@@ -27,6 +30,9 @@ class Demo extends Component {
             </li>
             <li>
               <a href="/photos">Photo Grid example</a>
+            </li>
+            <li>
+              <a href="/list">List Example</a>
             </li>
           </ul>
         </nav>
