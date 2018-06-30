@@ -132,7 +132,14 @@ and they will be tweened by `react-flip-toolkit`.
 
 ## Scale transitions made eas(ier)
 
+Try it out on Codepen:
+<a href="https://codepen.io/aholachek/pen/mKXBJR?editors=0110">
+<img src="./example-assets/nested-example.gif" width='600px' alt='an animation demoing nested scale transforms' />
+</a>
+
+
 Some other FLIP libraries just allow you to animate position changes, but things get a lot more interesting once you can animate scale changes as well ([check out the demos](#demos) to see what scale animations bring to the table).
+
 The problem with scale animations has to do with children -- if you scale a div up 2x, you will warp any children it has by scaling them up too, creating a weird-looking animation. That's why this library allows you to wrap the child with a `Flipped` component that has an `inverseFlipId` to counteract the transforms of the parent:
 
 ```js
@@ -144,8 +151,6 @@ The problem with scale animations has to do with children -- if you scale a div 
   </div>
 </Flipped>
 ```
-
-[Try it out on Codepen](https://codepen.io/aholachek/pen/mKXBJR?editors=0110)
 
 By default, not only the scale of the parent will be counteracted, but also the translations (this allows children components to make their own FLIP animations without being affected by the parent).
 But for many/most use cases, you'll want to additionally specify the `scale` prop to limit the adjustment to the scale and allow the positioning to move with the parent.
