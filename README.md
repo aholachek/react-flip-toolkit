@@ -12,7 +12,7 @@
 | Animate parent's size without warping children |        ❌         |        ❌         |          ✅          |
 | Use real FLIP instead of cloning & crossfading |        ✅         |        ❌         |          ✅          |
 | Enable nested animations                       |        ❌         |        ❌         |          ✅          |
-| Easy to set up/beginner-friendly               |        ✅         |        ✅         |          🤷          |
+| Easy to set up & beginner-friendly             |        ✅         |        ✅         |          🤷          |
 
 ### Demos
 
@@ -52,21 +52,20 @@ Wrap your container element with a `Flipper` component that has a `flipKey` prop
 
 Wrap elements that should be animated with `Flipped` components that have `flipId` props matching them across renders.
 
-## Simplest example:
-### Tweening a single element
+## Simplest example: Tweening a single element
+
+<a href="https://codepen.io/aholachek/pen/RJvPjL">
+  <img src="./example-assets/simple-example--tweening-single-element.png" alt='a FLIP animation tweening a change in a single element' width="750px" />
+</a>
 
 (click to view on codepen)
 
-<a href="https://codepen.io/aholachek/pen/RJvPjL">
-  <img src="./example-assets/simple-example--tweening-single-element.png" alt='a FLIP animation tweening a change in a single elementwidth='600px'' width='600px' />
-</a>
+## More useful but slightly less simple: Transitioning two elements
 
-## More useful but slightly less simple example:
-### Transitioning two elements
 The power of FLIP lies in smoothly tweening two completely separate elements to appear as if they are one:
 
 <a href="https://codepen.io/aholachek/pen/zapEjq">
-  <img src="./example-assets/simple-example--tweening-2-elements.png" alt='a FLIP animation tweening two separate elements' width='600px' />
+  <img src="./example-assets/simple-example--tweening-2-elements.png" alt='a FLIP animation tweening two separate elements'   width="750px"/>
 </a>
 
 ## The Components
@@ -146,7 +145,6 @@ Try it out on Codepen:
 <a href="https://codepen.io/aholachek/pen/mKXBJR?editors=0110">
 <img src="./example-assets/nested-example.gif" width='600px' alt='an animation demoing nested scale transforms' />
 </a>
-
 
 Some other FLIP libraries just allow you to animate position changes, but things get a lot more interesting [once you can animate scale changes as well](#demos).
 
