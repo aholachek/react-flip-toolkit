@@ -16,8 +16,6 @@
 
 ### Demos
 
-(Click to see interactive version)
-
 <p>
 <a href="https://literate-fly.surge.sh/photos">
   <img src="./example-assets/photogrid.gif" width='600px' alt='an animation showing click to expand a photo' />
@@ -35,7 +33,7 @@
 </a>
 </p>
 
-- [Simplest possible example](https://codepen.io/aholachek/pen/zapEjq?editors=0110)
+- [Simplest possible example](https://codepen.io/aholachek/pen/RJvPjL)
 - [Guitar shop](https://literate-fly.surge.sh/guitar)
 - [Absurd, overly complex, nested example](https://literate-fly.surge.sh/cards)
 - [React-flip-toolkit logo](https://codepen.io/aholachek/pen/ERRpEj)
@@ -54,15 +52,26 @@ Wrap your container element with a `Flipper` component that has a `flipKey` prop
 
 Wrap elements that should be animated with `Flipped` components that have `flipId` props matching them across renders.
 
-### Simplest possible example:
+## Simplest example:
+### Tweening a single element
 
-[Try it out on Codepen](https://codepen.io/aholachek/pen/zapEjq?editors=0110)
+(click to view on codepen)
 
-<a href="https://gist.github.com/aholachek/e602f005e318cd941c0af8fba04ade44">
-  <img src="./example-assets/animated-list-example.png" alt='code snippet for the simplest example of a FLIP-ped animation' />
+<a href="https://codepen.io/aholachek/pen/RJvPjL">
+  <img src="./example-assets/simple-example--tweening-single-element.png" alt='a FLIP animation tweening a change in a single elementwidth='600px'' width='600px' />
 </a>
 
-## 1. Flipper component
+## More useful but slightly less simple example:
+### Transitioning two elements
+The power of FLIP lies in smoothly tweening two completely separate elements to appear as if they are one:
+
+<a href="https://codepen.io/aholachek/pen/zapEjq">
+  <img src="./example-assets/simple-example--tweening-2-elements.png" alt='a FLIP animation tweening two separate elements' width='600px' />
+</a>
+
+## The Components
+
+### 1. Flipper component
 
 The parent wrapper component that contains all the elements to be animated:
 
@@ -80,7 +89,7 @@ The parent wrapper component that contains all the elements to be animated:
 | duration                |     `250`     | `number`                   | Default duration in ms for all FLIP transitions                                                                                                      |
 | applyTransformOrigin    |    `true`     | `bool`                     | Whether or not `react-flip-toolkit` should apply a transform-origin of "0 0" to animating children (this is generally desirable for FLIP animations) |
 
-## 2. Flipped component
+### 2. Flipped component
 
 A component that wraps an element that needs to be animated.
 
@@ -106,14 +115,14 @@ and they will be tweened by `react-flip-toolkit`.
 | ------------------------ | :-----------: | :------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | children **(required)**  |               | `node`   | Wrap a single child with the `Flipped` component. If the child is a React component, make sure it passes down unknown props directly to the rendered DOM element so that `Flipped` can pass down the necessary `data-*` attributes. |
 | flipId **(required)**    |               | `string` | Use this to tell `react-flip-toolkit` how elements should be matched across renders so they can be animated.                                                                                                                        |
-| inverseFlipId            |               | `string` | refer to the id of the parent `Flipped` container whose transform you want to cancel out. [Read more about canceling out parent transforms here](#scale-transitions-made-easier)                                                    |
-| transformOrigin          |    `"0 0"`    | `string` | this is a convenience method to apply the proper CSS `transform-origin` to the element being FLIP-ped. This will override `react-flip-toolkit`'s default application of `transform-origin: 0 0` if it is provided as a prop.        |
+| inverseFlipId            |               | `string` | Refer to the id of the parent `Flipped` container whose transform you want to cancel out. [Read more about canceling out parent transforms here](#scale-transitions-made-easier)                                                    |
+| transformOrigin          |    `"0 0"`    | `string` | This is a convenience method to apply the proper CSS `transform-origin` to the element being FLIP-ped. This will override `react-flip-toolkit`'s default application of `transform-origin: 0 0` if it is provided as a prop.        |
 | ease                     | `easeOutExpo` | `string` | This string should refer to [one of the available easing options](https://codepen.io/aholachek/full/bKmZbV/)). This prop will override the easing specified in the parent `Flipped` component.                                      |
 | duration                 |     `250`     | `number` | Timing for the individual FLIP transition, this will override the one specified in the parent `Flipped` component                                                                                                                   |
 | delay                    |      `0`      | `number` | Amount of time to wait before tweening the element position.                                                                                                                                                                        |
-| onAppear(element, index) |               | `func`   | called when the element first appears. It is provided a reference to the DOM element being transitioned as the first argument, and the index of the element relative to all appearing elements as the second.                       |
-| onStart(element)         |               | `func`   | called when the FLIP animation starts. It is provided a reference to the DOM element being transitioned as the first argument                                                                                                       |
-| onComplete(element)      |               | `func`   | called when the FLIP animation completes. It is provided a reference to the DOM element being transitioned as the first argument. (If transitions are interruped by new ones, `onComplete` will still be called.)                   |
+| onAppear(element, index) |               | `func`   | Called when the element first appears. It is provided a reference to the DOM element being transitioned as the first argument, and the index of the element relative to all appearing elements as the second.                       |
+| onStart(element)         |               | `func`   | Called when the FLIP animation starts. It is provided a reference to the DOM element being transitioned as the first argument                                                                                                       |
+| onComplete(element)      |               | `func`   | Called when the FLIP animation completes. It is provided a reference to the DOM element being transitioned as the first argument. (If transitions are interruped by new ones, `onComplete` will still be called.)                   |
 
 #### By default the FLIP-ped elements' translate, scale, and opacity properties are all transformed. However, certain effects require more control so if you specify any of these props, _only the specified attribute(s) will be tweened_:
 
@@ -132,7 +141,15 @@ and they will be tweened by `react-flip-toolkit`.
 
 ## Scale transitions made eas(ier)
 
-Some other FLIP libraries just allow you to animate position changes, but things get a lot more interesting once you can animate scale changes as well ([check out the demos](#demos) to see what scale animations bring to the table).
+Try it out on Codepen:
+
+<a href="https://codepen.io/aholachek/pen/mKXBJR?editors=0110">
+<img src="./example-assets/nested-example.gif" width='600px' alt='an animation demoing nested scale transforms' />
+</a>
+
+
+Some other FLIP libraries just allow you to animate position changes, but things get a lot more interesting [once you can animate scale changes as well](#demos).
+
 The problem with scale animations has to do with children -- if you scale a div up 2x, you will warp any children it has by scaling them up too, creating a weird-looking animation. That's why this library allows you to wrap the child with a `Flipped` component that has an `inverseFlipId` to counteract the transforms of the parent:
 
 ```js
@@ -144,8 +161,6 @@ The problem with scale animations has to do with children -- if you scale a div 
   </div>
 </Flipped>
 ```
-
-[Try it out on Codepen](https://codepen.io/aholachek/pen/mKXBJR?editors=0110)
 
 By default, not only the scale of the parent will be counteracted, but also the translations (this allows children components to make their own FLIP animations without being affected by the parent).
 But for many/most use cases, you'll want to additionally specify the `scale` prop to limit the adjustment to the scale and allow the positioning to move with the parent.
@@ -162,4 +177,4 @@ But for many/most use cases, you'll want to additionally specify the `scale` pro
 
 - **Why does my animation look "off"?** Try increasing the duration to something ridiculous like `10000` so that you can catch every detail. When the animations happen quickly it's hard to consciously spot little issues that can interfere with the final effect.
 
-- **Why is the element animating from or to an unexpected position?** At any point, there can only be 1 element with a specified `flipId` on the page. If there are multiple `Flipped` elements on the page with the same id, things will start to get weird. Check to make sure all `flipId`s are unique.
+- **Why is the element animating from or to an unexpected position?** At any point, there can only be one element with a specified `flipId` on the page. If there are multiple `Flipped` elements on the page with the same id, things will start to get weird. Check to make sure all `flipId`s are unique.
