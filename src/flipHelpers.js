@@ -241,7 +241,7 @@ export const animateMove = ({
   // called when onExit animation completes
   const removeElement = (el, resolve) => () => {
     exitRemovalCallbacks.push(() => el.parentNode.removeChild(el))
-    resolve()
+    resolve && resolve()
   }
 
   groupedExitingElements.forEach(childArray => {
@@ -275,6 +275,10 @@ export const animateMove = ({
           })
         )
         flipCallbacks[id].onExit(element, i, removeElement(element, r))
+        // in case we have to cancel
+        inProgressAnimations[id] = {
+          stop: () => removeElement(element)
+        }
       })
   })
 
@@ -323,7 +327,8 @@ export const animateMove = ({
           if (inProgressAnimations[id]) {
             inProgressAnimations[id].stop()
 
-            inProgressAnimations[id].onComplete()
+            inProgressAnimations[id].onComplete &&
+              inProgressAnimations[id].onComplete()
             delete inProgressAnimations[id]
           }
 
@@ -399,7 +404,7 @@ export const animateMove = ({
           if (flipCallbacks[id] && flipCallbacks[id].onStart)
             flipCallbacks[id].onStart(element, flipStartId)
 
-          let onComplete = () => {}
+          let onComplete
           if (flipCallbacks[id] && flipCallbacks[id].onComplete) {
             // cache it in case it gets overridden if for instance
             // someone is rapidly toggling the animation back and forth
