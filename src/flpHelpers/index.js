@@ -1,16 +1,6 @@
-import { Tweenable } from "shifty"
 import * as Rematrix from "rematrix"
-
-// animejs' influence
-Tweenable.formulas.easeOutElastic = function(t) {
-  var p = 0.99
-  return Math.pow(2, -10 * t) * Math.sin(((t - p / 4) * (2 * Math.PI)) / p) + 1
-}
-
-Tweenable.formulas.easeOutElasticBig = function(t) {
-  var p = 0.6
-  return Math.pow(2, -10 * t) * Math.sin(((t - p / 4) * (2 * Math.PI)) / p) + 1
-}
+import springUpdate from "./springUpdate"
+import tweenUpdate from "./tweenUpdate"
 
 const getInvertedChildren = (element, id) =>
   [].slice.call(element.querySelectorAll(`[data-inverse-flip-id="${id}"]`))
@@ -92,18 +82,6 @@ const invertTransformsForChildren = (
     }
     child.style.transform = transformString
   })
-}
-
-export const getEasingName = (flippedEase, flipperEase) => {
-  let easeToApply = flippedEase || flipperEase
-
-  if (!Tweenable.formulas[easeToApply]) {
-    console.error(
-      `${easeToApply} was not recognized as a valid easing option, falling back to easeOutSine`
-    )
-    easeToApply = "easeOutSine"
-  }
-  return easeToApply
 }
 
 export const getFlippedElementPositions = ({ element, removeTransforms }) => {
@@ -293,51 +271,45 @@ export const animateMove = ({
         onComplete = () => cachedOnComplete(element, flipStartId)
       }
 
-      // now start the animation
-      const tweenable = new Tweenable()
+      const delay = parseFloat(element.dataset.flipDelay)
 
-      tweenable.setConfig({
-        from: fromVals,
-        to: toVals,
-        duration: parseFloat(element.dataset.flipDuration || duration),
-        easing: {
-          opacity: "linear",
-          matrix: getEasingName(element.dataset.flipEase, ease)
-        },
-        delay: parseFloat(element.dataset.flipDelay),
-        step: ({ matrix, opacity }) => {
-          if (!body.contains(element)) {
-            tweenable.stop()
-            return
-          }
-          applyStyles(element, { opacity, matrix })
-
-          // for children that requested it, cancel out
-          // the transform by applying the inverse transform
-          invertTransformsForChildren(
-            getInvertedChildren(element, id),
-            matrix,
-            {
-              flipStartId,
-              flipEndId
-            }
-          )
+      const onUpdate = ({ matrix, opacity }) => {
+        if (!body.contains(element)) {
+          // TODO: figure out stop
+          tweenable.stop()
+          return
         }
-      })
+        applyStyles(element, { opacity, matrix })
 
-      tweenable
-        .tween()
-        .then(() => {
-          delete inProgressAnimations[id]
-          onComplete()
+        // for children that requested it, cancel out
+        // the transform by applying the inverse transform
+        invertTransformsForChildren(getInvertedChildren(element, id), matrix, {
+          flipStartId,
+          flipEndId
         })
-        .catch(e => {
-          // hmm
+      }
+
+      let stop
+
+      if (true) {
+        stop = springUpdate({
+          fromVals,
+          toVals,
+          delay
         })
+      } else {
+        stop = tweenUpdate({
+          fromVals,
+          toVals,
+          duration: parseFloat(element.dataset.flipDuration || duration),
+          easing: [element.dataset.flipEase, ease],
+          delay
+        })
+      }
 
       // in case we have to cancel
       inProgressAnimations[id] = {
-        stop: tweenable.stop.bind(tweenable),
+        stop,
         onComplete
       }
     })

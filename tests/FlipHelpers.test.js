@@ -1,4 +1,5 @@
 import { getEasingName, rectInViewport } from "../src/flipHelpers"
+import { getEasingName } from "../src/FlipHelpers/tweenUpdate"
 
 Object.defineProperty(window, "innerHeight", {
   value: 100,
@@ -25,7 +26,6 @@ describe("getEasingName", () => {
 })
 
 describe("rectInViewport", () => {
-
   it("returns true if rect is in viewport", () => {
     expect(rectInViewport({ top: 1, bottom: 99, left: 1, right: 99 })).toBe(
       true
