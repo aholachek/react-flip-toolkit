@@ -28,13 +28,8 @@ export function Flipped({ children, flipId, onStart, onComplete, ...rest }) {
   } catch (e) {
     throw new Error("Each Flipped element must wrap a single child")
   }
-  // if nothing is being transformed, assume everything is being animated
+  // if nothing is being animated, assume everything is being animated
   if (!rest.scale && !rest.translate && !rest.opacity) {
-    rest.all = true
-  }
-  // allow some shorthands for convenience
-  if (rest.all) {
-    delete rest.all
     Object.assign(rest, {
       translate: true,
       scale: true,

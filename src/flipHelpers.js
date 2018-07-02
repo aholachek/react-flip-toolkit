@@ -98,20 +98,19 @@ export const getEasingName = (flippedEase, flipperEase) => {
   let easeToApply = flippedEase || flipperEase
 
   if (!Tweenable.formulas[easeToApply]) {
+    const defaultEase = "easeOutExpo"
     console.error(
-      `${easeToApply} was not recognized as a valid easing option, falling back to easeOutSine`
+      `${easeToApply} was not recognized as a valid easing option, falling back to ${defaultEase}`
     )
-    easeToApply = "easeOutSine"
+    easeToApply = defaultEase
   }
   return easeToApply
 }
 
 export const getFlippedElementPositions = ({ element, removeTransforms }) => {
-  const flippedElements = [].slice.apply(
-    element.querySelectorAll("[data-flip-id]")
-  )
+  const flippedElements = Array.from(element.querySelectorAll("[data-flip-id]"))
 
-  const inverseFlippedElements = [].slice.apply(
+  const inverseFlippedElements = Array.from(
     element.querySelectorAll("[data-inverse-flip-id]")
   )
   // allow fully interruptible animations by stripping inline style transforms

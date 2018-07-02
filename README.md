@@ -1,6 +1,8 @@
 # react-flip-toolkit
 
+<a href="https://codepen.io/aholachek/pen/ERRpEj">
 <img src="./example-assets/rft-logo.gif" width='550px' alt='react-flip-toolkit animated logo' />
+</a>
 
 ### Comparison with other React FLIP libraries
 
