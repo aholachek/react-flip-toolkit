@@ -29,7 +29,9 @@ class Flipper extends Component {
     if (prevProps.flipKey !== this.props.flipKey) {
       return getFlippedElementPositions({
         element: this.el,
-        inProgressAnimations: this.inProgressAnimations
+        inProgressAnimations: this.inProgressAnimations,
+        // if onExit callbacks exist, cache the DOM node
+        flipCallbacks: this.flipCallbacks
       })
     }
     return null
@@ -37,7 +39,7 @@ class Flipper extends Component {
 
   componentDidUpdate(prevProps, prevState, cachedFlipChildrenPositions) {
     if (this.props.flipKey !== prevProps.flipKey) {
-      this.inProgressAnimations = animateMove({
+      animateMove({
         cachedFlipChildrenPositions,
         containerEl: this.el,
         duration: this.props.duration,

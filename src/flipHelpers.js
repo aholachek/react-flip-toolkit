@@ -106,7 +106,11 @@ export const getEasingName = (flippedEase, flipperEase) => {
   return easeToApply
 }
 
-export const getFlippedElementPositions = ({ element, removeTransforms }) => {
+export const getFlippedElementPositions = ({
+  element,
+  flipCallbacks,
+  onUpdate
+}) => {
   const flippedElements = [].slice.apply(
     element.querySelectorAll("[data-flip-id]")
   )
@@ -118,20 +122,50 @@ export const getFlippedElementPositions = ({ element, removeTransforms }) => {
   // if we are reading the final position of the element
   // this should also fix the issue if rematrix applied an inline style
   // to a previous state of an element
-  if (removeTransforms) {
+  if (onUpdate) {
     flippedElements.concat(inverseFlippedElements).forEach(el => {
       if (el.style.transform) el.style.transform = ""
     })
+  } else {
+    // this is all for exit animations so we can re-insert exiting elements in the
+    // DOM later
+    const nodesByParent = {}
+    flippedElements
+      .filter(el => flipCallbacks && flipCallbacks[el.dataset.flipId].onExit)
+      .forEach(el => {
+        if (nodesByParent[el.parentNode]) nodesByParent[el.parentNode].push(el)
+        else nodesByParent[el.parentNode] = [el]
+      })
+
+    Object.keys(nodesByParent).forEach(p => {
+      nodesByParent[p].forEach((el, i) => (el.dataset.flipIndex = i))
+    })
   }
+
   return flippedElements
-    .map(child => [
-      child.dataset.flipId,
-      {
-        rect: child.getBoundingClientRect(),
-        opacity: parseFloat(window.getComputedStyle(child).opacity),
-        flipComponentId: child.dataset.flipComponentId
+    .map(child => {
+      let domData = {}
+      if (
+        !onUpdate &&
+        flipCallbacks &&
+        flipCallbacks[child.dataset.flipId].onExit
+      ) {
+        Object.assign(domData, {
+          element: child,
+          parent: child.parentNode
+        })
       }
-    ])
+
+      return [
+        child.dataset.flipId,
+        {
+          rect: child.getBoundingClientRect(),
+          opacity: parseFloat(window.getComputedStyle(child).opacity),
+          flipComponentId: child.dataset.flipComponentId,
+          domData
+        }
+      ]
+    })
     .reduce((acc, curr) => ({ ...acc, [curr[0]]: curr[1] }), {})
 }
 
@@ -157,7 +191,7 @@ export const animateMove = ({
   const newFlipChildrenPositions = getFlippedElementPositions({
     element: containerEl,
     inProgressAnimations,
-    removeTransforms: true
+    onUpdate: true
   })
 
   const getElement = id => containerEl.querySelector(`*[data-flip-id="${id}"]`)
@@ -165,182 +199,278 @@ export const animateMove = ({
   const isFlipped = id =>
     cachedFlipChildrenPositions[id] && newFlipChildrenPositions[id]
 
-  // animate in any non-flipped elements that requested it
-  Object.keys(newFlipChildrenPositions)
+  const appearingElementIds = Object.keys(newFlipChildrenPositions)
     .filter(id => !isFlipped(id))
-    // filter to only brand new elements with an onAppear callback
     .filter(
       id =>
         newFlipChildrenPositions[id] &&
         flipCallbacks[id] &&
         flipCallbacks[id].onAppear
     )
-    .forEach((id, i) => {
-      flipCallbacks[id].onAppear(getElement(id), i)
-    })
 
-  Object.keys(newFlipChildrenPositions)
-    .filter(isFlipped)
-    .forEach(id => {
-      const prevRect = cachedFlipChildrenPositions[id].rect
-      const currentRect = newFlipChildrenPositions[id].rect
-      const prevOpacity = cachedFlipChildrenPositions[id].opacity
-      const currentOpacity = newFlipChildrenPositions[id].opacity
-      // don't animate invisible elements
-      if (!rectInViewport(prevRect) && !rectInViewport(currentRect)) {
-        return
-      }
-      // don't animate elements that didn't change
-      if (
-        prevRect.left === currentRect.left &&
-        prevRect.top === currentRect.top &&
-        prevRect.width === currentRect.width &&
-        prevRect.height === currentRect.height &&
-        prevOpacity === currentOpacity
-      ) {
-        return
-      }
+  appearingElementIds.forEach(id => (getElement(id).style.display = "none"))
 
-      const element = getElement(id)
+  // onExit callback
+  const exitingElements = Object.keys(cachedFlipChildrenPositions)
+    .filter(id => !isFlipped(id))
+    .filter(
+      id =>
+        cachedFlipChildrenPositions[id] &&
+        cachedFlipChildrenPositions[id].domData &&
+        flipCallbacks[id] &&
+        flipCallbacks[id].onExit
+    )
 
-      const flipStartId = cachedFlipChildrenPositions[id].flipComponentId
-      const flipEndId = element.dataset.flipComponentId
+  const parentNodes = Array.from(
+    new Set(
+      exitingElements.map(id => cachedFlipChildrenPositions[id].domData.parent)
+    )
+  )
 
-      if (!shouldApplyTransform(element, flipStartId, flipEndId)) return
+  // not going to happen too often, but make sure to handle updates
+  // when elements left multiple different parents in the DOM
+  const groupedExitingElements = parentNodes.map(p =>
+    exitingElements.filter(
+      id => cachedFlipChildrenPositions[id].domData.parent === p
+    )
+  )
 
-      if (inProgressAnimations[id]) {
-        inProgressAnimations[id].stop()
+  const exitPromises = []
+  const exitRemovalCallbacks = []
 
-        inProgressAnimations[id].onComplete()
-        delete inProgressAnimations[id]
-      }
+  // called when onExit animation completes
+  const removeElement = (el, resolve) => () => {
+    exitRemovalCallbacks.push(() => el.parentNode.removeChild(el))
+    resolve()
+  }
 
-      const currentTransform = Rematrix.parse(
-        getComputedStyle(element)["transform"]
-      )
-
-      const toVals = { matrix: currentTransform, opacity: 1 }
-
-      const fromVals = { opacity: 1 }
-      const transformsArray = [currentTransform]
-      // we're only going to animate the values that the child wants animated,
-      // based on its data-* attributes
-      if (element.dataset.flipTranslate) {
-        transformsArray.push(
-          Rematrix.translateX(prevRect.left - currentRect.left)
-        )
-        transformsArray.push(
-          Rematrix.translateY(prevRect.top - currentRect.top)
-        )
-      }
-
-      if (element.dataset.flipScale) {
-        transformsArray.push(
-          Rematrix.scaleX(prevRect.width / Math.max(currentRect.width, 0.0001))
-        )
-        transformsArray.push(
-          Rematrix.scaleY(
-            prevRect.height / Math.max(currentRect.height, 0.0001)
-          )
-        )
-      }
-
-      if (element.dataset.flipOpacity) {
-        fromVals.opacity = prevOpacity
-        toVals.opacity = currentOpacity
-      }
-
-      // transform-origin normalization
-      if (element.dataset.transformOrigin) {
-        element.style.transformOrigin = element.dataset.transformOrigin
-      } else if (applyTransformOrigin) {
-        element.style.transformOrigin = "0 0"
-      }
-
-      getInvertedChildren(element, id).forEach(child => {
-        if (child.dataset.transformOrigin) {
-          child.style.transformOrigin = child.dataset.transformOrigin
-        } else if (applyTransformOrigin) {
-          child.style.transformOrigin = "0 0"
-        }
+  groupedExitingElements.forEach(childArray => {
+    childArray
+      .sort((a, b) => {
+        const aIndex =
+          cachedFlipChildrenPositions[a].domData.element.dataset.flipIndex
+        const bIndex =
+          cachedFlipChildrenPositions[b].domData.element.dataset.flipIndex
+        return aIndex - bIndex
       })
-
-      fromVals.matrix = transformsArray.reduce(Rematrix.multiply)
-
-      // prepare for animation by turning matrix into a string
-      fromVals.matrix = convertMatrix3dArrayTo2dString(fromVals.matrix)
-      toVals.matrix = convertMatrix3dArrayTo2dString(toVals.matrix)
-
-      // before animating, immediately apply FLIP styles to prevent flicker
-      applyStyles(element, fromVals)
-      invertTransformsForChildren(
-        getInvertedChildren(element, id),
-        fromVals.matrix,
-        {
-          flipStartId,
-          flipEndId
+      // insert back into the DOM
+      .map(id => {
+        const { element, parent } = cachedFlipChildrenPositions[id].domData
+        const prevElement = parent.querySelector(
+          `[data-flip-index="${parseInt(element.dataset.flipIndex) - 1}"]`
+        )
+        if (!prevElement) {
+          parent.insertBefore(element, parent.firstChild)
+        } else if (parent.contains(prevElement)) {
+          parent.insertBefore(element, prevElement.nextSibling)
         }
-      )
+        return { id, element }
+      })
+      // wait until all exiting elements have been put back in the DOM
+      .forEach(({ id, element }, i) => {
+        let r
+        exitPromises.push(
+          new Promise(resolve => {
+            r = resolve
+          })
+        )
+        flipCallbacks[id].onExit(element, i, removeElement(element, r))
+      })
+  })
 
-      if (flipCallbacks[id] && flipCallbacks[id].onStart)
-        flipCallbacks[id].onStart(element, flipStartId)
-
-      let onComplete = () => {}
-      if (flipCallbacks[id] && flipCallbacks[id].onComplete) {
-        // cache it in case it gets overridden if for instance
-        // someone is rapidly toggling the animation back and forth
-        const cachedOnComplete = flipCallbacks[id].onComplete
-        onComplete = () => cachedOnComplete(element, flipStartId)
-      }
-
-      // now start the animation
-      const tweenable = new Tweenable()
-
-      tweenable.setConfig({
-        from: fromVals,
-        to: toVals,
-        duration: parseFloat(element.dataset.flipDuration || duration),
-        easing: {
-          opacity: "linear",
-          matrix: getEasingName(element.dataset.flipEase, ease)
-        },
-        delay: parseFloat(element.dataset.flipDelay),
-        step: ({ matrix, opacity }) => {
-          if (!body.contains(element)) {
-            tweenable.stop()
+  Promise.all(exitPromises)
+    .then(() => {
+      exitRemovalCallbacks.forEach(f => f())
+      // now, we need appearing elements to be back in the DOM flow
+      // but still invisible
+      appearingElementIds.forEach(id => {
+        const el = getElement(id)
+        el.style.opacity = "0"
+        el.style.display = ""
+      })
+    })
+    .then(() => {
+      const tweenPromises = []
+      Object.keys(newFlipChildrenPositions)
+        .filter(isFlipped)
+        .forEach((id, i) => {
+          const prevRect = cachedFlipChildrenPositions[id].rect
+          const currentRect = newFlipChildrenPositions[id].rect
+          const prevOpacity = cachedFlipChildrenPositions[id].opacity
+          const currentOpacity = newFlipChildrenPositions[id].opacity
+          // don't animate invisible elements
+          if (!rectInViewport(prevRect) && !rectInViewport(currentRect)) {
             return
           }
-          applyStyles(element, { opacity, matrix })
+          // don't animate elements that didn't change
+          if (
+            prevRect.left === currentRect.left &&
+            prevRect.top === currentRect.top &&
+            prevRect.width === currentRect.width &&
+            prevRect.height === currentRect.height &&
+            prevOpacity === currentOpacity
+          ) {
+            return
+          }
 
-          // for children that requested it, cancel out
-          // the transform by applying the inverse transform
+          const element = getElement(id)
+
+          const flipStartId = cachedFlipChildrenPositions[id].flipComponentId
+          const flipEndId = element.dataset.flipComponentId
+
+          if (!shouldApplyTransform(element, flipStartId, flipEndId)) return
+
+          if (inProgressAnimations[id]) {
+            inProgressAnimations[id].stop()
+
+            inProgressAnimations[id].onComplete()
+            delete inProgressAnimations[id]
+          }
+
+          const currentTransform = Rematrix.parse(
+            getComputedStyle(element)["transform"]
+          )
+
+          const toVals = { matrix: currentTransform, opacity: 1 }
+
+          const fromVals = { opacity: 1 }
+          const transformsArray = [currentTransform]
+          // we're only going to animate the values that the child wants animated,
+          // based on its data-* attributes
+          if (element.dataset.flipTranslate) {
+            transformsArray.push(
+              Rematrix.translateX(prevRect.left - currentRect.left)
+            )
+            transformsArray.push(
+              Rematrix.translateY(prevRect.top - currentRect.top)
+            )
+          }
+
+          if (element.dataset.flipScale) {
+            transformsArray.push(
+              Rematrix.scaleX(
+                prevRect.width / Math.max(currentRect.width, 0.0001)
+              )
+            )
+            transformsArray.push(
+              Rematrix.scaleY(
+                prevRect.height / Math.max(currentRect.height, 0.0001)
+              )
+            )
+          }
+
+          if (element.dataset.flipOpacity) {
+            fromVals.opacity = prevOpacity
+            toVals.opacity = currentOpacity
+          }
+
+          // transform-origin normalization
+          if (element.dataset.transformOrigin) {
+            element.style.transformOrigin = element.dataset.transformOrigin
+          } else if (applyTransformOrigin) {
+            element.style.transformOrigin = "0 0"
+          }
+
+          getInvertedChildren(element, id).forEach(child => {
+            if (child.dataset.transformOrigin) {
+              child.style.transformOrigin = child.dataset.transformOrigin
+            } else if (applyTransformOrigin) {
+              child.style.transformOrigin = "0 0"
+            }
+          })
+
+          fromVals.matrix = transformsArray.reduce(Rematrix.multiply)
+
+          // prepare for animation by turning matrix into a string
+          fromVals.matrix = convertMatrix3dArrayTo2dString(fromVals.matrix)
+          toVals.matrix = convertMatrix3dArrayTo2dString(toVals.matrix)
+
+          // before animating, immediately apply FLIP styles to prevent flicker
+          applyStyles(element, fromVals)
           invertTransformsForChildren(
             getInvertedChildren(element, id),
-            matrix,
+            fromVals.matrix,
             {
               flipStartId,
               flipEndId
             }
           )
-        }
-      })
 
-      tweenable
-        .tween()
-        .then(() => {
-          delete inProgressAnimations[id]
-          onComplete()
-        })
-        .catch(e => {
-          // hmm
-        })
+          if (flipCallbacks[id] && flipCallbacks[id].onStart)
+            flipCallbacks[id].onStart(element, flipStartId)
 
-      // in case we have to cancel
-      inProgressAnimations[id] = {
-        stop: tweenable.stop.bind(tweenable),
-        onComplete
-      }
+          let onComplete = () => {}
+          if (flipCallbacks[id] && flipCallbacks[id].onComplete) {
+            // cache it in case it gets overridden if for instance
+            // someone is rapidly toggling the animation back and forth
+            const cachedOnComplete = flipCallbacks[id].onComplete
+            onComplete = () => cachedOnComplete(element, flipStartId)
+          }
+
+          // now start the animation
+          const tweenable = new Tweenable()
+
+          tweenable.setConfig({
+            from: fromVals,
+            to: toVals,
+            duration: parseFloat(element.dataset.flipDuration || duration),
+            easing: {
+              opacity: "linear",
+              matrix: getEasingName(element.dataset.flipEase, ease)
+            },
+            delay: flipCallbacks[id].delay(i),
+            step: ({ matrix, opacity }) => {
+              if (!body.contains(element)) {
+                tweenable.stop()
+                return
+              }
+              applyStyles(element, { opacity, matrix })
+
+              // for children that requested it, cancel out
+              // the transform by applying the inverse transform
+              invertTransformsForChildren(
+                getInvertedChildren(element, id),
+                matrix,
+                {
+                  flipStartId,
+                  flipEndId
+                }
+              )
+            }
+          })
+
+          let r
+
+          tweenPromises.push(
+            new Promise(resolve => {
+              r = resolve
+            })
+          )
+
+          tweenable
+            .tween()
+            .then(() => {
+              delete inProgressAnimations[id]
+              onComplete()
+              r()
+            })
+            .catch(e => {
+              // unclear why this would error but it happened a few times
+            })
+
+          // in case we have to cancel
+          inProgressAnimations[id] = {
+            stop: tweenable.stop.bind(tweenable),
+            onComplete
+          }
+        })
+      return Promise.all(tweenPromises)
     })
-
-  return inProgressAnimations
+    .then(() => {
+      appearingElementIds.forEach((id, i) => {
+        const element = getElement(id)
+        element.style.opacity = ""
+        flipCallbacks[id].onAppear(element, i)
+      })
+    })
 }

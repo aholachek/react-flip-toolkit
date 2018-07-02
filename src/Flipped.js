@@ -12,11 +12,12 @@ const propTypes = {
   transformOrigin: PropTypes.string,
   ease: PropTypes.string,
   duration: PropTypes.number,
-  delay: PropTypes.number,
+  delay: PropTypes.func,
   onAppear: PropTypes.func,
   onStart: PropTypes.func,
   onComplete: PropTypes.func,
   onAppear: PropTypes.func,
+  onExit: PropTypes.func,
   componentIdFilter: PropTypes.string,
   componentId: PropTypes.string
 }
@@ -53,7 +54,6 @@ export function Flipped({ children, flipId, onStart, onComplete, ...rest }) {
         .replace("componentIdFilter", "data-flip-component-id-filter")
         .replace("componentId", "data-flip-component-id")
         .replace("ease", "data-flip-ease")
-        .replace("delay", "data-flip-delay")
         .replace("duration", "data-flip-duration")
         .toLowerCase(),
       r[1]
@@ -68,17 +68,21 @@ export function Flipped({ children, flipId, onStart, onComplete, ...rest }) {
 const FlippedWithContext = ({
   children,
   flipId,
-  onAppear,
   onStart,
+  delay,
   onComplete,
+  onAppear,
+  onExit,
   ...rest
 }) => (
   <FlipContext.Consumer>
     {data => {
       data[flipId] = {
-        onAppear,
+        delay,
         onStart,
-        onComplete
+        onComplete,
+        onAppear,
+        onExit
       }
       return (
         <Flipped flipId={flipId} {...rest}>
