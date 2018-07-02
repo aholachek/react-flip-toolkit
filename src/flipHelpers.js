@@ -473,6 +473,7 @@ export const animateMove = ({
     })
     .then(() => {
       appearingElementIds.forEach((id, i) => {
+        debugger
         const element = getElement(id)
         element.style.opacity = ""
         flipCallbacks[id].onAppear(element, i)
