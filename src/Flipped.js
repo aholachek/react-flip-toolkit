@@ -37,7 +37,8 @@ export function Flipped({ children, flipId, onStart, onComplete, ...rest }) {
     })
   }
   // turn props into DOM data attributes
-  const props = Object.entries(rest)
+  const props = Object.keys(rest)
+    .map(k => [k, rest[k]])
     .map(r => [
       r[0]
         .replace("translate", "data-flip-translate")
