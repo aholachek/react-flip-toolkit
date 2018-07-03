@@ -15,7 +15,9 @@
     "start": "nwb serve-react-demo",
     "test": "jest ",
     "test:coverage": "nwb test-react --coverage",
-    "test:watch": "nwb test-react --server"
+    "test:watch": "nwb test-react --server",
+    "preversion": "npm test",
+    "version": "yarn run build"
   },
   "repository": {
     "type": "git",
