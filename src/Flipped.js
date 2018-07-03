@@ -13,6 +13,12 @@ const propTypes = {
   ease: PropTypes.string,
   duration: PropTypes.number,
   delay: PropTypes.number,
+  spring: PropTypes.shape({
+    stiffness: PropTypes.number,
+    damping: PropTypes.number,
+    mass: PropTypes.number,
+    initialVelocity: PropTypes.number
+  }),
   onAppear: PropTypes.func,
   onStart: PropTypes.func,
   onComplete: PropTypes.func,
@@ -36,6 +42,7 @@ export function Flipped({ children, flipId, onStart, onComplete, ...rest }) {
       opacity: true
     })
   }
+  
   // turn props into DOM data attributes
   const props = Object.keys(rest)
     .map(k => [k, rest[k]])

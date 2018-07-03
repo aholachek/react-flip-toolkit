@@ -1,4 +1,4 @@
-import { getEasingName, rectInViewport } from "../src/flipHelpers"
+import { rectInViewport } from "../src/flipHelpers"
 import { getEasingName } from "../src/FlipHelpers/tweenUpdate"
 
 Object.defineProperty(window, "innerHeight", {
@@ -12,12 +12,8 @@ Object.defineProperty(window, "innerWidth", {
 })
 
 describe("getEasingName", () => {
-  it("flippedEase gets priority", () => {
-    expect(getEasingName("easeInQuad", "linear")).toBe("easeInQuad")
-  })
-
-  it("otherwise, flipperEase wins", () => {
-    expect(getEasingName(undefined, "linear")).toBe("linear")
+  it("returns provided ease if it exists in shifty", () => {
+    expect(getEasingName("easeInQuad")).toBe("easeInQuad")
   })
 
   it("defaults to easeOut if neither FlippedEase or FlipperEase are valid", () => {

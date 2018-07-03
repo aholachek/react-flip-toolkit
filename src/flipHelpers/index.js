@@ -1,6 +1,7 @@
 import * as Rematrix from "rematrix"
 import springUpdate from "./springUpdate"
 import tweenUpdate from "./tweenUpdate"
+import { parseMatrix, convertMatrix3dArrayTo2dString } from "./matrixHelpers"
 
 const getInvertedChildren = (element, id) =>
   [].slice.call(element.querySelectorAll(`[data-inverse-flip-id="${id}"]`))
@@ -14,21 +15,6 @@ const passesComponentFilter = (flipFilters, flipId) => {
   }
   return true
 }
-
-// 3d transforms were causing weird issues in chrome,
-// especially when opacity was also being tweened,
-// so convert to a 2d matrix
-const convertMatrix3dArrayTo2dString = matrix =>
-  `matrix(${[
-    matrix[0],
-    matrix[1],
-    matrix[4],
-    matrix[5],
-    // translation X
-    matrix[12],
-    // translation Y
-    matrix[13]
-  ].join(", ")})`
 
 const applyStyles = (element, { matrix, opacity }) => {
   element.style.transform = matrix
@@ -58,8 +44,8 @@ const invertTransformsForChildren = (
 ) => {
   childElements.forEach(child => {
     if (!shouldApplyTransform(child, flipStartId, flipEndId)) return
-
-    const matrixVals = matrix.match(/-?\d+\.?\d*/g).map(parseFloat)
+    debugger
+    const matrixVals = parseMatrix(matrix)
 
     const scaleX = matrixVals[0]
     const scaleY = matrixVals[3]
@@ -245,6 +231,8 @@ export const animateMove = ({
 
       fromVals.matrix = transformsArray.reduce(Rematrix.multiply)
 
+      debugger
+
       // prepare for animation by turning matrix into a string
       fromVals.matrix = convertMatrix3dArrayTo2dString(fromVals.matrix)
       toVals.matrix = convertMatrix3dArrayTo2dString(toVals.matrix)
@@ -273,14 +261,12 @@ export const animateMove = ({
 
       const delay = parseFloat(element.dataset.flipDelay)
 
-      const onUpdate = ({ matrix, opacity }) => {
+      const onUpdate = stop => ({ matrix, opacity }) => {
         if (!body.contains(element)) {
-          // TODO: figure out stop
-          tweenable.stop()
+          stop()
           return
         }
         applyStyles(element, { opacity, matrix })
-
         // for children that requested it, cancel out
         // the transform by applying the inverse transform
         invertTransformsForChildren(getInvertedChildren(element, id), matrix, {
@@ -291,19 +277,29 @@ export const animateMove = ({
 
       let stop
 
+      const onAnimationEnd = () => {
+        delete inProgressAnimations[id]
+        onComplete()
+      }
+
       if (true) {
         stop = springUpdate({
           fromVals,
           toVals,
-          delay
+          delay,
+          onUpdate,
+          onAnimationEnd
         })
       } else {
         stop = tweenUpdate({
           fromVals,
           toVals,
           duration: parseFloat(element.dataset.flipDuration || duration),
-          easing: [element.dataset.flipEase, ease],
-          delay
+          easing: element.dataset.flipEase || ease,
+          delay,
+          element,
+          onUpdate,
+          onAnimationEnd
         })
       }
 

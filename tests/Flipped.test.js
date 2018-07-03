@@ -68,4 +68,12 @@ describe("Flipped Component", () => {
     expect(testRenderer.toJSON().props["data-flip-opacity"]).toBe(undefined)
     expect(testRenderer.toJSON().props["data-flip-translate"]).toBe(true)
   })
+
+ describe('spring props', () => {
+
+  it('if it detects the ', () => {
+    
+  });
+
+ });
 })
