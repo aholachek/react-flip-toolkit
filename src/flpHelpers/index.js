@@ -84,12 +84,12 @@ const invertTransformsForChildren = (
   })
 }
 
-export const getFlippedElementPositions = ({ element, removeTransforms }) => {
-  const flippedElements = [].slice.apply(
-    element.querySelectorAll("[data-flip-id]")
-  )
+const toArray = arrayLike => Array.prototype.slice.apply(arrayLike)
 
-  const inverseFlippedElements = [].slice.apply(
+export const getFlippedElementPositions = ({ element, removeTransforms }) => {
+  const flippedElements = toArray(element.querySelectorAll("[data-flip-id]"))
+
+  const inverseFlippedElements = toArray(
     element.querySelectorAll("[data-inverse-flip-id]")
   )
   // allow fully interruptible animations by stripping inline style transforms

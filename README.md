@@ -1,6 +1,8 @@
 # react-flip-toolkit
 
+<a href="https://codepen.io/aholachek/pen/ERRpEj">
 <img src="./example-assets/rft-logo.gif" width='550px' alt='react-flip-toolkit animated logo' />
+</a>
 
 ### Comparison with other React FLIP libraries
 
@@ -167,7 +169,7 @@ But for many/most use cases, you'll want to additionally specify the `scale` pro
 
 - ~7.6kb minified and gzipped
 - React 16+
-- Tested in latest Chrome, Firefox, Safari + Edge
+- Tested in latest Chrome, Firefox, Safari, and Edge, with acceptable performance in IE 11
 
 ## FAQ
 

@@ -21,7 +21,7 @@ describe("getEasingName", () => {
   })
 
   it("defaults to easeOut if neither FlippedEase or FlipperEase are valid", () => {
-    expect(getEasingName("fakeEase", "fakeEase2")).toBe("easeOutSine")
+    expect(getEasingName("fakeEase", "fakeEase2")).toBe("easeOutExpo")
   })
 })
 

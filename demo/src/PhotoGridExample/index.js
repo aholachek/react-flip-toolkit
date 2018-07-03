@@ -41,7 +41,7 @@ class PhotoGrid extends Component {
       duration: 600,
       elasticity: 0,
       ease: "easeOutSine",
-      delay: (d, i) => 150 + i * 50
+      delay: (d, i) =>  i * 60
     })
   }
 

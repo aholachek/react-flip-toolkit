@@ -28,13 +28,8 @@ export function Flipped({ children, flipId, onStart, onComplete, ...rest }) {
   } catch (e) {
     throw new Error("Each Flipped element must wrap a single child")
   }
-  // if nothing is being transformed, assume everything is being animated
+  // if nothing is being animated, assume everything is being animated
   if (!rest.scale && !rest.translate && !rest.opacity) {
-    rest.all = true
-  }
-  // allow some shorthands for convenience
-  if (rest.all) {
-    delete rest.all
     Object.assign(rest, {
       translate: true,
       scale: true,
@@ -42,7 +37,8 @@ export function Flipped({ children, flipId, onStart, onComplete, ...rest }) {
     })
   }
   // turn props into DOM data attributes
-  const props = Object.entries(rest)
+  const props = Object.keys(rest)
+    .map(k => [k, rest[k]])
     .map(r => [
       r[0]
         .replace("translate", "data-flip-translate")
