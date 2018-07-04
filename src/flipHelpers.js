@@ -5,7 +5,7 @@ const toArray = arrayLike => Array.prototype.slice.apply(arrayLike)
 
 // animejs' influence
 Tweenable.formulas.easeOutElastic = function(t) {
-  var p = 0.99
+  const p = 0.99
   return Math.pow(2, -10 * t) * Math.sin(((t - p / 4) * (2 * Math.PI)) / p) + 1
 }
 
