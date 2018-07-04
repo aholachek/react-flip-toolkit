@@ -135,10 +135,10 @@ and they will be tweened by `react-flip-toolkit`.
 
 #### Advanced and usually unnecessary:
 
-| prop              |   type   | details                                                                                                            |
-| ----------------- | :------: | :----------------------------------------------------------------------------------------------------------------- |
-| componentId       | `string` | Unique identifier for the component                                                                                |
-| componentIdFilter | `string` | Only apply FLIP transitions if the transition originates or ends with a component with the specified `componentId` |
+| prop              |       type       | details                                                                                                                                                                                                                                                                                                                                     |
+| ----------------- | :--------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| componentId       |     `string`     | Unique identifier for the component                                                                                                                                                                                                                                                                                                         |
+| componentIdFilter | `array`,`string` | Only apply FLIP transitions if the transition originates or ends with a component with the specified `componentId`. To limit the application of an inverse transform, you refer to the parent's `componentId` [as seen in this example.](https://github.com/aholachek/react-flip-toolkit/blob/master/demo/src/CardsExample/UserGrid.js#L44) |
 
 ## Scale transitions made eas(ier)
 

@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable no-return-assign */
+import "./index.css"
 
 import React, { Component } from "react"
 import anime from "animejs"
@@ -16,24 +17,22 @@ const data = [
   { img: detail6Img, title: "What a Mountain" }
 ]
 
-import "./index.css"
-
 const duration = 500
 
 class PhotoGrid extends Component {
-  applyZIndex = (el, startId) => {
+  applyZIndex = el => {
     el.style.zIndex = 3
     setTimeout(() => {
       el.style.zIndex = ""
     }, duration)
   }
-  applyZIndexHeader = (el, startId) => {
+  applyZIndexHeader = el => {
     el.style.zIndex = 4
     setTimeout(() => {
       el.style.zIndex = ""
     }, duration)
   }
-  animateIn = (el, startId) => {
+  animateIn = () => {
     anime({
       targets: this.el.querySelectorAll("*[data-fade-in]"),
       translateY: [50, 0],
@@ -41,7 +40,7 @@ class PhotoGrid extends Component {
       duration: 600,
       elasticity: 0,
       ease: "easeOutSine",
-      delay: (d, i) =>  i * 60
+      delay: (d, i) => i * 60
     })
   }
 

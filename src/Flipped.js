@@ -22,17 +22,24 @@ const propTypes = {
   onAppear: PropTypes.func,
   onStart: PropTypes.func,
   onComplete: PropTypes.func,
-  onAppear: PropTypes.func,
-  componentIdFilter: PropTypes.string,
+  componentIdFilter: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   componentId: PropTypes.string
 }
 // This wrapper creates child components for the main Flipper component
-export function Flipped({ children, flipId, onStart, onComplete, ...rest }) {
+export function Flipped({
+  children,
+  flipId,
+  inverseFlipId,
+  componentId,
+  onStart,
+  onComplete,
+  ...rest
+}) {
   let child
   try {
     child = Children.only(children)
   } catch (e) {
-    throw new Error("Each Flipped element must wrap a single child")
+    throw new Error("Each Flipped component must wrap a single child")
   }
   // if nothing is being animated, assume everything is being animated
   if (!rest.scale && !rest.translate && !rest.opacity) {
@@ -42,30 +49,17 @@ export function Flipped({ children, flipId, onStart, onComplete, ...rest }) {
       opacity: true
     })
   }
-  
-  // turn props into DOM data attributes
-  const props = Object.keys(rest)
-    .map(k => [k, rest[k]])
-    .map(r => [
-      r[0]
-        .replace("translate", "data-flip-translate")
-        .replace("scale", "data-flip-scale")
-        .replace("opacity", "data-flip-opacity")
-        .replace("inverseFlipId", "data-inverse-flip-id")
-        .replace("transformOrigin", "data-transform-origin")
-        .replace("componentIdFilter", "data-flip-component-id-filter")
-        .replace("componentId", "data-flip-component-id")
-        .replace("ease", "data-flip-ease")
-        .replace("delay", "data-flip-delay")
-        .replace("duration", "data-flip-duration")
-        .toLowerCase(),
-      r[1]
-    ])
-    .reduce((acc, curr) => ({ ...acc, [curr[0]]: curr[1] }), {})
 
-  if (flipId) props["data-flip-id"] = flipId
-
-  return cloneElement(child, props)
+  return cloneElement(child, {
+    // these are both used as selectors so they have to be separate
+    "data-flip-id": flipId,
+    "data-inverse-flip-id": inverseFlipId,
+    // we need to access this in getFlippedElementPositions
+    // which is called in getSnapshotBeforeUpdate
+    // so for performance add it as a data attribute
+    "data-flip-component-id": componentId,
+    "data-flip-config": JSON.stringify(Object.assign(rest, { componentId }))
+  })
 }
 
 const FlippedWithContext = ({
