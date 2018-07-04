@@ -26,7 +26,7 @@ export function Flipped({ children, flipId, onStart, onComplete, ...rest }) {
   try {
     child = Children.only(children)
   } catch (e) {
-    throw new Error("Each Flipped element must wrap a single child")
+    throw new Error("Each Flipped component must wrap a single child")
   }
   // if nothing is being animated, assume everything is being animated
   if (!rest.scale && !rest.translate && !rest.opacity) {
@@ -36,28 +36,13 @@ export function Flipped({ children, flipId, onStart, onComplete, ...rest }) {
       opacity: true
     })
   }
-  // turn props into DOM data attributes
-  const props = Object.keys(rest)
-    .map(k => [k, rest[k]])
-    .map(r => [
-      r[0]
-        .replace("translate", "data-flip-translate")
-        .replace("scale", "data-flip-scale")
-        .replace("opacity", "data-flip-opacity")
-        .replace("inverseFlipId", "data-inverse-flip-id")
-        .replace("transformOrigin", "data-transform-origin")
-        .replace("componentIdFilter", "data-flip-component-id-filter")
-        .replace("componentId", "data-flip-component-id")
-        .replace("ease", "data-flip-ease")
-        .replace("delay", "data-flip-delay")
-        .replace("duration", "data-flip-duration")
-        .toLowerCase(),
-      r[1]
-    ])
-    .reduce((acc, curr) => ({ ...acc, [curr[0]]: curr[1] }), {})
-
-  if (flipId) props["data-flip-id"] = flipId
-
+  const props = {
+    "data-flip-config": JSON.stringify(rest),
+    // the stuff below is directly on the element for convenience
+    "data-flip-id": flipId,
+    "data-flip-component-id": rest.componentId,
+    "data-flip-component-id-filter": rest.componentIdFilter
+  }
   return cloneElement(child, props)
 }
 

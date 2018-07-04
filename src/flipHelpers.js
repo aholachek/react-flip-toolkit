@@ -204,8 +204,10 @@ export const animateMove = ({
 
       const element = getElement(id)
 
+      const flipConfig = JSON.parse(element.dataset.flipConfig)
+
       const flipStartId = cachedFlipChildrenPositions[id].flipComponentId
-      const flipEndId = element.dataset.flipComponentId
+      const flipEndId = flipConfig.componentId
 
       if (!shouldApplyTransform(element, flipStartId, flipEndId)) return
 
@@ -226,7 +228,7 @@ export const animateMove = ({
       const transformsArray = [currentTransform]
       // we're only going to animate the values that the child wants animated,
       // based on its data-* attributes
-      if (element.dataset.flipTranslate) {
+      if (flipConfig.translate) {
         transformsArray.push(
           Rematrix.translateX(prevRect.left - currentRect.left)
         )
@@ -235,7 +237,7 @@ export const animateMove = ({
         )
       }
 
-      if (element.dataset.flipScale) {
+      if (flipConfig.scale) {
         transformsArray.push(
           Rematrix.scaleX(prevRect.width / Math.max(currentRect.width, 0.0001))
         )
@@ -246,14 +248,14 @@ export const animateMove = ({
         )
       }
 
-      if (element.dataset.flipOpacity) {
+      if (flipConfig.opacity) {
         fromVals.opacity = prevOpacity
         toVals.opacity = currentOpacity
       }
 
       // transform-origin normalization
-      if (element.dataset.transformOrigin) {
-        element.style.transformOrigin = element.dataset.transformOrigin
+      if (flipConfig.transformOrigin) {
+        element.style.transformOrigin = flipConfig.transformOrigin
       } else if (applyTransformOrigin) {
         element.style.transformOrigin = "0 0"
       }
@@ -300,12 +302,12 @@ export const animateMove = ({
       tweenable.setConfig({
         from: fromVals,
         to: toVals,
-        duration: parseFloat(element.dataset.flipDuration || duration),
+        duration: parseFloat(flipConfig.duration || duration),
         easing: {
           opacity: "linear",
-          matrix: getEasingName(element.dataset.flipEase, ease)
+          matrix: getEasingName(flipConfig.ease, ease)
         },
-        delay: parseFloat(element.dataset.flipDelay),
+        delay: parseFloat(flipConfig.delay),
         step: ({ matrix, opacity }) => {
           if (!body.contains(element)) {
             tweenable.stop()
