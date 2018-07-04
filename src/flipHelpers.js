@@ -43,7 +43,7 @@ const convertMatrix3dArrayTo2dString = matrix =>
     matrix[13]
   ].join(", ")})`
 
-const shouldApplyTransform = (
+export const shouldApplyTransform = (
   flipComponentIdFilter,
   flipStartId,
   flipEndId
