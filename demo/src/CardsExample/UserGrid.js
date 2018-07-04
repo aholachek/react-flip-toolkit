@@ -28,7 +28,7 @@ class UserGrid extends Component {
           const parentFlipId = `card-${i}`
           if (i === this.props.focusedIndex) return null
           return (
-            <li>
+            <li key={parentFlipId}>
               <Flipped
                 flipId={parentFlipId}
                 onStart={this.hideElements}
@@ -42,7 +42,7 @@ class UserGrid extends Component {
                 >
                   <Flipped
                     inverseFlipId={parentFlipId}
-                    componentIdFilter="focusedUser"
+                    componentIdFilter={["focusedUser"]}
                   >
                     <div>
                       <h2 className="gridItemTitle" data-fade-in>

@@ -19,7 +19,8 @@ const getInvertedChildren = (element, id) =>
 
 const passesComponentFilter = (flipFilters, flipId) => {
   if (typeof flipFilters === "string") {
-    flipFilters = flipFilters.split(",").filter(x => x)
+    if (flipFilters !== flipId) return false
+  } else if (Array.isArray(flipFilters)) {
     if (!flipFilters.some(f => f === flipId)) {
       return false
     }

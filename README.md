@@ -135,10 +135,10 @@ and they will be tweened by `react-flip-toolkit`.
 
 #### Advanced and usually unnecessary:
 
-| prop              |   type   | details                                                                                                            |
-| ----------------- | :------: | :----------------------------------------------------------------------------------------------------------------- |
-| componentId       | `string` | Unique identifier for the component                                                                                |
-| componentIdFilter | `string` | Only apply FLIP transitions if the transition originates or ends with a component with the specified `componentId` |
+| prop              |       type       | details                                                                                                            |
+| ----------------- | :--------------: | :----------------------------------------------------------------------------------------------------------------- |
+| componentId       |     `string`     | Unique identifier for the component                                                                                |
+| componentIdFilter | `array`,`string` | Only apply FLIP transitions if the transition originates or ends with a component with the specified `componentId` |
 
 ## Scale transitions made eas(ier)
 

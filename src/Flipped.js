@@ -16,7 +16,7 @@ const propTypes = {
   onAppear: PropTypes.func,
   onStart: PropTypes.func,
   onComplete: PropTypes.func,
-  componentIdFilter: PropTypes.string,
+  componentIdFilter: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   componentId: PropTypes.string
 }
 // This wrapper creates child components for the main Flipper component

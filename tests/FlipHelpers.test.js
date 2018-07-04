@@ -25,7 +25,6 @@ describe("getEasingName", () => {
 })
 
 describe("rectInViewport", () => {
-
   it("returns true if rect is in viewport", () => {
     expect(rectInViewport({ top: 1, bottom: 99, left: 1, right: 99 })).toBe(
       true
