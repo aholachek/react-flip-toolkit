@@ -20,20 +20,19 @@ export default class CardsExample extends Component {
   componentDidMount() {
     // setInterval(() => {
     //   const int = Math.ceil(Math.random() * 5)
-
     //   this.setState({
     //     userData: userData.filter((d, i) => {
     //       return i % int === 0
     //     })
     //   })
-    // }, 250)
+    // }, 50)
   }
 
   render() {
     return (
       <Flipper
         flipKey={this.state.focusedIndex}
-        duration={this.state.speed === "normal" ? 300 : 2500}
+        duration={this.state.speed === "normal" ? 300 : 3000}
       >
         <div className="header" ref={el => (this.el = el)}>
           <h1>react-flip-toolkit demo</h1>

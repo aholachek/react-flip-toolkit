@@ -1,6 +1,8 @@
 import { Tweenable } from "shifty"
 import * as Rematrix from "rematrix"
 
+const toArray = arrayLike => Array.prototype.slice.apply(arrayLike)
+
 // animejs' influence
 Tweenable.formulas.easeOutElastic = function(t) {
   var p = 0.99
@@ -8,12 +10,12 @@ Tweenable.formulas.easeOutElastic = function(t) {
 }
 
 Tweenable.formulas.easeOutElasticBig = function(t) {
-  var p = 0.6
+  const p = 0.6
   return Math.pow(2, -10 * t) * Math.sin(((t - p / 4) * (2 * Math.PI)) / p) + 1
 }
 
 const getInvertedChildren = (element, id) =>
-  [].slice.call(element.querySelectorAll(`[data-inverse-flip-id="${id}"]`))
+  toArray(element.querySelectorAll(`[data-inverse-flip-id="${id}"]`))
 
 const passesComponentFilter = (flipFilters, flipId) => {
   if (typeof flipFilters === "string") {
@@ -40,19 +42,15 @@ const convertMatrix3dArrayTo2dString = matrix =>
     matrix[13]
   ].join(", ")})`
 
-const applyStyles = (element, { matrix, opacity }) => {
-  element.style.transform = matrix
-  element.style.opacity = opacity
-}
-
-const shouldApplyTransform = (element, flipStartId, flipEndId) => {
+const shouldApplyTransform = (
+  flipComponentIdFilter,
+  flipStartId,
+  flipEndId
+) => {
   if (
-    element.dataset.flipComponentIdFilter &&
-    !passesComponentFilter(
-      element.dataset.flipComponentIdFilter,
-      flipStartId
-    ) &&
-    !passesComponentFilter(element.dataset.flipComponentIdFilter, flipEndId)
+    flipComponentIdFilter &&
+    !passesComponentFilter(flipComponentIdFilter, flipStartId) &&
+    !passesComponentFilter(flipComponentIdFilter, flipEndId)
   ) {
     return false
   }
@@ -61,13 +59,26 @@ const shouldApplyTransform = (element, flipStartId, flipEndId) => {
 
 // if we're scaling an element and we have element children with data-inverse-flip-ids,
 // apply the inverse of the transforms so that the children don't distort
-const invertTransformsForChildren = (
-  childElements,
+const invertTransformsForChildren = ({
+  invertedChildren,
   matrix,
-  { flipStartId, flipEndId } = {}
-) => {
-  childElements.forEach(child => {
-    if (!shouldApplyTransform(child, flipStartId, flipEndId)) return
+  body,
+  flipStartId,
+  flipEndId
+}) => {
+  invertedChildren.forEach(([child, childFlipConfig]) => {
+    if (
+      !shouldApplyTransform(
+        childFlipConfig.componentIdFilter,
+        flipStartId,
+        flipEndId
+      )
+    )
+      return
+
+    if (!body.contains(child)) {
+      return
+    }
 
     const matrixVals = matrix.match(/-?\d+\.?\d*/g).map(parseFloat)
 
@@ -78,19 +89,38 @@ const invertTransformsForChildren = (
 
     const inverseVals = { translateX: 0, translateY: 0, scaleX: 1, scaleY: 1 }
     let transformString = ""
-    if (child.dataset.flipTranslate) {
+    if (childFlipConfig.translate) {
       inverseVals.translateX = -translateX / scaleX
       inverseVals.translateY = -translateY / scaleY
       transformString += `translate(${inverseVals.translateX}px, ${
         inverseVals.translateY
       }px)`
     }
-    if (child.dataset.flipScale) {
+    if (childFlipConfig.scale) {
       inverseVals.scaleX = 1 / scaleX
       inverseVals.scaleY = 1 / scaleY
       transformString += ` scale(${inverseVals.scaleX}, ${inverseVals.scaleY})`
     }
     child.style.transform = transformString
+  })
+}
+
+const createApplyStylesFunc = ({
+  element,
+  invertedChildren,
+  body,
+  flipStartId,
+  flipEndId
+}) => ({ matrix, opacity }) => {
+  element.style.transform = matrix
+  element.style.opacity = opacity
+
+  invertTransformsForChildren({
+    invertedChildren,
+    matrix,
+    body,
+    flipStartId,
+    flipEndId
   })
 }
 
@@ -106,8 +136,6 @@ export const getEasingName = (flippedEase, flipperEase) => {
   }
   return easeToApply
 }
-
-const toArray = arrayLike => Array.prototype.slice.apply(arrayLike)
 
 export const getFlippedElementPositions = ({ element, removeTransforms }) => {
   const flippedElements = toArray(element.querySelectorAll("[data-flip-id]"))
@@ -203,13 +231,19 @@ export const animateMove = ({
       }
 
       const element = getElement(id)
-
       const flipConfig = JSON.parse(element.dataset.flipConfig)
 
       const flipStartId = cachedFlipChildrenPositions[id].flipComponentId
       const flipEndId = flipConfig.componentId
 
-      if (!shouldApplyTransform(element, flipStartId, flipEndId)) return
+      if (
+        !shouldApplyTransform(
+          flipConfig.componentIdFilter,
+          flipStartId,
+          flipEndId
+        )
+      )
+        return
 
       if (inProgressAnimations[id]) {
         inProgressAnimations[id].stop()
@@ -219,15 +253,15 @@ export const animateMove = ({
       }
 
       const currentTransform = Rematrix.parse(
-        getComputedStyle(element)["transform"]
+        getComputedStyle(element).transform
       )
 
       const toVals = { matrix: currentTransform, opacity: 1 }
 
       const fromVals = { opacity: 1 }
       const transformsArray = [currentTransform]
+
       // we're only going to animate the values that the child wants animated,
-      // based on its data-* attributes
       if (flipConfig.translate) {
         transformsArray.push(
           Rematrix.translateX(prevRect.left - currentRect.left)
@@ -253,16 +287,22 @@ export const animateMove = ({
         toVals.opacity = currentOpacity
       }
 
-      // transform-origin normalization
       if (flipConfig.transformOrigin) {
         element.style.transformOrigin = flipConfig.transformOrigin
       } else if (applyTransformOrigin) {
         element.style.transformOrigin = "0 0"
       }
 
-      getInvertedChildren(element, id).forEach(child => {
-        if (child.dataset.transformOrigin) {
-          child.style.transformOrigin = child.dataset.transformOrigin
+      // we're going to pass around the children in this weird [child, childData]
+      // structure because we only want to parse the children's config data 1x
+      const invertedChildren = getInvertedChildren(element, id).map(c => [
+        c,
+        JSON.parse(c.dataset.flipConfig)
+      ])
+
+      invertedChildren.forEach(([child, childFlipConfig]) => {
+        if (childFlipConfig.transformOrigin) {
+          child.style.transformOrigin = childFlipConfig.transformOrigin
         } else if (applyTransformOrigin) {
           child.style.transformOrigin = "0 0"
         }
@@ -274,16 +314,19 @@ export const animateMove = ({
       fromVals.matrix = convertMatrix3dArrayTo2dString(fromVals.matrix)
       toVals.matrix = convertMatrix3dArrayTo2dString(toVals.matrix)
 
+      const applyStyles = createApplyStylesFunc({
+        element,
+        invertedChildren,
+        body,
+        flipStartId,
+        flipEndId
+      })
+
       // before animating, immediately apply FLIP styles to prevent flicker
-      applyStyles(element, fromVals)
-      invertTransformsForChildren(
-        getInvertedChildren(element, id),
-        fromVals.matrix,
-        {
-          flipStartId,
-          flipEndId
-        }
-      )
+      applyStyles({
+        matrix: fromVals.matrix,
+        opacity: fromVals.opacity
+      })
 
       if (flipCallbacks[id] && flipCallbacks[id].onStart)
         flipCallbacks[id].onStart(element, flipStartId)
@@ -313,18 +356,10 @@ export const animateMove = ({
             tweenable.stop()
             return
           }
-          applyStyles(element, { opacity, matrix })
-
-          // for children that requested it, cancel out
-          // the transform by applying the inverse transform
-          invertTransformsForChildren(
-            getInvertedChildren(element, id),
+          applyStyles({
             matrix,
-            {
-              flipStartId,
-              flipEndId
-            }
-          )
+            opacity
+          })
         }
       })
 

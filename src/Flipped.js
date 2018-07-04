@@ -16,12 +16,19 @@ const propTypes = {
   onAppear: PropTypes.func,
   onStart: PropTypes.func,
   onComplete: PropTypes.func,
-  onAppear: PropTypes.func,
   componentIdFilter: PropTypes.string,
   componentId: PropTypes.string
 }
 // This wrapper creates child components for the main Flipper component
-export function Flipped({ children, flipId, onStart, onComplete, ...rest }) {
+export function Flipped({
+  children,
+  flipId,
+  inverseFlipId,
+  componentId,
+  onStart,
+  onComplete,
+  ...rest
+}) {
   let child
   try {
     child = Children.only(children)
@@ -36,14 +43,16 @@ export function Flipped({ children, flipId, onStart, onComplete, ...rest }) {
       opacity: true
     })
   }
-  const props = {
-    "data-flip-config": JSON.stringify(rest),
-    // the stuff below is directly on the element for convenience
+  return cloneElement(child, {
+    // these are both used as selectors so they have to be separate
     "data-flip-id": flipId,
-    "data-flip-component-id": rest.componentId,
-    "data-flip-component-id-filter": rest.componentIdFilter
-  }
-  return cloneElement(child, props)
+    "data-inverse-flip-id": inverseFlipId,
+    // we need to access this in getFlippedElementPositions
+    // which is called in getSnapshotBeforeUpdate
+    // so for performance add it as a data attribute
+    "data-flip-component-id": componentId,
+    "data-flip-config": JSON.stringify(Object.assign(rest, { componentId }))
+  })
 }
 
 const FlippedWithContext = ({
