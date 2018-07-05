@@ -1,0 +1,70 @@
+main.list-example  {
+  max-width: 900px;
+  margin: 2rem auto;
+}
+
+.list-example .list {
+  list-style-type: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(5rem, 1fr));
+  grid-gap: 1rem;
+  margin: 0;
+  padding: 0;
+  margin: 2rem auto;
+}
+
+.list-example .listItem {
+  height: 2.5rem;
+  display: block;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.list-example .colorLabel {
+  display: inline-block;
+  height: 1.2rem;
+  width: 2rem;
+  margin-left: 0.5rem;
+}
+
+.list-example fieldset {
+  border: 0;
+  padding: 1rem;
+}
+
+.list-example label {
+  margin-right: 2rem;
+  cursor: pointer;
+}
+
+.list-example input {
+  position: relative;
+  margin-right: 0.5rem;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.list-example .fade-in {
+  animation: fadeIn 0.5s forwards;
+}
+
+@keyframes fadeOut {
+100% {
+    opacity: 0;
+  }
+}
+
+.fade-out-list-item {
+    animation: fadeOut .5s forwards;
+
+}

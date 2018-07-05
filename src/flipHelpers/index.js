@@ -175,9 +175,12 @@ export const animateMove = ({
   const isFlipped = id =>
     cachedFlipChildrenPositions[id] && newFlipChildrenPositions[id]
 
+  const nonFlippedIds = Object.keys(newFlipChildrenPositions).filter(
+    id => !isFlipped(id)
+  )
+
   // animate in any non-flipped elements that requested it
-  Object.keys(newFlipChildrenPositions)
-    .filter(id => !isFlipped(id))
+  nonFlippedIds
     // filter to only brand new elements with an onAppear callback
     .filter(
       id =>
@@ -187,6 +190,19 @@ export const animateMove = ({
     )
     .forEach((id, i) => {
       flipCallbacks[id].onAppear(getElement(id), i)
+    })
+
+  // handle exiting elements
+  nonFlippedIds
+    // filter to only exited elements with an onExit callback
+    .filter(
+      id =>
+        cachedFlipChildrenPositions[id] &&
+        flipCallbacks[id] &&
+        flipCallbacks[id].onExit
+    )
+    .forEach((id, i) => {
+      debugger // eslint-disable-line
     })
 
   Object.keys(newFlipChildrenPositions)
@@ -229,7 +245,7 @@ export const animateMove = ({
       if (inProgressAnimations[id]) {
         inProgressAnimations[id].stop()
         // if using a spring, this already called onComplete
-        // and deleted the object, if using a tween we have to
+        // and deleted the object, but if using a tween we have to
         // do it here
         if (
           inProgressAnimations[id] &&
