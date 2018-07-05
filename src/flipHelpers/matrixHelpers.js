@@ -6,8 +6,10 @@ export const parseMatrix = matrix =>
 // so convert to a 2d matrix
 export const convertMatrix3dArrayTo2dString = matrix =>
   `matrix(${[
+    // scale X
     matrix[0],
     matrix[1],
+    // scale Y
     matrix[4],
     matrix[5],
     // translation X

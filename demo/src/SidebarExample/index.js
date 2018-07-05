@@ -16,11 +16,11 @@ class PaymentSidebar extends Component {
     const sidebarClassName = `sidebar ${collapsed ? "sidebarCollapsed" : ""}`
 
     return (
-      <Flipper flipKey={collapsed} ease="easeOutElastic" duration={800}>
-        <Flipped flipId="container">
+      <Flipper flipKey={collapsed}>
+        <Flipped flipId="container" delay={1000}>
           <div className={sidebarClassName} onClick={this.toggleCollapsed}>
             <Flipped inverseFlipId="container">
-              <div className='sidebarContentContainer'>
+              <div className="sidebarContentContainer">
                 <Flipped flipId="sidebarImg">
                   <div
                     className="decorativeImg"
@@ -29,7 +29,7 @@ class PaymentSidebar extends Component {
                 </Flipped>
 
                 <div className="sidebarBody">
-                  <Flipped flipId="sidebarHeader">
+                  <Flipped flipId="sidebarHeader" delay={1000}>
                     <h1 className="sidebarHeader">
                       Lorem ipsum dolor sit amet consectetur
                     </h1>

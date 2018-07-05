@@ -32,11 +32,14 @@ export default class CardsExample extends Component {
     return (
       <Flipper
         flipKey={this.state.focusedIndex}
-        duration={this.state.speed === "normal" ? 300 : 3000}
-        ease="easeOutElastic"
+        spring={{
+          stiffness: 200,
+          damping: this.state.speed === "normal" ? 15 : 80,
+          mass: this.state.speed === "normal" ? 1 : 150
+        }}
       >
         <div className="header" ref={el => (this.el = el)}>
-          <h1>react-flip-toolkit demo</h1>
+          <h1>Spring motion</h1>
           <p>
             An example made somewhat needlessly complicated in order to show off
             some advanced features:
@@ -51,6 +54,7 @@ export default class CardsExample extends Component {
               The card's background opacity is animated in addition to the
               position
             </li>
+            <li>Springs are used instead of predefined easing functions</li>
           </ul>
           <p>Slow the animation down to better follow all the transitions:</p>
           <div>

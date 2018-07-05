@@ -56,7 +56,7 @@ class FocusedUser extends Component {
                   <Flipped
                     flipId={`${parentFlipId}-avatar`}
                     componentId="focusedUserAvatar"
-                    ease="easeInSine"
+                    ease="easeOutElastic"
                     duration={duration}
                   >
                     <img

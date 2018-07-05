@@ -40,9 +40,7 @@
 - [Absurd, overly complex, nested example](https://literate-fly.surge.sh/cards)
 - [React-flip-toolkit logo](https://codepen.io/aholachek/pen/ERRpEj)
 
-### What is FLIP?
-
-If you need a refresher, here's an article by the person who created FLIP: [Flip Your Animations](https://aerotwist.com/blog/flip-your-animations/)
+### Why use React-Flip-Toolkit?
 
 ## Quick start
 
@@ -82,13 +80,14 @@ The parent wrapper component that contains all the elements to be animated:
 </Flipper>
 ```
 
-| prop                    |    default    | type                       | details                                                                                                                                              |
-| ----------------------- | :-----------: | :------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------- |
-| flipKey **(required)**  |               | `string`, `number`, `bool` | Changing this tells `react-flip-toolkit` to transition child elements wrapped in `Flipped` components.                                               |
-| children **(required)** |               | `node`                     | One or more element children                                                                                                                         |
-| ease                    | `easeOutExpo` | `string`                   | Set the default easing for all FLIP transitions: [Interactive explorer for all easing options](https://codepen.io/aholachek/full/bKmZbV/)            |
-| duration                |     `250`     | `number`                   | Default duration in ms for all FLIP transitions                                                                                                      |
-| applyTransformOrigin    |    `true`     | `bool`                     | Whether or not `react-flip-toolkit` should apply a transform-origin of "0 0" to animating children (this is generally desirable for FLIP animations) |
+| prop                    |                    default                     | type                       | details                                                                                                                                                                                                                                         |
+| ----------------------- | :--------------------------------------------: | :------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| flipKey **(required)**  |                                                | `string`, `number`, `bool` | Changing this tells `react-flip-toolkit` to transition child elements wrapped in `Flipped` components.                                                                                                                                          |
+| children **(required)** |                                                | `node`                     | One or more element children                                                                                                                                                                                                                    |
+| spring                  | `{stiffness: 1000`, `damping: 500`, `mass: 3}` | `object`                   | **The default easing for all transitions uses springs**. You can customize the spring by changing the `stiffness`, `damping`, or `mass` values. If you provide an `ease` prop (described below), that will be used instead instead of a spring. |
+| ease                    |                 `easeOutExpo`                  | `string`                   | Set the default easing for all FLIP transitions: [Interactive explorer for all easing options](https://codepen.io/aholachek/full/bKmZbV/)                                                                                                       |
+| duration                |                     `250`                      | `number`                   | Default duration in ms for all FLIP transitions that use the `ease` prop instead of the default `spring` (which uses a physics simulation and therefore doesn't require a duration)                                                             |
+| applyTransformOrigin    |                     `true`                     | `bool`                     | Whether or not `react-flip-toolkit` should apply a transform-origin of "0 0" to animating children (this is generally desirable for FLIP animations)                                                                                            |
 
 ### 2. Flipped component
 
@@ -112,18 +111,19 @@ and in another component somewhere else you can have
 
 and they will be tweened by `react-flip-toolkit`.
 
-| prop                     |    default    | type     | details                                                                                                                                                                                                                             |
-| ------------------------ | :-----------: | :------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| children **(required)**  |               | `node`   | Wrap a single child with the `Flipped` component. If the child is a React component, make sure it passes down unknown props directly to the rendered DOM element so that `Flipped` can pass down the necessary `data-*` attributes. |
-| flipId **(required)**    |               | `string` | Use this to tell `react-flip-toolkit` how elements should be matched across renders so they can be animated.                                                                                                                        |
-| inverseFlipId            |               | `string` | Refer to the id of the parent `Flipped` container whose transform you want to cancel out. [Read more about canceling out parent transforms here](#scale-transitions-made-easier)                                                    |
-| transformOrigin          |    `"0 0"`    | `string` | This is a convenience method to apply the proper CSS `transform-origin` to the element being FLIP-ped. This will override `react-flip-toolkit`'s default application of `transform-origin: 0 0` if it is provided as a prop.        |
-| ease                     | `easeOutExpo` | `string` | This string should refer to [one of the available easing options](https://codepen.io/aholachek/full/bKmZbV/)). This prop will override the easing specified in the parent `Flipped` component.                                      |
-| duration                 |     `250`     | `number` | Timing for the individual FLIP transition, this will override the one specified in the parent `Flipped` component                                                                                                                   |
-| delay                    |      `0`      | `number` | Amount of time to wait before tweening the element position.                                                                                                                                                                        |
-| onAppear(element, index) |               | `func`   | Called when the element first appears. It is provided a reference to the DOM element being transitioned as the first argument, and the index of the element relative to all appearing elements as the second.                       |
-| onStart(element)         |               | `func`   | Called when the FLIP animation starts. It is provided a reference to the DOM element being transitioned as the first argument                                                                                                       |
-| onComplete(element)      |               | `func`   | Called when the FLIP animation completes. It is provided a reference to the DOM element being transitioned as the first argument. (If transitions are interruped by new ones, `onComplete` will still be called.)                   |
+| prop                     |                    default                     | type     | details                                                                                                                                                                                                                                                                         |
+| ------------------------ | :--------------------------------------------: | :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| children **(required)**  |                                                | `node`   | Wrap a single child with the `Flipped` component. If the child is a React component, make sure it passes down unknown props directly to the rendered DOM element so that `Flipped` can pass down the necessary `data-*` attributes.                                             |
+| flipId **(required)**    |                                                | `string` | Use this to tell `react-flip-toolkit` how elements should be matched across renders so they can be animated.                                                                                                                                                                    |
+| inverseFlipId            |                                                | `string` | Refer to the id of the parent `Flipped` container whose transform you want to cancel out. [Read more about canceling out parent transforms here](#scale-transitions-made-easier)                                                                                                |
+| transformOrigin          |                    `"0 0"`                     | `string` | This is a convenience method to apply the proper CSS `transform-origin` to the element being FLIP-ped. This will override `react-flip-toolkit`'s default application of `transform-origin: 0 0` if it is provided as a prop.                                                    |
+| spring                   | `{stiffness: 1000`, `damping: 500`, `mass: 3}` | `object` | This prop allows you to customize the spring easing on a per-component basis. You can change the `stiffness`, `damping`, or `mass` values by providing them in the prop object. If you provide an `ease` prop (described below), that will be used instead instead of a spring. |
+| ease                     |                 `easeOutExpo`                  | `string` | This string should refer to [one of the available easing options](https://codepen.io/aholachek/full/bKmZbV/). This prop will override the easing specified in the parent `Flipped` component.                                                                                   |
+| duration                 |                     `250`                      | `number` | Timing for the individual FLIP transition, \*\*this is only meaningful if you've specified an `ease` prop, because springs don't take durations. This prop will override the one specified in the parent `Flipped` component                                                    |
+| delay                    |                      `0`                       | `number` | Amount of time to wait before tweening the element position.                                                                                                                                                                                                                    |
+| onAppear(element, index) |                                                | `func`   | Called when the element first appears. It is provided a reference to the DOM element being transitioned as the first argument, and the index of the element relative to all appearing elements as the second.                                                                   |
+| onStart(element)         |                                                | `func`   | Called when the FLIP animation starts. It is provided a reference to the DOM element being transitioned as the first argument                                                                                                                                                   |
+| onComplete(element)      |                                                | `func`   | Called when the FLIP animation completes. It is provided a reference to the DOM element being transitioned as the first argument. (If transitions are interruped by new ones, `onComplete` will still be called.)                                                               |
 
 #### By default the FLIP-ped elements' translate, scale, and opacity properties are all transformed. However, certain effects require more control so if you specify any of these props, _only the specified attribute(s) will be tweened_:
 
@@ -167,7 +167,7 @@ But for many/most use cases, you'll want to additionally specify the `scale` pro
 
 ## Other details
 
-- ~7.6kb minified and gzipped
+- ~10.2kb minified and gzipped
 - React 16+
 - Tested in latest Chrome, Firefox, Safari, and Edge, with acceptable performance in IE 11
 

@@ -14,12 +14,27 @@ class Flipper extends Component {
     children: PropTypes.node.isRequired,
     duration: PropTypes.number,
     ease: PropTypes.string,
+    spring: PropTypes.shape({
+      stiffness: PropTypes.number,
+      damping: PropTypes.number,
+      mass: PropTypes.number,
+      initialVelocity: PropTypes.number,
+      allowsOverdamping: PropTypes.bool,
+      overshootClamping: PropTypes.bool
+    }),
     applyTransformOrigin: PropTypes.bool
   }
 
   static defaultProps = {
+    // by default, the easing function is a spring
+    spring: {
+      stiffness: 1000,
+      damping: 500,
+      mass: 3,
+      overshootClamping: true
+    },
+    // but if a ease string is supplied this is the default duration
     duration: 250,
-    ease: "easeOutExpo",
     applyTransformOrigin: true
   }
 
@@ -37,14 +52,15 @@ class Flipper extends Component {
 
   componentDidUpdate(prevProps, prevState, cachedFlipChildrenPositions) {
     if (this.props.flipKey !== prevProps.flipKey) {
-      this.inProgressAnimations = animateMove({
+      animateMove({
         cachedFlipChildrenPositions,
         containerEl: this.el,
         duration: this.props.duration,
         ease: this.props.ease,
         inProgressAnimations: this.inProgressAnimations,
         flipCallbacks: this.flipCallbacks,
-        applyTransformOrigin: this.props.applyTransformOrigin
+        applyTransformOrigin: this.props.applyTransformOrigin,
+        spring: this.props.spring
       })
     }
   }

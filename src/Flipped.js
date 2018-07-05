@@ -17,7 +17,9 @@ const propTypes = {
     stiffness: PropTypes.number,
     damping: PropTypes.number,
     mass: PropTypes.number,
-    initialVelocity: PropTypes.number
+    initialVelocity: PropTypes.number,
+    allowsOverdamping: PropTypes.bool,
+    overshootClamping: PropTypes.bool
   }),
   onAppear: PropTypes.func,
   onStart: PropTypes.func,

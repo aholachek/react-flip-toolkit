@@ -2,12 +2,12 @@ import { Tweenable } from "shifty"
 
 // animejs' influence
 Tweenable.formulas.easeOutElastic = function(t) {
-  var p = 0.99
+  const p = 0.99
   return Math.pow(2, -10 * t) * Math.sin(((t - p / 4) * (2 * Math.PI)) / p) + 1
 }
 
 Tweenable.formulas.easeOutElasticBig = function(t) {
-  var p = 0.6
+  const p = 0.6
   return Math.pow(2, -10 * t) * Math.sin(((t - p / 4) * (2 * Math.PI)) / p) + 1
 }
 
@@ -28,7 +28,7 @@ export default function tweenUpdate({
   duration,
   easing,
   element,
-  onUpdate,
+  getOnUpdateFunc,
   onAnimationEnd
 }) {
   const tweenable = new Tweenable()
@@ -43,7 +43,7 @@ export default function tweenUpdate({
       matrix: getEasingName(easing)
     },
     delay: parseFloat(element.dataset.flipDelay),
-    step: onUpdate(stop)
+    step: getOnUpdateFunc(stop)
   })
 
   tweenable

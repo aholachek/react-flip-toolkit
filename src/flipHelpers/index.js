@@ -5,16 +5,7 @@ import { parseMatrix, convertMatrix3dArrayTo2dString } from "./matrixHelpers"
 
 const toArray = arrayLike => Array.prototype.slice.apply(arrayLike)
 
-// animejs' influence
-Tweenable.formulas.easeOutElastic = function(t) {
-  const p = 0.99
-  return Math.pow(2, -10 * t) * Math.sin(((t - p / 4) * (2 * Math.PI)) / p) + 1
-}
-
-Tweenable.formulas.easeOutElasticBig = function(t) {
-  const p = 0.6
-  return Math.pow(2, -10 * t) * Math.sin(((t - p / 4) * (2 * Math.PI)) / p) + 1
-}
+const isFunction = x => typeof x === "function"
 
 const getInvertedChildren = (element, id) =>
   toArray(element.querySelectorAll(`[data-inverse-flip-id="${id}"]`))
@@ -134,7 +125,8 @@ export const getFlippedElementPositions = ({ element, removeTransforms }) => {
   // allow fully interruptible animations by stripping inline style transforms
   // if we are reading the final position of the element
   // this should also fix the issue if rematrix applied an inline style
-  // to a previous state of an element
+  // to a previous state of an element (and we are tweening a single element,
+  // e.g. if a class if being toggled)
   if (removeTransforms) {
     flippedElements.concat(inverseFlippedElements).forEach(el => {
       if (el.style.transform) el.style.transform = ""
@@ -168,7 +160,8 @@ export const animateMove = ({
   containerEl,
   duration,
   ease,
-  applyTransformOrigin
+  applyTransformOrigin,
+  spring
 }) => {
   const body = document.querySelector("body")
   const newFlipChildrenPositions = getFlippedElementPositions({
@@ -235,8 +228,15 @@ export const animateMove = ({
 
       if (inProgressAnimations[id]) {
         inProgressAnimations[id].stop()
-
-        inProgressAnimations[id].onComplete()
+        // if using a spring, this already called onComplete
+        // and deleted the object, if using a tween we have to
+        // do it here
+        if (
+          inProgressAnimations[id] &&
+          isFunction(inProgressAnimations[id].onComplete)
+        ) {
+          inProgressAnimations[id].onComplete()
+        }
         delete inProgressAnimations[id]
       }
 
@@ -249,7 +249,7 @@ export const animateMove = ({
       const fromVals = { opacity: 1 }
       const transformsArray = [currentTransform]
 
-      // we're only going to animate the values that the child wants animated,
+      // we're only going to animate the values that the child wants animated
       if (flipConfig.translate) {
         transformsArray.push(
           Rematrix.translateX(prevRect.left - currentRect.left)
@@ -319,22 +319,18 @@ export const animateMove = ({
       if (flipCallbacks[id] && flipCallbacks[id].onStart)
         flipCallbacks[id].onStart(element, flipStartId)
 
-      let onComplete = () => {}
+      let onComplete
       if (flipCallbacks[id] && flipCallbacks[id].onComplete) {
-        // cache it in case it gets overridden if for instance
-        // someone is rapidly toggling the animation back and forth
-        const cachedOnComplete = flipCallbacks[id].onComplete
-        onComplete = () => cachedOnComplete(element, flipStartId)
+        onComplete = () => flipCallbacks[id].onComplete(element, flipStartId)
       }
 
-      const delay = parseFloat(element.dataset.flipDelay)
+      const delay = parseFloat(flipConfig.delay)
 
-      const onUpdate = stop => ({ matrix, opacity }) => {
+      const getOnUpdateFunc = stop => ({ matrix, opacity }) => {
         if (!body.contains(element)) {
           stop()
           return
         }
-
         applyStyles({
           matrix,
           opacity
@@ -345,28 +341,33 @@ export const animateMove = ({
 
       const onAnimationEnd = () => {
         delete inProgressAnimations[id]
-        onComplete()
+        isFunction(onComplete) && onComplete()
       }
 
-      debugger
+      let easingType
+      if (flipConfig.spring) easingType = "spring"
+      else if (flipConfig.ease) easingType = "tween"
+      else if (ease) easingType = "tween"
+      else easingType = "spring"
 
-      if (true) {
+      if (easingType === "spring") {
         stop = springUpdate({
           fromVals,
           toVals,
           delay,
-          onUpdate,
-          onAnimationEnd
+          getOnUpdateFunc,
+          onAnimationEnd,
+          springConfig: flipConfig.spring || spring
         })
       } else {
         stop = tweenUpdate({
           fromVals,
           toVals,
-          duration: parseFloat(element.dataset.flipDuration || duration),
-          easing: element.dataset.flipEase || ease,
+          duration: parseFloat(flipConfig.flipDuration || duration),
+          easing: flipConfig.ease || ease,
           delay,
           element,
-          onUpdate,
+          getOnUpdateFunc,
           onAnimationEnd
         })
       }
@@ -377,6 +378,4 @@ export const animateMove = ({
         onComplete
       }
     })
-
-  return inProgressAnimations
 }
