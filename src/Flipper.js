@@ -10,7 +10,7 @@ class Flipper extends Component {
       PropTypes.string,
       PropTypes.number,
       PropTypes.bool
-    ]),
+    ]).isRequired,
     children: PropTypes.node.isRequired,
     duration: PropTypes.number,
     ease: PropTypes.string,
@@ -22,7 +22,8 @@ class Flipper extends Component {
       allowsOverdamping: PropTypes.bool,
       overshootClamping: PropTypes.bool
     }),
-    applyTransformOrigin: PropTypes.bool
+    applyTransformOrigin: PropTypes.bool,
+    debug: PropTypes.bool
   }
 
   static defaultProps = {
@@ -40,10 +41,15 @@ class Flipper extends Component {
 
   inProgressAnimations = {}
 
+  flipCallbacks = {}
+
   getSnapshotBeforeUpdate(prevProps) {
     if (prevProps.flipKey !== this.props.flipKey) {
       return getFlippedElementPositions({
         element: this.el,
+        // if onExit callbacks exist here, we'll cache the DOM node
+        flipCallbacks: this.flipCallbacks,
+        beforeUpdate: true,
         inProgressAnimations: this.inProgressAnimations
       })
     }
@@ -60,12 +66,11 @@ class Flipper extends Component {
         inProgressAnimations: this.inProgressAnimations,
         flipCallbacks: this.flipCallbacks,
         applyTransformOrigin: this.props.applyTransformOrigin,
-        spring: this.props.spring
+        spring: this.props.spring,
+        debug: this.props.debug
       })
     }
   }
-
-  flipCallbacks = {}
 
   render() {
     return (

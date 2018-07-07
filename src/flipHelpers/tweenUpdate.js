@@ -27,13 +27,21 @@ export default function tweenUpdate({
   toVals,
   duration,
   easing,
-  element,
+  delay,
   getOnUpdateFunc,
   onAnimationEnd
 }) {
   const tweenable = new Tweenable()
-  const stop = tweenable.stop.bind(tweenable)
+  let timeoutId
 
+  // force stop the animation
+  const stop = () => {
+    tweenable.stop.bind(tweenable)
+    onAnimationEnd()
+    if (timeoutId) clearTimeout(timeoutId)
+  }
+  // we use setTimeout instead of the tweenable delay prop
+  // because it's easier to cancel
   tweenable.setConfig({
     from: fromVals,
     to: toVals,
@@ -42,16 +50,23 @@ export default function tweenUpdate({
       opacity: "linear",
       matrix: getEasingName(easing)
     },
-    delay: parseFloat(element.dataset.flipDelay),
     step: getOnUpdateFunc(stop)
   })
 
-  tweenable
-    .tween()
-    .then(onAnimationEnd)
-    .catch(e => {
-      // hmm
-    })
+  const start = () => {
+    tweenable
+      .tween()
+      .then(onAnimationEnd)
+      .catch(e => {
+        // hmm
+      })
+  }
+
+  if (delay) {
+    timeoutId = setTimeout(start, delay)
+  } else {
+    start()
+  }
 
   return stop
 }

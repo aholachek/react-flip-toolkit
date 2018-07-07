@@ -1,0 +1,16 @@
+.rotate {
+    padding: 2rem;
+}
+
+.rotate-square {
+    width: 5rem;
+    height: 5rem;
+    display: block;
+    cursor: pointer;
+    transform: rotate(10deg);
+}
+
+.rotate-square--focused {
+    cursor: pointer;
+    transform: rotate(45deg);
+}

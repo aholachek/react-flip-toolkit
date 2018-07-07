@@ -11,6 +11,7 @@ export default function springUpdate({
 }) {
   // avoid potential passing in of variables that will cause a mistake
   let spring
+  let timeoutId
   if (typeof springConfig === "object") {
     delete springConfig.toValue
     delete springConfig.fromValue
@@ -19,7 +20,11 @@ export default function springUpdate({
     spring = new Spring()
   }
 
-  const stop = spring.stop.bind(spring)
+  const stop = () => {
+    spring.stop()
+    if (timeoutId) clearTimeout(timeoutId)
+  }
+
   const onUpdate = getOnUpdateFunc(stop)
 
   spring
@@ -30,7 +35,7 @@ export default function springUpdate({
     .onStop(onAnimationEnd)
 
   if (delay) {
-    setTimeout(spring.start.bind(spring), delay)
+    timeoutId = setTimeout(spring.start.bind(spring), delay)
   } else {
     spring.start()
   }

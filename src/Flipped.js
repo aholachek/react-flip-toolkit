@@ -2,10 +2,24 @@ import React, { Children, cloneElement } from "react"
 import PropTypes from "prop-types"
 import { FlipContext } from "./Flipper"
 
+const customPropCheck = function(props, propName, componentName) {
+  if (props.flipId && props.inverseFlipId) {
+    return new Error(
+      'Please only provide one of the two: "FlipId" or "inverseFlipID"'
+    )
+  } else if (!props.flipId && !props.inverseFlipId) {
+    return new Error(
+      `Must provide either a "FlipId" or an "InverseFlipId" prop`
+    )
+  } else if (props[propName] && typeof props[propName] !== "string") {
+    return new Error(`${propName} must be a string`)
+  }
+}
+
 const propTypes = {
   children: PropTypes.node.isRequired,
-  flipId: PropTypes.string,
-  inverseFlipId: PropTypes.string,
+  inverseFlipId: customPropCheck,
+  flipId: customPropCheck,
   opacity: PropTypes.bool,
   translate: PropTypes.bool,
   scale: PropTypes.bool,
@@ -21,9 +35,10 @@ const propTypes = {
     allowsOverdamping: PropTypes.bool,
     overshootClamping: PropTypes.bool
   }),
-  onAppear: PropTypes.func,
   onStart: PropTypes.func,
   onComplete: PropTypes.func,
+  onAppear: PropTypes.func,
+  onExit: PropTypes.func,
   componentIdFilter: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   componentId: PropTypes.string
 }
@@ -70,6 +85,7 @@ const FlippedWithContext = ({
   onAppear,
   onStart,
   onComplete,
+  onExit,
   ...rest
 }) => (
   <FlipContext.Consumer>
@@ -77,7 +93,8 @@ const FlippedWithContext = ({
       data[flipId] = {
         onAppear,
         onStart,
-        onComplete
+        onComplete,
+        onExit
       }
       return (
         <Flipped flipId={flipId} {...rest}>

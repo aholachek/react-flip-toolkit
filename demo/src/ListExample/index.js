@@ -1,13 +1,12 @@
 import React, { Component } from "react"
-import PropTypes from "prop-types"
 import { Flipper, Flipped } from "../../../src"
 import anime from "animejs"
 import "./index.css"
 
 const colors = ["#ff4f66", "#7971ea", "#5900d8"]
 
-const data = Array.from(Array(25).keys()).map(i => ({
-  color: colors[Math.floor(Math.random() * colors.length)],
+const data = Array.from(Array(50).keys()).map(i => ({
+  color: colors[i % colors.length],
   key: i
 }))
 
@@ -21,96 +20,174 @@ const onElementAppear = (el, index) => {
 }
 
 const onExit = (el, index, removeElement) => {
+  el.style.transformOrigin = "50% 50%"
   anime({
     targets: el,
+    duration: 500,
     opacity: 0,
-    delay: index * 50,
     complete: removeElement,
+    delay: index * 50,
     easing: "easeOutSine"
-  })
+  }).pause
+
+  return () => {
+    // el.style.opacity = ""
+    // removeElement()
+  }
 }
 
 class ListExample extends Component {
-  state = { filter: undefined, sort: "ascending" }
+  state = {
+    filter: undefined,
+    sort: "ascending",
+    data: [...data],
+    continuousUpdating: true
+  }
+
+  toggleContinuousUpdating = update => {
+    if (update) {
+      this.intervalId = setInterval(() => {
+        const filteredData = [...data].filter(
+          x => (Math.random() > 0.5 ? true : false)
+        )
+        this.setState({
+          data: filteredData
+        })
+      }, 1500)
+    } else {
+      clearInterval(this.intervalId)
+      delete this.intervalId
+    }
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.continuousUpdating && !prevState.continuousUpdating) {
+      this.toggleContinuousUpdating(true)
+    } else if (!this.state.continuousUpdating && prevState.continuousUpdating) {
+      this.toggleContinuousUpdating(false)
+    }
+  }
+  componentDidMount() {
+    this.intervalId = setInterval(() => {
+      const filteredData = [...data].filter(
+        () => (Math.random() > 0.5 ? true : false)
+      )
+      this.setState({
+        data: filteredData
+      })
+    }, 1500)
+  }
   render() {
     return (
-      <Flipper flipKey={`${this.state.filter}-${this.state.sort}`}>
+      <Flipper
+        flipKey={`${this.state.filter ? this.state.filter : ""}-${
+          this.state.sort
+        }-${JSON.stringify(this.state.data)}`}
+        ease={"easeOutExpo"}
+      >
         <main className="list-example">
-          <fieldset>
-            <legend>Sort</legend>
-            <label
-              onClick={() => {
-                this.setState({
-                  sort: "ascending"
-                })
-              }}
-            >
-              <input
-                type="radio"
-                name="sort"
-                checked={this.state.sort === "ascending"}
-              />
-              ascending
-            </label>
-            <label
-              onClick={() => {
-                this.setState({
-                  sort: "descending"
-                })
-              }}
-            >
-              <input type="radio" name="sort" />
-              descending
-            </label>
-            <label
-              onClick={() => {
-                this.setState({
-                  sort: "color"
-                })
-              }}
-            >
-              <input type="radio" name="sort" />
-              by color
-            </label>
-          </fieldset>
+          <h1>
+            Continually updating filtered list with appear and exit animations
+          </h1>
+          <p>
+            This is a stress test to show continuously interrupted, staggered
+            animations
+          </p>
+          <div className="list-flex">
+            <fieldset>
+              <legend>Sort</legend>
+              <label
+                onClick={() => {
+                  this.setState({
+                    sort: "ascending"
+                  })
+                }}
+              >
+                <input
+                  type="radio"
+                  name="sort"
+                  checked={this.state.sort === "ascending"}
+                />
+                ascending
+              </label>
+              <label
+                onClick={() => {
+                  this.setState({
+                    sort: "descending"
+                  })
+                }}
+              >
+                <input
+                  type="radio"
+                  name="sort"
+                  checked={this.state.sort === "descending"}
+                />
+                descending
+              </label>
+              <label
+                onClick={() => {
+                  this.setState({
+                    sort: "color"
+                  })
+                }}
+              >
+                <input type="radio" name="sort" />
+                by color
+              </label>
+            </fieldset>
 
-          <fieldset>
-            <legend>Filter</legend>
-            {colors.map(color => {
-              return (
-                <label
-                  onClick={() => {
-                    this.setState({
-                      filter: color
-                    })
-                  }}
-                >
-                  <input type="radio" name="color-filter" />
-                  <span
-                    className="colorLabel"
-                    style={{ backgroundColor: color }}
-                  />
-                </label>
-              )
-            })}
-            <label
-              onClick={prevState => {
-                this.setState({
-                  filter: undefined
-                })
+            <fieldset>
+              <legend>Filter</legend>
+              {colors.map(color => {
+                return (
+                  <label
+                    onClick={() => {
+                      this.setState({
+                        filter: color
+                      })
+                    }}
+                  >
+                    <input type="radio" name="color-filter" />
+                    <span
+                      className="colorLabel"
+                      style={{ backgroundColor: color }}
+                    />
+                  </label>
+                )
+              })}
+              <label
+                onClick={() => {
+                  this.setState({
+                    filter: undefined
+                  })
+                }}
+              >
+                <input
+                  type="radio"
+                  name="color-filter"
+                  checked={!this.state.filter}
+                />
+                <span>all colors</span>
+              </label>
+            </fieldset>
+          </div>
+
+          <div>
+            <button
+              className="list-toggle-updating"
+              onClick={() => {
+                this.setState(prevState => ({
+                  continuousUpdating: !prevState.continuousUpdating
+                }))
               }}
             >
-              <input
-                type="radio"
-                name="color-filter"
-                checked={!this.state.filter}
-              />
-              <span>all colors</span>
-            </label>
-          </fieldset>
+              {this.state.continuousUpdating
+                ? "Cancel update interval"
+                : "Start continuously updating list"}
+            </button>
+          </div>
 
           <ul className="list">
-            {[...data]
+            {[...this.state.data]
               .sort((a, b) => {
                 if (this.state.sort === "ascending") {
                   return a.key - b.key
@@ -133,7 +210,7 @@ class ListExample extends Component {
                     onAppear={onElementAppear}
                     onExit={onExit}
                     key={`item-${key}`}
-                    delay={i => i * 50}
+                    delay={i * 50}
                   >
                     <li className="listItem" style={{ backgroundColor: color }}>
                       {key}

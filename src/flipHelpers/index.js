@@ -103,45 +103,88 @@ const createApplyStylesFunc = ({
   })
 }
 
-export const getEasingName = (flippedEase, flipperEase) => {
-  let easeToApply = flippedEase || flipperEase
-
-  if (!Tweenable.formulas[easeToApply]) {
-    const defaultEase = "easeOutExpo"
-    console.error(
-      `${easeToApply} was not recognized as a valid easing option, falling back to ${defaultEase}`
-    )
-    easeToApply = defaultEase
-  }
-  return easeToApply
-}
-
-export const getFlippedElementPositions = ({ element, removeTransforms }) => {
+export const getFlippedElementPositions = ({
+  element,
+  flipCallbacks,
+  inProgressAnimations,
+  beforeUpdate = false
+}) => {
   const flippedElements = toArray(element.querySelectorAll("[data-flip-id]"))
-
   const inverseFlippedElements = toArray(
-    element.querySelectorAll("[data-inverse-flip-id]")
+    element.querySelectorAll("[data-inverse-flip-id")
   )
-  // allow fully interruptible animations by stripping inline style transforms
-  // if we are reading the final position of the element
-  // this should also fix the issue if rematrix applied an inline style
-  // to a previous state of an element (and we are tweening a single element,
-  // e.g. if a class if being toggled)
-  if (removeTransforms) {
-    flippedElements.concat(inverseFlippedElements).forEach(el => {
-      if (el.style.transform) el.style.transform = ""
-    })
+
+  const childIdsToParentBCRs = {}
+
+  // this is being called at getSnapshotBeforeUpdate
+  if (beforeUpdate) {
+    const parentBCRs = []
+    // this is for exit animations so we can re-insert exiting elements in the
+    // DOM later
+    flippedElements
+      .filter(
+        el =>
+          flipCallbacks &&
+          flipCallbacks[el.dataset.flipId] &&
+          flipCallbacks[el.dataset.flipId].onExit
+      )
+      .forEach(el => {
+        const parent = el.parentNode
+        let bcrIndex = parentBCRs.findIndex(n => n[0] === parent)
+        if (bcrIndex === -1) {
+          parentBCRs.push([parent, parent.getBoundingClientRect()])
+          bcrIndex = parentBCRs.length - 1
+        }
+        childIdsToParentBCRs[el.dataset.flipId] = parentBCRs[bcrIndex][1]
+      })
   }
-  return flippedElements
-    .map(child => [
-      child.dataset.flipId,
-      {
-        rect: child.getBoundingClientRect(),
-        opacity: parseFloat(window.getComputedStyle(child).opacity),
-        flipComponentId: child.dataset.flipComponentId
+  const flippedElementPositions = flippedElements
+    .map(child => {
+      let domData = {}
+      const childBCR = child.getBoundingClientRect()
+
+      if (
+        beforeUpdate &&
+        flipCallbacks &&
+        flipCallbacks[child.dataset.flipId] &&
+        flipCallbacks[child.dataset.flipId].onExit
+      ) {
+        const parentBCR = childIdsToParentBCRs[child.dataset.flipId]
+
+        Object.assign(domData, {
+          element: child,
+          parent: child.parentNode,
+          childPosition: {
+            top: childBCR.top - parentBCR.top,
+            left: childBCR.left - parentBCR.left,
+            width: childBCR.width,
+            height: childBCR.height
+          }
+        })
       }
-    ])
+
+      return [
+        child.dataset.flipId,
+        {
+          rect: childBCR,
+          opacity: parseFloat(window.getComputedStyle(child).opacity),
+          flipComponentId: child.dataset.flipComponentId,
+          domData
+        }
+      ]
+    })
     .reduce((acc, curr) => ({ ...acc, [curr[0]]: curr[1] }), {})
+
+  // do this at the very end since cancellation might cause some elements to be removed
+  if (beforeUpdate) {
+    flippedElements.concat(inverseFlippedElements).forEach(el => {
+      el.style.transform = ""
+      el.style.opacity = ""
+    })
+    cancelInProgressAnimations(inProgressAnimations)
+  }
+
+  return flippedElementPositions
 }
 
 export const rectInViewport = ({ top, bottom, left, right }) => {
@@ -153,34 +196,38 @@ export const rectInViewport = ({ top, bottom, left, right }) => {
   )
 }
 
+const cancelInProgressAnimations = inProgressAnimations => {
+  Object.keys(inProgressAnimations).forEach(id => {
+    if (inProgressAnimations[id].stop) inProgressAnimations[id].stop()
+  })
+}
+
 export const animateMove = ({
-  inProgressAnimations = {},
+  inProgressAnimations,
   cachedFlipChildrenPositions = {},
   flipCallbacks = {},
   containerEl,
   duration,
   ease,
   applyTransformOrigin,
-  spring
+  spring,
+  debug
 }) => {
   const body = document.querySelector("body")
+
   const newFlipChildrenPositions = getFlippedElementPositions({
     element: containerEl,
-    inProgressAnimations,
-    removeTransforms: true
+    flipCallbacks,
+    inProgressAnimations: undefined
   })
 
   const getElement = id => containerEl.querySelector(`*[data-flip-id="${id}"]`)
-
   const isFlipped = id =>
     cachedFlipChildrenPositions[id] && newFlipChildrenPositions[id]
 
-  const nonFlippedIds = Object.keys(newFlipChildrenPositions).filter(
-    id => !isFlipped(id)
-  )
-
-  // animate in any non-flipped elements that requested it
-  nonFlippedIds
+  // animate in any entering non-flipped elements that requested it
+  Object.keys(newFlipChildrenPositions)
+    .filter(id => !isFlipped(id))
     // filter to only brand new elements with an onAppear callback
     .filter(
       id =>
@@ -189,11 +236,18 @@ export const animateMove = ({
         flipCallbacks[id].onAppear
     )
     .forEach((id, i) => {
-      flipCallbacks[id].onAppear(getElement(id), i)
+      const element = getElement(id)
+      // kind of hacky since it ignores inverted children
+      // but they probably wont be used for appear transitions anyway
+      if (applyTransformOrigin) {
+        element.style.transformOrigin = "0 0"
+      }
+      flipCallbacks[id].onAppear(element, i)
     })
 
-  // handle exiting elements
-  nonFlippedIds
+  // animate out any exiting non-flipped elements that requested it
+  Object.keys(cachedFlipChildrenPositions)
+    .filter(id => !isFlipped(id))
     // filter to only exited elements with an onExit callback
     .filter(
       id =>
@@ -202,8 +256,40 @@ export const animateMove = ({
         flipCallbacks[id].onExit
     )
     .forEach((id, i) => {
-      debugger // eslint-disable-line
+      const {
+        domData: {
+          element,
+          parent,
+          childPosition: { top, left, width, height }
+        }
+      } = cachedFlipChildrenPositions[id]
+      // insert back into dom
+      if (getComputedStyle(parent).position === "static") {
+        parent.style.position = "relative"
+      }
+      element.style.position = "absolute"
+      element.style.top = top + "px"
+      element.style.left = left + "px"
+      element.style.height = height + "px"
+      element.style.width = width + "px"
+      parent.appendChild(element)
+
+      const stop = () => {
+        try {
+          parent.removeChild(element)
+        } catch (DOMException) {
+          //hmm
+        }
+      }
+      flipCallbacks[id].onExit(element, i, stop)
+      inProgressAnimations[id] = { stop }
     })
+
+  if (debug) {
+    console.error(
+      'The "debug" prop is set to true. All FLIP animations will return at the beginning of the transition.'
+    )
+  }
 
   Object.keys(newFlipChildrenPositions)
     .filter(isFlipped)
@@ -228,6 +314,10 @@ export const animateMove = ({
       }
 
       const element = getElement(id)
+
+      // this could happen if we are rapidly adding & removing elements
+      if (!element) return
+
       const flipConfig = JSON.parse(element.dataset.flipConfig)
 
       const flipStartId = cachedFlipChildrenPositions[id].flipComponentId
@@ -241,20 +331,6 @@ export const animateMove = ({
         )
       )
         return
-
-      if (inProgressAnimations[id]) {
-        inProgressAnimations[id].stop()
-        // if using a spring, this already called onComplete
-        // and deleted the object, but if using a tween we have to
-        // do it here
-        if (
-          inProgressAnimations[id] &&
-          isFunction(inProgressAnimations[id].onComplete)
-        ) {
-          inProgressAnimations[id].onComplete()
-        }
-        delete inProgressAnimations[id]
-      }
 
       const currentTransform = Rematrix.parse(
         getComputedStyle(element).transform
@@ -277,12 +353,10 @@ export const animateMove = ({
 
       if (flipConfig.scale) {
         transformsArray.push(
-          Rematrix.scaleX(prevRect.width / Math.max(currentRect.width, 0.0001))
+          Rematrix.scaleX(prevRect.width / Math.max(currentRect.width, 0.01))
         )
         transformsArray.push(
-          Rematrix.scaleY(
-            prevRect.height / Math.max(currentRect.height, 0.0001)
-          )
+          Rematrix.scaleY(prevRect.height / Math.max(currentRect.height, 0.01))
         )
       }
 
@@ -332,6 +406,8 @@ export const animateMove = ({
         opacity: fromVals.opacity
       })
 
+      if (debug) return
+
       if (flipCallbacks[id] && flipCallbacks[id].onStart)
         flipCallbacks[id].onStart(element, flipStartId)
 
@@ -355,6 +431,8 @@ export const animateMove = ({
 
       let stop
 
+      // this should be called when animation ends naturally
+      // but also when it is interrupted
       const onAnimationEnd = () => {
         delete inProgressAnimations[id]
         isFunction(onComplete) && onComplete()
@@ -379,10 +457,9 @@ export const animateMove = ({
         stop = tweenUpdate({
           fromVals,
           toVals,
-          duration: parseFloat(flipConfig.flipDuration || duration),
+          duration: parseFloat(flipConfig.duration || duration),
           easing: flipConfig.ease || ease,
           delay,
-          element,
           getOnUpdateFunc,
           onAnimationEnd
         })

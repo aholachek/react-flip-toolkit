@@ -16,8 +16,21 @@
 | Enable nested animations                       |        ❌         |        ❌         |          ✅          |
 | Easy to set up & beginner-friendly             |        ✅         |        ✅         |          🤷          |
 
-### Demos
+  - [Demos](#demos)
+  - [Why use React-Flip-Toolkit?](#why-use-react-flip-toolkit)
+  - [Quick start](#quick-start)
+  - [Simplest example: Tweening a single element](#simplest-example-tweening-a-single-element)
+  - [More useful but slightly less simple: Transitioning two elements](#more-useful-but-slightly-less-simple-transitioning-two-elements)
+  - [The Components](#the-components)
+    - [1. Flipper component](#1-flipper-component)
+    - [2. Flipped component](#2-flipped-component)
+      - [By default the FLIP-ped elements' translate, scale, and opacity properties are all transformed. However, certain effects require more control so if you specify any of these props, _only the specified attribute(s) will be tweened_:](#by-default-the-flip-ped-elements-translate-scale-and-opacity-properties-are-all-transformed-however-certain-effects-require-more-control-so-if-you-specify-any-of-these-props-only-the-specified-attributes-will-be-tweened)
+      - [Advanced and usually unnecessary:](#advanced-and-usually-unnecessary)
+  - [Scale transitions made eas(ier)](#scale-transitions-made-easier)
+  - [Other details](#other-details)
+  - [FAQ](#faq)
 
+### Demos
 <p>
 <a href="https://literate-fly.surge.sh/photos">
   <img src="./example-assets/photogrid.gif" width='600px' alt='an animation showing click to expand a photo' />
