@@ -111,7 +111,7 @@ export const getFlippedElementPositions = ({
 }) => {
   const flippedElements = toArray(element.querySelectorAll("[data-flip-id]"))
   const inverseFlippedElements = toArray(
-    element.querySelectorAll("[data-inverse-flip-id")
+    element.querySelectorAll("[data-inverse-flip-id]")
   )
 
   const childIdsToParentBCRs = {}

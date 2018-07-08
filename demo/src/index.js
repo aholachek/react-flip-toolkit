@@ -8,7 +8,6 @@ import SidebarExample from "./SidebarExample"
 import PhotosExample from "./PhotoGridExample"
 import ListExample from "./ListExample"
 import FlipMove from "./FlipMove"
-import RotateExample from "./RotateExample"
 
 class Demo extends Component {
   render() {
@@ -19,7 +18,6 @@ class Demo extends Component {
     else if (window.location.pathname === "/sidebar") return <SidebarExample />
     else if (window.location.pathname === "/photos") return <PhotosExample />
     else if (window.location.pathname === "/list") return <ListExample />
-    else if (window.location.pathname === "/rotate") return <RotateExample />
     else if (window.location.pathname === "/flip-move") return <FlipMove />
     else
       return (
@@ -47,9 +45,6 @@ class Demo extends Component {
             </li>
             <li>
               <a href="/flip-move">Flip Move</a>
-            </li>
-            <li>
-              <a href="/rotate">Rotate</a>
             </li>
           </ul>
         </nav>

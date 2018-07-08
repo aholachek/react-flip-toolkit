@@ -33,9 +33,9 @@ export default class CardsExample extends Component {
       <Flipper
         flipKey={this.state.focusedIndex}
         spring={{
-          stiffness: 200,
-          damping: this.state.speed === "normal" ? 15 : 80,
-          mass: this.state.speed === "normal" ? 1 : 150
+          stiffness: 600,
+          damping: this.state.speed === "normal" ? 30 : 200,
+          mass: this.state.speed === "normal" ? 1 : 25
         }}
       >
         <div className="header" ref={el => (this.el = el)}>

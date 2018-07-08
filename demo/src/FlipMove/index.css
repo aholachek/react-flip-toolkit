@@ -1,6 +1,5 @@
 .fm-example {
   padding: 2rem;
-  background-color: #ececec;
   min-height: 100vh;
 }
 
@@ -13,31 +12,42 @@
   margin: 0 auto;
 }
 
-.fm-grid {
+.fm-grid>ul {
   list-style-type: none;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
   grid-gap: 1rem;
-  margin: 0;
   padding: 0;
-  margin: 2rem auto;
+  margin: 0;
 }
 
 .fm-list {
-  list-style-type: none;
   grid-gap: 1rem;
-  margin: 0;
-  padding: 0;
   margin: 2rem auto;
 }
 
-.fm-list,
-.fm-grid {
+.fm-grid,
+.fm-list {
+  background-color: #ececec;
+  padding: 1rem;
+  border-radius: 3px;
   margin-top: 2rem;
+}
+
+.fm-list>ul,
+.fm-grid>ul {
+  width: 100%;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
 }
 
 .fm-list .fm-item {
   margin-bottom: 1rem;
+}
+
+.fm-list .fm-item:last-of-type {
+  margin-bottom: 0;
 }
 
 .fm-item {
@@ -46,6 +56,7 @@
   background-color: white;
   overflow: hidden;
   will-change: transform;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.0784313725490196)
 }
 
 .fm-item h3 {
@@ -54,6 +65,9 @@
 
 .fm-item>div {
   padding: 0 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
 .fm-item h3 {
@@ -65,18 +79,12 @@
   margin-top: .5rem;
 }
 
-.fm-item>div {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
 .fm-remove {
   padding: 1rem;
   border: 0;
   background: transparent;
   cursor: pointer;
-  font-size: 2rem;
+  font-size: 2.2rem;
   color: #ff4057;
 }
 

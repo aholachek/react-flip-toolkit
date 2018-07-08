@@ -135,67 +135,73 @@ class ListExample extends Component {
             )}
           </div>
 
-          <ul className={this.state.type === "grid" ? "fm-grid" : "fm-list"}>
-            {[...data]
-              .filter(d => !this.state.filteredIds.includes(d.id))
-              .sort((a, b) => {
-                if (this.state.sort === "ascending") {
-                  return a.id - b.id
-                } else {
-                  return b.id - a.id
-                }
-              })
-              .map(({ title, id }, i) => {
-                const flipId = `item-${id}`
-                const delay = i * 30
-                return (
-                  <Flipped
-                    flipId={flipId}
-                    onAppear={onElementAppear(this.state.type)}
-                    onExit={onExit(this.state.type)}
-                    key={flipId}
-                    delay={delay}
-                  >
-                    <li className="fm-item">
-                      <Flipped inverseFlipId={flipId}>
-                        <div>
-                          <Flipped
-                            flipId={`${flipId}-title`}
-                            translate
-                            delay={delay}
-                          >
-                            <div>
-                              <h3>{title}</h3>
-                              <p>{title}</p>
-                            </div>
-                          </Flipped>
-                          <Flipped
-                            flipId={`${flipId}-button`}
-                            translate
-                            delay={delay}
-                          >
-                            <button
-                              className="fm-remove"
-                              onClick={() => {
-                                this.setState(prevState => {
-                                  return {
-                                    filteredIds: prevState.filteredIds.concat(
-                                      id
-                                    )
-                                  }
-                                })
-                              }}
-                            >
-                              &times;
-                            </button>
-                          </Flipped>
-                        </div>
-                      </Flipped>
-                    </li>
-                  </Flipped>
-                )
-              })}
-          </ul>
+          <Flipped flipId="list" delay={75}>
+            <div className={this.state.type === "grid" ? "fm-grid" : "fm-list"}>
+              <Flipped inverseFlipId="list">
+                <ul className="list-contents">
+                  {[...data]
+                    .filter(d => !this.state.filteredIds.includes(d.id))
+                    .sort((a, b) => {
+                      if (this.state.sort === "ascending") {
+                        return a.id - b.id
+                      } else {
+                        return b.id - a.id
+                      }
+                    })
+                    .map(({ title, id }, i) => {
+                      const flipId = `item-${id}`
+                      const delay = i * 30
+                      return (
+                        <Flipped
+                          flipId={flipId}
+                          onAppear={onElementAppear(this.state.type)}
+                          onExit={onExit(this.state.type)}
+                          key={flipId}
+                          delay={delay}
+                        >
+                          <li className="fm-item">
+                            <Flipped inverseFlipId={flipId}>
+                              <div>
+                                <Flipped
+                                  flipId={`${flipId}-title`}
+                                  translate
+                                  delay={delay}
+                                >
+                                  <div>
+                                    <h3>{title}</h3>
+                                    <p>{title}</p>
+                                  </div>
+                                </Flipped>
+                                <Flipped
+                                  flipId={`${flipId}-button`}
+                                  translate
+                                  delay={delay}
+                                >
+                                  <button
+                                    className="fm-remove"
+                                    onClick={() => {
+                                      this.setState(prevState => {
+                                        return {
+                                          filteredIds: prevState.filteredIds.concat(
+                                            id
+                                          )
+                                        }
+                                      })
+                                    }}
+                                  >
+                                    &times;
+                                  </button>
+                                </Flipped>
+                              </div>
+                            </Flipped>
+                          </li>
+                        </Flipped>
+                      )
+                    })}
+                </ul>
+              </Flipped>
+            </div>
+          </Flipped>
         </Flipper>
       </div>
     )

@@ -5,7 +5,7 @@ import "./index.css"
 
 const colors = ["#ff4f66", "#7971ea", "#5900d8"]
 
-const data = Array.from(Array(50).keys()).map(i => ({
+const data = Array.from(Array(30).keys()).map(i => ({
   color: colors[i % colors.length],
   key: i
 }))
@@ -29,11 +29,6 @@ const onExit = (el, index, removeElement) => {
     delay: index * 50,
     easing: "easeOutSine"
   }).pause
-
-  return () => {
-    // el.style.opacity = ""
-    // removeElement()
-  }
 }
 
 class ListExample extends Component {
@@ -90,7 +85,7 @@ class ListExample extends Component {
           </h1>
           <p>
             This is a stress test to show continuously interrupted, staggered
-            animations
+            animations. The top and bottom animations should be identical.
           </p>
           <div className="list-flex">
             <fieldset>
@@ -207,6 +202,40 @@ class ListExample extends Component {
                 return (
                   <Flipped
                     flipId={`item-${key}`}
+                    onAppear={onElementAppear}
+                    onExit={onExit}
+                    key={`item-${key}`}
+                    delay={i * 50}
+                  >
+                    <li className="listItem" style={{ backgroundColor: color }}>
+                      {key}
+                    </li>
+                  </Flipped>
+                )
+              })}
+          </ul>
+
+          <ul className="list">
+            {[...this.state.data]
+              .sort((a, b) => {
+                if (this.state.sort === "ascending") {
+                  return a.key - b.key
+                } else if (this.state.sort === "descending") {
+                  return b.key - a.key
+                } else if (this.state.sort === "color") {
+                  if (a.color < b.color) return -1
+                  else if (b.color < a.color) return 1
+                  return 0
+                }
+              })
+              .filter(d => {
+                if (!this.state.filter) return true
+                return d.color !== this.state.filter
+              })
+              .map(({ color, key }, i) => {
+                return (
+                  <Flipped
+                    flipId={`item-2-${key}`}
                     onAppear={onElementAppear}
                     onExit={onExit}
                     key={`item-${key}`}

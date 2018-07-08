@@ -13,13 +13,15 @@
   grid-template-columns: repeat(auto-fill, minmax(5rem, 1fr));
   grid-gap: 1rem;
   margin: 0;
-  padding: 0;
   margin: 2rem auto;
+}
+
+.list-example .list:nth-of-type(2) {
+  margin-top: 4rem;
 }
 
 .list-example .listItem {
   height: 2.5rem;
-  display: block;
   cursor: pointer;
   display: flex;
   justify-content: center;
