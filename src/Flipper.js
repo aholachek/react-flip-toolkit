@@ -1,6 +1,9 @@
 import React, { Component, createContext } from "react"
 import PropTypes from "prop-types"
-import { animateMove, getFlippedElementPositions } from "./flipHelpers"
+import {
+  animateMove,
+  getFlippedElementPositionsBeforeUpdate
+} from "./flipHelpers"
 
 export const FlipContext = createContext("flip")
 
@@ -45,11 +48,10 @@ class Flipper extends Component {
 
   getSnapshotBeforeUpdate(prevProps) {
     if (prevProps.flipKey !== this.props.flipKey) {
-      return getFlippedElementPositions({
+      return getFlippedElementPositionsBeforeUpdate({
         element: this.el,
         // if onExit callbacks exist here, we'll cache the DOM node
         flipCallbacks: this.flipCallbacks,
-        beforeUpdate: true,
         inProgressAnimations: this.inProgressAnimations
       })
     }

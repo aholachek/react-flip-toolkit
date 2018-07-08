@@ -102,12 +102,11 @@ const createApplyStylesFunc = ({
     flipEndId
   })
 }
-
-export const getFlippedElementPositions = ({
+// called in getSnapshotBeforeUpdate
+export const getFlippedElementPositionsBeforeUpdate = ({
   element,
   flipCallbacks,
-  inProgressAnimations,
-  beforeUpdate = false
+  inProgressAnimations
 }) => {
   const flippedElements = toArray(element.querySelectorAll("[data-flip-id]"))
   const inverseFlippedElements = toArray(
@@ -115,36 +114,32 @@ export const getFlippedElementPositions = ({
   )
 
   const childIdsToParentBCRs = {}
+  const parentBCRs = []
+  // this is for exit animations so we can re-insert exiting elements in the
+  // DOM later
+  flippedElements
+    .filter(
+      el =>
+        flipCallbacks &&
+        flipCallbacks[el.dataset.flipId] &&
+        flipCallbacks[el.dataset.flipId].onExit
+    )
+    .forEach(el => {
+      const parent = el.parentNode
+      let bcrIndex = parentBCRs.findIndex(n => n[0] === parent)
+      if (bcrIndex === -1) {
+        parentBCRs.push([parent, parent.getBoundingClientRect()])
+        bcrIndex = parentBCRs.length - 1
+      }
+      childIdsToParentBCRs[el.dataset.flipId] = parentBCRs[bcrIndex][1]
+    })
 
-  // this is being called at getSnapshotBeforeUpdate
-  if (beforeUpdate) {
-    const parentBCRs = []
-    // this is for exit animations so we can re-insert exiting elements in the
-    // DOM later
-    flippedElements
-      .filter(
-        el =>
-          flipCallbacks &&
-          flipCallbacks[el.dataset.flipId] &&
-          flipCallbacks[el.dataset.flipId].onExit
-      )
-      .forEach(el => {
-        const parent = el.parentNode
-        let bcrIndex = parentBCRs.findIndex(n => n[0] === parent)
-        if (bcrIndex === -1) {
-          parentBCRs.push([parent, parent.getBoundingClientRect()])
-          bcrIndex = parentBCRs.length - 1
-        }
-        childIdsToParentBCRs[el.dataset.flipId] = parentBCRs[bcrIndex][1]
-      })
-  }
   const flippedElementPositions = flippedElements
     .map(child => {
       let domData = {}
       const childBCR = child.getBoundingClientRect()
 
       if (
-        beforeUpdate &&
         flipCallbacks &&
         flipCallbacks[child.dataset.flipId] &&
         flipCallbacks[child.dataset.flipId].onExit
@@ -176,15 +171,29 @@ export const getFlippedElementPositions = ({
     .reduce((acc, curr) => ({ ...acc, [curr[0]]: curr[1] }), {})
 
   // do this at the very end since cancellation might cause some elements to be removed
-  if (beforeUpdate) {
-    flippedElements.concat(inverseFlippedElements).forEach(el => {
-      el.style.transform = ""
-      el.style.opacity = ""
-    })
-    cancelInProgressAnimations(inProgressAnimations)
-  }
+  flippedElements.concat(inverseFlippedElements).forEach(el => {
+    el.style.transform = ""
+    el.style.opacity = ""
+  })
+  cancelInProgressAnimations(inProgressAnimations)
 
   return flippedElementPositions
+}
+
+// called in animateMove (which is called in componentDidUpdate)
+export const getFlippedElementPositionsAfterUpdate = ({ element }) => {
+  return toArray(element.querySelectorAll("[data-flip-id]"))
+    .map(child => {
+      return [
+        child.dataset.flipId,
+        {
+          rect: child.getBoundingClientRect(),
+          opacity: parseFloat(window.getComputedStyle(child).opacity),
+          domData: {}
+        }
+      ]
+    })
+    .reduce((acc, curr) => ({ ...acc, [curr[0]]: curr[1] }), {})
 }
 
 export const rectInViewport = ({ top, bottom, left, right }) => {
@@ -199,6 +208,7 @@ export const rectInViewport = ({ top, bottom, left, right }) => {
 const cancelInProgressAnimations = inProgressAnimations => {
   Object.keys(inProgressAnimations).forEach(id => {
     if (inProgressAnimations[id].stop) inProgressAnimations[id].stop()
+    delete inProgressAnimations[id]
   })
 }
 
@@ -215,10 +225,8 @@ export const animateMove = ({
 }) => {
   const body = document.querySelector("body")
 
-  const newFlipChildrenPositions = getFlippedElementPositions({
-    element: containerEl,
-    flipCallbacks,
-    inProgressAnimations: undefined
+  const newFlipChildrenPositions = getFlippedElementPositionsAfterUpdate({
+    element: containerEl
   })
 
   const getElement = id => containerEl.querySelector(`*[data-flip-id="${id}"]`)
@@ -270,6 +278,7 @@ export const animateMove = ({
       element.style.position = "absolute"
       element.style.top = top + "px"
       element.style.left = left + "px"
+      // taken out of the dom flow, the element might have lost these dimensions
       element.style.height = height + "px"
       element.style.width = width + "px"
       parent.appendChild(element)
@@ -278,7 +287,7 @@ export const animateMove = ({
         try {
           parent.removeChild(element)
         } catch (DOMException) {
-          //hmm
+          // this means the element is already gone
         }
       }
       flipCallbacks[id].onExit(element, i, stop)
@@ -291,6 +300,7 @@ export const animateMove = ({
     )
   }
 
+  // finally, let's FLIP the rest
   Object.keys(newFlipChildrenPositions)
     .filter(isFlipped)
     .forEach(id => {
@@ -315,7 +325,7 @@ export const animateMove = ({
 
       const element = getElement(id)
 
-      // this could happen if we are rapidly adding & removing elements
+      // this might happen if we are rapidly adding & removing elements(?)
       if (!element) return
 
       const flipConfig = JSON.parse(element.dataset.flipConfig)
@@ -448,10 +458,10 @@ export const animateMove = ({
         stop = springUpdate({
           fromVals,
           toVals,
+          springConfig: flipConfig.spring || spring,
           delay,
           getOnUpdateFunc,
-          onAnimationEnd,
-          springConfig: flipConfig.spring || spring
+          onAnimationEnd
         })
       } else {
         stop = tweenUpdate({
