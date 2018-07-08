@@ -1,4 +1,4 @@
-import { Tweenable } from "shifty"
+import { Tweenable } from "shifty/src/tweenable"
 
 // animejs' influence
 Tweenable.formulas.easeOutElastic = function(t) {

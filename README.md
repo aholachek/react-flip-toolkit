@@ -54,6 +54,7 @@
 </a>
 </p>
 
+- [Updating list (React-flip-move example clone)](https://literate-fly.surge.sh/flip-move)
 - [Simplest possible example](https://codepen.io/aholachek/pen/RJvPjL)
 - [Guitar shop](https://literate-fly.surge.sh/guitar)
 - [Absurd, overly complex, nested example](https://literate-fly.surge.sh/cards)
@@ -258,9 +259,9 @@ But for many/most use cases, you'll want to additionally specify the `scale` pro
 
 ## Library details
 
-- ~11kb minified and gzipped
+- ~11.4kb minified and gzipped
 - React 16+
-- Tested in latest Chrome, Firefox, Safari, and Edge, with acceptable performance in IE 11
+- Tested in latest Chrome, Firefox, Safari, and Edge. Acceptable performance in IE 11.
 
 ## FAQ
 
