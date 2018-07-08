@@ -283,6 +283,8 @@ export const animateMove = ({
       })
     })
 
+  const fragmentTuples = []
+  const exitCallbacks = []
   // onExit for non-flipped elements
   Object.keys(cachedFlipChildrenPositions)
     .filter(id => !isFlipped(id))
@@ -311,7 +313,14 @@ export const animateMove = ({
       // taken out of the dom flow, the element might have lost these dimensions
       element.style.height = height + "px"
       element.style.width = width + "px"
-      parent.appendChild(element)
+      let fragmentTuple = fragmentTuples.filter(t => t[0] === parent)[0]
+      if (!fragmentTuple) {
+        fragmentTuple = [parent, document.createDocumentFragment()]
+        fragmentTuples.push(fragmentTuple)
+      }
+      fragmentTuple[1].appendChild(element)
+
+      exitingElements.push(element)
 
       const stop = () => {
         try {
@@ -321,10 +330,18 @@ export const animateMove = ({
           // the element is already gone
         }
       }
-      flipCallbacks[id].onExit(element, i, stop)
+      exitCallbacks.push(() => flipCallbacks[id].onExit(element, i, stop))
       inProgressAnimations[id] = { stop }
-      exitingElements.push(element)
     })
+
+  // now append all the fragments from the onExit callbacks (we do it this way for performance)
+  fragmentTuples.forEach(t => {
+    const parent = t[0]
+    const fragment = t[1]
+    parent.appendChild(fragment)
+  })
+
+  exitCallbacks.forEach(c => c())
 
   // if nothing exited, just call onDelayedAppear callbacks immediately
   if (exitingElements.length === 0) {

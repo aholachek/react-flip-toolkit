@@ -21,6 +21,7 @@ const onElementAppear = (el, index) => {
 
 const onExit = (el, index, removeElement) => {
   el.style.transformOrigin = "50% 50%"
+  el.style.zIndex = 0
   anime({
     targets: el,
     duration: 500,
@@ -197,7 +198,7 @@ class ListExample extends Component {
                     onAppear={onElementAppear}
                     onExit={onExit}
                     key={`item-${key}`}
-                    delay={i * 50}
+                    delay={i * 25}
                   >
                     <li className="listItem" style={{ backgroundColor: color }}>
                       {key}
@@ -233,7 +234,7 @@ class ListExample extends Component {
                     onDelayedAppear={onElementAppear}
                     onExit={onExit}
                     key={`item-${key}`}
-                    delay={i * 50}
+                    delay={i * 25}
                   >
                     <li className="listItem" style={{ backgroundColor: color }}>
                       {key}
