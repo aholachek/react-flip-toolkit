@@ -160,38 +160,27 @@ class ListExample extends Component {
                           delay={delay}
                         >
                           <li className="fm-item">
-                            <Flipped inverseFlipId={flipId}>
+                            <Flipped inverseFlipId={flipId} scale>
                               <div>
-                                <Flipped
-                                  flipId={`${flipId}-title`}
-                                  translate
-                                  delay={delay}
+                                <div>
+                                  <h3>{title}</h3>
+                                  <p>{title}</p>
+                                </div>
+
+                                <button
+                                  className="fm-remove"
+                                  onClick={() => {
+                                    this.setState(prevState => {
+                                      return {
+                                        filteredIds: prevState.filteredIds.concat(
+                                          id
+                                        )
+                                      }
+                                    })
+                                  }}
                                 >
-                                  <div>
-                                    <h3>{title}</h3>
-                                    <p>{title}</p>
-                                  </div>
-                                </Flipped>
-                                <Flipped
-                                  flipId={`${flipId}-button`}
-                                  translate
-                                  delay={delay}
-                                >
-                                  <button
-                                    className="fm-remove"
-                                    onClick={() => {
-                                      this.setState(prevState => {
-                                        return {
-                                          filteredIds: prevState.filteredIds.concat(
-                                            id
-                                          )
-                                        }
-                                      })
-                                    }}
-                                  >
-                                    &times;
-                                  </button>
-                                </Flipped>
+                                  &times;
+                                </button>
                               </div>
                             </Flipped>
                           </li>

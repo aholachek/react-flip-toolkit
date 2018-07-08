@@ -10,10 +10,12 @@
 .list-example .list {
     list-style-type: none;
     display: grid;
+    align-content: start;
     grid-template-columns: repeat(auto-fill, minmax(5rem, 1fr));
     grid-gap: 1rem;
     margin: 0;
     margin: 2rem auto;
+    min-height: 15rem;
 }
 
 .list-example .listItem {
@@ -52,7 +54,6 @@
     0% {
         opacity: 0;
     }
-
     100% {
         opacity: 1;
     }

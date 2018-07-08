@@ -284,7 +284,11 @@ export const animateMove = ({
     })
 
   const fragmentTuples = []
+  // we need to wait to trigger onExit callbacks until the elements are
+  // back in the DOM, so store them here and call them after the fragments
+  // have been appended
   const exitCallbacks = []
+
   // onExit for non-flipped elements
   Object.keys(cachedFlipChildrenPositions)
     .filter(id => !isFlipped(id))
@@ -334,7 +338,8 @@ export const animateMove = ({
       inProgressAnimations[id] = { stop }
     })
 
-  // now append all the fragments from the onExit callbacks (we do it this way for performance)
+  // now append all the fragments from the onExit callbacks
+  // (we use fragments for performance)
   fragmentTuples.forEach(t => {
     const parent = t[0]
     const fragment = t[1]

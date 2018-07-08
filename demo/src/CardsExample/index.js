@@ -17,17 +17,6 @@ export default class CardsExample extends Component {
     })
   }
 
-  componentDidMount() {
-    // setInterval(() => {
-    //   const int = Math.ceil(Math.random() * 5)
-    //   this.setState({
-    //     userData: userData.filter((d, i) => {
-    //       return i % int === 0
-    //     })
-    //   })
-    // }, 50)
-  }
-
   render() {
     return (
       <Flipper
@@ -36,7 +25,7 @@ export default class CardsExample extends Component {
         ease="easeOutElastic"
       >
         <div className="header" ref={el => (this.el = el)}>
-          <h1>react-flip-toolkit demo</h1>
+          <h1>Avatar cards</h1>
           <p>
             An example made somewhat needlessly complicated in order to show off
             some advanced features:

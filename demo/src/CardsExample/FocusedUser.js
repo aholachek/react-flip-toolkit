@@ -33,7 +33,7 @@ class FocusedUser extends Component {
           onStart={this.hideElements}
           onComplete={this.animateIn}
           componentId="focusedUser"
-          duration={duration}
+          // duration={duration}
         >
           <div
             className="gridItem gridItemFocused"
@@ -56,8 +56,7 @@ class FocusedUser extends Component {
                   <Flipped
                     flipId={`${parentFlipId}-avatar`}
                     componentId="focusedUserAvatar"
-                    ease="easeInSine"
-                    duration={duration}
+                    // duration={duration}
                   >
                     <img
                       src={data.avatar}
@@ -75,7 +74,7 @@ class FocusedUser extends Component {
                   <Flipped
                     flipId={`${parentFlipId}-background`}
                     componentId="focusedUserBackground"
-                    duration={duration}
+                    // duration={duration}
                   >
                     <div
                       className="gridItemBackground"

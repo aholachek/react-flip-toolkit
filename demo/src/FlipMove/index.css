@@ -89,8 +89,8 @@
 }
 
 .fm-show-all {
-  padding: .25rem .5rem;
-  margin-top: 1rem;
+  padding: 0 1rem;
+  margin-top: 1.5rem;
   background-color: #240041;
   color: white;
   font-weight: bold;
