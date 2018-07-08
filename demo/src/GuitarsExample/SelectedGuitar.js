@@ -40,8 +40,7 @@ class SelectedGuitar extends Component {
         >
           <img
             className="details__img"
-            src={`https://tympanus.net/Development/ExpandingGridItemAnimation/img/${index +
-              1}.png`}
+            src={require(`./img/${index + 1}.png`)}
           />
         </Flipped>
         <h2 className="details__title" data-fade-in>

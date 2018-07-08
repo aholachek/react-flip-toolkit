@@ -36,7 +36,7 @@ class ListExample extends Component {
     filter: undefined,
     sort: "ascending",
     data: [...data],
-    continuousUpdating: true
+    continuousUpdating: false
   }
 
   toggleContinuousUpdating = update => {
@@ -61,16 +61,7 @@ class ListExample extends Component {
       this.toggleContinuousUpdating(false)
     }
   }
-  componentDidMount() {
-    this.intervalId = setInterval(() => {
-      const filteredData = [...data].filter(
-        () => (Math.random() > 0.5 ? true : false)
-      )
-      this.setState({
-        data: filteredData
-      })
-    }, 1500)
-  }
+
   render() {
     return (
       <Flipper
@@ -85,7 +76,8 @@ class ListExample extends Component {
           </h1>
           <p>
             This is a stress test to show continuously interrupted, staggered
-            animations. The top and bottom animations should be identical.
+            animations. The top and bottom animations should be identical except
+            for having different onAppear animations.
           </p>
           <div className="list-flex">
             <fieldset>
@@ -180,7 +172,7 @@ class ListExample extends Component {
                 : "Start continuously updating list"}
             </button>
           </div>
-
+          <h2>Regular onAppear</h2>
           <ul className="list">
             {[...this.state.data]
               .sort((a, b) => {
@@ -215,6 +207,8 @@ class ListExample extends Component {
               })}
           </ul>
 
+          <h2>Delayed onAppear</h2>
+
           <ul className="list">
             {[...this.state.data]
               .sort((a, b) => {
@@ -236,7 +230,7 @@ class ListExample extends Component {
                 return (
                   <Flipped
                     flipId={`item-2-${key}`}
-                    onAppear={onElementAppear}
+                    onDelayedAppear={onElementAppear}
                     onExit={onExit}
                     key={`item-${key}`}
                     delay={i * 50}

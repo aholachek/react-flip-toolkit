@@ -38,6 +38,7 @@ const propTypes = {
   onStart: PropTypes.func,
   onComplete: PropTypes.func,
   onAppear: PropTypes.func,
+  onDelayedAppear: PropTypes.func,
   onExit: PropTypes.func,
   componentIdFilter: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   componentId: PropTypes.string
@@ -83,6 +84,7 @@ const FlippedWithContext = ({
   children,
   flipId,
   onAppear,
+  onDelayedAppear,
   onStart,
   onComplete,
   onExit,
@@ -92,6 +94,7 @@ const FlippedWithContext = ({
     {data => {
       data[flipId] = {
         onAppear,
+        onDelayedAppear,
         onStart,
         onComplete,
         onExit

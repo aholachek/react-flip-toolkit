@@ -233,7 +233,23 @@ export const animateMove = ({
   const isFlipped = id =>
     cachedFlipChildrenPositions[id] && newFlipChildrenPositions[id]
 
-  // animate in any entering non-flipped elements that requested it
+  // to help sequence onExit and onDelayedAppear callbacks
+  const exitingElements = []
+  const onDelayedAppearCallbacks = []
+
+  const onElementExited = element => {
+    // prevent duplicate calls
+    if (!exitingElements.length) return
+    const elementIndex = exitingElements.indexOf(element)
+    if (elementIndex !== -1) {
+      exitingElements.splice(elementIndex, 1)
+      if (!exitingElements.length) {
+        onDelayedAppearCallbacks.forEach(c => c())
+      }
+    }
+  }
+
+  // onAppear for non-flipped elements
   Object.keys(newFlipChildrenPositions)
     .filter(id => !isFlipped(id))
     // filter to only brand new elements with an onAppear callback
@@ -245,15 +261,29 @@ export const animateMove = ({
     )
     .forEach((id, i) => {
       const element = getElement(id)
-      // kind of hacky since it ignores inverted children
-      // but they probably wont be used for appear transitions anyway
-      if (applyTransformOrigin) {
-        element.style.transformOrigin = "0 0"
-      }
       flipCallbacks[id].onAppear(element, i)
     })
 
-  // animate out any exiting non-flipped elements that requested it
+  // onDelayedAppear for non-flipped elements
+  Object.keys(newFlipChildrenPositions)
+    .filter(id => !isFlipped(id))
+    // filter to only brand new elements with an onAppear callback
+    .filter(
+      id =>
+        newFlipChildrenPositions[id] &&
+        flipCallbacks[id] &&
+        flipCallbacks[id].onDelayedAppear
+    )
+    .forEach((id, i) => {
+      const element = getElement(id)
+      element.style.opacity = "0"
+
+      onDelayedAppearCallbacks.push(() => {
+        flipCallbacks[id].onDelayedAppear(element, i)
+      })
+    })
+
+  // onExit for non-flipped elements
   Object.keys(cachedFlipChildrenPositions)
     .filter(id => !isFlipped(id))
     // filter to only exited elements with an onExit callback
@@ -285,14 +315,21 @@ export const animateMove = ({
 
       const stop = () => {
         try {
+          onElementExited(element)
           parent.removeChild(element)
         } catch (DOMException) {
-          // this means the element is already gone
+          // the element is already gone
         }
       }
       flipCallbacks[id].onExit(element, i, stop)
       inProgressAnimations[id] = { stop }
+      exitingElements.push(element)
     })
+
+  // if nothing exited, just call onDelayedAppear callbacks immediately
+  if (exitingElements.length === 0) {
+    onDelayedAppearCallbacks.forEach(c => c())
+  }
 
   if (debug) {
     console.error(

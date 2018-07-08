@@ -148,7 +148,7 @@ class AnimatedSquare extends Component {
 
 ## The Components
 
-### 1. Flipper component
+### 1. `Flipper`
 
 The parent wrapper component that contains all the elements to be animated.
 
@@ -167,7 +167,7 @@ The parent wrapper component that contains all the elements to be animated.
 | duration                | `250`                                          | `number`                   | Default duration in `ms` for all FLIP transitions that use the `ease` prop instead of the default `spring` (which uses a physics simulation and therefore doesn't require a duration)                                                                                              |
 | applyTransformOrigin    | `true`                                         | `bool`                     | Whether or not `react-flip-toolkit` should apply a transform-origin of "0 0" to animating children (this is generally desirable for FLIP animations)                                                                                                                               |
 
-### 2. Flipped component
+### 2. `Flipped` **exitingElements.indexOf()**
 
 Wraps an element that needs to be animated.
 
@@ -204,12 +204,13 @@ and they will be tweened by `react-flip-toolkit`.
 
 #### Callback props
 
-| prop       | arguments                           | details                                                                                                                                                                                                           |
-| ---------- | :---------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| onAppear   | `element`, `index`                  | Called when the element first appears. It is provided a reference to the DOM element being transitioned as the first argument, and the index of the element relative to all appearing elements as the second.     |
-| onStart    | `element`                           | Called when the FLIP animation starts. It is provided a reference to the DOM element being transitioned as the first argument                                                                                     |
-| onComplete | `element`                           | Called when the FLIP animation completes. It is provided a reference to the DOM element being transitioned as the first argument. (If transitions are interruped by new ones, `onComplete` will still be called.) |
-| onExit     | `element`, `index`, `removeElement` | Called when the element is removed from the DOM. It must call the `removeElement` function when the exit transition has completed.                                                                                |
+| prop            | arguments                           | details                                                                                                                                                                                                                                                                                                |
+| --------------- | :---------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| onAppear        | `element`, `index`                  | Called when the element first appears. It is provided a reference to the DOM element being transitioned as the first argument, and the index of the element relative to all appearing elements as the second.                                                                                          |
+| onDelayedAppear | `element`, `index`                  | This is a replacement for  `onAppear` that is called only after all exiting elements have finished exiting. It automatically applies `opacity: 0` to newly appeared elements at the very beginning. So the `onDelayedAppear` function must be responsible for tweening or setting the `opacity` value. |
+| onStart         | `element`                           | Called when the FLIP animation starts. It is provided a reference to the DOM element being transitioned as the first argument                                                                                                                                                                          |
+| onComplete      | `element`                           | Called when the FLIP animation completes. It is provided a reference to the DOM element being transitioned as the first argument. (If transitions are interruped by new ones, `onComplete` will still be called.)                                                                                      |
+| onExit          | `element`, `index`, `removeElement` | Called when the element is removed from the DOM. It must call the `removeElement` function when the exit transition has completed.                                                                                                                                                                     |
 
 #### Transform props
 
