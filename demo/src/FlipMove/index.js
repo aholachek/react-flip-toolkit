@@ -54,7 +54,7 @@ class ListExample extends Component {
           flipKey={`${this.state.type}-${this.state.sort}-${JSON.stringify(
             this.state.filteredIds
           )}`}
-          spring={{ mass: 0.4 }}
+          spring={{ mass: 0.3 }}
         >
           <div className="fm-fieldsets">
             <fieldset>

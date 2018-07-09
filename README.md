@@ -49,14 +49,15 @@
   <img src="./example-assets/dropdown.gif" width='600px' alt='a smoothly transitioning menu dropdown' />
 </a>
 </p>
+
 <p>
 <a href="https://codepen.io/aholachek/pen/gKjYNw?editors=0110">
-  <img src="./example-assets/sortfilter-1.gif" width='600px' alt='an animation demoing sort and filter operations' />
+  <img src="./example-assets/sort-filter.gif" width='600px' alt='an animation demoing sort and filter operations' />
 </a>
 </p>
 
-- [Updating list (React-flip-move example clone)](https://literate-fly.surge.sh/flip-move)
-- [Simplest possible example](https://codepen.io/aholachek/pen/RJvPjL)
+- [Updating list (`react-flip-move` example clone)](https://literate-fly.surge.sh/flip-move)
+- [Simplest possible example](https://codepen.io/aholachek/pen/oyKJgL)
 - [Guitar shop](https://literate-fly.surge.sh/guitar)
 - [Absurd, overly complex, nested example](https://literate-fly.surge.sh/cards)
 - [React-flip-toolkit logo](https://codepen.io/aholachek/pen/ERRpEj)
@@ -65,8 +66,6 @@
 ## Quick start
 
 `npm install react-flip-toolkit`
-
-`import { Flipper, Flipped } from 'react-flip-toolkit'`
 
 Wrap your container element with a `Flipper` component that has a `flipKey` prop that changes every time an animation should happen.
 
@@ -205,7 +204,7 @@ and they will be tweened by `react-flip-toolkit`.
 | spring                  | `{stiffness: 1000`, `damping: 500`, `mass: 3}` | `object` | You can customize the spring on a per-element basis by changing the `stiffness`, `damping`, or `mass` values passed in the `spring` object prop. If you provide an `ease` prop (described below), that will be used instead instead of a spring.  [You can explore the spring setting options here.](https://codepen.io/aholachek/full/bKmZbV/) |
 | ease                    | `easeOutExpo`                                  | `string` | This string should refer to [one of the available easing options.](https://codepen.io/aholachek/full/bKmZbV/) This prop will override the easing specified in the parent `Flipped` component.                                                                                                                                                   |
 | duration                | `250`                                          | `number` | Timing for the individual FLIP transition. This is only meaningful if you've specified an `ease` prop, because springs don't take durations. This prop will override the one specified in the parent `Flipped` component if one exists.                                                                                                         |
-| delay                   | `0`                                            | `number` | Amount of time to wait before tweening the element position. You can use this to create the effect of staggered transitions.                                                                                                                                                                                                                    |
+| delay                   | `0`                                            | `number` | Amount of time to wait before tweening the element position. You can use this to create staggered transitions.                                                                                                                                                                                                                                  |
 
 #### Callback props
 
@@ -259,18 +258,23 @@ The problem with scale animations has to do with children &mdash; if you scale a
 By default, both the scale and the translation transforms of the parent will be counteracted (this allows children components to make their own FLIP animations without being affected by the parent).
 But for many/most use cases, you'll want to additionally specify the `scale` prop to limit the adjustment to the scale and allow the positioning to move with the parent.
 
-**For the most seamless results** the div with the inverse transform applied should lie flush against its parent container &mdash; that means any padding should be applied to the inverted container rather than the parent container with the transform that it is inverting.
+**For the most seamless results** the DOM element with the inverse transform applied should lie flush against its parent container &mdash; that means any padding should be applied to the inverted container rather than the parent container.
 
 ## Library details
 
 - ~9kb minified and gzipped
 - React 16+
-- Tested in latest Chrome, Firefox, Safari, and Edge. For IE 11 compatibility you'll have to transpile this library and its dependencies (specifically `shifty.js`) to ES5.
+- Tested in latest Chrome, Firefox, Safari, and Edge. For IE 11 compatibility you'll have to transpile this library and its dependencies (specifically <a href="https://github.com/jeremyckahn/shifty">shifty.js</a>) to ES5.
 
 ## FAQ
 
-- **Why isn't anything animating?** Make sure you're updating the `flipKey` attribute in the `Flipper` component whenever an animation should happen.
+- **Why isn't anything animating?**
+  - Make sure you're updating the `flipKey` attribute in the `Flipper` component whenever an animation should happen.
+  - If one of your `Flipped` components is wrapping another React component rather than a DOM element, make sure that component passes down unknown props directly to its DOM element, e.g.: `<div className="square" {...rest} />`
 
-- **Why does my animation look "off"?** Try increasing the duration to something ridiculous like `10000` so that you can catch every detail. When the animations happen quickly it's hard to consciously spot little issues that can interfere with the final effect.
+- **Why does my animation look "off"?**
+  - If you're using an easing function rather than a spring, try increasing the duration to something ridiculous like `10000` so that you can catch every detail. When the animations happen quickly it's hard to consciously spot little issues that can interfere with the final effect.
+  - If that still doesn't help, you can temporarily add the experimental `debug` prop directly on your `Flipper` component. That will exit out of the animation prematurely and allow you to see the state of the animation at the very beginning. If it doesn't look similar to the UI before the animation began, you can investigate why.
 
-- **Why is the element animating from or to an unexpected position?** At any point, there can only be one element with a specified `flipId` on the page. If there are multiple `Flipped` elements on the page with the same id, things will start to get weird. Check to make sure all `flipId`s are unique.
+- **Why is the element animating from or to an unexpected position?**
+  - At any point, there can only be one element with a specified `flipId` on the page. If there are multiple `Flipped` elements on the page with the same id, things will start to get weird. Check to make sure all `flipId`s are unique.
