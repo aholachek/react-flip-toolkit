@@ -22,11 +22,12 @@
 ## Table of Contents
 - [Demos](#demos)
 - [Quick start](#quick-start)
-  - [Simplest example: Tweening a single element](#simplest-example-tweening-a-single-element)
-  - [More useful but less simple: Tweening two elements](#more-useful-but-less-simple-tweening-two-elements)
+  - [Simplest example: tweening a single element](#simplest-example-tweening-a-single-element)
+  - [More useful: tweening different elements](#more-useful-tweening-different-elements)
 - [The Components](#the-components)
-  - [1. Flipper component](#1-flipper-component)
-  - [2. Flipped component](#2-flipped-component)
+  - [1. `Flipper`](#1-flipper)
+    - [Props](#props)
+  - [2. `Flipped`](#2-flipped)
     - [Basic props](#basic-props)
     - [Callback props](#callback-props)
     - [Transform props](#transform-props)
@@ -160,6 +161,8 @@ The parent wrapper component that contains all the elements to be animated.
 </Flipper>
 ```
 
+#### Props
+
 | prop                    | default                                        | type                       | details                                                                                                                                                                                                                                                                                                                                                                            |
 | ----------------------- | :--------------------------------------------: | :------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | flipKey **(required)**  | -                                              | `string`, `number`, `bool` | Changing this tells `react-flip-toolkit` to transition child elements wrapped in `Flipped` components.                                                                                                                                                                                                                                                                             |
@@ -262,7 +265,7 @@ But for many/most use cases, you'll want to additionally specify the `scale` pro
 
 - ~9kb minified and gzipped
 - React 16+
-- Tested in latest Chrome, Firefox, Safari, and Edge. For IE 11 compatibility you'll have to transpile this library and its dependencies (specifically `shifty.js` to ES5).
+- Tested in latest Chrome, Firefox, Safari, and Edge. For IE 11 compatibility you'll have to transpile this library and its dependencies (specifically `shifty.js`) to ES5.
 
 ## FAQ
 
