@@ -362,7 +362,10 @@ export const animateMove = ({
   // finally, let's FLIP the rest
   Object.keys(newFlipChildrenPositions)
     .filter(isFlipped)
-    .forEach(id => {
+    // take all the measurements we need
+    // do all the set up work
+    // and return a startAnimation function
+    .map(id => {
       const prevRect = cachedFlipChildrenPositions[id].rect
       const currentRect = newFlipChildrenPositions[id].rect
       const prevOpacity = cachedFlipChildrenPositions[id].opacity
@@ -469,17 +472,6 @@ export const animateMove = ({
         flipEndId
       })
 
-      // before animating, immediately apply FLIP styles to prevent flicker
-      applyStyles({
-        matrix: fromVals.matrix,
-        opacity: fromVals.opacity
-      })
-
-      if (debug) return
-
-      if (flipCallbacks[id] && flipCallbacks[id].onStart)
-        flipCallbacks[id].onStart(element, flipStartId)
-
       let onComplete
       if (flipCallbacks[id] && flipCallbacks[id].onComplete) {
         onComplete = () => flipCallbacks[id].onComplete(element, flipStartId)
@@ -513,31 +505,48 @@ export const animateMove = ({
       else if (ease) easingType = "tween"
       else easingType = "spring"
 
-      if (easingType === "spring") {
-        stop = springUpdate({
-          fromVals,
-          toVals,
-          springConfig: flipConfig.spring || spring,
-          delay,
-          getOnUpdateFunc,
-          onAnimationEnd
+      return function startAnimation() {
+        // before animating, immediately apply FLIP styles to prevent flicker
+        applyStyles({
+          matrix: fromVals.matrix,
+          opacity: fromVals.opacity
         })
-      } else {
-        stop = tweenUpdate({
-          fromVals,
-          toVals,
-          duration: parseFloat(flipConfig.duration || duration),
-          easing: flipConfig.ease || ease,
-          delay,
-          getOnUpdateFunc,
-          onAnimationEnd
-        })
-      }
 
-      // in case we have to cancel
-      inProgressAnimations[id] = {
-        stop,
-        onComplete
+        if (debug) return
+
+        if (flipCallbacks[id] && flipCallbacks[id].onStart)
+          flipCallbacks[id].onStart(element, flipStartId)
+
+        if (easingType === "spring") {
+          stop = springUpdate({
+            fromVals,
+            toVals,
+            springConfig: flipConfig.spring || spring,
+            delay,
+            getOnUpdateFunc,
+            onAnimationEnd
+          })
+        } else {
+          stop = tweenUpdate({
+            fromVals,
+            toVals,
+            duration: parseFloat(flipConfig.duration || duration),
+            easing: flipConfig.ease || ease,
+            delay,
+            getOnUpdateFunc,
+            onAnimationEnd
+          })
+        }
+
+        // in case we have to cancel
+        inProgressAnimations[id] = {
+          stop,
+          onComplete
+        }
       }
     })
+    // actually start updating the DOM
+    // do this last to attempt to thwart the layout thrashing demon
+    // not every item in the array will have returned a startAnimation func
+    .forEach(startAnimation => startAnimation && startAnimation())
 }
