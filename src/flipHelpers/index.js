@@ -87,6 +87,7 @@ const createApplyStylesFunc = ({ element, invertedChildren, body }) => ({
     body
   })
 }
+
 // called in getSnapshotBeforeUpdate
 export const getFlippedElementPositionsBeforeUpdate = ({
   element,
@@ -156,11 +157,11 @@ export const getFlippedElementPositionsBeforeUpdate = ({
     .reduce((acc, curr) => ({ ...acc, [curr[0]]: curr[1] }), {})
 
   // do this at the very end since cancellation might cause some elements to be removed
+  cancelInProgressAnimations(inProgressAnimations)
   flippedElements.concat(inverseFlippedElements).forEach(el => {
     el.style.transform = ""
     el.style.opacity = ""
   })
-  cancelInProgressAnimations(inProgressAnimations)
 
   return flippedElementPositions
 }
@@ -169,12 +170,14 @@ export const getFlippedElementPositionsBeforeUpdate = ({
 export const getFlippedElementPositionsAfterUpdate = ({ element }) => {
   return toArray(element.querySelectorAll("[data-flip-id]"))
     .map(child => {
+      const computedStyle = window.getComputedStyle(child)
       return [
         child.dataset.flipId,
         {
           rect: child.getBoundingClientRect(),
-          opacity: parseFloat(window.getComputedStyle(child).opacity),
-          domData: {}
+          opacity: parseFloat(computedStyle.opacity),
+          domData: {},
+          transform: computedStyle.transform
         }
       ]
     })
@@ -390,7 +393,7 @@ export const animateMove = ({
         return
 
       const currentTransform = Rematrix.parse(
-        getComputedStyle(element).transform
+        newFlipChildrenPositions[id].transform
       )
 
       const toVals = { matrix: currentTransform }
@@ -517,22 +520,16 @@ export const animateMove = ({
 
         if (easingType === "spring") {
           stop = springUpdate({
-            fromVals,
-            toVals,
             springConfig: flipConfig.spring || spring,
             delay,
-            animateOpacity,
             getOnUpdateFunc,
             onAnimationEnd
           })
         } else {
           stop = tweenUpdate({
-            fromVals,
-            toVals,
             duration: parseFloat(flipConfig.duration || duration),
             easing: flipConfig.ease || ease,
             delay,
-            animateOpacity,
             getOnUpdateFunc,
             onAnimationEnd
           })

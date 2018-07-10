@@ -135,7 +135,7 @@ class ListExample extends Component {
             )}
           </div>
 
-          <Flipped flipId="list" delay={120}>
+          <Flipped flipId="list">
             <div className={this.state.type === "grid" ? "fm-grid" : "fm-list"}>
               <Flipped inverseFlipId="list">
                 <ul className="list-contents">

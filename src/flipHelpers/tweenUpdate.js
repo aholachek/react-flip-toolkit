@@ -23,11 +23,8 @@ export const getEasingName = easeToApply => {
 }
 
 export default function tweenUpdate({
-  fromVals,
-  toVals,
   duration,
   easing,
-  animateOpacity,
   delay,
   getOnUpdateFunc,
   onAnimationEnd

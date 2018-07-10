@@ -2,9 +2,6 @@ import { Spring } from "wobble"
 
 export default function springUpdate({
   delay,
-  animateOpacity,
-  fromVals,
-  toVals,
   getOnUpdateFunc,
   onAnimationEnd,
   springConfig
