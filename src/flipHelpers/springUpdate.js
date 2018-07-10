@@ -1,8 +1,8 @@
 import { Spring } from "wobble"
-import { interpolate } from "shifty/src/interpolate"
 
 export default function springUpdate({
   delay,
+  animateOpacity,
   fromVals,
   toVals,
   getOnUpdateFunc,
@@ -27,20 +27,12 @@ export default function springUpdate({
 
   const onUpdate = getOnUpdateFunc(stop)
 
-  spring
-    .onUpdate(({ currentValue }) => {
-      const vals = {
-        matrix: interpolate(fromVals.matrix, toVals.matrix, currentValue),
-        opacity: interpolate(fromVals.opacity, toVals.opacity, currentValue)
-      }
-      onUpdate(vals)
-    })
-    .onStop(onAnimationEnd)
+  spring.onUpdate(onUpdate).onStop(onAnimationEnd)
 
-  // if (delay) {
-  //   timeoutId = setTimeout(spring.start.bind(spring), delay)
-  // } else {
-  spring.start()
-  // }
+  if (delay) {
+    timeoutId = setTimeout(spring.start.bind(spring), delay)
+  } else {
+    spring.start()
+  }
   return stop
 }

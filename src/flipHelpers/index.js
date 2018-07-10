@@ -1,6 +1,7 @@
 import * as Rematrix from "rematrix"
 import springUpdate from "./springUpdate"
 import tweenUpdate from "./tweenUpdate"
+import { interpolate } from "shifty/src/interpolate"
 import {
   convertMatrix3dArrayTo2dArray,
   convertMatrix2dArrayToString
@@ -9,6 +10,7 @@ import {
 const toArray = arrayLike => Array.prototype.slice.apply(arrayLike)
 
 const isFunction = x => typeof x === "function"
+const isNumber = x => typeof x === "number"
 
 const getInvertedChildren = (element, id) =>
   toArray(element.querySelectorAll(`[data-inverse-flip-id="${id}"]`))
@@ -75,7 +77,9 @@ const createApplyStylesFunc = ({ element, invertedChildren, body }) => ({
   opacity
 }) => {
   element.style.transform = convertMatrix2dArrayToString(matrix)
-  element.style.opacity = opacity
+  if (isNumber(opacity)) {
+    element.style.opacity = opacity
+  }
 
   invertTransformsForChildren({
     invertedChildren,
@@ -389,9 +393,9 @@ export const animateMove = ({
         getComputedStyle(element).transform
       )
 
-      const toVals = { matrix: currentTransform, opacity: 1 }
+      const toVals = { matrix: currentTransform }
 
-      const fromVals = { opacity: 1 }
+      const fromVals = {}
       const transformsArray = [currentTransform]
 
       // we're only going to animate the values that the child wants animated
@@ -462,19 +466,6 @@ export const animateMove = ({
 
       const delay = parseFloat(flipConfig.delay)
 
-      const getOnUpdateFunc = stop => ({ matrix, opacity }) => {
-        if (!body.contains(element)) {
-          stop()
-          return
-        }
-        applyStyles({
-          matrix,
-          opacity
-        })
-      }
-
-      let stop
-
       // this should be called when animation ends naturally
       // but also when it is interrupted
       const onAnimationEnd = () => {
@@ -488,6 +479,28 @@ export const animateMove = ({
       else if (ease) easingType = "tween"
       else easingType = "spring"
 
+      const animateOpacity =
+        isNumber(fromVals.opacity) && fromVals.opacity !== toVals.opacity
+
+      const getOnUpdateFunc = stop => ({ currentValue }) => {
+        if (!body.contains(element)) {
+          stop()
+          return
+        }
+        const vals = {
+          matrix: interpolate(fromVals.matrix, toVals.matrix, currentValue)
+        }
+        if (animateOpacity) {
+          // interpolate requires an object
+          vals.opacity = interpolate(
+            { opacity: fromVals.opacity },
+            { opacity: toVals.opacity },
+            currentValue
+          ).opacity
+        }
+        applyStyles(vals)
+      }
+
       return function startAnimation() {
         // before animating, immediately apply FLIP styles to prevent flicker
         applyStyles({
@@ -500,12 +513,15 @@ export const animateMove = ({
         if (flipCallbacks[id] && flipCallbacks[id].onStart)
           flipCallbacks[id].onStart(element, flipStartId)
 
+        let stop
+
         if (easingType === "spring") {
           stop = springUpdate({
             fromVals,
             toVals,
             springConfig: flipConfig.spring || spring,
             delay,
+            animateOpacity,
             getOnUpdateFunc,
             onAnimationEnd
           })
@@ -516,6 +532,7 @@ export const animateMove = ({
             duration: parseFloat(flipConfig.duration || duration),
             easing: flipConfig.ease || ease,
             delay,
+            animateOpacity,
             getOnUpdateFunc,
             onAnimationEnd
           })

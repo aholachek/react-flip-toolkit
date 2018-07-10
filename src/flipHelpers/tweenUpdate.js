@@ -27,6 +27,7 @@ export default function tweenUpdate({
   toVals,
   duration,
   easing,
+  animateOpacity,
   delay,
   getOnUpdateFunc,
   onAnimationEnd
@@ -40,17 +41,15 @@ export default function tweenUpdate({
     onAnimationEnd()
     if (timeoutId) clearTimeout(timeoutId)
   }
-  // we use setTimeout instead of the tweenable delay prop
-  // because it's easier to cancel
+
+  const onUpdate = getOnUpdateFunc(stop)
+
   tweenable.setConfig({
-    from: fromVals,
-    to: toVals,
+    from: { currentValue: 0 },
+    to: { currentValue: 1 },
     duration,
-    easing: {
-      opacity: "linear",
-      matrix: getEasingName(easing)
-    },
-    step: getOnUpdateFunc(stop)
+    easing: getEasingName(easing),
+    step: onUpdate
   })
 
   const start = () => {
@@ -62,6 +61,8 @@ export default function tweenUpdate({
       })
   }
 
+  // we use setTimeout instead of the tweenable delay prop
+  // because it's easier to cancel
   if (delay) {
     timeoutId = setTimeout(start, delay)
   } else {
