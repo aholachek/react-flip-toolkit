@@ -38,23 +38,8 @@ export const shouldApplyTransform = (
 
 // if we're scaling an element and we have element children with data-inverse-flip-ids,
 // apply the inverse of the transforms so that the children don't distort
-const invertTransformsForChildren = ({
-  invertedChildren,
-  matrix,
-  body,
-  flipStartId,
-  flipEndId
-}) => {
+const invertTransformsForChildren = ({ invertedChildren, matrix, body }) => {
   invertedChildren.forEach(([child, childFlipConfig]) => {
-    if (
-      !shouldApplyTransform(
-        childFlipConfig.componentIdFilter,
-        flipStartId,
-        flipEndId
-      )
-    )
-      return
-
     if (!body.contains(child)) {
       return
     }
@@ -87,9 +72,7 @@ const invertTransformsForChildren = ({
 const createApplyStylesFunc = ({
   element,
   invertedChildren,
-  body,
-  flipStartId,
-  flipEndId
+  body
 }) => ({ matrix, opacity }) => {
   element.style.transform = matrix
   element.style.opacity = opacity
@@ -97,9 +80,7 @@ const createApplyStylesFunc = ({
   invertTransformsForChildren({
     invertedChildren,
     matrix,
-    body,
-    flipStartId,
-    flipEndId
+    body
   })
 }
 // called in getSnapshotBeforeUpdate
@@ -445,10 +426,15 @@ export const animateMove = ({
 
       // we're going to pass around the children in this weird [child, childData]
       // structure because we only want to parse the children's config data 1x
-      const invertedChildren = getInvertedChildren(element, id).map(c => [
-        c,
-        JSON.parse(c.dataset.flipConfig)
-      ])
+      const invertedChildren = getInvertedChildren(element, id)
+        .map(c => [c, JSON.parse(c.dataset.flipConfig)])
+        .filter(([child, childFlipConfig]) =>
+          shouldApplyTransform(
+            childFlipConfig.componentIdFilter,
+            flipStartId,
+            flipEndId
+          )
+        )
 
       invertedChildren.forEach(([child, childFlipConfig]) => {
         if (childFlipConfig.transformOrigin) {
@@ -467,9 +453,7 @@ export const animateMove = ({
       const applyStyles = createApplyStylesFunc({
         element,
         invertedChildren,
-        body,
-        flipStartId,
-        flipEndId
+        body
       })
 
       let onComplete

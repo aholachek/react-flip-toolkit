@@ -1,123 +1,123 @@
 .fm-example {
-  padding: 2rem;
-  min-height: 100vh;
+    padding: 2rem;
+    min-height: 150vh;
 }
 
 .fm-example h1 {
-  margin-bottom: 2rem;
+    margin-bottom: 2rem;
 }
 
-.fm-example>* {
-  max-width: 900px;
-  margin: 0 auto;
+.fm-example > * {
+    max-width: 900px;
+    margin: 0 auto;
 }
 
-.fm-grid>ul {
-  list-style-type: none;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
-  grid-gap: 1rem;
-  padding: 0;
-  margin: 0;
+.fm-grid > ul {
+    list-style-type: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    grid-gap: 1rem;
+    padding: 0;
+    margin: 0;
 }
 
 .fm-list {
-  grid-gap: 1rem;
-  margin: 2rem auto;
+    grid-gap: 1rem;
+    margin: 2rem auto;
 }
 
 .fm-grid,
 .fm-list {
-  background-color: #ececec;
-  padding: 1rem;
-  border-radius: 3px;
-  margin-top: 2rem;
+    background-color: #ececec;
+    padding: 1rem;
+    border-radius: 3px;
+    margin-top: 2rem;
 }
 
-.fm-list>ul,
-.fm-grid>ul {
-  width: 100%;
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
+.fm-list > ul,
+.fm-grid > ul {
+    width: 100%;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
 }
 
 .fm-list .fm-item {
-  margin-bottom: 1rem;
+    margin-bottom: 1rem;
 }
 
 .fm-list .fm-item:last-of-type {
-  margin-bottom: 0;
+    margin-bottom: 0;
 }
 
 .fm-item {
-  display: block;
-  border-radius: 4px;
-  background-color: white;
-  overflow: hidden;
-  will-change: transform;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.0784313725490196)
+    display: block;
+    border-radius: 4px;
+    background-color: white;
+    overflow: hidden;
+    will-change: transform;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.0784313725);
 }
 
 .fm-item h3 {
-  font-size: 1.1rem;
+    font-size: 1.1rem;
 }
 
-.fm-item>div {
-  padding: 0 1.5rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  will-change: transform;
+.fm-item > div {
+    padding: 0 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    will-change: transform;
 }
 
 .fm-item h3 {
-  margin-bottom: 0;
+    margin-bottom: 0;
 }
 
 .fm-item p {
-  font-style: italic;
-  margin-top: .5rem;
+    font-style: italic;
+    margin-top: .5rem;
 }
 
 .fm-remove {
-  padding: 1rem;
-  border: 0;
-  background: transparent;
-  cursor: pointer;
-  font-size: 2.2rem;
-  color: #ff4057;
+    padding: 1rem;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    font-size: 2.2rem;
+    color: #ff4057;
 }
 
 .fm-show-all {
-  padding: 0 1rem;
-  margin-top: 1.5rem;
-  background-color: #240041;
-  color: white;
-  font-weight: bold;
-  border: 0;
-  border-radius: 3px;
+    padding: 0 1rem;
+    margin-top: 1.5rem;
+    background-color: #240041;
+    color: white;
+    font-weight: bold;
+    border: 0;
+    border-radius: 3px;
 }
 
 .fm-fieldsets {
-  display: flex;
+    display: flex;
 }
 
 legend {
-  font-weight: bold;
+    font-weight: bold;
 }
 
 .fm-example fieldset {
-  border: 0;
-  padding: 1rem;
+    border: 0;
+    padding: 1rem;
 }
 
 .fm-example label {
-  margin-right: 2rem;
-  cursor: pointer;
+    margin-right: 2rem;
+    cursor: pointer;
 }
 
 .fm-example input {
-  position: relative;
-  margin-right: 0.5rem;
+    position: relative;
+    margin-right: 0.5rem;
 }
