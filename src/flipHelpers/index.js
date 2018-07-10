@@ -1,7 +1,10 @@
 import * as Rematrix from "rematrix"
 import springUpdate from "./springUpdate"
 import tweenUpdate from "./tweenUpdate"
-import { parseMatrix, convertMatrix3dArrayTo2dString } from "./matrixHelpers"
+import {
+  convertMatrix3dArrayTo2dArray,
+  convertMatrix2dArrayToString
+} from "./matrixHelpers"
 
 const toArray = arrayLike => Array.prototype.slice.apply(arrayLike)
 
@@ -44,12 +47,10 @@ const invertTransformsForChildren = ({ invertedChildren, matrix, body }) => {
       return
     }
 
-    const matrixVals = parseMatrix(matrix)
-
-    const scaleX = matrixVals[0]
-    const scaleY = matrixVals[3]
-    const translateX = matrixVals[4]
-    const translateY = matrixVals[5]
+    const scaleX = matrix[0]
+    const scaleY = matrix[3]
+    const translateX = matrix[4]
+    const translateY = matrix[5]
 
     const inverseVals = { translateX: 0, translateY: 0, scaleX: 1, scaleY: 1 }
     let transformString = ""
@@ -69,12 +70,11 @@ const invertTransformsForChildren = ({ invertedChildren, matrix, body }) => {
   })
 }
 
-const createApplyStylesFunc = ({
-  element,
-  invertedChildren,
-  body
-}) => ({ matrix, opacity }) => {
-  element.style.transform = matrix
+const createApplyStylesFunc = ({ element, invertedChildren, body }) => ({
+  matrix,
+  opacity
+}) => {
+  element.style.transform = convertMatrix2dArrayToString(matrix)
   element.style.opacity = opacity
 
   invertTransformsForChildren({
@@ -446,9 +446,8 @@ export const animateMove = ({
 
       fromVals.matrix = transformsArray.reduce(Rematrix.multiply)
 
-      // prepare for animation by turning matrix into a string
-      fromVals.matrix = convertMatrix3dArrayTo2dString(fromVals.matrix)
-      toVals.matrix = convertMatrix3dArrayTo2dString(toVals.matrix)
+      fromVals.matrix = convertMatrix3dArrayTo2dArray(fromVals.matrix)
+      toVals.matrix = convertMatrix3dArrayTo2dArray(toVals.matrix)
 
       const applyStyles = createApplyStylesFunc({
         element,

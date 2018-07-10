@@ -29,15 +29,18 @@ export default function springUpdate({
 
   spring
     .onUpdate(({ currentValue }) => {
-      const vals = interpolate(fromVals, toVals, currentValue)
+      const vals = {
+        matrix: interpolate(fromVals.matrix, toVals.matrix, currentValue),
+        opacity: interpolate(fromVals.opacity, toVals.opacity, currentValue)
+      }
       onUpdate(vals)
     })
     .onStop(onAnimationEnd)
 
-  if (delay) {
-    timeoutId = setTimeout(spring.start.bind(spring), delay)
-  } else {
-    spring.start()
-  }
+  // if (delay) {
+  //   timeoutId = setTimeout(spring.start.bind(spring), delay)
+  // } else {
+  spring.start()
+  // }
   return stop
 }

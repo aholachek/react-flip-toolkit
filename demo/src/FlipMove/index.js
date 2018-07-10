@@ -20,9 +20,9 @@ const data = [
 const onElementAppear = type => (el, index) => {
   anime({
     targets: el,
-    scaleY: type === "list" ? [0, 1] : 1,
-    scaleX: type === "grid" ? [0, 1] : 1,
-    duration: 200,
+    opacity: [0, 1],
+    duration: 400,
+    delay: index * 50,
     easing: "easeOutSine"
   })
 }
@@ -150,7 +150,7 @@ class ListExample extends Component {
                     })
                     .map(({ title, id }, i) => {
                       const flipId = `item-${id}`
-                      const delay = i * 30
+                      const delay = i * 45
                       return (
                         <Flipped
                           flipId={flipId}
