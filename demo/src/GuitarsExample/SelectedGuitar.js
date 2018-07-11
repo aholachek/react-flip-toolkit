@@ -3,7 +3,7 @@ import { Flipped } from "../../../src/index"
 import anime from "animejs"
 
 class SelectedGuitar extends Component {
-  animateIn = (el, startId) => {
+  animateIn = () => {
     anime({
       targets: this.el.querySelectorAll("[data-fade-in]"),
       translateY: [-15, 0],
@@ -14,15 +14,20 @@ class SelectedGuitar extends Component {
     })
   }
 
+  animateOut = () => {
+    anime({
+      targets: this.el.querySelectorAll("[data-fade-in]"),
+      translateY: [0, -15],
+      opacity: 0,
+      duration: 150,
+      easing: "easeOutSine",
+      complete: this.props.closeSelected,
+      delay: (d, i) => i * 50
+    })
+  }
+
   render() {
-    const {
-      title,
-      subtitle,
-      description,
-      price,
-      index,
-      closeSelected
-    } = this.props
+    const { title, subtitle, description, price, index } = this.props
     const parentId = `guitar-${index}`
     return (
       <div className="details details--open" ref={el => (this.el = el)}>
@@ -66,7 +71,7 @@ class SelectedGuitar extends Component {
         <button className="details__addtocart" data-fade-in>
           Add to cart
         </button>
-        <button className="details__close" onClick={closeSelected}>
+        <button className="details__close" onClick={this.animateOut}>
           <div className="icon icon--cross">
             <svg id="icon-cross" viewBox="0 0 24 24" width="100%" height="100%">
               <title>cross</title>

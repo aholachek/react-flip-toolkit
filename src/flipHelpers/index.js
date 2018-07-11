@@ -156,7 +156,8 @@ export const getFlippedElementPositionsBeforeUpdate = ({
     })
     .reduce((acc, curr) => ({ ...acc, [curr[0]]: curr[1] }), {})
 
-  // do this at the very end since cancellation might cause some elements to be removed
+  // do this at the very end since we want to cache positions of elements
+  // while they are mid-transition
   cancelInProgressAnimations(inProgressAnimations)
   flippedElements.concat(inverseFlippedElements).forEach(el => {
     el.style.transform = ""
@@ -508,7 +509,7 @@ export const animateMove = ({
         // before animating, immediately apply FLIP styles to prevent flicker
         applyStyles({
           matrix: fromVals.matrix,
-          opacity: fromVals.opacity
+          opacity: animateOpacity && fromVals.opacity
         })
 
         if (debug) return
