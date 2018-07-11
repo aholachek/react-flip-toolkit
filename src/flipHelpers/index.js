@@ -465,7 +465,9 @@ export const animateMove = ({
 
       let onComplete
       if (flipCallbacks[id] && flipCallbacks[id].onComplete) {
-        onComplete = () => flipCallbacks[id].onComplete(element, flipStartId)
+        // must cache or else this could cause an error
+        const cachedOnComplete = flipCallbacks[id].onComplete
+        onComplete = () => cachedOnComplete(element, flipStartId)
       }
 
       const delay = parseFloat(flipConfig.delay)
