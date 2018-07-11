@@ -19,12 +19,13 @@ export default function springUpdate({
 
   const stop = () => {
     spring.stop()
+    onAnimationEnd()
     if (timeoutId) clearTimeout(timeoutId)
   }
 
   const onUpdate = getOnUpdateFunc(stop)
 
-  spring.onUpdate(onUpdate).onStop(onAnimationEnd)
+  spring.onUpdate(onUpdate).onStop(stop)
 
   if (delay) {
     timeoutId = setTimeout(spring.start.bind(spring), delay)

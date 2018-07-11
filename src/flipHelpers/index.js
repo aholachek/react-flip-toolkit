@@ -472,6 +472,7 @@ export const animateMove = ({
 
       // this should be called when animation ends naturally
       // but also when it is interrupted
+      // when it is called, the animation has already been cancelled
       const onAnimationEnd = () => {
         delete inProgressAnimations[id]
         isFunction(onComplete) && onComplete()
