@@ -7,7 +7,16 @@ const cancelInProgressAnimations = inProgressAnimations => {
   })
 }
 
-// called in getSnapshotBeforeUpdate
+/**
+ * This function is called in getSnapshotBeforeUpdate in the Flipped Component
+ * @param {Object} args
+ * @param {HTMLElement} args.element - the ref for the parent Flipper component
+ * @param {Object} args.flipCallbacks - passed in solely to identify which
+ * elements have onExit callbacks, and cache their dom elements appropriately
+ * @param {Object} args.inProgressAnimations - stop callbacks for currently in
+ * progress animations
+ * @returns {Object} flippedElementPositions
+ */
 export const getFlippedElementPositionsBeforeUpdate = ({
   element,
   flipCallbacks,
@@ -86,7 +95,13 @@ export const getFlippedElementPositionsBeforeUpdate = ({
   return flippedElementPositions
 }
 
-// called in animateMove (which is called in componentDidUpdate)
+/**
+ * This function is called in animateMove
+ * (which is called in the Flipper component's componentDidUpdate)
+ * @param {Object} args
+ * @param {HTMLElement} args.element - the ref for the parent Flipper component
+ * @returns {Object} flippedElementPositions
+ */
 export const getFlippedElementPositionsAfterUpdate = ({ element }) => {
   return toArray(element.querySelectorAll("[data-flip-id]"))
     .map(child => {

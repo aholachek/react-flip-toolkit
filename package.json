@@ -4,6 +4,7 @@
   "description": "Configurable FLIP animation helpers for React",
   "main": "lib/index.js",
   "module": "es/index.js",
+  "types": "./index.d.ts",
   "files": [
     "es",
     "lib",

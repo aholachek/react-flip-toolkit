@@ -39,6 +39,20 @@ export const shouldApplyTransform = (
   return true
 }
 
+/**
+ * this is where the FLIP magic happens
+ * it's called in the Flipper component's componentDidUpdate
+ * @param {Object} args
+ * @param {Object} args.inProgressAnimations
+ * @param {Object} args.cachedFlipChildrenPositions
+ * @param {Object} args.flipCallbacks
+ * @param {HTMLElement} args.containerEl - the ref for the parent Flipper component
+ * @param {Number} args.duration - optional duration, only relevant if an ease is also provided
+ * @param {String} args.ease - optional
+ * @param {Boolean} args.applyTransformOrigin
+ * @param {Object} args.spring
+ * @param {Boolean} args.debug
+ */
 export const animateMove = ({
   inProgressAnimations,
   cachedFlipChildrenPositions = {},

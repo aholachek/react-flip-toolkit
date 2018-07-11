@@ -153,11 +153,12 @@ class ListExample extends Component {
                       const delay = i * 45
                       return (
                         <Flipped
-                          flipId={flipId}
-                          onAppear={onElementAppear(this.state.type)}
-                          onExit={onExit(this.state.type)}
-                          key={flipId}
-                          delay={delay}
+
+                          // flipId={flipId}
+                          // onAppear={onElementAppear(this.state.type)}
+                          // onExit={onExit(this.state.type)}
+                          // key={flipId}
+                          // delay={delay}
                         >
                           <li className="fm-item">
                             <Flipped inverseFlipId={flipId} scale>
