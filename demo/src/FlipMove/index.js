@@ -1,6 +1,6 @@
-import React, { Component } from "react"
+import React, { Component } from "../../../../../../Library/Caches/typescript/2.9/node_modules/@types/react"
 import { Flipper, Flipped } from "../../../src"
-import anime from "animejs"
+import anime from "../../../../../../Library/Caches/typescript/2.9/node_modules/@types/animejs"
 import "./index.css"
 
 const data = [

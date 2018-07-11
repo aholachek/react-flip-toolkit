@@ -1,9 +1,7 @@
 import React, { Component, createContext } from "react"
 import PropTypes from "prop-types"
-import {
-  animateMove,
-  getFlippedElementPositionsBeforeUpdate
-} from "./flipHelpers"
+import { animateMove } from "./flipFunctions/animateMove"
+import { getFlippedElementPositionsBeforeUpdate } from "./flipFunctions/DOMMeasurementHelpers"
 
 export const FlipContext = createContext("flip")
 

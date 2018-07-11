@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import React, { Component } from "../../../../../../Library/Caches/typescript/2.9/node_modules/@types/react"
 import { Flipper } from "../../../src"
 import GuitarItem from "./GuitarItem"
 import SelectedGuitar from "./SelectedGuitar"

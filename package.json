@@ -14,6 +14,7 @@
     "clean": "nwb clean-module && nwb clean-demo",
     "start": "nwb serve-react-demo",
     "test": "jest",
+    "dom-test": "npx http-server",
     "deploy-demo": "yarn run build; cp demo/dist/index.html demo/dist/200.html; surge demo/dist --domain literate-fly.surge.sh",
     "test:coverage": "nwb test-react --coverage",
     "test:watch": "nwb test-react --server",
@@ -25,6 +26,8 @@
     "url": "https://github.com/aholachek/react-flip-toolkit"
   },
   "dependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^5.2.0",
     "prop-types": "^15.6.2",
     "rematrix": "^0.2.2",
     "shifty": "^2.3.1",

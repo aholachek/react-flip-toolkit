@@ -1,5 +1,5 @@
-import React, { Component } from "react"
-import { render } from "react-dom"
+import React, { Component } from "../../../../../Library/Caches/typescript/2.9/node_modules/@types/react"
+import { render } from "../../../../../Library/Caches/typescript/2.9/node_modules/@types/react-dom"
 import "normalize.css"
 import CardsExample from "./CardsExample"
 import SpringCardsExample from "./CardsExampleSprings"

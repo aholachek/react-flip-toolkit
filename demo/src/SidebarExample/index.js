@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable no-return-assign */
 
-import React, { Component } from "react"
+import React, { Component } from "../../../../../../Library/Caches/typescript/2.9/node_modules/@types/react"
 import { Flipper, Flipped } from "../../../src"
 import backgroundImg from "./assets/nighttime.jpg"
 import "./styles.css"

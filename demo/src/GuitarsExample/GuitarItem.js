@@ -1,5 +1,5 @@
-import React, { Component } from "react"
-import { Flipped } from "../../../src/index"
+import React, { Component } from "../../../../../../Library/Caches/typescript/2.9/node_modules/@types/react"
+import { Flipped } from "../../../src"
 
 class GuitarItem extends Component {
   static defaultProps = {}

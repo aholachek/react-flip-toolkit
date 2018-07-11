@@ -1,6 +1,6 @@
-import React, { Component } from "react"
-import { Flipped } from "../../../src/index"
-import anime from "animejs"
+import React, { Component } from "../../../../../../Library/Caches/typescript/2.9/node_modules/@types/react"
+import { Flipped } from "../../../src"
+import anime from "../../../../../../Library/Caches/typescript/2.9/node_modules/@types/animejs"
 
 class FocusedUser extends Component {
   hideElements = el => {

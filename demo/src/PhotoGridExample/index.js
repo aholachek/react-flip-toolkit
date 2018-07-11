@@ -2,8 +2,8 @@
 /* eslint-disable no-return-assign */
 import "./index.css"
 
-import React, { Component } from "react"
-import anime from "animejs"
+import React, { Component } from "../../../../../../Library/Caches/typescript/2.9/node_modules/@types/react"
+import anime from "../../../../../../Library/Caches/typescript/2.9/node_modules/@types/animejs"
 import { Flipper, Flipped } from "../../../src"
 import detail1Img from "./assets/detail-1.jpg"
 import detail5Img from "./assets/detail-5.jpg"

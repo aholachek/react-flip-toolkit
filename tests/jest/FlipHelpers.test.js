@@ -1,5 +1,5 @@
-import { rectInViewport, shouldApplyTransform } from "../src/flipHelpers"
-import { getEasingName } from "../src/FlipHelpers/tweenUpdate"
+import { rectInViewport, shouldApplyTransform } from "../../src/flipHelpers"
+import { getEasingName } from "../../src/flipHelpers/tweenUpdate"
 
 Object.defineProperty(window, "innerHeight", {
   value: 100,
