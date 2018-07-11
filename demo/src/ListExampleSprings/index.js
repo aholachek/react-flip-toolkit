@@ -69,13 +69,17 @@ class ListExample extends Component {
         flipKey={`${this.state.filter ? this.state.filter : ""}-${
           this.state.sort
         }-${JSON.stringify(this.state.data)}`}
-        ease="easeOutExpo"
+        spring={{
+          stiffness: 100,
+          damping: 40,
+          mass: 30
+        }}
       >
         <main className="list-example">
           <h1>
             Continually updating filtered list with appear and exit animations
           </h1>
-          <h2>Uses springs for easing</h2>
+          <h2>Uses easing functions for easing</h2>
           <p>
             This is a stress test to show continuously interrupted, staggered
             animations. The top and bottom animations should be identical except

@@ -34,7 +34,7 @@ export default function tweenUpdate({
 
   // force stop the animation
   const stop = () => {
-    tweenable.stop.bind(tweenable)
+    tweenable.stop()
     onAnimationEnd()
     if (timeoutId) clearTimeout(timeoutId)
   }
