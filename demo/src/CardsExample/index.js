@@ -22,7 +22,7 @@ export default class CardsExample extends Component {
       <Flipper
         flipKey={this.state.focusedIndex}
         duration={this.state.speed === "normal" ? 300 : 3000}
-        ease="easeOutElastic"
+        ease="easeOutExpo"
       >
         <div className="header" ref={el => (this.el = el)}>
           <h1>Avatar cards</h1>
