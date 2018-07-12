@@ -26,9 +26,9 @@
     "url": "https://github.com/aholachek/react-flip-toolkit"
   },
   "dependencies": {
+    "object-assign": "^4.1.1",
     "prop-types": "^15.6.2",
     "rematrix": "^0.2.2",
-    "shifty": "^2.3.1",
     "wobble": "^1.5.0"
   },
   "peerDependencies": {

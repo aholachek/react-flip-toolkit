@@ -7997,12 +7997,6 @@ shellwords@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/shellwords/-/shellwords-0.1.1.tgz#d6b9181c1a48d397324c84871efbcfc73fc0654b"
 
-shifty@^2.3.1:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/shifty/-/shifty-2.3.1.tgz#ca92001c04718911f3b48d179aa858cc9cc86009"
-  dependencies:
-    object-assign "^4.1.1"
-
 signal-exit@^3.0.0, signal-exit@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.2.tgz#b5fdc08f1287ea1178628e415e25132b73646c6d"

@@ -1,7 +1,7 @@
 import * as Rematrix from "rematrix"
 import springUpdate from "./springUpdate"
 import tweenUpdate from "./tweenUpdate"
-import { interpolate } from "shifty/src/interpolate"
+import { interpolate } from "../shifty/interpolate"
 import {
   convertMatrix3dArrayTo2dArray,
   convertMatrix2dArrayToString

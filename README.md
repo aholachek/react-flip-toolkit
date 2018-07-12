@@ -262,9 +262,9 @@ But for many/most use cases, you'll want to additionally specify the `scale` pro
 
 ## Library details
 
-- ~9kb minified and gzipped
+- ~8.25kb minified and gzipped
 - React 16+
-- Tested in latest Chrome, Firefox, Safari, and Edge. For IE 11 compatibility you'll have to transpile this library and its dependencies (specifically <a href="https://github.com/jeremyckahn/shifty">shifty.js</a>) to ES5.
+- Tested in latest Chrome, Firefox, Safari, and Edge.
 
 ## FAQ
 
