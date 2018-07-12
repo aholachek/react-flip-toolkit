@@ -49,8 +49,6 @@ export function Flipped({
   flipId,
   inverseFlipId,
   componentId,
-  onStart,
-  onComplete,
   ...rest
 }) {
   let child

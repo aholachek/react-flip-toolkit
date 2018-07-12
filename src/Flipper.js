@@ -26,7 +26,9 @@ class Flipper extends Component {
       overshootClamping: PropTypes.bool
     }),
     applyTransformOrigin: PropTypes.bool,
-    debug: PropTypes.bool
+    debug: PropTypes.bool,
+    element: PropTypes.string,
+    className: PropTypes.string
   }
 
   static defaultProps = {
@@ -39,7 +41,8 @@ class Flipper extends Component {
     },
     // but if a ease string is supplied this is the default duration
     duration: 250,
-    applyTransformOrigin: true
+    applyTransformOrigin: true,
+    element: "div"
   }
 
   inProgressAnimations = {}
@@ -75,9 +78,13 @@ class Flipper extends Component {
   }
 
   render() {
+    const { element, className } = this.props
+    const Element = element
     return (
       <FlipContext.Provider value={this.flipCallbacks}>
-        <div ref={el => (this.el = el)}>{this.props.children}</div>
+        <Element className={className} ref={el => (this.el = el)}>
+          {this.props.children}
+        </Element>
       </FlipContext.Provider>
     )
   }
