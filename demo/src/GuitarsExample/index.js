@@ -1,4 +1,4 @@
-import React, { Component } from "../../../../../../Library/Caches/typescript/2.9/node_modules/@types/react"
+import React, { Component } from "react"
 import { Flipper } from "../../../src"
 import GuitarItem from "./GuitarItem"
 import SelectedGuitar from "./SelectedGuitar"
@@ -26,13 +26,11 @@ class GuitarExample extends Component {
               <span className="info">
                 <a href="https://tympanus.net/Development/ExpandingGridItemAnimation/">
                   Codrop's vanilla JS implementation
-                </a>&nbsp;
-                 rewritten in React with react-flip-toolkit
+                </a>&nbsp; rewritten in React with react-flip-toolkit
               </span>
             </header>
           </div>
-          <button className="dummy-menu">
-          </button>
+          <button className="dummy-menu" />
           <div className="content">
             {typeof this.state.focusedGuitarIndex !== "number" && (
               <div className="grid">

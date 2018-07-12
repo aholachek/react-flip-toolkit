@@ -1,8 +1,18 @@
 import { convertMatrix2dArrayToString } from "./matrixHelpers"
 import { isNumber } from "./typeHelpers"
 
-// if we're scaling an element and we have element children with data-inverse-flip-ids,
-// apply the inverse of the transforms so that the children don't distort
+/**
+ * @function invertTransformsForChildren
+ * if we're scaling an element and we have element children with data-inverse-flip-ids,
+ * apply the inverse of the transforms so that the children don't distort
+ * @param {Object} args
+ * @param {Object} args.invertedChildren
+ * @param {Array} args.matrix
+ * @param {HTMLBodyElement} args.body
+ *
+ * @returns {Void}
+ *
+ */
 export const invertTransformsForChildren = ({
   invertedChildren,
   matrix,
@@ -36,6 +46,16 @@ export const invertTransformsForChildren = ({
   })
 }
 
+/**
+ * @function createApplyStylesFunc
+ *
+ * @param {Object} args
+ * @param {HTMLElement} args.element
+ * @param {Array} args.invertedChildren
+ * @param {HTMLBodyElement} args.body
+ *
+ * @returns {Function}
+ */
 export const createApplyStylesFunc = ({ element, invertedChildren, body }) => ({
   matrix,
   opacity

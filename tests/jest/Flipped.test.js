@@ -1,6 +1,6 @@
-import React from "../../../../../Library/Caches/typescript/2.9/node_modules/@types/react"
+import React from "react"
 import { Flipped } from "../../src/Flipped"
-import TestRenderer from "../../../../../Library/Caches/typescript/2.9/node_modules/@types/react-test-renderer"
+import TestRenderer from "react-test-renderer"
 
 describe("Flipped Component", () => {
   it("adds a data-flip-id prop", () => {

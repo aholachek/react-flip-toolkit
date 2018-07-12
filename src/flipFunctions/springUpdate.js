@@ -27,10 +27,10 @@ export default function springUpdate({
 
   spring.onUpdate(onUpdate).onStop(stop)
 
-  // if (delay) {
-  //   timeoutId = setTimeout(spring.start.bind(spring), delay)
-  // } else {
-  spring.start()
-  // }
+  if (delay) {
+    timeoutId = setTimeout(spring.start.bind(spring), delay)
+  } else {
+    spring.start()
+  }
   return stop
 }

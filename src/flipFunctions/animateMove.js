@@ -1,29 +1,48 @@
 import * as Rematrix from "rematrix"
 import springUpdate from "./springUpdate"
 import tweenUpdate from "./tweenUpdate"
-import { interpolate } from "shifty/src/interpolate"
 import { convertMatrix3dArrayTo2dArray } from "./matrixHelpers"
 import { isNumber, isFunction, toArray } from "./typeHelpers"
+import { interpolate } from "../shifty/interpolate"
 import {
   getFlippedElementPositionsAfterUpdate,
   rectInViewport
 } from "./DOMMeasurementHelpers"
 import { createApplyStylesFunc } from "./styleHelpers"
 
+/**
+ * @function getInvertedChildren
+ * @param {HTMLElement} element
+ * @param {String} id
+ * @returns {Array}
+ */
 const getInvertedChildren = (element, id) =>
   toArray(element.querySelectorAll(`[data-inverse-flip-id="${id}"]`))
 
-const passesComponentFilter = (flipFilters, flipId) => {
-  if (typeof flipFilters === "string") {
-    if (flipFilters !== flipId) return false
-  } else if (Array.isArray(flipFilters)) {
-    if (!flipFilters.some(f => f === flipId)) {
+/**
+ * @function passesComponentFilter
+ * @param {Object|String} flipComponentIdFilter
+ * @param {String} flipId
+ * @returns {Boolean}
+ */
+const passesComponentFilter = (flipComponentIdFilter, flipId) => {
+  if (typeof flipComponentIdFilter === "string") {
+    if (flipComponentIdFilter !== flipId) return false
+  } else if (Array.isArray(flipComponentIdFilter)) {
+    if (!flipComponentIdFilter.some(f => f === flipId)) {
       return false
     }
   }
   return true
 }
 
+/**
+ * @function shouldApplyTransform
+ * @param {Object|String} flipComponentIdFilter
+ * @param {String} flipStartId
+ * @param {String} flipEndId
+ * @returns {Boolean}
+ */
 export const shouldApplyTransform = (
   flipComponentIdFilter,
   flipStartId,
@@ -40,6 +59,7 @@ export const shouldApplyTransform = (
 }
 
 /**
+ * @function animateMove
  * this is where the FLIP magic happens
  * it's called in the Flipper component's componentDidUpdate
  * @param {Object} args
@@ -52,6 +72,8 @@ export const shouldApplyTransform = (
  * @param {Boolean} args.applyTransformOrigin
  * @param {Object} args.spring
  * @param {Boolean} args.debug
+ *
+ * @returns {Void}
  */
 export const animateMove = ({
   inProgressAnimations,
@@ -317,7 +339,9 @@ export const animateMove = ({
 
       let onComplete
       if (flipCallbacks[id] && flipCallbacks[id].onComplete) {
-        onComplete = () => flipCallbacks[id].onComplete(element, flipStartId)
+        // must cache or else this could cause an error
+        const cachedOnComplete = flipCallbacks[id].onComplete
+        onComplete = () => cachedOnComplete(element, flipStartId)
       }
 
       const delay = parseFloat(flipConfig.delay)

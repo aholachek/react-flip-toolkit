@@ -1,6 +1,6 @@
-import React, { Component } from "../../../../../../Library/Caches/typescript/2.9/node_modules/@types/react"
+import React, { Component } from "react"
 import { Flipped } from "../../../src"
-import anime from "../../../../../../Library/Caches/typescript/2.9/node_modules/@types/animejs"
+import anime from "animejs"
 
 class UserGrid extends Component {
   hideElements = (el, startId) => {

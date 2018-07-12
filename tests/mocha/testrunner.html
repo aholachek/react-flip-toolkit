@@ -12,11 +12,11 @@
   <script src="../../node_modules/chai/chai.js"></script>
   <script>
     mocha.setup('bdd')
+    window.expect = chai.expect
   </script>
+  <script type="module" src="../../es/flipFunctions/DOMMeasurementHelpers.js"></script>
 
-  <!-- load code you want to test here -->
-
-  <!-- load your test files here -->
+  <script src="./styleHelpers.test.js"></script>
 
   <script>
     mocha.run();

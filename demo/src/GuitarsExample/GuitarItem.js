@@ -1,4 +1,4 @@
-import React, { Component } from "../../../../../../Library/Caches/typescript/2.9/node_modules/@types/react"
+import React, { Component } from "react"
 import { Flipped } from "../../../src"
 
 class GuitarItem extends Component {
@@ -6,16 +6,28 @@ class GuitarItem extends Component {
 
   static propTypes = {}
 
+  onStart = el => (el.style.zIndex = 10)
+
+  onComplete = el => (el.style.zIndex = "")
+
   render() {
     const { index, title, subtitle, onClick } = this.props
     const parentId = `guitar-${index}`
     return (
       <div className="grid__item" onClick={onClick}>
         <div className="product">
-          <Flipped flipId={`${parentId}-productBackground`}>
+          <Flipped
+            flipId={`${parentId}-productBackground`}
+            onStart={this.onStart}
+            onComplete={this.onComplete}
+          >
             <div className="product__bg" />
           </Flipped>
-          <Flipped flipId={`${parentId}-guitarImg`}>
+          <Flipped
+            flipId={`${parentId}-guitarImg`}
+            onStart={this.onStart}
+            onComplete={this.onComplete}
+          >
             <img
               className="product__img"
               src={require(`./img/${index + 1}.png`)}

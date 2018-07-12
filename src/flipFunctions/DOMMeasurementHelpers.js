@@ -8,7 +8,8 @@ const cancelInProgressAnimations = inProgressAnimations => {
 }
 
 /**
- * This function is called in getSnapshotBeforeUpdate in the Flipped Component
+ * @function getFlippedElementPositionsBeforeUpdate
+ * Called in getSnapshotBeforeUpdate in the Flipped Component
  * @param {Object} args
  * @param {HTMLElement} args.element - the ref for the parent Flipper component
  * @param {Object} args.flipCallbacks - passed in solely to identify which
@@ -96,10 +97,12 @@ export const getFlippedElementPositionsBeforeUpdate = ({
 }
 
 /**
+ * @function getFlippedElementPositionsAfterUpdate
  * This function is called in animateMove
  * (which is called in the Flipper component's componentDidUpdate)
  * @param {Object} args
  * @param {HTMLElement} args.element - the ref for the parent Flipper component
+ *
  * @returns {Object} flippedElementPositions
  */
 export const getFlippedElementPositionsAfterUpdate = ({ element }) => {
