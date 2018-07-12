@@ -5,7 +5,7 @@ import "./index.css"
 
 const colors = ["#ff4f66", "#7971ea", "#5900d8"]
 
-const data = Array.from(Array(30).keys()).map(i => ({
+const data = [].slice.apply(Array(30).keys()).map(i => ({
   color: colors[i % colors.length],
   key: i
 }))
