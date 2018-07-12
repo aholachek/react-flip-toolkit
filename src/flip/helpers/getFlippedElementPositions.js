@@ -1,4 +1,4 @@
-import { toArray } from "./typeHelpers"
+import { toArray } from "./types"
 
 const cancelInProgressAnimations = inProgressAnimations => {
   Object.keys(inProgressAnimations).forEach(id => {
@@ -120,13 +120,4 @@ export const getFlippedElementPositionsAfterUpdate = ({ element }) => {
       ]
     })
     .reduce((acc, curr) => ({ ...acc, [curr[0]]: curr[1] }), {})
-}
-
-export const rectInViewport = ({ top, bottom, left, right }) => {
-  return (
-    top < window.innerHeight &&
-    bottom > 0 &&
-    left < window.innerWidth &&
-    right > 0
-  )
 }

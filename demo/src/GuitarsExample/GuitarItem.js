@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { Flipped } from "../../../src"
+import { Flipped } from "../../../src/index"
 
 class GuitarItem extends Component {
   static defaultProps = {}

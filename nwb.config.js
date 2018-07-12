@@ -1,12 +1,15 @@
 module.exports = {
-  type: 'react-component',
+  type: "react-component",
   npm: {
     esModules: true,
     umd: {
-      global: 'ReactFlipToolkit',
+      global: "ReactFlipToolkit",
       externals: {
-        react: 'React'
+        react: "React"
       }
     }
+  },
+  webpack: {
+    copy: [{ from: "src/index.d.ts" }]
   }
 }

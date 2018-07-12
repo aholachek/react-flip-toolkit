@@ -1,7 +1,7 @@
 import {
   convertMatrix3dArrayTo2dArray,
   convertMatrix2dArrayToString
-} from "../../src/flipHelpers/matrixHelpers"
+} from "../matrix"
 
 describe("convertMatrix3dArrayTo2dArray", () => {
   it("takes a 3d matrix and returns a 2d one", () => {

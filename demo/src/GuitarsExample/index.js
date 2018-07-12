@@ -26,11 +26,13 @@ class GuitarExample extends Component {
               <span className="info">
                 <a href="https://tympanus.net/Development/ExpandingGridItemAnimation/">
                   Codrop's vanilla JS implementation
-                </a>&nbsp; rewritten in React with react-flip-toolkit
+                </a>&nbsp;
+                 rewritten in React with react-flip-toolkit
               </span>
             </header>
           </div>
-          <button className="dummy-menu" />
+          <button className="dummy-menu">
+          </button>
           <div className="content">
             {typeof this.state.focusedGuitarIndex !== "number" && (
               <div className="grid">

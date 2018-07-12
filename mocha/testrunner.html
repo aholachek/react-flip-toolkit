@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Mocha Tests</title>
+  <link rel="stylesheet" href="../node_modules/mocha/mocha.css">
+  <base href="/lib/" />
+</head>
+
+<body>
+  <div id="mocha"></div>
+  <script src="../node_modules/mocha/mocha.js"></script>
+  <script src="../node_modules/chai/chai.js"></script>
+  <script>
+    mocha.setup('bdd')
+    window.expect = chai.expect
+  </script>
+  <script type="module" src="../src/flip/helpers/__tests__/mocha/getFlippedElementPositions.test.js"></script>
+  <script type="module" src="../src/flip/helpers/__tests__/mocha/applyStyles.test.js"></script>
+
+  <script src="../src/flip/helpers/__tests__/mocha/applyStyles.test.js"></script>
+
+  <script>
+    mocha.run();
+  </script>
+</body>
+
+</html>

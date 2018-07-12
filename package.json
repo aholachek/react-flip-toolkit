@@ -11,11 +11,11 @@
     "umd"
   ],
   "scripts": {
-    "build": "nwb build-react-component --copy-files",
+    "build": "nwb build-react-component",
     "clean": "nwb clean-module && nwb clean-demo",
     "start": "nwb serve-react-demo",
     "test": "jest",
-    "dom-test": "npx http-server",
+    "dom-test": "npx http-server --ext=js",
     "deploy-demo": "yarn run build; cp demo/dist/index.html demo/dist/200.html; surge demo/dist --domain literate-fly.surge.sh",
     "test:coverage": "nwb test-react --coverage",
     "test:watch": "nwb test-react --server",
@@ -61,7 +61,8 @@
     },
     "transformIgnorePatterns": [
       "/!node_modules/shifty/"
-    ]
+    ],
+    "testPathIgnorePatterns": ["/mocha/"]
   },
   "author": "Alex Holachek",
   "license": "MIT",

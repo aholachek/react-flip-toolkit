@@ -1,5 +1,4 @@
-import { getFlippedElementPositionsBeforeUpdate } from "../../src/flipFunctions/DOMMeasurementHelpers"
-
+import { getFlippedElementPositionsBeforeUpdate } from "../../getFlippedElementPositions"
 describe("foo", () => {
   it("should ", () => {
     console.log(getFlippedElementPositionsBeforeUpdate)

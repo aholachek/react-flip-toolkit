@@ -1,5 +1,5 @@
 import React from "react"
-import { Flipped } from "../../src/Flipped"
+import { Flipped } from "../Flipped"
 import TestRenderer from "react-test-renderer"
 
 describe("Flipped Component", () => {

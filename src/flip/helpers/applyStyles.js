@@ -1,5 +1,5 @@
-import { convertMatrix2dArrayToString } from "./matrixHelpers"
-import { isNumber } from "./typeHelpers"
+import { convertMatrix2dArrayToString } from "./matrix"
+import { isNumber } from "./types"
 
 /**
  * @function invertTransformsForChildren
@@ -56,7 +56,7 @@ export const invertTransformsForChildren = ({
  *
  * @returns {Function}
  */
-export const createApplyStylesFunc = ({ element, invertedChildren, body }) => ({
+const createApplyStylesFunc = ({ element, invertedChildren, body }) => ({
   matrix,
   opacity
 }) => {
@@ -71,3 +71,5 @@ export const createApplyStylesFunc = ({ element, invertedChildren, body }) => ({
     body
   })
 }
+
+export default createApplyStylesFunc

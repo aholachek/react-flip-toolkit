@@ -1,14 +1,15 @@
 import * as Rematrix from "rematrix"
-import springUpdate from "./springUpdate"
-import tweenUpdate from "./tweenUpdate"
-import { convertMatrix3dArrayTo2dArray } from "./matrixHelpers"
-import { isNumber, isFunction, toArray } from "./typeHelpers"
 import { interpolate } from "../shifty/interpolate"
-import {
-  getFlippedElementPositionsAfterUpdate,
-  rectInViewport
-} from "./DOMMeasurementHelpers"
-import { createApplyStylesFunc } from "./styleHelpers"
+
+import { convertMatrix3dArrayTo2dArray } from "./helpers/matrix"
+import { isNumber, isFunction, toArray } from "./helpers/types"
+import { getFlippedElementPositionsAfterUpdate } from "./helpers/getFlippedElementPositions"
+import rectInViewport from "./helpers/rectInViewport"
+import shouldApplyTransform from "./helpers/shouldApplyTransform"
+import createApplyStylesFunc from "./helpers/applyStyles"
+
+import springUpdate from "./updaters/spring"
+import tweenUpdate from "./updaters/tween"
 
 /**
  * @function getInvertedChildren
@@ -18,45 +19,6 @@ import { createApplyStylesFunc } from "./styleHelpers"
  */
 const getInvertedChildren = (element, id) =>
   toArray(element.querySelectorAll(`[data-inverse-flip-id="${id}"]`))
-
-/**
- * @function passesComponentFilter
- * @param {Object|String} flipComponentIdFilter
- * @param {String} flipId
- * @returns {Boolean}
- */
-const passesComponentFilter = (flipComponentIdFilter, flipId) => {
-  if (typeof flipComponentIdFilter === "string") {
-    if (flipComponentIdFilter !== flipId) return false
-  } else if (Array.isArray(flipComponentIdFilter)) {
-    if (!flipComponentIdFilter.some(f => f === flipId)) {
-      return false
-    }
-  }
-  return true
-}
-
-/**
- * @function shouldApplyTransform
- * @param {Object|String} flipComponentIdFilter
- * @param {String} flipStartId
- * @param {String} flipEndId
- * @returns {Boolean}
- */
-export const shouldApplyTransform = (
-  flipComponentIdFilter,
-  flipStartId,
-  flipEndId
-) => {
-  if (
-    flipComponentIdFilter &&
-    !passesComponentFilter(flipComponentIdFilter, flipStartId) &&
-    !passesComponentFilter(flipComponentIdFilter, flipEndId)
-  ) {
-    return false
-  }
-  return true
-}
 
 /**
  * @function animateMove
@@ -75,7 +37,7 @@ export const shouldApplyTransform = (
  *
  * @returns {Void}
  */
-export const animateMove = ({
+const animateMove = ({
   inProgressAnimations,
   cachedFlipChildrenPositions = {},
   flipCallbacks = {},
@@ -425,3 +387,5 @@ export const animateMove = ({
     // not every item in the array will have returned a startAnimation func
     .forEach(startAnimation => startAnimation && startAnimation())
 }
+
+export default animateMove
