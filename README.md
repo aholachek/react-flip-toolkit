@@ -282,7 +282,7 @@ But for many/most use cases, you'll want to additionally specify the `scale` pro
 
 - **Why does my animation look "off"?**
   - If you're using an easing function rather than a spring, try increasing the duration to something ridiculous like `10000` so that you can catch every detail. When the animations happen quickly it's hard to consciously spot little issues that can interfere with the final effect.
-  - If that still doesn't help, you can temporarily add [the experimental `debug` prop](###props) directly on your `Flipper` component.
+  - If that still doesn't help, you can temporarily add [the experimental `debug` prop](#props) directly on your `Flipper` component.
 
 - **Why is the element animating from or to an unexpected position?**
   - At any point, there can only be one element with a specified `flipId` on the page. If there are multiple `Flipped` elements on the page with the same id, things will start to get weird. Check to make sure all `flipId`s are unique.
