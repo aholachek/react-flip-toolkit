@@ -73,14 +73,15 @@
 }
 
 .photoHeading {
-  font-size: 3rem;
-  margin-bottom: 2rem;
-}
-
-.photoGridHeading {
-  font-size: 1.5rem;
   position: relative;
   z-index: 2;
+  width: 30rem;
+  height: 2rem;
+  font-size: 1.5rem;
+}
+
+.photoHeadingFocused {
+  font-size: 2.2rem;
 }
 
 .photoGridShaderHidden {
@@ -92,7 +93,7 @@
 }
 
 .photoGridLead {
-  font-size: 2.2rem;
+  font-size: 2rem;
   font-weight: 200;
   margin-bottom: 2rem;
 }
