@@ -52,7 +52,7 @@ class PhotoGrid extends Component {
     const { focused } = this.state
 
     return (
-      <Flipper flipKey={focused} duration={duration}>
+      <Flipper flipKey={focused}>
         <div className="photoGridExample" ref={el => (this.el = el)}>
           <div className="photoGrid">
             {data.map((d, i) => {
@@ -69,7 +69,7 @@ class PhotoGrid extends Component {
                         flipId={`heading-${i}`}
                         onStart={this.applyZIndexHeader}
                       >
-                        <h1 className="photoGridHeading">{data[i].title}</h1>
+                        <h2 className="photoHeading">{data[i].title}</h2>
                       </Flipped>{" "}
                       <Flipped flipId={`img-${i}`} onStart={this.applyZIndex}>
                         <img src={d.img} alt="" className="photoGridImg" />
@@ -107,7 +107,9 @@ class PhotoGrid extends Component {
               <div className="photoGridFocused">
                 <div className="photoGridContentContainer">
                   <Flipped flipId={`heading-${focused}`}>
-                    <h1 className="photoHeading">{data[focused].title}</h1>
+                    <h1 className="photoHeading photoHeadingFocused">
+                      {data[focused].title}
+                    </h1>
                   </Flipped>
                   <p data-fade-in className="photoGridLead">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit.

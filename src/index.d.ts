@@ -49,6 +49,8 @@ export interface FlipperProps {
   spring?: Spring
   applyTransformOrigin?: boolean
   debug?: boolean
+  element?: string
+  className?: string
 }
 
 export class Flipper extends React.Component<FlipperProps> {
