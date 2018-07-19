@@ -1,182 +1,139 @@
 import * as Rematrix from "rematrix"
-import { interpolate } from "../shifty/interpolate"
+import springUpdate from "./spring"
+import tweenUpdate from "./tween"
+import { toArray, isFunction, isNumber } from "../utilities"
 
-import { convertMatrix3dArrayTo2dArray } from "./helpers/matrix"
-import { isNumber, isFunction, toArray } from "./helpers/types"
-import { getFlippedElementPositionsAfterUpdate } from "./helpers/getFlippedElementPositions"
-import rectInViewport from "./helpers/rectInViewport"
-import shouldApplyTransform from "./helpers/shouldApplyTransform"
-import createApplyStylesFunc from "./helpers/applyStyles"
+// 3d transforms were causing weird issues in chrome,
+// especially when opacity was also being tweened,
+// so convert to a 2d matrix
+export const convertMatrix3dArrayTo2dArray = matrix => [
+  // scale X
+  matrix[0],
+  matrix[1],
+  // scale Y
+  matrix[4],
+  matrix[5],
+  // translation X
+  matrix[12],
+  // translation Y
+  matrix[13]
+]
 
-import springUpdate from "./updaters/spring"
-import tweenUpdate from "./updaters/tween"
+export const convertMatrix2dArrayToString = matrix =>
+  `matrix(${[
+    matrix[0],
+    matrix[1],
+    matrix[2],
+    matrix[3],
+    matrix[4],
+    matrix[5]
+  ].join(", ")})`
 
-/**
- * @function getInvertedChildren
- * @param {HTMLElement} element
- * @param {String} id
- * @returns {Array}
- */
+export const invertTransformsForChildren = ({
+  invertedChildren,
+  matrix,
+  body
+}) => {
+  invertedChildren.forEach(([child, childFlipConfig]) => {
+    if (!body.contains(child)) {
+      return
+    }
+
+    const scaleX = matrix[0]
+    const scaleY = matrix[3]
+    const translateX = matrix[4]
+    const translateY = matrix[5]
+
+    const inverseVals = { translateX: 0, translateY: 0, scaleX: 1, scaleY: 1 }
+    let transformString = ""
+    if (childFlipConfig.translate) {
+      inverseVals.translateX = -translateX / scaleX
+      inverseVals.translateY = -translateY / scaleY
+      transformString += `translate(${inverseVals.translateX}px, ${
+        inverseVals.translateY
+      }px)`
+    }
+    if (childFlipConfig.scale) {
+      inverseVals.scaleX = 1 / scaleX
+      inverseVals.scaleY = 1 / scaleY
+      transformString += ` scale(${inverseVals.scaleX}, ${inverseVals.scaleY})`
+    }
+    child.style.transform = transformString
+  })
+}
+
+export const createApplyStylesFunc = ({ element, invertedChildren, body }) => ({
+  matrix,
+  opacity
+}) => {
+  element.style.transform = convertMatrix2dArrayToString(matrix)
+  if (isNumber(opacity)) {
+    element.style.opacity = opacity
+  }
+
+  if (invertedChildren) {
+    invertTransformsForChildren({
+      invertedChildren,
+      matrix,
+      body
+    })
+  }
+}
+
+export const rectInViewport = ({ top, bottom, left, right }) => {
+  return (
+    top < window.innerHeight &&
+    bottom > 0 &&
+    left < window.innerWidth &&
+    right > 0
+  )
+}
+
+const passesComponentFilter = (flipComponentIdFilter, flipId) => {
+  if (typeof flipComponentIdFilter === "string") {
+    if (flipComponentIdFilter !== flipId) return false
+  } else if (Array.isArray(flipComponentIdFilter)) {
+    if (!flipComponentIdFilter.some(f => f === flipId)) {
+      return false
+    }
+  }
+  return true
+}
+
+export const shouldApplyTransform = (
+  flipComponentIdFilter,
+  flipStartId,
+  flipEndId
+) => {
+  if (
+    flipComponentIdFilter &&
+    !passesComponentFilter(flipComponentIdFilter, flipStartId) &&
+    !passesComponentFilter(flipComponentIdFilter, flipEndId)
+  ) {
+    return false
+  }
+  return true
+}
+
 const getInvertedChildren = (element, id) =>
   toArray(element.querySelectorAll(`[data-inverse-flip-id="${id}"]`))
 
-/**
- * @function animateMove
- * this is where the FLIP magic happens
- * it's called in the Flipper component's componentDidUpdate
- * @param {Object} args
- * @param {Object} args.inProgressAnimations
- * @param {Object} args.cachedFlipChildrenPositions
- * @param {Object} args.flipCallbacks
- * @param {HTMLElement} args.containerEl - the ref for the parent Flipper component
- * @param {Number} args.duration - optional duration, only relevant if an ease is also provided
- * @param {String} args.ease - optional
- * @param {Boolean} args.applyTransformOrigin
- * @param {Object} args.spring
- * @param {Boolean} args.debug
- *
- * @returns {Void}
- */
-const animateMove = ({
+const tweenProp = (start, end, position) => start + (end - start) * position
+
+const animateFlippedElements = ({
+  flippedIds,
+  flipCallbacks,
   inProgressAnimations,
-  cachedFlipChildrenPositions = {},
-  flipCallbacks = {},
-  containerEl,
+  cachedFlipChildrenPositions,
+  newFlipChildrenPositions,
   duration,
   ease,
   applyTransformOrigin,
+  getElement,
   spring,
   debug
 }) => {
   const body = document.querySelector("body")
-
-  const newFlipChildrenPositions = getFlippedElementPositionsAfterUpdate({
-    element: containerEl
-  })
-
-  const getElement = id => containerEl.querySelector(`*[data-flip-id="${id}"]`)
-  const isFlipped = id =>
-    cachedFlipChildrenPositions[id] && newFlipChildrenPositions[id]
-
-  // to help sequence onExit and onDelayedAppear callbacks
-  const exitingElements = []
-  const onDelayedAppearCallbacks = []
-
-  const onElementExited = element => {
-    // prevent duplicate calls
-    if (!exitingElements.length) return
-    const elementIndex = exitingElements.indexOf(element)
-    if (elementIndex !== -1) {
-      exitingElements.splice(elementIndex, 1)
-      if (!exitingElements.length) {
-        onDelayedAppearCallbacks.forEach(c => c())
-      }
-    }
-  }
-
-  // onAppear for non-flipped elements
-  Object.keys(newFlipChildrenPositions)
-    .filter(id => !isFlipped(id))
-    // filter to only brand new elements with an onAppear callback
-    .filter(
-      id =>
-        newFlipChildrenPositions[id] &&
-        flipCallbacks[id] &&
-        flipCallbacks[id].onAppear
-    )
-    .forEach((id, i) => {
-      const element = getElement(id)
-      flipCallbacks[id].onAppear(element, i)
-    })
-
-  // onDelayedAppear for non-flipped elements
-  Object.keys(newFlipChildrenPositions)
-    .filter(id => !isFlipped(id))
-    // filter to only brand new elements with an onAppear callback
-    .filter(
-      id =>
-        newFlipChildrenPositions[id] &&
-        flipCallbacks[id] &&
-        flipCallbacks[id].onDelayedAppear
-    )
-    .forEach((id, i) => {
-      const element = getElement(id)
-      element.style.opacity = "0"
-
-      onDelayedAppearCallbacks.push(() => {
-        flipCallbacks[id].onDelayedAppear(element, i)
-      })
-    })
-
-  const fragmentTuples = []
-  // we need to wait to trigger onExit callbacks until the elements are
-  // back in the DOM, so store them here and call them after the fragments
-  // have been appended
-  const exitCallbacks = []
-
-  // onExit for non-flipped elements
-  Object.keys(cachedFlipChildrenPositions)
-    .filter(id => !isFlipped(id))
-    // filter to only exited elements with an onExit callback
-    .filter(
-      id =>
-        cachedFlipChildrenPositions[id] &&
-        flipCallbacks[id] &&
-        flipCallbacks[id].onExit
-    )
-    .forEach((id, i) => {
-      const {
-        domData: {
-          element,
-          parent,
-          childPosition: { top, left, width, height }
-        }
-      } = cachedFlipChildrenPositions[id]
-      // insert back into dom
-      if (getComputedStyle(parent).position === "static") {
-        parent.style.position = "relative"
-      }
-      element.style.position = "absolute"
-      element.style.top = top + "px"
-      element.style.left = left + "px"
-      // taken out of the dom flow, the element might have lost these dimensions
-      element.style.height = height + "px"
-      element.style.width = width + "px"
-      let fragmentTuple = fragmentTuples.filter(t => t[0] === parent)[0]
-      if (!fragmentTuple) {
-        fragmentTuple = [parent, document.createDocumentFragment()]
-        fragmentTuples.push(fragmentTuple)
-      }
-      fragmentTuple[1].appendChild(element)
-
-      exitingElements.push(element)
-
-      const stop = () => {
-        try {
-          onElementExited(element)
-          parent.removeChild(element)
-        } catch (DOMException) {
-          // the element is already gone
-        }
-      }
-      exitCallbacks.push(() => flipCallbacks[id].onExit(element, i, stop))
-      inProgressAnimations[id] = { stop }
-    })
-
-  // now append all the fragments from the onExit callbacks
-  // (we use fragments for performance)
-  fragmentTuples.forEach(t => {
-    const parent = t[0]
-    const fragment = t[1]
-    parent.appendChild(fragment)
-  })
-
-  exitCallbacks.forEach(c => c())
-
-  // if nothing exited, just call onDelayedAppear callbacks immediately
-  if (exitingElements.length === 0) {
-    onDelayedAppearCallbacks.forEach(c => c())
-  }
 
   if (debug) {
     console.error(
@@ -185,8 +142,7 @@ const animateMove = ({
   }
 
   // finally, let's FLIP the rest
-  Object.keys(newFlipChildrenPositions)
-    .filter(isFlipped)
+  flippedIds
     // take all the measurements we need
     // do all the set up work
     // and return a startAnimation function
@@ -331,15 +287,16 @@ const animateMove = ({
           return
         }
         const vals = {
-          matrix: interpolate(fromVals.matrix, toVals.matrix, currentValue)
+          matrix: fromVals.matrix.map((fromVal, index) =>
+            tweenProp(fromVal, toVals.matrix[index], currentValue)
+          )
         }
         if (animateOpacity) {
-          // interpolate requires an object
-          vals.opacity = interpolate(
-            { opacity: fromVals.opacity },
-            { opacity: toVals.opacity },
+          vals.opacity = tweenProp(
+            fromVals.opacity,
+            toVals.opacity,
             currentValue
-          ).opacity
+          )
         }
         applyStyles(vals)
       }
@@ -382,10 +339,11 @@ const animateMove = ({
         }
       }
     })
+    // not every item in the array will have returned a startAnimation func
+    .filter(x => x)
     // actually start updating the DOM
     // do this last to attempt to thwart the layout thrashing demon
-    // not every item in the array will have returned a startAnimation func
-    .forEach(startAnimation => startAnimation && startAnimation())
+    .forEach(startAnimation => startAnimation())
 }
 
-export default animateMove
+export default animateFlippedElements

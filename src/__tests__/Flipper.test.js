@@ -1,5 +1,5 @@
 import React from "react"
-import Flipper from "../src/Flipper"
+import Flipper from "../Flipper"
 import TestRenderer from "react-test-renderer"
 
 describe("Flipper Component", () => {

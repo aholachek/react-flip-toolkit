@@ -11,12 +11,11 @@
     "umd"
   ],
   "scripts": {
-    "build": "nwb build-react-component",
+    "build": "nwb build-react-component; cp src/index.d.ts lib; cp src/index.d.ts es",
     "clean": "nwb clean-module && nwb clean-demo",
     "start": "nwb serve-react-demo",
     "test": "jest",
-    "dom-test": "npx http-server --ext=js",
-    "deploy-demo": "yarn run build; cp demo/dist/index.html demo/dist/200.html; surge demo/dist --domain literate-fly.surge.sh",
+    "dom-test": "parcel mocha/testrunner.html",
     "test:coverage": "nwb test-react --coverage",
     "test:watch": "nwb test-react --server",
     "preversion": "npm test",
@@ -29,40 +28,45 @@
   "dependencies": {
     "object-assign": "^4.1.1",
     "rematrix": "^0.2.2",
+    "webpack-dev-server": "^3.1.4",
     "wobble": "^1.5.0"
   },
   "peerDependencies": {
     "react": "16.x"
   },
   "devDependencies": {
-    "prop-types": "^15.6.2",
-    "chai": "^4.1.2",
-    "mocha": "^5.2.0",
     "animejs": "^2.2.0",
     "babel-eslint": "^7.2.3",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
+    "chai": "^4.1.2",
     "eslint": "^5.0.1",
     "eslint-config-react-app": "^2.1.0",
-    "eslint-plugin-flowtype": "^2.34.1",
     "eslint-plugin-import": "^2.13.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.1.0",
+    "express": "^4.16.3",
     "jest": "^23.1.0",
+    "mocha": "^5.2.0",
+    "mocha-headless-chrome": "^2.0.1",
     "normalize.css": "^8.0.0",
     "nwb": "0.21.x",
+    "parcel": "^1.9.7",
+    "prop-types": "^15.6.2",
+    "raf-stub": "^2.0.2",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
-    "react-test-renderer": "^16.4.1"
+    "react-test-renderer": "^16.4.1",
+    "sinon": "^6.1.3",
+    "webpack-cli": "^3.1.0"
   },
   "jest": {
     "transform": {
       "^.+\\.js$": "<rootDir>/jest.transform.js"
     },
-    "transformIgnorePatterns": [
-      "/!node_modules/shifty/"
-    ],
-    "testPathIgnorePatterns": ["/mocha/"]
+    "testPathIgnorePatterns": [
+      "domtest"
+    ]
   },
   "author": "Alex Holachek",
   "license": "MIT",

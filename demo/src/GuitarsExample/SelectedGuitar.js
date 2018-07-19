@@ -38,11 +38,7 @@ class SelectedGuitar extends Component {
         >
           <div className="details__bg details__bg--down" />
         </Flipped>
-        <Flipped
-          flipId={`${parentId}-guitarImg`}
-          ease="easeOutElastic"
-          duration={1200}
-        >
+        <Flipped flipId={`${parentId}-guitarImg`} spring={{ mass: 1.5 }}>
           <img
             className="details__img"
             src={require(`./img/${index + 1}.png`)}

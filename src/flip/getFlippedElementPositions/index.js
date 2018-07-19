@@ -1,4 +1,4 @@
-import { toArray } from "./types"
+import { toArray } from "../utilities"
 
 const cancelInProgressAnimations = inProgressAnimations => {
   Object.keys(inProgressAnimations).forEach(id => {
@@ -8,7 +8,6 @@ const cancelInProgressAnimations = inProgressAnimations => {
 }
 
 /**
- * @function getFlippedElementPositionsBeforeUpdate
  * Called in getSnapshotBeforeUpdate in the Flipped Component
  * @param {Object} args
  * @param {HTMLElement} args.element - the ref for the parent Flipper component
@@ -97,12 +96,9 @@ export const getFlippedElementPositionsBeforeUpdate = ({
 }
 
 /**
- * @function getFlippedElementPositionsAfterUpdate
- * This function is called in animateMove
+ * This function is called in onFlipKeyUpdate
  * (which is called in the Flipper component's componentDidUpdate)
- * @param {Object} args
  * @param {HTMLElement} args.element - the ref for the parent Flipper component
- *
  * @returns {Object} flippedElementPositions
  */
 export const getFlippedElementPositionsAfterUpdate = ({ element }) => {

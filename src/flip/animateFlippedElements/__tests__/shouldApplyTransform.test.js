@@ -1,4 +1,4 @@
-import shouldApplyTransform from "../shouldApplyTransform"
+import { shouldApplyTransform } from "../index"
 
 describe("shouldApplyTransform", () => {
   it("returns true if either id passes the flipComponentIdFilter", () => {

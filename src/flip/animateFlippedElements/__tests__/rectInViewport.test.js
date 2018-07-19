@@ -1,4 +1,4 @@
-import rectInViewport from "../rectInViewport"
+import { rectInViewport } from "../index"
 
 Object.defineProperty(window, "innerHeight", {
   value: 100,

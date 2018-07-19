@@ -1,7 +1,7 @@
 import React, { Component, createContext } from "react"
 import PropTypes from "prop-types"
-import animateMove from "./flip/animateMove"
-import { getFlippedElementPositionsBeforeUpdate } from "./flip/helpers/getFlippedElementPositions"
+import onFlipKeyUpdate from "./flip/index"
+import { getFlippedElementPositionsBeforeUpdate } from "./flip/getFlippedElementPositions"
 
 export const FlipContext = createContext("flip")
 
@@ -61,7 +61,7 @@ class Flipper extends Component {
 
   componentDidUpdate(prevProps, prevState, cachedFlipChildrenPositions) {
     if (this.props.flipKey !== prevProps.flipKey) {
-      animateMove({
+      onFlipKeyUpdate({
         cachedFlipChildrenPositions,
         containerEl: this.el,
         duration: this.props.duration,

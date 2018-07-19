@@ -8,8 +8,5 @@ module.exports = {
         react: "React"
       }
     }
-  },
-  webpack: {
-    copy: [{ from: "src/index.d.ts" }]
   }
 }
