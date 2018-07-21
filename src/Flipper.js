@@ -2,6 +2,7 @@ import React, { Component, createContext } from "react"
 import PropTypes from "prop-types"
 import onFlipKeyUpdate from "./flip/index"
 import { getFlippedElementPositionsBeforeUpdate } from "./flip/getFlippedElementPositions"
+import getSpringInterface from "./getSpringInterface"
 
 export const FlipContext = createContext("flip")
 
@@ -15,14 +16,7 @@ class Flipper extends Component {
     children: PropTypes.node.isRequired,
     duration: PropTypes.number,
     ease: PropTypes.string,
-    spring: PropTypes.shape({
-      stiffness: PropTypes.number,
-      damping: PropTypes.number,
-      mass: PropTypes.number,
-      initialVelocity: PropTypes.number,
-      allowsOverdamping: PropTypes.bool,
-      overshootClamping: PropTypes.bool
-    }),
+    spring: PropTypes.shape(getSpringInterface()),
     applyTransformOrigin: PropTypes.bool,
     debug: PropTypes.bool,
     element: PropTypes.string,

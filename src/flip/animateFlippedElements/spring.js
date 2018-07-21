@@ -1,4 +1,7 @@
 import { Spring } from "wobble"
+import getSpringInterface from "../../getSpringInterface"
+
+const allowedConfigKeys = Object.keys(getSpringInterface())
 
 export default function springUpdate({
   delay,
@@ -10,22 +13,26 @@ export default function springUpdate({
   let spring
   let timeoutId
   if (typeof springConfig === "object") {
-    delete springConfig.toValue
-    delete springConfig.fromValue
+    // use whitelist
+    Object.keys(springConfig).forEach(configKey => {
+      if (allowedConfigKeys.indexOf(configKey) === -1) {
+        delete springConfig[configKey]
+      }
+    })
     spring = new Spring(springConfig)
   } else {
     spring = new Spring()
   }
 
   const stop = () => {
-    spring.stop()
-    onAnimationEnd()
     if (timeoutId) clearTimeout(timeoutId)
+    spring.stop()
   }
 
   const onUpdate = getOnUpdateFunc(stop)
 
-  spring.onUpdate(onUpdate).onStop(stop)
+  spring.onUpdate(onUpdate)
+  spring.onStop(onAnimationEnd)
 
   if (delay) {
     timeoutId = setTimeout(spring.start.bind(spring), delay)

@@ -7,6 +7,9 @@ const cancelInProgressAnimations = inProgressAnimations => {
   })
 }
 
+const addTupleToObject = (acc, curr) =>
+  Object.assign(acc, { [curr[0]]: curr[1] })
+
 /**
  * Called in getSnapshotBeforeUpdate in the Flipped Component
  * @param {Object} args
@@ -82,7 +85,7 @@ export const getFlippedElementPositionsBeforeUpdate = ({
         }
       ]
     })
-    .reduce((acc, curr) => ({ ...acc, [curr[0]]: curr[1] }), {})
+    .reduce(addTupleToObject, {})
 
   // do this at the very end since we want to cache positions of elements
   // while they are mid-transition
@@ -115,5 +118,5 @@ export const getFlippedElementPositionsAfterUpdate = ({ element }) => {
         }
       ]
     })
-    .reduce((acc, curr) => ({ ...acc, [curr[0]]: curr[1] }), {})
+    .reduce(addTupleToObject, {})
 }

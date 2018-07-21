@@ -1,6 +1,7 @@
 import React, { Children, cloneElement } from "react"
 import PropTypes from "prop-types"
 import { FlipContext } from "./Flipper"
+import getSpringInterface from "./getSpringInterface"
 
 const customPropCheck = function(props, propName, componentName) {
   if (props.flipId && props.inverseFlipId) {
@@ -27,14 +28,7 @@ const propTypes = {
   ease: PropTypes.string,
   duration: PropTypes.number,
   delay: PropTypes.number,
-  spring: PropTypes.shape({
-    stiffness: PropTypes.number,
-    damping: PropTypes.number,
-    mass: PropTypes.number,
-    initialVelocity: PropTypes.number,
-    allowsOverdamping: PropTypes.bool,
-    overshootClamping: PropTypes.bool
-  }),
+  spring: PropTypes.shape(getSpringInterface()),
   onStart: PropTypes.func,
   onComplete: PropTypes.func,
   onAppear: PropTypes.func,

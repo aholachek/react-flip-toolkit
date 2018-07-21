@@ -1,6 +1,21 @@
 import sinon from "sinon"
 import animateUnflippedElements from "../index"
 const testEl = document.querySelector("#test")
+const getElement = id => testEl.querySelector(`[data-flip-id=${id}]`)
+
+function getBoundingClientRect(element) {
+  const rect = element.getBoundingClientRect()
+  return {
+    top: rect.top,
+    right: rect.right,
+    bottom: rect.bottom,
+    left: rect.left,
+    width: rect.width,
+    height: rect.height,
+    x: rect.x,
+    y: rect.y
+  }
+}
 
 describe("animateUnflippedElements", () => {
   it("should call onAppear callbacks and pass in the correct element reference", () => {
@@ -9,19 +24,18 @@ describe("animateUnflippedElements", () => {
     <div data-flip-id="id-2"></div>
     <div data-flip-id="id-3"></div>
     <div data-flip-id="id-4"></div>
-
     </div>
   `
     const fakeOnAppear1 = sinon.fake()
     const fakeOnAppear2 = sinon.fake()
-    const fakeOnAppear4 = sinon.fake()
+    const fakeOnAppear3 = sinon.fake()
 
     animateUnflippedElements({
       unflippedIds: ["id-1", "id-3", "id-4"],
       flipCallbacks: {
         "id-1": { onAppear: fakeOnAppear1 },
         "id-2": { onAppear: fakeOnAppear2 },
-        "id-4": { onAppear: fakeOnAppear4 }
+        "id-3": { onAppear: fakeOnAppear3 }
       },
       getElement: () => {},
       newFlipChildrenPositions: { "id-1": {}, "id-3": {} },
@@ -29,22 +43,355 @@ describe("animateUnflippedElements", () => {
     })
     expect(fakeOnAppear1.callCount).to.equal(1)
     expect(fakeOnAppear2.callCount).to.equal(0)
-    expect(fakeOnAppear4.callCount).to.equal(1)
+    expect(fakeOnAppear3.callCount).to.equal(1)
   })
 
-  it("should immediately apply an opacity of 0 to elements with a delayedOnAppear callback", () => {})
+  it("should immediately apply an opacity of 0 to elements with a delayedOnAppear callback", () => {
+    testEl.innerHTML = ` <div>
+    <div data-flip-id="id-1"></div>
+    <div data-flip-id="id-2"></div>
+    <div data-flip-id="id-3"></div>
+    <div data-flip-id="id-4"></div>
+    </div>
+  `
+    const fakeOnAppear1 = sinon.fake()
+    const fakeDelayedOnAppear2 = sinon.fake()
 
-  it("should reinsert exited elements with onExit callbacks back into the DOM", () => {})
+    animateUnflippedElements({
+      unflippedIds: ["id-1", "id-2"],
+      flipCallbacks: {
+        "id-1": { onAppear: fakeOnAppear1 },
+        "id-2": { onDelayedAppear: fakeDelayedOnAppear2 }
+      },
+      getElement: getElement,
+      newFlipChildrenPositions: { "id-1": {}, "id-2": {} },
+      cachedFlipChildrenPositions: {}
+    })
+    expect(getElement("id-1").style.opacity).to.equal("")
+    expect(getElement("id-2").style.opacity).to.equal("0")
+  })
 
-  it("should make sure to reinsert the exited elements inside the correct parent (there could be multiple parents for exited elements)", () => {})
+  it("should reinsert exited elements with onExit callbacks back into the DOM", () => {
+    testEl.innerHTML = ` <div id="container">
+    <div data-flip-id="id-2"></div>
+    <div data-flip-id="id-3"></div>
+    </div>
+  `
+    const fakeOnExit = sinon.fake()
 
-  it("should style the newly-inserted exited elements with the correct top, left, height and width values", () => {})
+    const exitedElement = document.createElement("div")
+    const parent = testEl.querySelector("#container")
 
-  it("should call onExit with an element reference to the element that has been placed back in the DOM", () => {})
+    expect(parent.contains(exitedElement)).to.equal(false)
 
-  it("should wait until all exit callbacks have called the provided stop function ", () => {})
+    animateUnflippedElements({
+      unflippedIds: ["id-1"],
+      flipCallbacks: {
+        "id-1": { onExit: fakeOnExit }
+      },
+      getElement: getElement,
+      newFlipChildrenPositions: {},
+      inProgressAnimations: {},
+      cachedFlipChildrenPositions: {
+        "id-1": {
+          domData: {
+            element: exitedElement,
+            parent: parent,
+            childPosition: { top: 100, left: 200, width: 50, height: 75 }
+          }
+        }
+      }
+    })
+    expect(parent.contains(exitedElement)).to.equal(true)
+  })
 
-  it("should call the onDelayedAppearCallbacks immediately if there are no exiting ", () => {})
+  it("should make sure to reinsert the exited elements inside the correct parent (there could be multiple parents for exited elements)", () => {
+    testEl.innerHTML = ` <div id="container">
+    <div data-flip-id="id-3"></div>
+    </div>
+    <div id="container-2">
+    <div data-flip-id="id-4"></div>
+    </div>
 
-  it("should correctly sequence onAppear, onExit, and onDelayedAppear callbacks (in that order)", () => {})
+  `
+    const fakeOnExit = sinon.fake()
+
+    const exitedElement1 = document.createElement("div")
+    const parent1 = testEl.querySelector("#container")
+
+    const exitedElement2 = document.createElement("div")
+    const parent2 = testEl.querySelector("#container-2")
+
+    expect(parent1.contains(exitedElement1)).to.equal(false)
+    expect(parent2.contains(exitedElement1)).to.equal(false)
+    expect(parent1.contains(exitedElement2)).to.equal(false)
+    expect(parent2.contains(exitedElement2)).to.equal(false)
+
+    animateUnflippedElements({
+      unflippedIds: ["id-1", "id-2"],
+      flipCallbacks: {
+        "id-1": { onExit: fakeOnExit },
+        "id-2": { onExit: fakeOnExit }
+      },
+      getElement: getElement,
+      newFlipChildrenPositions: {},
+      inProgressAnimations: {},
+      cachedFlipChildrenPositions: {
+        "id-1": {
+          domData: {
+            element: exitedElement1,
+            parent: parent1,
+            childPosition: { top: 100, left: 200, width: 50, height: 75 }
+          }
+        },
+        "id-2": {
+          domData: {
+            element: exitedElement2,
+            parent: parent2,
+            childPosition: { top: 100, left: 200, width: 50, height: 75 }
+          }
+        }
+      }
+    })
+    expect(parent1.contains(exitedElement1)).to.equal(true)
+    expect(parent2.contains(exitedElement1)).to.equal(false)
+    expect(parent1.contains(exitedElement2)).to.equal(false)
+    expect(parent2.contains(exitedElement2)).to.equal(true)
+  })
+
+  it("should make sure the parent is relatively positioned only if it was formerly static", () => {
+    testEl.innerHTML = ` <div id="container">
+    <div data-flip-id="id-2"></div>
+    <div data-flip-id="id-3"></div>
+    </div>
+  `
+    const fakeOnExit = sinon.fake()
+
+    const exitedElement = document.createElement("div")
+    const parent = testEl.querySelector("#container")
+
+    expect(getComputedStyle(parent).position).to.equal("static")
+
+    animateUnflippedElements({
+      unflippedIds: ["id-1"],
+      flipCallbacks: {
+        "id-1": { onExit: fakeOnExit }
+      },
+      getElement: getElement,
+      newFlipChildrenPositions: {},
+      inProgressAnimations: {},
+      cachedFlipChildrenPositions: {
+        "id-1": {
+          domData: {
+            element: exitedElement,
+            parent: parent,
+            childPosition: { top: 100, left: 200, width: 50, height: 75 }
+          }
+        }
+      }
+    })
+    expect(getComputedStyle(parent).position).to.equal("relative")
+
+    parent.style.position = "absolute"
+
+    animateUnflippedElements({
+      unflippedIds: ["id-1"],
+      flipCallbacks: {
+        "id-1": { onExit: fakeOnExit }
+      },
+      getElement: getElement,
+      newFlipChildrenPositions: {},
+      inProgressAnimations: {},
+      cachedFlipChildrenPositions: {
+        "id-1": {
+          domData: {
+            element: exitedElement,
+            parent: parent,
+            childPosition: { top: 100, left: 200, width: 50, height: 75 }
+          }
+        }
+      }
+    })
+    expect(getComputedStyle(parent).position).to.equal("absolute")
+  })
+
+  it("should style the newly-inserted exited elements with the correct top, left, height and width values", () => {
+    testEl.innerHTML = ` <div id="container">
+    <div data-flip-id="id-2"></div>
+    <div data-flip-id="id-3"></div>
+    </div>
+  `
+    const fakeOnExit = sinon.fake()
+
+    const exitedElement = document.createElement("div")
+    const parent = testEl.querySelector("#container")
+
+    expect(getBoundingClientRect(exitedElement)).to.deep.equal({
+      bottom: 0,
+      height: 0,
+      left: 0,
+      right: 0,
+      top: 0,
+      width: 0,
+      x: 0,
+      y: 0
+    })
+
+    animateUnflippedElements({
+      unflippedIds: ["id-1"],
+      flipCallbacks: {
+        "id-1": { onExit: fakeOnExit }
+      },
+      getElement: getElement,
+      newFlipChildrenPositions: {},
+      inProgressAnimations: {},
+      cachedFlipChildrenPositions: {
+        "id-1": {
+          domData: {
+            element: exitedElement,
+            parent: parent,
+            childPosition: { top: 100, left: 200, width: 50, height: 75 }
+          }
+        }
+      }
+    })
+
+    const newBounding = getBoundingClientRect(exitedElement)
+    expect(newBounding.width).to.equal(50)
+    expect(newBounding.height).to.equal(75)
+    expect(newBounding.left).to.equal(200)
+  })
+
+  it("should call onExit with an element reference to the element that has been placed back in the DOM", () => {
+    testEl.innerHTML = ` <div id="container">
+    <div data-flip-id="id-2"></div>
+    <div data-flip-id="id-3"></div>
+    </div>
+  `
+    const fakeOnExit = sinon.fake()
+
+    const exitedElement = document.createElement("div")
+    const parent = testEl.querySelector("#container")
+
+    animateUnflippedElements({
+      unflippedIds: ["id-0", "id-1"],
+      flipCallbacks: {
+        "id-0": { onExit: () => {} },
+        "id-1": { onExit: fakeOnExit }
+      },
+      getElement: getElement,
+      newFlipChildrenPositions: {},
+      inProgressAnimations: {},
+      cachedFlipChildrenPositions: {
+        "id-0": {
+          domData: {
+            element: exitedElement,
+            parent: parent,
+            childPosition: { top: 100, left: 200, width: 50, height: 75 }
+          }
+        },
+        "id-1": {
+          domData: {
+            element: exitedElement,
+            parent: parent,
+            childPosition: { top: 100, left: 200, width: 50, height: 75 }
+          }
+        }
+      }
+    })
+    expect(fakeOnExit.callCount).to.equal(1)
+    expect(fakeOnExit.args[0][0]).to.equal(exitedElement)
+    // index of exiting element in terms of all exiting elements
+    expect(fakeOnExit.args[0][1]).to.equal(1)
+    expect(typeof fakeOnExit.args[0][2]).to.equal("function")
+  })
+
+  it("should wait until all exit callbacks have called the provided stop function to trigger delayedOnAppear callbacks ", () => {
+    testEl.innerHTML = ` <div id="container">
+    <div data-flip-id="id-3"></div>
+    </div>
+  `
+
+    const exitedElement1 = document.createElement("div")
+    const parent = testEl.querySelector("#container")
+    const exitedElement2 = document.createElement("div")
+
+    const removeElementCallbacks = []
+    const fakeOnExit1 = sinon.fake((el, index, func) => {
+      removeElementCallbacks.push(func)
+    })
+    const fakeOnExit2 = sinon.fake((el, index, func) => {
+      removeElementCallbacks.push(func)
+    })
+
+    let onDelayedAppearCalled = false
+
+    const fakeOnDelayedAppear = sinon.fake(() => {
+      onDelayedAppearCalled = true
+    })
+
+    animateUnflippedElements({
+      unflippedIds: ["id-1", "id-2", "id-3"],
+      flipCallbacks: {
+        "id-1": { onExit: fakeOnExit1 },
+        "id-2": { onExit: fakeOnExit2 },
+        "id-3": { onDelayedAppear: fakeOnDelayedAppear }
+      },
+      getElement: getElement,
+      newFlipChildrenPositions: { "id-3": {} },
+      inProgressAnimations: {},
+      cachedFlipChildrenPositions: {
+        "id-1": {
+          domData: {
+            element: exitedElement1,
+            parent: parent,
+            childPosition: { top: 100, left: 200, width: 50, height: 75 }
+          }
+        },
+        "id-2": {
+          domData: {
+            element: exitedElement2,
+            parent: parent,
+            childPosition: { top: 100, left: 200, width: 50, height: 75 }
+          }
+        }
+      }
+    })
+
+    expect(onDelayedAppearCalled).to.equal(false)
+
+    removeElementCallbacks[0]()
+
+    expect(onDelayedAppearCalled).to.equal(false)
+
+    removeElementCallbacks[1]()
+
+    expect(onDelayedAppearCalled).to.equal(true)
+  })
+
+  it("should call the onDelayedAppearCallbacks immediately if there are no exiting elements ", () => {
+    testEl.innerHTML = ` <div id="container">
+    <div data-flip-id="id-3"></div>
+    </div>
+  `
+
+    let onDelayedAppearCalled = false
+
+    const fakeOnDelayedAppear = sinon.fake(() => {
+      onDelayedAppearCalled = true
+    })
+
+    animateUnflippedElements({
+      unflippedIds: ["id-3"],
+      flipCallbacks: {
+        "id-3": { onDelayedAppear: fakeOnDelayedAppear }
+      },
+      getElement: getElement,
+      newFlipChildrenPositions: { "id-3": {} },
+      inProgressAnimations: {},
+      cachedFlipChildrenPositions: {}
+    })
+
+    expect(onDelayedAppearCalled).to.equal(true)
+  })
 })

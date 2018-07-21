@@ -118,7 +118,8 @@ export const shouldApplyTransform = (
 const getInvertedChildren = (element, id) =>
   toArray(element.querySelectorAll(`[data-inverse-flip-id="${id}"]`))
 
-const tweenProp = (start, end, position) => start + (end - start) * position
+export const tweenProp = (start, end, position) =>
+  start + (end - start) * position
 
 const animateFlippedElements = ({
   flippedIds,
@@ -141,7 +142,6 @@ const animateFlippedElements = ({
     )
   }
 
-  // finally, let's FLIP the rest
   flippedIds
     // take all the measurements we need
     // do all the set up work

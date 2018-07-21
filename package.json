@@ -15,9 +15,8 @@
     "clean": "nwb clean-module && nwb clean-demo",
     "start": "nwb serve-react-demo",
     "test": "jest",
-    "dom-test": "parcel mocha/testrunner.html",
-    "test:coverage": "nwb test-react --coverage",
-    "test:watch": "nwb test-react --server",
+    "test:dom": "parcel mocha/testrunner.html",
+    "test:all": "jest; yarn run test:dom",
     "preversion": "npm test",
     "version": "yarn run build"
   },

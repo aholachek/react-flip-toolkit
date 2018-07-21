@@ -5,12 +5,34 @@
   <title>DOM Tests</title>
   <meta charset="utf-8">
   <link rel="stylesheet" href="../node_modules/mocha/mocha.css">
+
+  <!-- for the animateUnflippedElements test  -->
+  <style>
+    .visible-block {
+      background: blueviolet;
+      width: 15px;
+      height: 15px;
+    }
+
+    .visible-block:nth-of-type(2) {
+      background: blue;
+    }
+
+    .visible-block:nth-of-type(3) {
+      background: red;
+    }
+
+    .has-transform {
+      transform: translate(50px, 25px) scale(2);
+    }
+  </style>
 </head>
 
 <body>
-  <div id="test"></div>
 
   <div id="mocha"></div>
+  <div id="test"></div>
+
   <!-- the order is important here, we need to complete all setup before importing any tests -->
   <script src="./test-set-up.js"></script>
   <script src="./tests.js"></script>
