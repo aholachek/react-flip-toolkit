@@ -9,6 +9,7 @@ import PhotosExample from "./PhotoGridExample"
 import ListExample from "./ListExample"
 import ListExampleSprings from "./ListExampleSprings"
 import FlipMove from "./FlipMove"
+import TransformExample from "./TransformExample"
 
 class Demo extends Component {
   render() {
@@ -22,6 +23,8 @@ class Demo extends Component {
     else if (window.location.pathname === "/list-spring")
       return <ListExampleSprings />
     else if (window.location.pathname === "/flip-move") return <FlipMove />
+    else if (window.location.pathname === "/transform")
+      return <TransformExample />
     else
       return (
         <nav>
@@ -51,6 +54,9 @@ class Demo extends Component {
             </li>
             <li>
               <a href="/flip-move">Flip Move</a>
+            </li>
+            <li>
+              <a href="/transform">Pre-existing transform</a>
             </li>
           </ul>
         </nav>

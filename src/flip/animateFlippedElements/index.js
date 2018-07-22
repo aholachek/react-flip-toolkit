@@ -192,7 +192,7 @@ const animateFlippedElements = ({
       const toVals = { matrix: currentTransform }
 
       const fromVals = {}
-      const transformsArray = [currentTransform]
+      const transformsArray = []
 
       // we're only going to animate the values that the child wants animated
       if (flipConfig.translate) {
@@ -212,6 +212,8 @@ const animateFlippedElements = ({
           Rematrix.scaleY(prevRect.height / Math.max(currentRect.height, 0.01))
         )
       }
+
+      transformsArray.push(currentTransform)
 
       if (flipConfig.opacity) {
         fromVals.opacity = prevOpacity

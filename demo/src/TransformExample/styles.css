@@ -1,0 +1,16 @@
+.square {
+  width: 5rem;
+  height: 5rem;
+  cursor: pointer;
+  background-color: #7971ea;
+}
+
+.full-screen-square {
+  transform: translate(100px, 100px) scale(2);
+  cursor: pointer;
+  background-color: pink;
+}
+
+.transform-example-container {
+  padding: 5rem;
+}
