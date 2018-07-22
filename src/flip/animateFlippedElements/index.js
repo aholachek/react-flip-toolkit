@@ -2,6 +2,7 @@ import * as Rematrix from "rematrix"
 import springUpdate from "./spring"
 import tweenUpdate from "./tween"
 import { toArray, isFunction, isNumber } from "../utilities"
+import * as constants from "../../constants"
 
 // 3d transforms were causing weird issues in chrome,
 // especially when opacity was also being tweened,
@@ -116,7 +117,9 @@ export const shouldApplyTransform = (
 }
 
 const getInvertedChildren = (element, id) =>
-  toArray(element.querySelectorAll(`[data-inverse-flip-id="${id}"]`))
+  toArray(
+    element.querySelectorAll(`[${constants.DATA_INVERSE_FLIP_ID}="${id}"]`)
+  )
 
 export const tweenProp = (start, end, position) =>
   start + (end - start) * position

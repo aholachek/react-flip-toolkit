@@ -1,10 +1,49 @@
 import sinon from "sinon"
 import {
   getFlippedElementPositionsBeforeUpdate,
-  getFlippedElementPositionsAfterUpdate
+  getFlippedElementPositionsAfterUpdate,
+  getAllElements
 } from "../index"
 
 const testEl = document.querySelector("#test")
+
+describe("getAllElements", () => {
+  it("should return a func that selects all elements in the entire document with a specific data portal key if a portal key is provided", () => {
+    const otherEl = document.createElement("div")
+    document.querySelector("body").appendChild(otherEl)
+    otherEl.innerHTML = `
+    <div>
+    <div data-flip-id="id-1" data-portal-key='some-portal-key'></div>
+    <div data-flip-id="id-2" data-portal-key='some-portal-key'></div>
+    </div>
+    `
+    testEl.innerHTML = `
+    <div data-flip-id="id-3" data-portal-key='some-portal-key'></div>
+    <div data-flip-id="id-4" data-portal-key='some-portal-key'></div>
+      </div>
+    `
+    const elements = getAllElements(testEl, "some-portal-key")
+    expect(elements.length).to.equal(4)
+  })
+
+  it("should otherwise get all children elements with a data-flip-id attribute  ", () => {
+    const otherEl = document.createElement("div")
+    document.querySelector("body").appendChild(otherEl)
+    otherEl.innerHTML = `
+    <div>
+    <div data-flip-id="id-1" data-portal-key='some-portal-key'></div>
+    <div data-flip-id="id-2" data-portal-key='some-portal-key'></div>
+    </div>
+    `
+    testEl.innerHTML = `
+    <div data-flip-id="id-3" data-portal-key='some-portal-key'></div>
+    <div data-flip-id="id-4" data-portal-key='some-portal-key'></div>
+      </div>
+    `
+    const elements = getAllElements(testEl, undefined)
+    expect(elements.length).to.equal(2)
+  })
+})
 
 describe("getFlippedElementPositionsBeforeUpdate", () => {
   it("returns position data for elements with flip-ids", () => {

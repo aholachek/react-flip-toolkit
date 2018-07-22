@@ -1,7 +1,8 @@
 import React, { Children, cloneElement } from "react"
 import PropTypes from "prop-types"
-import { FlipContext } from "./Flipper"
+import { FlipContext, PortalContext } from "./Flipper"
 import getSpringInterface from "./getSpringInterface"
+import * as constants from "./constants"
 
 const customPropCheck = function(props, propName, componentName) {
   if (props.flipId && props.inverseFlipId) {
@@ -35,7 +36,8 @@ const propTypes = {
   onDelayedAppear: PropTypes.func,
   onExit: PropTypes.func,
   componentIdFilter: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-  componentId: PropTypes.string
+  componentId: PropTypes.string,
+  portalKey: PropTypes.string
 }
 // This wrapper creates child components for the main Flipper component
 export function Flipped({
@@ -43,6 +45,7 @@ export function Flipped({
   flipId,
   inverseFlipId,
   componentId,
+  portalKey,
   ...rest
 }) {
   let child
@@ -60,16 +63,24 @@ export function Flipped({
     })
   }
 
-  return cloneElement(child, {
+  const dataAttributes = {
     // these are both used as selectors so they have to be separate
-    "data-flip-id": flipId,
-    "data-inverse-flip-id": inverseFlipId,
+    [constants.DATA_FLIP_ID]: flipId,
+    [constants.DATA_INVERSE_FLIP_ID]: inverseFlipId,
     // we need to access this in getFlippedElementPositions
     // which is called in getSnapshotBeforeUpdate
     // so for performance add it as a data attribute
-    "data-flip-component-id": componentId,
-    "data-flip-config": JSON.stringify(Object.assign(rest, { componentId }))
-  })
+    [constants.DATA_FLIP_COMPONENT_ID]: componentId,
+    [constants.DATA_FLIP_CONFIG]: JSON.stringify(
+      Object.assign(rest, { componentId })
+    )
+  }
+
+  if (portalKey) {
+    dataAttributes[constants.DATA_PORTAL_KEY] = portalKey
+  }
+
+  return cloneElement(child, dataAttributes)
 }
 
 const FlippedWithContext = ({
@@ -82,22 +93,26 @@ const FlippedWithContext = ({
   onExit,
   ...rest
 }) => (
-  <FlipContext.Consumer>
-    {data => {
-      data[flipId] = {
-        onAppear,
-        onDelayedAppear,
-        onStart,
-        onComplete,
-        onExit
-      }
-      return (
-        <Flipped flipId={flipId} {...rest}>
-          {children}
-        </Flipped>
-      )
-    }}
-  </FlipContext.Consumer>
+  <PortalContext.Consumer>
+    {portalKey => (
+      <FlipContext.Consumer>
+        {data => {
+          data[flipId] = {
+            onAppear,
+            onDelayedAppear,
+            onStart,
+            onComplete,
+            onExit
+          }
+          return (
+            <Flipped flipId={flipId} {...rest} portalKey={portalKey}>
+              {children}
+            </Flipped>
+          )
+        }}
+      </FlipContext.Consumer>
+    )}
+  </PortalContext.Consumer>
 )
 
 FlippedWithContext.propTypes = propTypes

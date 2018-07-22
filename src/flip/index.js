@@ -1,6 +1,20 @@
 import animateUnflippedElements from "./animateUnflippedElements"
 import animateFlippedElements from "./animateFlippedElements"
 import { getFlippedElementPositionsAfterUpdate } from "./getFlippedElementPositions"
+import * as constants from "../constants"
+
+const createGetElementFunc = (element, portalKey) => {
+  if (portalKey) {
+    return id =>
+      document.querySelector(
+        `[${constants.DATA_FLIP_ID}="${id}"][${
+          constants.DATA_PORTAL_KEY
+        }=${portalKey}]`
+      )
+  } else {
+    return id => element.querySelector(`[${constants.DATA_FLIP_ID}="${id}"]`)
+  }
+}
 
 const onFlipKeyUpdate = ({
   inProgressAnimations,
@@ -11,13 +25,15 @@ const onFlipKeyUpdate = ({
   ease,
   applyTransformOrigin,
   spring,
-  debug
+  debug,
+  portalKey
 }) => {
   const newFlipChildrenPositions = getFlippedElementPositionsAfterUpdate({
-    element: containerEl
+    element: containerEl,
+    portalKey
   })
 
-  const getElement = id => containerEl.querySelector(`*[data-flip-id="${id}"]`)
+  const getElement = createGetElementFunc(containerEl, portalKey)
 
   const isFlipped = id =>
     cachedFlipChildrenPositions[id] && newFlipChildrenPositions[id]

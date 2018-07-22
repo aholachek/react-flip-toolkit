@@ -3,7 +3,7 @@ import { Flipped } from "../Flipped"
 import TestRenderer from "react-test-renderer"
 
 describe("Flipped Component", () => {
-  it("adds a data-flip-id prop", () => {
+  it("adds a data-flip-id attribute", () => {
     const testRenderer = TestRenderer.create(
       <Flipped flipId="foo">
         <div />
@@ -11,7 +11,7 @@ describe("Flipped Component", () => {
     )
     expect(testRenderer.toJSON().props["data-flip-id"]).toEqual("foo")
   })
-  it("adds a data-inverse-flip-id prop", () => {
+  it("adds a data-inverse-flip-id attribute", () => {
     const testRenderer = TestRenderer.create(
       <Flipped inverseFlipId="foo2">
         <div />
@@ -19,7 +19,7 @@ describe("Flipped Component", () => {
     )
     expect(testRenderer.toJSON().props["data-inverse-flip-id"]).toEqual("foo2")
   })
-  it("puts the data-flip-component-id directly onto the props as well for performance reasons", () => {
+  it("puts the data-flip-component-id directly onto the attributes as well for performance reasons", () => {
     const testRenderer = TestRenderer.create(
       <Flipped componentId="fooComponent">
         <div />
@@ -28,6 +28,22 @@ describe("Flipped Component", () => {
     expect(testRenderer.toJSON().props["data-flip-component-id"]).toEqual(
       "fooComponent"
     )
+  })
+
+  it("only if provided with a portalKey prop, puts that on the attributes to help with document scoped selection ", () => {
+    const testRenderer = TestRenderer.create(
+      <Flipped componentId="fooComponent" portalKey="plants">
+        <div />
+      </Flipped>
+    )
+    expect(testRenderer.toJSON().props["data-portal-key"]).toBe("plants")
+
+    const testRenderer2 = TestRenderer.create(
+      <Flipped componentId="fooComponent">
+        <div />
+      </Flipped>
+    )
+    expect(testRenderer2.toJSON().props["data-flip-portal-key"]).toBe(undefined)
   })
   it("adds all data transform attributes if none are specified", () => {
     const testRenderer = TestRenderer.create(

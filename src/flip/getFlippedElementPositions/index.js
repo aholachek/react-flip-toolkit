@@ -1,4 +1,5 @@
 import { toArray } from "../utilities"
+import * as constants from "../../constants"
 
 const cancelInProgressAnimations = inProgressAnimations => {
   Object.keys(inProgressAnimations).forEach(id => {
@@ -9,6 +10,16 @@ const cancelInProgressAnimations = inProgressAnimations => {
 
 const addTupleToObject = (acc, curr) =>
   Object.assign(acc, { [curr[0]]: curr[1] })
+
+export const getAllElements = (element, portalKey) => {
+  if (portalKey) {
+    return toArray(
+      document.querySelectorAll(`[${constants.DATA_PORTAL_KEY}="${portalKey}"]`)
+    )
+  } else {
+    return toArray(element.querySelectorAll(`[${constants.DATA_FLIP_ID}]`))
+  }
+}
 
 /**
  * Called in getSnapshotBeforeUpdate in the Flipped Component
@@ -23,11 +34,13 @@ const addTupleToObject = (acc, curr) =>
 export const getFlippedElementPositionsBeforeUpdate = ({
   element,
   flipCallbacks,
-  inProgressAnimations
+  inProgressAnimations,
+  portalKey
 }) => {
-  const flippedElements = toArray(element.querySelectorAll("[data-flip-id]"))
+  const flippedElements = getAllElements(element, portalKey)
+
   const inverseFlippedElements = toArray(
-    element.querySelectorAll("[data-inverse-flip-id]")
+    element.querySelectorAll(`[${constants.DATA_INVERSE_FLIP_ID}]`)
   )
 
   const childIdsToParentBCRs = {}
@@ -104,8 +117,12 @@ export const getFlippedElementPositionsBeforeUpdate = ({
  * @param {HTMLElement} args.element - the ref for the parent Flipper component
  * @returns {Object} flippedElementPositions
  */
-export const getFlippedElementPositionsAfterUpdate = ({ element }) => {
-  return toArray(element.querySelectorAll("[data-flip-id]"))
+export const getFlippedElementPositionsAfterUpdate = ({
+  element,
+  portalKey
+}) => {
+  debugger // eslint-disable-line
+  return getAllElements(element, portalKey)
     .map(child => {
       const computedStyle = window.getComputedStyle(child)
       return [

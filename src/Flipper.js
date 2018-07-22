@@ -6,6 +6,8 @@ import getSpringInterface from "./getSpringInterface"
 
 export const FlipContext = createContext("flip")
 
+export const PortalContext = createContext("portal")
+
 class Flipper extends Component {
   static propTypes = {
     flipKey: PropTypes.oneOfType([
@@ -20,7 +22,8 @@ class Flipper extends Component {
     applyTransformOrigin: PropTypes.bool,
     debug: PropTypes.bool,
     element: PropTypes.string,
-    className: PropTypes.string
+    className: PropTypes.string,
+    portalKey: PropTypes.string
   }
 
   static defaultProps = {
@@ -47,7 +50,8 @@ class Flipper extends Component {
         element: this.el,
         // if onExit callbacks exist here, we'll cache the DOM node
         flipCallbacks: this.flipCallbacks,
-        inProgressAnimations: this.inProgressAnimations
+        inProgressAnimations: this.inProgressAnimations,
+        portalKey: this.props.portalKey
       })
     }
     return null
@@ -64,20 +68,24 @@ class Flipper extends Component {
         flipCallbacks: this.flipCallbacks,
         applyTransformOrigin: this.props.applyTransformOrigin,
         spring: this.props.spring,
-        debug: this.props.debug
+        debug: this.props.debug,
+        portalKey: this.props.portalKey
       })
     }
   }
 
   render() {
-    const { element, className } = this.props
+    const { element, className, portalKey } = this.props
     const Element = element
+
     return (
-      <FlipContext.Provider value={this.flipCallbacks}>
-        <Element className={className} ref={el => (this.el = el)}>
-          {this.props.children}
-        </Element>
-      </FlipContext.Provider>
+      <PortalContext.Provider value={portalKey}>
+        <FlipContext.Provider value={this.flipCallbacks}>
+          <Element className={className} ref={el => (this.el = el)}>
+            {this.props.children}
+          </Element>
+        </FlipContext.Provider>
+      </PortalContext.Provider>
     )
   }
 }
