@@ -24,6 +24,21 @@
   }
 }
 
+@keyframes fadeInOpposite {
+  0% {
+    transform: translateX(100vw);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOutOpposite {
+  100% {
+    transform: translateX(-100vw);
+  }
+}
+
 .portal-modal {
   position: fixed;
   top: 0;
@@ -50,10 +65,15 @@
 
 .portal-modal.environment::after {
   background-color: #93E7A3;
+  animation: fadeInOpposite .4s forwards;
 }
 
 .portal-modal--animating-out::after {
   animation: fadeOut .4s forwards;
+}
+
+.portal-modal--animating-out.environment::after {
+  animation: fadeOutOpposite .4s forwards;
 }
 
 .portal-image-list {
@@ -86,7 +106,7 @@
 
 .portal-grid-container {
   display: grid;
-  grid-gap: 10rem;
+  grid-gap: 7rem;
   grid-template-columns: repeat(2, 15rem);
   justify-content: center;
   align-items: center;
