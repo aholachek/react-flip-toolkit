@@ -3,11 +3,11 @@ import { Flipper, Flipped } from "../../../src"
 import "./styles.css"
 
 const SmallSquare = ({ onClick, ...rest }) => (
-  <div className="square" onClick={onClick} {...rest} />
+  <div className="zero-square" onClick={onClick} {...rest} />
 )
 
 const BigSquare = ({ onClick, ...rest }) => (
-  <div className="full-screen-square square" onClick={onClick} {...rest} />
+  <div className="zero-full-screen-square square" onClick={onClick} {...rest} />
 )
 
 export default class AnimatedSquare extends Component {
@@ -19,11 +19,17 @@ export default class AnimatedSquare extends Component {
     }))
   }
 
+  componentDidMount() {
+    setInterval(() => {
+      this.toggleFullScreen()
+    }, 1000)
+  }
+
   render() {
     return (
       <Flipper
         flipKey={this.state.fullScreen}
-        className="transform-example-container"
+        className="zero-transform-example-container"
       >
         {this.state.fullScreen ? (
           <Flipped flipId="square">

@@ -6,9 +6,8 @@
 }
 
 .full-screen-square {
-  transform: translate(100px, 100px) scale(2);
+  transform: translate(100px, 200px);
   cursor: pointer;
-  background-color: pink;
 }
 
 .transform-example-container {

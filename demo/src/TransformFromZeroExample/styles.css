@@ -1,0 +1,16 @@
+.zero-square {
+  width: 15rem;
+  height: 15rem;
+  cursor: pointer;
+  background-color: #7971ea;
+}
+
+.zero-full-screen-square {
+  height: 0;
+  width: 0;
+  cursor: pointer;
+}
+
+.zero-transform-example-container {
+  padding: 5rem;
+}

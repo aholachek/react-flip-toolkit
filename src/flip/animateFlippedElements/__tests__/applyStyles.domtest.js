@@ -136,4 +136,32 @@ describe("createApplyStylesFunc", () => {
     })
     expect(element.style.opacity).to.equal("0.5")
   })
+
+  it("that function should apply a min-width of 1px and/or min-height of 1px if the forceMinWidth or forceMinHeight args are provided ", () => {
+    testEl.innerHTML = `
+    <div data-flip-id="id-1" >
+    </div>
+  `
+    const body = document.querySelector("body")
+    const element = document.querySelector('[data-flip-id="id-1"]')
+    const invertedChildren = []
+
+    const applyStyles = createApplyStylesFunc({
+      invertedChildren,
+      element,
+      body
+    })
+
+    expect(element.style.minWidth).to.equal("")
+    expect(element.style.minHeight).to.equal("")
+
+    applyStyles({
+      matrix: [0.2, 0, 0, 0.5, -300, 250],
+      forceMinHeight: true,
+      forceMinWidth: true
+    })
+
+    expect(element.style.minWidth).to.equal("1px")
+    expect(element.style.minHeight).to.equal("1px")
+  })
 })

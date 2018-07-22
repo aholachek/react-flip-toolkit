@@ -1,6 +1,6 @@
 {
   "name": "react-flip-toolkit",
-  "version": "3.0.6-beta4",
+  "version": "3.1.0",
   "description": "Configurable FLIP animation helpers for React",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -13,6 +13,7 @@
   "scripts": {
     "build": "nwb build-react-component; cp src/index.d.ts lib; cp src/index.d.ts es",
     "clean": "nwb clean-module && nwb clean-demo",
+    "deploy-demo": "yarn run build; cp demo/dist/index.html demo/dist/200.html; surge demo/dist --domain literate-fly.surge.sh",
     "start": "nwb serve-react-demo",
     "test": "jest",
     "test:dom": "parcel mocha/testrunner.html",
@@ -24,10 +25,10 @@
     "type": "git",
     "url": "https://github.com/aholachek/react-flip-toolkit"
   },
+  "bugs": "https://github.com/aholachek/react-flip-toolkit/issues",
   "dependencies": {
     "object-assign": "^4.1.1",
     "rematrix": "^0.2.2",
-    "webpack-dev-server": "^3.1.4",
     "wobble": "^1.5.0",
     "prop-types": "^15.6.2"
   },
@@ -45,19 +46,15 @@
     "eslint-plugin-import": "^2.13.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.1.0",
-    "express": "^4.16.3",
     "jest": "^23.1.0",
     "mocha": "^5.2.0",
-    "mocha-headless-chrome": "^2.0.1",
     "normalize.css": "^8.0.0",
     "nwb": "0.21.x",
     "parcel": "^1.9.7",
-    "raf-stub": "^2.0.2",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "react-test-renderer": "^16.4.1",
-    "sinon": "^6.1.3",
-    "webpack-cli": "^3.1.0"
+    "sinon": "^6.1.3"
   },
   "jest": {
     "transform": {

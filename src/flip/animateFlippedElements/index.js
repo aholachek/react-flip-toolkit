@@ -65,11 +65,20 @@ export const invertTransformsForChildren = ({
 
 export const createApplyStylesFunc = ({ element, invertedChildren, body }) => ({
   matrix,
-  opacity
+  opacity,
+  forceMinHeight,
+  forceMinWidth
 }) => {
   element.style.transform = convertMatrix2dArrayToString(matrix)
   if (isNumber(opacity)) {
     element.style.opacity = opacity
+  }
+
+  if (forceMinHeight) {
+    element.style.minHeight = "1px"
+  }
+  if (forceMinWidth) {
+    element.style.minWidth = "1px"
   }
 
   if (invertedChildren) {
@@ -195,7 +204,7 @@ const animateFlippedElements = ({
       const toVals = { matrix: currentTransform }
 
       const fromVals = {}
-      const transformsArray = []
+      const transformsArray = [currentTransform]
 
       // we're only going to animate the values that the child wants animated
       if (flipConfig.translate) {
@@ -206,17 +215,19 @@ const animateFlippedElements = ({
           Rematrix.translateY(prevRect.top - currentRect.top)
         )
       }
-
+      // going any smaller than 1px breaks transitions in Chrome
       if (flipConfig.scale) {
         transformsArray.push(
-          Rematrix.scaleX(prevRect.width / Math.max(currentRect.width, 0.01))
+          Rematrix.scaleX(
+            Math.max(prevRect.width, 1) / Math.max(currentRect.width, 1)
+          )
         )
         transformsArray.push(
-          Rematrix.scaleY(prevRect.height / Math.max(currentRect.height, 0.01))
+          Rematrix.scaleY(
+            Math.max(prevRect.height, 1) / Math.max(currentRect.height, 1)
+          )
         )
       }
-
-      transformsArray.push(currentTransform)
 
       if (flipConfig.opacity) {
         fromVals.opacity = prevOpacity
@@ -310,7 +321,9 @@ const animateFlippedElements = ({
         // before animating, immediately apply FLIP styles to prevent flicker
         applyStyles({
           matrix: fromVals.matrix,
-          opacity: animateOpacity && fromVals.opacity
+          opacity: animateOpacity && fromVals.opacity,
+          forceMinHeight: currentRect.height === 0,
+          forceMinWidth: currentRect.width === 0
         })
 
         if (debug) return
