@@ -31,7 +31,9 @@
     "wobble": "^1.5.0"
   },
   "peerDependencies": {
-    "react": "16.x"
+    "react": "16.x",
+    "prop-types": "^15.6.2"
+
   },
   "devDependencies": {
     "animejs": "^2.2.0",
@@ -51,7 +53,6 @@
     "normalize.css": "^8.0.0",
     "nwb": "0.21.x",
     "parcel": "^1.9.7",
-    "prop-types": "^15.6.2",
     "raf-stub": "^2.0.2",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",

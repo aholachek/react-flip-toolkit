@@ -5,7 +5,8 @@ module.exports = {
     umd: {
       global: "ReactFlipToolkit",
       externals: {
-        react: "React"
+        react: "React",
+        "prop-types": "PropTypes"
       }
     }
   }

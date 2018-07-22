@@ -1,0 +1,58 @@
+.portal-item {
+  background-color: aqua;
+  width: 5rem;
+  height: 5rem;
+}
+
+.portal-item--modal {
+  width: 7rem;
+  height: 10rem;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.portal-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  background-color: black;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn .4s forwards;
+}
+
+.portal-image-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, 20rem);
+  grid-template-rows: 300px;
+  grid-gap: 2rem;
+}
+
+.portal-image-list li {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.portal-image-list img {
+  max-width: 100%;
+  height: auto;
+  cursor: pointer;
+}
+
+.focused-portal-img {
+  max-width: 500px;
+  max-height: 400px;
+}

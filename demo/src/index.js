@@ -10,6 +10,7 @@ import ListExample from "./ListExample"
 import ListExampleSprings from "./ListExampleSprings"
 import FlipMove from "./FlipMove"
 import TransformExample from "./TransformExample"
+import PortalExample from "./PortalExample"
 
 class Demo extends Component {
   render() {
@@ -25,6 +26,7 @@ class Demo extends Component {
     else if (window.location.pathname === "/flip-move") return <FlipMove />
     else if (window.location.pathname === "/transform")
       return <TransformExample />
+    else if (window.location.pathname === "/portal") return <PortalExample />
     else
       return (
         <nav>
@@ -57,6 +59,9 @@ class Demo extends Component {
             </li>
             <li>
               <a href="/transform">Pre-existing transform</a>
+            </li>
+            <li>
+              <a href="/portal">Portal</a>
             </li>
           </ul>
         </nav>
