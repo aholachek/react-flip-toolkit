@@ -121,7 +121,6 @@ export const getFlippedElementPositionsAfterUpdate = ({
   element,
   portalKey
 }) => {
-  debugger // eslint-disable-line
   return getAllElements(element, portalKey)
     .map(child => {
       const computedStyle = window.getComputedStyle(child)

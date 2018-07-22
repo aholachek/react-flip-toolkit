@@ -51,6 +51,7 @@ export interface FlipperProps {
   debug?: boolean
   element?: string
   className?: string
+  portalKey?: string
 }
 
 export class Flipper extends React.Component<FlipperProps> {
