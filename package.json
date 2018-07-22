@@ -1,6 +1,6 @@
 {
   "name": "react-flip-toolkit",
-  "version": "3.0.6-beta2",
+  "version": "3.0.6-beta3",
   "description": "Configurable FLIP animation helpers for React",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -33,7 +33,6 @@
   "peerDependencies": {
     "react": "16.x",
     "prop-types": "^15.6.2"
-
   },
   "devDependencies": {
     "animejs": "^2.2.0",
