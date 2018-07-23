@@ -113,11 +113,15 @@ import React, { Component } from React;
 import { Flipper, Flipped } from 'react-flip-toolkit';
 
 const SmallSquare = ({ onClick, ...rest}) => (
-  <div className="square" onClick={onClick} {...rest} />
+  <Flipped flipId="square">
+    <div className="square" onClick={onClick} {...rest} />
+  </Flipped>
 );
 
 const BigSquare = ({ onClick, ...rest }) => (
-  <div className="full-screen-square" onClick={onClick} {...rest}/>
+  <Flipped flipId="square">
+    <div className="full-screen-square" onClick={onClick} {...rest}/>
+  </Flipped>
 );
 
 class AnimatedSquare extends Component {
@@ -133,13 +137,9 @@ class AnimatedSquare extends Component {
     return (
       <Flipper flipKey={this.state.fullScreen}>
         {this.state.fullScreen ? (
-          <Flipped flipId="square">
-            <BigSquare onClick={this.toggleFullScreen} />
-          </Flipped>
+          <BigSquare onClick={this.toggleFullScreen} />
         ) : (
-          <Flipped flipId="square">
-            <SmallSquare onClick={this.toggleFullScreen} />
-          </Flipped>
+          <SmallSquare onClick={this.toggleFullScreen} />
         )}
       </Flipper>
     );
