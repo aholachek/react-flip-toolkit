@@ -112,15 +112,15 @@ The power of FLIP lies in smoothly tweening two completely separate elements to 
 import React, { Component } from React;
 import { Flipper, Flipped } from 'react-flip-toolkit';
 
-const SmallSquare = ({ onClick, ...rest}) => (
+const SmallSquare = ({ onClick }) => (
   <Flipped flipId="square">
-    <div className="square" onClick={onClick} {...rest} />
+    <div className="square" onClick={onClick} />
   </Flipped>
 );
 
-const BigSquare = ({ onClick, ...rest }) => (
+const BigSquare = ({ onClick }) => (
   <Flipped flipId="square">
-    <div className="full-screen-square" onClick={onClick} {...rest}/>
+    <div className="full-screen-square" onClick={onClick}/>
   </Flipped>
 );
 
