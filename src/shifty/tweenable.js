@@ -284,7 +284,7 @@ export class Tweenable {
       _currentState: clone(config.from || this.get())
     })
 
-    // Separate Object.assign here; it depends on _currentState being set above
+    // Separate assign here; it depends on _currentState being set above
     assign(this, {
       _originalState: this.get(),
       _targetState: clone(config.to || this.get())

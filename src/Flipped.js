@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import { FlipContext, PortalContext } from "./Flipper"
 import getSpringInterface from "./getSpringInterface"
 import * as constants from "./constants"
+import assign from "object-assign"
 
 const customPropCheck = function(props, propName, componentName) {
   if (props.flipId && props.inverseFlipId) {
@@ -56,7 +57,7 @@ export function Flipped({
   }
   // if nothing is being animated, assume everything is being animated
   if (!rest.scale && !rest.translate && !rest.opacity) {
-    Object.assign(rest, {
+    assign(rest, {
       translate: true,
       scale: true,
       opacity: true
@@ -71,9 +72,7 @@ export function Flipped({
     // which is called in getSnapshotBeforeUpdate
     // so for performance add it as a data attribute
     [constants.DATA_FLIP_COMPONENT_ID]: componentId,
-    [constants.DATA_FLIP_CONFIG]: JSON.stringify(
-      Object.assign(rest, { componentId })
-    )
+    [constants.DATA_FLIP_CONFIG]: JSON.stringify(assign(rest, { componentId }))
   }
 
   if (portalKey) {

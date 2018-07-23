@@ -1,4 +1,5 @@
 import { toArray } from "../utilities"
+import assign from "object-assign"
 import * as constants from "../../constants"
 
 const cancelInProgressAnimations = inProgressAnimations => {
@@ -8,8 +9,7 @@ const cancelInProgressAnimations = inProgressAnimations => {
   })
 }
 
-const addTupleToObject = (acc, curr) =>
-  Object.assign(acc, { [curr[0]]: curr[1] })
+const addTupleToObject = (acc, curr) => assign(acc, { [curr[0]]: curr[1] })
 
 export const getAllElements = (element, portalKey) => {
   if (portalKey) {
@@ -76,7 +76,7 @@ export const getFlippedElementPositionsBeforeUpdate = ({
       ) {
         const parentBCR = childIdsToParentBCRs[child.dataset.flipId]
 
-        Object.assign(domData, {
+        assign(domData, {
           element: child,
           parent: child.parentNode,
           childPosition: {
