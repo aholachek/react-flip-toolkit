@@ -45,7 +45,7 @@ export interface FlipperProps {
   children: React.ReactNode
   duration?: number
   ease?: string
-  spring?: Spring
+  spring?: Spring | string
   applyTransformOrigin?: boolean
   debug?: boolean
 }

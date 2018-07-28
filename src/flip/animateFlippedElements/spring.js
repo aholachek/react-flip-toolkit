@@ -4,14 +4,12 @@ import getSpringInterface from "../../getSpringInterface"
 const allowedConfigKeys = Object.keys(getSpringInterface())
 
 export default function springUpdate({
-  delay,
   getOnUpdateFunc,
   onAnimationEnd,
   springConfig
 }) {
   // avoid potential passing in of variables that will cause a mistake
   let spring
-  let timeoutId
   if (typeof springConfig === "object") {
     // use whitelist
     Object.keys(springConfig).forEach(configKey => {
@@ -19,25 +17,18 @@ export default function springUpdate({
         delete springConfig[configKey]
       }
     })
+    springConfig.mass = 1
     spring = new Spring(springConfig)
-  } else {
-    spring = new Spring()
   }
 
-  const stop = () => {
-    if (timeoutId) clearTimeout(timeoutId)
-    spring.stop()
-  }
+  const stop = () => spring.stop()
 
   const onUpdate = getOnUpdateFunc(stop)
 
   spring.onUpdate(onUpdate)
   spring.onStop(onAnimationEnd)
 
-  if (delay) {
-    timeoutId = setTimeout(spring.start.bind(spring), delay)
-  } else {
-    spring.start()
-  }
+  spring.start()
+
   return stop
 }

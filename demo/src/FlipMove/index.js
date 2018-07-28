@@ -17,7 +17,7 @@ const data = [
   { id: 7, title: "Fell to the floor but I hit the ground running" }
 ]
 
-const onElementAppear = type => (el, index) => {
+const onElementAppear = (el, index) => {
   anime({
     targets: el,
     opacity: [0, 1],
@@ -43,6 +43,9 @@ const onExit = type => (el, index, removeElement) => {
   }
 }
 
+const onGridExit = onExit("grid")
+const onListExit = onExit("list")
+
 class ListExample extends Component {
   state = { type: "list", sort: "ascending", filteredIds: [] }
 
@@ -54,7 +57,6 @@ class ListExample extends Component {
           flipKey={`${this.state.type}-${this.state.sort}-${JSON.stringify(
             this.state.filteredIds
           )}`}
-          spring={{ mass: 0.3 }}
         >
           <div className="fm-fieldsets">
             <fieldset>
@@ -150,14 +152,15 @@ class ListExample extends Component {
                     })
                     .map(({ title, id }, i) => {
                       const flipId = `item-${id}`
-                      const delay = i * 45
                       return (
                         <Flipped
                           flipId={flipId}
-                          onAppear={onElementAppear(this.state.type)}
-                          onExit={onExit(this.state.type)}
+                          onAppear={onElementAppear}
+                          onExit={
+                            this.state.type === "grid" ? onGridExit : onListExit
+                          }
                           key={flipId}
-                          delay={delay}
+                          staggerKey="item"
                         >
                           <li className="fm-item">
                             <Flipped inverseFlipId={flipId} scale>

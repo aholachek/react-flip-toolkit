@@ -108,7 +108,10 @@ export const getFlippedElementPositionsBeforeUpdate = ({
     el.style.opacity = ""
   })
 
-  return flippedElementPositions
+  return {
+    flippedElementPositions,
+    cachedOrderedFlipIds: flippedElements.map(el => el.dataset.flipId)
+  }
 }
 
 /**

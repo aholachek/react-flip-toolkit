@@ -17,12 +17,11 @@ const createGetElementFunc = (element, portalKey) => {
 }
 
 const onFlipKeyUpdate = ({
-  inProgressAnimations,
+  cachedOrderedFlipIds = [],
+  inProgressAnimations = {},
   cachedFlipChildrenPositions = {},
   flipCallbacks = {},
   containerEl,
-  duration,
-  ease,
   applyTransformOrigin,
   spring,
   debug,
@@ -38,8 +37,8 @@ const onFlipKeyUpdate = ({
   const isFlipped = id =>
     cachedFlipChildrenPositions[id] && newFlipChildrenPositions[id]
 
-  const unflippedIds = Object.keys(newFlipChildrenPositions)
-    .concat(Object.keys(cachedFlipChildrenPositions))
+  const unflippedIds = Object.keys(cachedFlipChildrenPositions)
+    .concat(Object.keys(newFlipChildrenPositions))
     .filter(id => !isFlipped(id))
 
   const baseArgs = {
@@ -55,13 +54,11 @@ const onFlipKeyUpdate = ({
     ...baseArgs
   })
 
-  const flippedIds = Object.keys(newFlipChildrenPositions).filter(isFlipped)
+  const flippedIds = cachedOrderedFlipIds.filter(isFlipped)
 
   animateFlippedElements({
     flippedIds,
     ...baseArgs,
-    duration,
-    ease,
     applyTransformOrigin,
     spring,
     debug

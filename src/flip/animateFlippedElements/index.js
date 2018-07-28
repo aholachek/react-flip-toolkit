@@ -1,6 +1,5 @@
 import * as Rematrix from "rematrix"
 import springUpdate from "./spring"
-import tweenUpdate from "./tween"
 import { toArray, isFunction, isNumber } from "../utilities"
 import * as constants from "../../constants"
 
@@ -139,11 +138,10 @@ const animateFlippedElements = ({
   inProgressAnimations,
   cachedFlipChildrenPositions,
   newFlipChildrenPositions,
-  duration,
-  ease,
   applyTransformOrigin,
-  getElement,
   spring,
+  stagger,
+  getElement,
   debug
 }) => {
   const body = document.querySelector("body")
@@ -154,7 +152,7 @@ const animateFlippedElements = ({
     )
   }
 
-  flippedIds
+  const startFlipFunctions = flippedIds
     // take all the measurements we need
     // do all the set up work
     // and return a startAnimation function
@@ -278,8 +276,6 @@ const animateFlippedElements = ({
         onComplete = () => cachedOnComplete(element, flipStartId)
       }
 
-      const delay = parseFloat(flipConfig.delay)
-
       // this should be called when animation ends naturally
       // but also when it is interrupted
       // when it is called, the animation has already been cancelled
@@ -288,19 +284,20 @@ const animateFlippedElements = ({
         isFunction(onComplete) && onComplete()
       }
 
-      let easingType
-      if (flipConfig.spring) easingType = "spring"
-      else if (flipConfig.ease) easingType = "tween"
-      else if (ease) easingType = "tween"
-      else easingType = "spring"
-
       const animateOpacity =
         isNumber(fromVals.opacity) && fromVals.opacity !== toVals.opacity
 
-      const getOnUpdateFunc = stop => ({ currentValue }) => {
+      let nextFuncCalled = false
+
+      const getOnUpdateFunc = nextFunc => stop => ({ currentValue }) => {
         if (!body.contains(element)) {
           stop()
           return
+        }
+        // if (nextFunc && !nextFuncCalled && currentValue > 0.15) {
+        if (nextFunc && !nextFuncCalled && currentValue) {
+          nextFuncCalled = true
+          nextFunc()
         }
         const vals = {
           matrix: fromVals.matrix.map((fromVal, index) =>
@@ -317,7 +314,7 @@ const animateFlippedElements = ({
         applyStyles(vals)
       }
 
-      return function startAnimation() {
+      const startAnimation = (nextFunc, indexAdjustment) => {
         // before animating, immediately apply FLIP styles to prevent flicker
         applyStyles({
           matrix: fromVals.matrix,
@@ -326,42 +323,73 @@ const animateFlippedElements = ({
           forceMinWidth: currentRect.width === 0
         })
 
-        if (debug) return
+        const springConfig = flipConfig.spring
+          ? Object.assign({}, flipConfig.spring, spring)
+          : Object.assign({}, spring)
 
-        if (flipCallbacks[id] && flipCallbacks[id].onStart)
-          flipCallbacks[id].onStart(element, flipStartId)
-
-        let stop
-
-        if (easingType === "spring") {
-          stop = springUpdate({
-            springConfig: flipConfig.spring || spring,
-            delay,
-            getOnUpdateFunc,
-            onAnimationEnd
-          })
-        } else {
-          stop = tweenUpdate({
-            duration: parseFloat(flipConfig.duration || duration),
-            easing: flipConfig.ease || ease,
-            delay,
-            getOnUpdateFunc,
-            onAnimationEnd
-          })
+        if (indexAdjustment) {
+          // higher stiffness = animation finishes faster
+          springConfig.stiffness = springConfig.stiffness * indexAdjustment
         }
 
-        // in case we have to cancel
-        inProgressAnimations[id] = {
-          stop,
-          onComplete
+        return () => {
+          if (debug) return
+
+          if (flipCallbacks[id] && flipCallbacks[id].onStart)
+            flipCallbacks[id].onStart(element, flipStartId)
+
+          let stop
+
+          stop = springUpdate({
+            springConfig,
+            getOnUpdateFunc: getOnUpdateFunc(nextFunc),
+            onAnimationEnd
+          })
+
+          // in case we have to cancel
+          inProgressAnimations[id] = {
+            stop,
+            onComplete
+          }
         }
       }
+
+      return [flipConfig.staggerKey, startAnimation]
     })
-    // not every item in the array will have returned a startAnimation func
+    // some functions might return undefined
     .filter(x => x)
-    // actually start updating the DOM
-    // do this last to attempt to thwart the layout thrashing demon
-    .forEach(startAnimation => startAnimation())
+
+  // staggered funcs need to be grouped and provided a reference to the next func
+  const staggeredFunctions = startFlipFunctions
+    .filter(arr => arr[0])
+    .reduce((acc, curr) => {
+      if (acc[curr[0]]) acc[curr[0]].push(curr[1])
+      else acc[curr[0]] = [curr[1]]
+      return acc
+    }, {})
+
+  // earlier index = higher stiffness adjustment
+  const translateIndexToStiffnessAdjustment = (index, length) =>
+    1.5 - (index / length) * (1.5 - 0.5)
+
+  Object.keys(staggeredFunctions).forEach(staggerKey => {
+    const funcs = staggeredFunctions[staggerKey]
+    // call with reference to the following function and information about
+    // placement in the order
+    const startFunc = funcs
+      .map((f, i) => [translateIndexToStiffnessAdjustment(i, funcs.length), f])
+      .reverse()
+      .reduce((prev, curr) => curr[1](prev, curr[0]), () => {})
+    startFunc()
+  })
+
+  // just call unstaggered functions directly
+  startFlipFunctions
+    .filter(arr => arr[0] === undefined)
+    .map(arr => arr[1])
+    .forEach(func => {
+      func()()
+    })
 }
 
 export default animateFlippedElements

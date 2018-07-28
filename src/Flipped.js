@@ -1,4 +1,4 @@
-import React, { Children, cloneElement } from "react"
+import React, { Children, cloneElement, PureComponent } from "react"
 import PropTypes from "prop-types"
 import { FlipContext, PortalContext } from "./Flipper"
 import getSpringInterface from "./getSpringInterface"
@@ -23,13 +23,11 @@ const propTypes = {
   children: PropTypes.node.isRequired,
   inverseFlipId: customPropCheck,
   flipId: customPropCheck,
+  staggerKey: PropTypes.string,
   opacity: PropTypes.bool,
   translate: PropTypes.bool,
   scale: PropTypes.bool,
   transformOrigin: PropTypes.string,
-  ease: PropTypes.string,
-  duration: PropTypes.number,
-  delay: PropTypes.number,
   spring: PropTypes.shape(getSpringInterface()),
   onStart: PropTypes.func,
   onComplete: PropTypes.func,
@@ -82,37 +80,42 @@ export function Flipped({
   return cloneElement(child, dataAttributes)
 }
 
-const FlippedWithContext = ({
-  children,
-  flipId,
-  onAppear,
-  onDelayedAppear,
-  onStart,
-  onComplete,
-  onExit,
-  ...rest
-}) => (
-  <PortalContext.Consumer>
-    {portalKey => (
-      <FlipContext.Consumer>
-        {data => {
-          data[flipId] = {
-            onAppear,
-            onDelayedAppear,
-            onStart,
-            onComplete,
-            onExit
-          }
-          return (
-            <Flipped flipId={flipId} {...rest} portalKey={portalKey}>
-              {children}
-            </Flipped>
-          )
-        }}
-      </FlipContext.Consumer>
-    )}
-  </PortalContext.Consumer>
-)
+class FlippedWithContext extends PureComponent {
+  render() {
+    const {
+      children,
+      flipId,
+      onAppear,
+      onDelayedAppear,
+      onStart,
+      onComplete,
+      onExit,
+      ...rest
+    } = this.props
+    return (
+      <PortalContext.Consumer>
+        {portalKey => (
+          <FlipContext.Consumer>
+            {data => {
+              data[flipId] = {
+                onAppear,
+                onDelayedAppear,
+                onStart,
+                onComplete,
+                onExit
+              }
+              return (
+                <Flipped flipId={flipId} {...rest} portalKey={portalKey}>
+                  {children}
+                </Flipped>
+              )
+            }}
+          </FlipContext.Consumer>
+        )}
+      </PortalContext.Consumer>
+    )
+  }
+}
 
 FlippedWithContext.propTypes = propTypes
 
