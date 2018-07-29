@@ -29,7 +29,6 @@
 .fm-grid,
 .fm-list {
     background-color: #ececec;
-    padding: 1rem;
     border-radius: 3px;
     margin-top: 2rem;
 }
@@ -39,7 +38,7 @@
     width: 100%;
     list-style-type: none;
     margin: 0;
-    padding: 0;
+    padding: 1rem;
 }
 
 .fm-list .fm-item {
@@ -55,8 +54,7 @@
     border-radius: 4px;
     background-color: white;
     overflow: hidden;
-
-    /* box-shadow: 0 0 15px rgba(0, 0, 0, 0.08); */
+    min-height: 6rem;
 }
 
 .fm-item h3 {

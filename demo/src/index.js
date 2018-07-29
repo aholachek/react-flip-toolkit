@@ -7,7 +7,6 @@ import GuitarsExample from "./GuitarsExample"
 import SidebarExample from "./SidebarExample"
 import PhotosExample from "./PhotoGridExample"
 import ListExample from "./ListExample"
-import ListExampleSprings from "./ListExampleSprings"
 import FlipMove from "./FlipMove"
 import TransformExample from "./TransformExample"
 import PortalExample from "./PortalExample"
@@ -22,8 +21,6 @@ class Demo extends Component {
     else if (window.location.pathname === "/sidebar") return <SidebarExample />
     else if (window.location.pathname === "/photos") return <PhotosExample />
     else if (window.location.pathname === "/list") return <ListExample />
-    else if (window.location.pathname === "/list-spring")
-      return <ListExampleSprings />
     else if (window.location.pathname === "/flip-move") return <FlipMove />
     else if (window.location.pathname === "/transform")
       return <TransformExample />
@@ -41,11 +38,6 @@ class Demo extends Component {
               <a href="/cards">Avatar cards example</a>
             </li>
             <li>
-              <a href="/spring-cards">
-                Avatar cards example &mdash; spring easing
-              </a>
-            </li>
-            <li>
               <a href="/sidebar">Sidebar example</a>
             </li>
             <li>
@@ -53,9 +45,6 @@ class Demo extends Component {
             </li>
             <li>
               <a href="/list">List example</a>
-            </li>
-            <li>
-              <a href="/list-spring">List example (with springs)</a>
             </li>
             <li>
               <a href="/flip-move">Flip Move</a>

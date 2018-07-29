@@ -10,11 +10,15 @@ const data = [
   { id: 3, title: "I aint the sharpest tool in the shed" },
   {
     id: 4,
-    title: "She was looking kind of dumb with her finger and her thumb"
+    title: "She was looking kind of dumb"
   },
-  { id: 5, title: "In the Shape of an L on her Forehead" },
-  { id: 6, title: "Well the years start coming and they don't stop coming" },
-  { id: 7, title: "Fell to the floor but I hit the ground running" }
+  {
+    id: 5,
+    title: "With her finger and her thumb"
+  },
+  { id: 6, title: "In the Shape of an L on her Forehead" },
+  { id: 7, title: "Well the years start coming" },
+  { id: 8, title: "And they don't stop coming" }
 ]
 
 const onElementAppear = (el, index) => {
@@ -160,7 +164,7 @@ class ListExample extends Component {
                             this.state.type === "grid" ? onGridExit : onListExit
                           }
                           key={flipId}
-                          staggerKey="item"
+                          stagger
                         >
                           <li className="fm-item">
                             <Flipped inverseFlipId={flipId} scale>

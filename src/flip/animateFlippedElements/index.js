@@ -1,6 +1,6 @@
 import * as Rematrix from "rematrix"
 import springUpdate from "./spring"
-import { toArray, isFunction, isNumber } from "../utilities"
+import { toArray, isFunction, isNumber, isObject } from "../utilities"
 import * as constants from "../../constants"
 
 // 3d transforms were causing weird issues in chrome,
@@ -132,6 +132,12 @@ const getInvertedChildren = (element, id) =>
 export const tweenProp = (start, end, position) =>
   start + (end - start) * position
 
+const staggerDefaults = Object.freeze({
+  key: "all",
+  triggerNext: 0.15,
+  drag: true
+})
+
 const animateFlippedElements = ({
   flippedIds,
   flipCallbacks,
@@ -140,7 +146,6 @@ const animateFlippedElements = ({
   newFlipChildrenPositions,
   applyTransformOrigin,
   spring,
-  stagger,
   getElement,
   debug
 }) => {
@@ -182,6 +187,18 @@ const animateFlippedElements = ({
       if (!element) return
 
       const flipConfig = JSON.parse(element.dataset.flipConfig)
+
+      let staggerConfig
+
+      if (flipConfig.stagger === true) {
+        staggerConfig = staggerDefaults
+      } else if (typeof flipConfig.stagger === "string") {
+        staggerConfig = Object.assign({}, staggerDefaults, {
+          key: flipConfig.stagger
+        })
+      } else if (isObject(flipConfig.stagger)) {
+        staggerConfig = Object.assign({}, staggerDefaults, flipConfig.stagger)
+      }
 
       const flipStartId = cachedFlipChildrenPositions[id].flipComponentId
       const flipEndId = flipConfig.componentId
@@ -290,12 +307,21 @@ const animateFlippedElements = ({
       let nextFuncCalled = false
 
       const getOnUpdateFunc = nextFunc => stop => ({ currentValue }) => {
-        if (!body.contains(element)) {
+        // the currentValue === 1 thing is stupid but seems necessary for now.
+        //  In chrome, once you transition to a totally 0 transform (matrix(1, 0, 0, 1, 0, 1))
+        // you get a 1px jump for some reason
+        // I've tried transform 3d, will-change, translateZ hacks and none of them make a difference
+        //  so we're going to stop on the penultimate update instead
+        if (!body.contains(element) || currentValue === 1) {
           stop()
           return
         }
-        // if (nextFunc && !nextFuncCalled && currentValue > 0.15) {
-        if (nextFunc && !nextFuncCalled && currentValue) {
+
+        if (
+          nextFunc &&
+          !nextFuncCalled &&
+          currentValue > staggerConfig.triggerNext
+        ) {
           nextFuncCalled = true
           nextFunc()
         }
@@ -327,9 +353,13 @@ const animateFlippedElements = ({
           ? Object.assign({}, flipConfig.spring, spring)
           : Object.assign({}, spring)
 
-        if (indexAdjustment) {
+        const hasDrag =
+          staggerConfig && staggerConfig.drag === false ? false : true
+
+        if (indexAdjustment && hasDrag) {
           // higher stiffness = animation finishes faster
           springConfig.stiffness = springConfig.stiffness * indexAdjustment
+          springConfig.damping = springConfig.damping * indexAdjustment
         }
 
         return () => {
@@ -353,8 +383,7 @@ const animateFlippedElements = ({
           }
         }
       }
-
-      return [flipConfig.staggerKey, startAnimation]
+      return [staggerConfig && staggerConfig.key, startAnimation]
     })
     // some functions might return undefined
     .filter(x => x)
@@ -370,10 +399,10 @@ const animateFlippedElements = ({
 
   // earlier index = higher stiffness adjustment
   const translateIndexToStiffnessAdjustment = (index, length) =>
-    1.5 - (index / length) * (1.5 - 0.5)
+    2 - index / length
 
-  Object.keys(staggeredFunctions).forEach(staggerKey => {
-    const funcs = staggeredFunctions[staggerKey]
+  Object.keys(staggeredFunctions).forEach(stagger => {
+    const funcs = staggeredFunctions[stagger]
     // call with reference to the following function and information about
     // placement in the order
     const startFunc = funcs

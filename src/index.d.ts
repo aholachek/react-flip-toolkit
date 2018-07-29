@@ -1,29 +1,31 @@
 import * as React from "react"
 
-// umd
-export as namespace ReactFlipToolkit
-
-interface Spring {
+export interface Spring {
   stiffness?: number
   damping?: number
-  mass?: number
-  initialVelocity?: number
-  allowsOverdamping?: boolean
   overshootClamping?: boolean
 }
 
-export interface FlippedProps {
+export interface Stagger {
+  key?: string
+  triggerNext?: number
+  drag?: boolean
+}
+
+export type SpringConfig = "noWobble" | "gentle" | "wobbly" | "stiff" | Spring
+
+export type FlippedComponentIdFilter = string | any[]
+
+export interface FlippedWithContextProps {
   children: React.ReactNode
-  inverseFlipId?: string
-  flipId?: string
+  inverseFlipId?: any
+  flipId?: any
   opacity?: boolean
   translate?: boolean
   scale?: boolean
   transformOrigin?: string
-  ease?: string
-  duration?: number
-  delay?: number
-  spring?: Spring
+  stagger?: boolean | Stagger
+  spring?: SpringConfig
   onStart?: (element: HTMLElement) => any
   onComplete?: (element: HTMLElement) => any
   onAppear?: (element: HTMLElement, index: number) => any
@@ -33,11 +35,12 @@ export interface FlippedProps {
     index: number,
     removeElement: () => any
   ) => any
-  componentIdFilter?: string | any[]
+  componentIdFilter?: FlippedComponentIdFilter
   componentId?: string
+  portalKey?: string
 }
 
-export const Flipped: React.SFC<FlippedProps>
+export const FlippedWithContext: React.SFC<FlippedWithContextProps>
 
 export type FlipperFlipKey = string | number | boolean
 
@@ -46,14 +49,11 @@ export interface FlipperProps {
   children: React.ReactNode
   duration?: number
   ease?: string
-  spring?: Spring
+  spring?: SpringConfig
   applyTransformOrigin?: boolean
   debug?: boolean
-  element?: string
-  className?: string
-  portalKey?: string
 }
 
-export class Flipper extends React.Component<FlipperProps> {
+export class Flipper extends React.Component<FlipperProps, any> {
   render(): JSX.Element
 }

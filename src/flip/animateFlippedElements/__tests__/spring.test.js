@@ -23,12 +23,10 @@ describe("springUpdate", () => {
       }
     })
     expect(Spring.mock.calls[0][0]).toEqual({
-      stiffness: 1,
       damping: 1,
       mass: 1,
-      initialVelocity: 1,
-      allowsOverdamping: true,
-      overshootClamping: true
+      overshootClamping: true,
+      stiffness: 1
     })
   })
   it("should call start", () => {

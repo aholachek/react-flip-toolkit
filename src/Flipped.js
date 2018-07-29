@@ -1,7 +1,7 @@
 import React, { Children, cloneElement, PureComponent } from "react"
 import PropTypes from "prop-types"
 import { FlipContext, PortalContext } from "./Flipper"
-import getSpringInterface from "./getSpringInterface"
+import { getSpringInterface, defaultSpringSettings } from "./springSettings"
 import * as constants from "./constants"
 import assign from "object-assign"
 
@@ -23,12 +23,14 @@ const propTypes = {
   children: PropTypes.node.isRequired,
   inverseFlipId: customPropCheck,
   flipId: customPropCheck,
-  staggerKey: PropTypes.string,
   opacity: PropTypes.bool,
   translate: PropTypes.bool,
   scale: PropTypes.bool,
   transformOrigin: PropTypes.string,
-  spring: PropTypes.shape(getSpringInterface()),
+  spring: PropTypes.oneOf([
+    PropTypes.shape(getSpringInterface()),
+    PropTypes.oneOf([Object.keys(defaultSpringSettings)])
+  ]),
   onStart: PropTypes.func,
   onComplete: PropTypes.func,
   onAppear: PropTypes.func,
@@ -36,7 +38,12 @@ const propTypes = {
   onExit: PropTypes.func,
   componentIdFilter: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   componentId: PropTypes.string,
-  portalKey: PropTypes.string
+  portalKey: PropTypes.string,
+  stagger: PropTypes.shape({
+    key: PropTypes.string,
+    triggerNext: PropTypes.number,
+    drag: PropTypes.bool
+  })
 }
 // This wrapper creates child components for the main Flipper component
 export function Flipped({
