@@ -268,10 +268,10 @@ But for many/most use cases, you'll want to additionally specify the `scale` pro
 
 ## Library details
 
-- ~9kb minified and gzipped
+- ~7kb minified and gzipped
 - React 16+
 - Tested in latest Chrome, Firefox, Safari, and Edge. Seems to work ok in IE 11.
-- Uses [Rematrix](https://github.com/jlmakes/rematrix) for matrix calculations, [Wobble](https://github.com/skevy/wobble) for spring animations, and a custom build of [Shifty](https://github.com/jeremyckahn/shifty) for tweening.
+- Uses [Rematrix](https://github.com/jlmakes/rematrix) for matrix calculations and [Wobble](https://github.com/skevy/wobble) for spring animations.
 
 ## FAQ
 

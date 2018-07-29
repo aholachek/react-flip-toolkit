@@ -1,3 +1,4 @@
+import assign from "object-assign"
 import * as Rematrix from "rematrix"
 import springUpdate from "./spring"
 import { toArray, isFunction, isNumber, isObject } from "../utilities"
@@ -193,11 +194,11 @@ const animateFlippedElements = ({
       if (flipConfig.stagger === true) {
         staggerConfig = staggerDefaults
       } else if (typeof flipConfig.stagger === "string") {
-        staggerConfig = Object.assign({}, staggerDefaults, {
+        staggerConfig = assign({}, staggerDefaults, {
           key: flipConfig.stagger
         })
       } else if (isObject(flipConfig.stagger)) {
-        staggerConfig = Object.assign({}, staggerDefaults, flipConfig.stagger)
+        staggerConfig = assign({}, staggerDefaults, flipConfig.stagger)
       }
 
       const flipStartId = cachedFlipChildrenPositions[id].flipComponentId
@@ -350,11 +351,11 @@ const animateFlippedElements = ({
         })
 
         const springConfig = flipConfig.spring
-          ? Object.assign({}, flipConfig.spring, spring)
-          : Object.assign({}, spring)
+          ? assign({}, spring, flipConfig.spring)
+          : assign({}, spring)
 
-        const hasDrag =
-          staggerConfig && staggerConfig.drag === false ? false : true
+        let hasDrag = false
+        if (staggerConfig && staggerConfig.drag) hasDrag = true
 
         if (indexAdjustment && hasDrag) {
           // higher stiffness = animation finishes faster
