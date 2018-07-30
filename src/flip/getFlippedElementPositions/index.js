@@ -100,13 +100,25 @@ export const getFlippedElementPositionsBeforeUpdate = ({
     })
     .reduce(addTupleToObject, {})
 
+  const inProgressAnimationIds = Object.keys(inProgressAnimations)
+
   // do this at the very end since we want to cache positions of elements
   // while they are mid-transition
   cancelInProgressAnimations(inProgressAnimations)
-  flippedElements.concat(inverseFlippedElements).forEach(el => {
-    el.style.transform = ""
-    el.style.opacity = ""
-  })
+
+  flippedElements
+    .concat(inverseFlippedElements)
+    .filter(el => {
+      const inProgressParent =
+        inProgressAnimationIds.indexOf(el.dataset.flipId) > -1
+      const inProgressInvertedChild =
+        inProgressAnimationIds.indexOf(el.dataset.inverseFlipId) > -1
+      if (inProgressParent || inProgressInvertedChild) return true
+    })
+    .forEach(el => {
+      el.style.transform = ""
+      el.style.opacity = ""
+    })
 
   return {
     flippedElementPositions,

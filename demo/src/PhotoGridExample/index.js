@@ -17,21 +17,17 @@ const data = [
   { img: detail6Img, title: "What a Mountain" }
 ]
 
-const duration = 500
-
 class PhotoGrid extends Component {
   applyZIndex = el => {
     el.style.zIndex = 3
-    setTimeout(() => {
-      el.style.zIndex = ""
-    }, duration)
   }
   applyZIndexHeader = el => {
     el.style.zIndex = 4
-    setTimeout(() => {
-      el.style.zIndex = ""
-    }, duration)
   }
+  removeZIndex = el => {
+    el.style.zIndex = ""
+  }
+
   animateIn = () => {
     anime({
       targets: this.el.querySelectorAll("*[data-fade-in]"),
@@ -68,15 +64,21 @@ class PhotoGrid extends Component {
                       <Flipped
                         flipId={`heading-${i}`}
                         onStart={this.applyZIndexHeader}
+                        onComplete={this.removeZIndex}
                       >
                         <h2 className="photoHeading">{data[i].title}</h2>
                       </Flipped>{" "}
-                      <Flipped flipId={`img-${i}`} onStart={this.applyZIndex}>
+                      <Flipped
+                        flipId={`img-${i}`}
+                        onStart={this.applyZIndex}
+                        onComplete={this.removeZIndex}
+                      >
                         <img src={d.img} alt="" className="photoGridImg" />
                       </Flipped>
                       <Flipped
                         flipId={`shader-${i}`}
                         onStart={this.applyZIndex}
+                        onComplete={this.removeZIndex}
                       >
                         <div className="photoGridShader photoGridShaderHidden" />
                       </Flipped>
@@ -96,12 +98,12 @@ class PhotoGrid extends Component {
               <Flipped
                 flipId={`img-${focused}`}
                 onComplete={this.animateIn}
-                onStart={this.animateZIndex}
+                onStart={this.applyZIndex}
               >
                 <img src={data[focused].img} alt="" className="photoGridImg" />
               </Flipped>
 
-              <Flipped flipId={`shader-${focused}`}>
+              <Flipped flipId={`shader-${focused}`} onStart={this.applyZIndex}>
                 <div className="photoGridShader" />
               </Flipped>
               <div className="photoGridFocused">

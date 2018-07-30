@@ -2,7 +2,6 @@ import React, { Component } from "react"
 import { render } from "react-dom"
 import "normalize.css"
 import CardsExample from "./CardsExample"
-import SpringCardsExample from "./CardsExampleSprings"
 import GuitarsExample from "./GuitarsExample"
 import SidebarExample from "./SidebarExample"
 import PhotosExample from "./PhotoGridExample"
@@ -15,8 +14,6 @@ import TransformFromZeroExample from "./TransformFromZeroExample"
 class Demo extends Component {
   render() {
     if (window.location.pathname === "/cards") return <CardsExample />
-    else if (window.location.pathname === "/spring-cards")
-      return <SpringCardsExample />
     else if (window.location.pathname === "/guitar") return <GuitarsExample />
     else if (window.location.pathname === "/sidebar") return <SidebarExample />
     else if (window.location.pathname === "/photos") return <PhotosExample />

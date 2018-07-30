@@ -21,8 +21,7 @@ export default class CardsExample extends Component {
     return (
       <Flipper
         flipKey={this.state.focusedIndex}
-        duration={this.state.speed === "normal" ? 300 : 3000}
-        ease="easeOutExpo"
+        spring={this.state.speed !== "normal" && { stiffness: 5, damping: 4 }}
       >
         <div className="header" ref={el => (this.el = el)}>
           <h1>Avatar cards</h1>
@@ -76,11 +75,9 @@ export default class CardsExample extends Component {
           data={this.state.userData}
           setFocusedIndex={this.setFocusedIndex}
           focusedIndex={this.state.focusedIndex}
-          speed={this.state.speed}
         />
         <FocusedUser
           index={this.state.focusedIndex}
-          speed={this.state.speed}
           close={() => {
             this.setState({ focusedIndex: null })
           }}

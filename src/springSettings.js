@@ -17,12 +17,17 @@ export const defaultSpringSettings = {
   stiff: { stiffness: 260, damping: 26 }
 }
 
-export const getSpringConfig = spring => {
-  if (Object.keys(defaultSpringSettings).indexOf(spring) !== -1) {
-    return defaultSpringSettings[spring]
-  } else if (isObject(spring)) {
-    return assign({}, defaultSpringSettings.noWobble, spring)
-  } else {
-    return defaultSpringSettings.noWobble
+export const getSpringConfig = ({ flipperSpring, flippedSpring }) => {
+  const normalizeSpring = spring => {
+    if (isObject(spring)) return spring
+    else if (defaultSpringSettings[spring]) return defaultSpringSettings[spring]
+    else return {}
   }
+
+  return assign(
+    {},
+    defaultSpringSettings.noWobble,
+    normalizeSpring(flipperSpring),
+    normalizeSpring(flippedSpring)
+  )
 }

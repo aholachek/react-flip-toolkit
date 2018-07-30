@@ -1,11 +1,7 @@
 import React, { Children, cloneElement, PureComponent } from "react"
 import PropTypes from "prop-types"
 import { FlipContext, PortalContext } from "./Flipper"
-import {
-  getSpringInterface,
-  defaultSpringSettings,
-  getSpringConfig
-} from "./springSettings"
+import { getSpringInterface, defaultSpringSettings } from "./springSettings"
 import * as constants from "./constants"
 import assign from "object-assign"
 
@@ -56,7 +52,6 @@ export function Flipped({
   inverseFlipId,
   componentId,
   portalKey,
-  spring,
   ...rest
 }) {
   let child
@@ -82,9 +77,7 @@ export function Flipped({
     // which is called in getSnapshotBeforeUpdate
     // so for performance add it as a data attribute
     [constants.DATA_FLIP_COMPONENT_ID]: componentId,
-    [constants.DATA_FLIP_CONFIG]: JSON.stringify(
-      assign(rest, { componentId, spring: getSpringConfig(spring) })
-    )
+    [constants.DATA_FLIP_CONFIG]: JSON.stringify(assign(rest, { componentId }))
   }
 
   if (portalKey) {

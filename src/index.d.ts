@@ -47,8 +47,6 @@ export type FlipperFlipKey = string | number | boolean
 export interface FlipperProps {
   flipKey: FlipperFlipKey
   children: React.ReactNode
-  duration?: number
-  ease?: string
   spring?: SpringConfig
   applyTransformOrigin?: boolean
   debug?: boolean

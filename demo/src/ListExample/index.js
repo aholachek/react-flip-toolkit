@@ -69,7 +69,6 @@ class ListExample extends Component {
         flipKey={`${this.state.filter ? this.state.filter : ""}-${
           this.state.sort
         }-${JSON.stringify(this.state.data)}`}
-        ease="easeOutExpo"
       >
         <main className="list-example">
           <h1>
@@ -199,7 +198,6 @@ class ListExample extends Component {
                     onAppear={onElementAppear}
                     onExit={onExit}
                     key={`item-${key}`}
-                    delay={i * 25}
                   >
                     <li className="listItem" style={{ backgroundColor: color }}>
                       {key}
@@ -235,7 +233,6 @@ class ListExample extends Component {
                     onDelayedAppear={onElementAppear}
                     onExit={onExit}
                     key={`item-${key}`}
-                    delay={i * 25}
                   >
                     <li className="listItem" style={{ backgroundColor: color }}>
                       {key}

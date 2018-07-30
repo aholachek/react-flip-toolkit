@@ -1,6 +1,7 @@
 import assign from "object-assign"
 import * as Rematrix from "rematrix"
 import springUpdate from "./spring"
+import { getSpringConfig } from "../../springSettings"
 import { toArray, isFunction, isNumber, isObject } from "../utilities"
 import * as constants from "../../constants"
 
@@ -69,7 +70,6 @@ export const createApplyStylesFunc = ({ element, invertedChildren, body }) => ({
   forceMinHeight,
   forceMinWidth
 }) => {
-  element.style.transform = convertMatrix2dArrayToString(matrix)
   if (isNumber(opacity)) {
     element.style.opacity = opacity
   }
@@ -80,6 +80,9 @@ export const createApplyStylesFunc = ({ element, invertedChildren, body }) => ({
   if (forceMinWidth) {
     element.style.minWidth = "1px"
   }
+
+  if (!matrix) return
+  element.style.transform = convertMatrix2dArrayToString(matrix)
 
   if (invertedChildren) {
     invertTransformsForChildren({
@@ -188,6 +191,11 @@ const animateFlippedElements = ({
       if (!element) return
 
       const flipConfig = JSON.parse(element.dataset.flipConfig)
+
+      const springConfig = getSpringConfig({
+        flipperSpring: spring,
+        flippedSpring: flipConfig.spring
+      })
 
       let staggerConfig
 
@@ -308,12 +316,7 @@ const animateFlippedElements = ({
       let nextFuncCalled = false
 
       const getOnUpdateFunc = nextFunc => stop => ({ currentValue }) => {
-        // the currentValue === 1 thing is stupid but seems necessary for now.
-        //  In chrome, once you transition to a totally 0 transform (matrix(1, 0, 0, 1, 0, 1))
-        // you get a 1px jump for some reason
-        // I've tried transform 3d, will-change, translateZ hacks and none of them make a difference
-        //  so we're going to stop on the penultimate update instead
-        if (!body.contains(element) || currentValue === 1) {
+        if (!body.contains(element)) {
           stop()
           return
         }
@@ -326,11 +329,19 @@ const animateFlippedElements = ({
           nextFuncCalled = true
           nextFunc()
         }
-        const vals = {
-          matrix: fromVals.matrix.map((fromVal, index) =>
+        const vals = {}
+
+        // the currentValue !== 1 thing is stupid but seems necessary for now.
+        // In chrome, once you transition to a totally 0 transform (matrix(1, 0, 0, 1, 0, 1))
+        // you get a 1px jump for some reason
+        // I've tried transform 3d, will-change, translateZ hacks and none of them make a difference
+        // so we're going to stop on the penultimate update instead
+        if (currentValue !== 1) {
+          vals.matrix = fromVals.matrix.map((fromVal, index) =>
             tweenProp(fromVal, toVals.matrix[index], currentValue)
           )
         }
+
         if (animateOpacity) {
           vals.opacity = tweenProp(
             fromVals.opacity,
@@ -349,10 +360,6 @@ const animateFlippedElements = ({
           forceMinHeight: currentRect.height === 0,
           forceMinWidth: currentRect.width === 0
         })
-
-        const springConfig = flipConfig.spring
-          ? assign({}, spring, flipConfig.spring)
-          : assign({}, spring)
 
         let hasDrag = false
         if (staggerConfig && staggerConfig.drag) hasDrag = true

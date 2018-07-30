@@ -19,12 +19,10 @@ class FocusedUser extends Component {
   }
 
   render() {
-    const { data, index, close, speed } = this.props
+    const { data, index, close } = this.props
     const parentFlipId = `card-${index}`
 
     if (typeof index !== "number") return null
-
-    const duration = speed === "normal" ? 500 : 1500
 
     return (
       <div className="focusedItemBackground" key={parentFlipId}>
@@ -33,7 +31,6 @@ class FocusedUser extends Component {
           onStart={this.hideElements}
           onComplete={this.animateIn}
           componentId="focusedUser"
-          // duration={duration}
         >
           <div
             className="gridItem gridItemFocused"
@@ -56,7 +53,6 @@ class FocusedUser extends Component {
                   <Flipped
                     flipId={`${parentFlipId}-avatar`}
                     componentId="focusedUserAvatar"
-                    // duration={duration}
                   >
                     <img
                       src={data.avatar}
@@ -74,7 +70,6 @@ class FocusedUser extends Component {
                   <Flipped
                     flipId={`${parentFlipId}-background`}
                     componentId="focusedUserBackground"
-                    // duration={duration}
                   >
                     <div
                       className="gridItemBackground"

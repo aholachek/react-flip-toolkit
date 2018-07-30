@@ -2,11 +2,7 @@ import React, { Component, createContext } from "react"
 import PropTypes from "prop-types"
 import onFlipKeyUpdate from "./flip/index"
 import { getFlippedElementPositionsBeforeUpdate } from "./flip/getFlippedElementPositions"
-import {
-  getSpringInterface,
-  getSpringConfig,
-  defaultSpringSettings
-} from "./springSettings"
+import { getSpringInterface, defaultSpringSettings } from "./springSettings"
 
 export const FlipContext = createContext("flip")
 export const PortalContext = createContext("portal")
@@ -61,7 +57,7 @@ class Flipper extends Component {
         inProgressAnimations: this.inProgressAnimations,
         flipCallbacks: this.flipCallbacks,
         applyTransformOrigin: this.props.applyTransformOrigin,
-        spring: getSpringConfig(this.props.spring),
+        spring: this.props.spring,
         debug: this.props.debug,
         portalKey: this.props.portalKey
       })

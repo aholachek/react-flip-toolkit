@@ -17,8 +17,7 @@ const data = [
     title: "With her finger and her thumb"
   },
   { id: 6, title: "In the Shape of an L on her Forehead" },
-  { id: 7, title: "Well the years start coming" },
-  { id: 8, title: "And they don't stop coming" }
+  { id: 7, title: "Well the years start coming" }
 ]
 
 const onElementAppear = (el, index) => {
@@ -56,7 +55,13 @@ class ListExample extends Component {
   render() {
     return (
       <div className="fm-example">
-        <h1>react-flip-move example clone</h1>
+        <div className="fm-description">
+          <h1>List Animations </h1>
+          <p>
+            Animations for: card enter/exit, staggered sort, and list/grid
+            toggle
+          </p>
+        </div>
         <Flipper
           flipKey={`${this.state.type}-${this.state.sort}-${JSON.stringify(
             this.state.filteredIds

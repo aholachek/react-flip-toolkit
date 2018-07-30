@@ -1,5 +1,4 @@
 @import url("https://fonts.googleapis.com/css?family=Poppins:200,400,700");
-
 .photoGridExample {
     font-family: Poppins;
     color: black;
@@ -44,6 +43,7 @@
     height: 90%;
     object-fit: cover;
     position: relative;
+    will-change: transform;
 }
 
 .photoGridSquareExpanded {
@@ -59,6 +59,7 @@
 .photoGridSquareExpanded .photoGridImg {
     position: absolute;
     height: 100%;
+    will-change: transform;
 }
 
 .photoGridContentContainer {
@@ -76,13 +77,13 @@
 .photoHeading {
     position: relative;
     z-index: 2;
-    height: 2rem;
     font-size: 1.5rem;
+    margin: 1rem 0;
 }
 
 .photoHeadingFocused {
     font-size: 3rem;
-    margin-bottom: 3rem;
+    margin: 1rem 0;
 }
 
 .photoGridShaderHidden {
