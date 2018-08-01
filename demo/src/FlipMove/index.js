@@ -6,7 +6,6 @@ import "./index.css"
 const data = [
   { id: 1, title: "Somebody once told me" },
   { id: 2, title: "The World was gonna roll me" },
-
   { id: 3, title: "I aint the sharpest tool in the shed" },
   {
     id: 4,
@@ -50,7 +49,7 @@ const onGridExit = onExit("grid")
 const onListExit = onExit("list")
 
 class ListExample extends Component {
-  state = { type: "list", sort: "ascending", filteredIds: [] }
+  state = { type: "list", sort: "asc", filteredIds: [], drag: true }
 
   render() {
     return (
@@ -73,30 +72,30 @@ class ListExample extends Component {
               <label
                 onClick={() => {
                   this.setState({
-                    sort: "ascending"
+                    sort: "asc"
                   })
                 }}
               >
                 <input
                   type="radio"
                   name="sort"
-                  checked={this.state.sort === "ascending"}
+                  checked={this.state.sort === "asc"}
                 />
-                ascending
+                asc
               </label>
               <label
                 onClick={() => {
                   this.setState({
-                    sort: "descending"
+                    sort: "desc"
                   })
                 }}
               >
                 <input
                   type="radio"
                   name="sort"
-                  checked={this.state.sort === "descending"}
+                  checked={this.state.sort === "desc"}
                 />
-                descending
+                desc
               </label>
             </fieldset>
 
@@ -132,6 +131,35 @@ class ListExample extends Component {
               </label>
             </fieldset>
 
+            <fieldset>
+              <legend>Stagger config</legend>
+              <label
+                onClick={() => {
+                  this.setState({
+                    type: "list"
+                  })
+                }}
+              >
+                <input
+                  type="radio"
+                  name="type"
+                  checked={this.state.type === "list"}
+                />
+                list
+              </label>
+
+              <label
+                onClick={() => {
+                  this.setState({
+                    type: "grid"
+                  })
+                }}
+              >
+                <input type="checkbox" name="drag" checked={this.state.drag} />
+                drag
+              </label>
+            </fieldset>
+
             {!!this.state.filteredIds.length && (
               <button
                 className="fm-show-all"
@@ -153,7 +181,7 @@ class ListExample extends Component {
                   {[...data]
                     .filter(d => !this.state.filteredIds.includes(d.id))
                     .sort((a, b) => {
-                      if (this.state.sort === "ascending") {
+                      if (this.state.sort === "asc") {
                         return a.id - b.id
                       } else {
                         return b.id - a.id

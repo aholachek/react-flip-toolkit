@@ -1,4 +1,5 @@
 import sinon from "sinon"
+import * as Rematrix from "rematrix"
 import animateFlippedElements from "../index"
 
 const testEl = document.querySelector("#test")
@@ -11,14 +12,13 @@ describe("animateFlippedElements", () => {
     <div data-flip-id="id-2" class="visible-block" data-flip-config='{"translate":true,"scale":true,"opacity":true}'></div>
     </div>
   `
-
     const firstElementTransform = getComputedStyle(getElement("id-1")).transform
+
     animateFlippedElements({
+      spring: { stiffness: 1000, damping: 1000 },
       flippedIds: ["id-1", "id-2"],
       flipCallbacks: {},
       inProgressAnimations: {},
-      duration: 1,
-      ease: "easeOutSine",
       cachedFlipChildrenPositions: {
         "id-1": {
           rect: {
@@ -52,11 +52,33 @@ describe("animateFlippedElements", () => {
     })
 
     setTimeout(() => {
-      expect(getComputedStyle(getElement("id-1")).transform).to.equal(
-        firstElementTransform
-      )
+      const newTransform = Rematrix.parse(
+        getComputedStyle(getElement("id-1")).transform
+      ).map(n => Math.floor(n))
+
+      // it's going to be a little off from "firstElementTransform"
+      // because of the chrome hack of stopping animation on the penultimate
+      // round
+      expect(newTransform).to.deep.equal([
+        2,
+        0,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        50,
+        24,
+        0,
+        1
+      ])
       done()
-    }, 2)
+    }, 1000)
   })
 
   it("should apply a custom transform origin if one is provided in the flip config", () => {

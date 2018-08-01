@@ -1,5 +1,4 @@
 import React, { Component } from "react"
-import PropTypes from "prop-types"
 import { Flipper, Flipped } from "../../../../src"
 import Modal from "./Modal"
 

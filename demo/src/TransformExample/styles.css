@@ -1,15 +1,18 @@
 .square {
-  width: 5rem;
-  height: 5rem;
+  width: 200px;
+  height: 200px;
   cursor: pointer;
   background-color: #7971ea;
 }
 
 .full-screen-square {
-  transform: translate(100px, 200px);
+  position: relative;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   cursor: pointer;
 }
 
 .transform-example-container {
-  padding: 5rem;
+  height: 100vh;
 }

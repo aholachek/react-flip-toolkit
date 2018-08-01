@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import assign from "object-assign"
 import { Flipper } from "../../../src"
 import GuitarItem from "./GuitarItem"
 import SelectedGuitar from "./SelectedGuitar"

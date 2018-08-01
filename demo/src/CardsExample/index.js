@@ -20,6 +20,7 @@ export default class CardsExample extends Component {
   render() {
     return (
       <Flipper
+        className="cardsExample"
         flipKey={this.state.focusedIndex}
         spring={this.state.speed !== "normal" && { stiffness: 5, damping: 4 }}
       >

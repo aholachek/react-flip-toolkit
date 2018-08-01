@@ -1,7 +1,7 @@
 import React, { Children, cloneElement, PureComponent } from "react"
 import PropTypes from "prop-types"
 import { FlipContext, PortalContext } from "./Flipper"
-import { getSpringInterface, defaultSpringSettings } from "./springSettings"
+import { getSpringInterface, springPresets } from "./springSettings"
 import * as constants from "./constants"
 import assign from "object-assign"
 
@@ -29,7 +29,7 @@ const propTypes = {
   transformOrigin: PropTypes.string,
   spring: PropTypes.oneOf([
     PropTypes.shape(getSpringInterface()),
-    PropTypes.oneOf([Object.keys(defaultSpringSettings)])
+    PropTypes.oneOf([Object.keys(springPresets)])
   ]),
   onStart: PropTypes.func,
   onComplete: PropTypes.func,

@@ -1,5 +1,5 @@
 .fm-example {
-  padding: 2rem;
+  padding: 0 2rem;
   min-height: 150vh;
 }
 
@@ -12,7 +12,7 @@
 }
 
 .fm-example > * {
-  max-width: 800px;
+  max-width: 900px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -35,7 +35,7 @@
 .fm-list {
   border-radius: 5px;
   background-color: #ececec;
-  margin-top: 2rem;
+  margin-top: 1rem;
 }
 
 .fm-list > ul,

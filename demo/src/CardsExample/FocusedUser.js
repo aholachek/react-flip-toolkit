@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { Flipped } from "../../../src/index"
+import { Flipped } from "../../../src"
 import anime from "animejs"
 
 class FocusedUser extends Component {

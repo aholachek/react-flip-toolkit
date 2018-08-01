@@ -142,6 +142,18 @@ const staggerDefaults = Object.freeze({
   drag: true
 })
 
+export const getStaggerConfig = flipConfigStagger => {
+  if (flipConfigStagger === true) {
+    return staggerDefaults
+  } else if (typeof flipConfigStagger === "string") {
+    return assign({}, staggerDefaults, {
+      key: flipConfigStagger
+    })
+  } else if (isObject(flipConfigStagger)) {
+    return assign({}, staggerDefaults, flipConfigStagger)
+  }
+}
+
 const animateFlippedElements = ({
   flippedIds,
   flipCallbacks,
@@ -161,11 +173,13 @@ const animateFlippedElements = ({
     )
   }
 
+
   const startFlipFunctions = flippedIds
     // take all the measurements we need
     // do all the set up work
     // and return a startAnimation function
     .map(id => {
+
       const prevRect = cachedFlipChildrenPositions[id].rect
       const currentRect = newFlipChildrenPositions[id].rect
       const prevOpacity = cachedFlipChildrenPositions[id].opacity
@@ -197,17 +211,7 @@ const animateFlippedElements = ({
         flippedSpring: flipConfig.spring
       })
 
-      let staggerConfig
-
-      if (flipConfig.stagger === true) {
-        staggerConfig = staggerDefaults
-      } else if (typeof flipConfig.stagger === "string") {
-        staggerConfig = assign({}, staggerDefaults, {
-          key: flipConfig.stagger
-        })
-      } else if (isObject(flipConfig.stagger)) {
-        staggerConfig = assign({}, staggerDefaults, flipConfig.stagger)
-      }
+      const staggerConfig = getStaggerConfig(flipConfig.stagger)
 
       const flipStartId = cachedFlipChildrenPositions[id].flipComponentId
       const flipEndId = flipConfig.componentId

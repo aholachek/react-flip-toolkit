@@ -16,7 +16,6 @@ export default function springUpdate({
   })
 
   const stop = () => spring.stop()
-
   const onUpdate = getOnUpdateFunc(stop)
 
   spring.onUpdate(onUpdate)

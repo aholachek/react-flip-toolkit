@@ -1,8 +1,8 @@
 import React, { Component, createContext } from "react"
 import PropTypes from "prop-types"
-import onFlipKeyUpdate from "./flip/index"
+import onFlipKeyUpdate from "./flip"
 import { getFlippedElementPositionsBeforeUpdate } from "./flip/getFlippedElementPositions"
-import { getSpringInterface, defaultSpringSettings } from "./springSettings"
+import { getSpringInterface, springPresets } from "./springSettings"
 
 export const FlipContext = createContext("flip")
 export const PortalContext = createContext("portal")
@@ -17,7 +17,7 @@ class Flipper extends Component {
     children: PropTypes.node.isRequired,
     spring: PropTypes.oneOf([
       PropTypes.shape(getSpringInterface()),
-      PropTypes.oneOf([Object.keys(defaultSpringSettings)])
+      PropTypes.oneOf([Object.keys(springPresets)])
     ]),
     applyTransformOrigin: PropTypes.bool,
     debug: PropTypes.bool,

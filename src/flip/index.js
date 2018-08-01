@@ -56,13 +56,43 @@ const onFlipKeyUpdate = ({
 
   const flippedIds = cachedOrderedFlipIds.filter(isFlipped)
 
+  const readyToBeFlippedIds = flippedIds.filter(
+    id => newFlipChildrenPositions[id] !== "unloadedImg"
+  )
+
   animateFlippedElements({
-    flippedIds,
+    flippedIds: readyToBeFlippedIds,
     ...baseArgs,
     applyTransformOrigin,
     spring,
     debug
   })
+
+  const waitATickIds = flippedIds.filter(
+    id => newFlipChildrenPositions[id] === "unloadedImg"
+  )
+
+  if (waitATickIds.length) {
+    setTimeout(() => {
+      // we'll re-measure size in the DOM, hopefully the image is rendered by now
+      const newFlipChildrenPositions = getFlippedElementPositionsAfterUpdate({
+        element: containerEl,
+        portalKey,
+        ids: waitATickIds
+      })
+      const loadedImgIds = waitATickIds.filter(
+        id => newFlipChildrenPositions[id] !== "unloadedImg"
+      )
+      animateFlippedElements({
+        ...baseArgs,
+        applyTransformOrigin,
+        spring,
+        debug,
+        flippedIds: loadedImgIds,
+        newFlipChildrenPositions
+      })
+    })
+  }
 }
 
 export default onFlipKeyUpdate

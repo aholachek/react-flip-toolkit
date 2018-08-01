@@ -33,8 +33,8 @@ export const getAllElements = (element, portalKey) => {
  */
 export const getFlippedElementPositionsBeforeUpdate = ({
   element,
-  flipCallbacks,
-  inProgressAnimations,
+  flipCallbacks = {},
+  inProgressAnimations = {},
   portalKey
 }) => {
   const flippedElements = getAllElements(element, portalKey)
@@ -119,7 +119,6 @@ export const getFlippedElementPositionsBeforeUpdate = ({
       el.style.transform = ""
       el.style.opacity = ""
     })
-
   return {
     flippedElementPositions,
     cachedOrderedFlipIds: flippedElements.map(el => el.dataset.flipId)
@@ -134,20 +133,42 @@ export const getFlippedElementPositionsBeforeUpdate = ({
  */
 export const getFlippedElementPositionsAfterUpdate = ({
   element,
-  portalKey
+  portalKey,
+  ids
 }) => {
-  return getAllElements(element, portalKey)
-    .map(child => {
-      const computedStyle = window.getComputedStyle(child)
-      return [
-        child.dataset.flipId,
-        {
-          rect: child.getBoundingClientRect(),
-          opacity: parseFloat(computedStyle.opacity),
-          domData: {},
-          transform: computedStyle.transform
+  const els = getAllElements(element, portalKey)
+
+  return (
+    els
+      // filter is only for the "waitATickIds"
+      .filter(child => {
+        if (ids) {
+          return ids.indexOf(child.dataset.flipId > -1)
+        } else {
+          return true
         }
-      ]
-    })
-    .reduce(addTupleToObject, {})
+      })
+      .map(child => {
+        const rect = child.getBoundingClientRect()
+        const computedStyle = window.getComputedStyle(child)
+        // maybe the image hasn't loaded into the document yet. This is a problem
+        // especially with Safari for some reason
+        if (
+          rect.height === 0 ||
+          (rect.width === 0 && child.tagName === "IMG")
+        ) {
+          return [child.dataset.flipId, "unloadedImg"]
+        }
+        return [
+          child.dataset.flipId,
+          {
+            rect: child.getBoundingClientRect(),
+            opacity: parseFloat(computedStyle.opacity),
+            domData: {},
+            transform: computedStyle.transform
+          }
+        ]
+      })
+      .reduce(addTupleToObject, {})
+  )
 }
