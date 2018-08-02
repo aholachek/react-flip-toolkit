@@ -49,24 +49,27 @@ const onGridExit = onExit("grid")
 const onListExit = onExit("list")
 
 class ListExample extends Component {
-  state = { type: "list", sort: "asc", filteredIds: [], drag: true }
+  state = {
+    type: "list",
+    sort: "asc",
+    filteredIds: [],
+    drag: true,
+    triggerNext: 0.2
+  }
 
   render() {
     return (
       <div className="fm-example">
         <div className="fm-description">
           <h1>List Animations </h1>
-          <p>
-            Animations for: card enter/exit, staggered sort, and list/grid
-            toggle
-          </p>
+          <p>Animations for: card enter/exit, sort, and list/grid toggle</p>
         </div>
         <Flipper
           flipKey={`${this.state.type}-${this.state.sort}-${JSON.stringify(
             this.state.filteredIds
           )}`}
         >
-          <div className="fm-fieldsets">
+          <div className="fm-flex-container">
             <fieldset>
               <legend>Sort</legend>
               <label
@@ -133,31 +136,40 @@ class ListExample extends Component {
 
             <fieldset>
               <legend>Stagger config</legend>
-              <label
-                onClick={() => {
-                  this.setState({
-                    type: "list"
-                  })
-                }}
-              >
-                <input
-                  type="radio"
-                  name="type"
-                  checked={this.state.type === "list"}
-                />
-                list
-              </label>
-
-              <label
-                onClick={() => {
-                  this.setState({
-                    type: "grid"
-                  })
-                }}
-              >
-                <input type="checkbox" name="drag" checked={this.state.drag} />
-                drag
-              </label>
+              <div className="fm-flex-container">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="drag"
+                    checked={this.state.drag}
+                    onClick={() => {
+                      this.setState({
+                        drag: !this.state.drag
+                      })
+                    }}
+                  />
+                  drag
+                </label>
+                <label>
+                  <div>
+                    Wait <b>{this.state.triggerNext}%</b> of current animation
+                    before triggering next one
+                  </div>
+                  <input
+                    type="range"
+                    min="0"
+                    max=".9"
+                    step=".1"
+                    name="triggerNext"
+                    value={this.state.triggerNext}
+                    onChange={ev => {
+                      this.setState({
+                        triggerNext: parseFloat(ev.target.value)
+                      })
+                    }}
+                  />
+                </label>
+              </div>
             </fieldset>
 
             {!!this.state.filteredIds.length && (
@@ -197,7 +209,10 @@ class ListExample extends Component {
                             this.state.type === "grid" ? onGridExit : onListExit
                           }
                           key={flipId}
-                          stagger
+                          stagger={{
+                            triggerNext: this.state.triggerNext,
+                            drag: this.state.drag
+                          }}
                         >
                           <li className="fm-item">
                             <Flipped inverseFlipId={flipId} scale>

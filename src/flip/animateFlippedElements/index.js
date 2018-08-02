@@ -173,13 +173,11 @@ const animateFlippedElements = ({
     )
   }
 
-
   const startFlipFunctions = flippedIds
     // take all the measurements we need
     // do all the set up work
     // and return a startAnimation function
     .map(id => {
-
       const prevRect = cachedFlipChildrenPositions[id].rect
       const currentRect = newFlipChildrenPositions[id].rect
       const prevOpacity = cachedFlipChildrenPositions[id].opacity
@@ -335,11 +333,13 @@ const animateFlippedElements = ({
         }
         const vals = {}
 
-        // the currentValue !== 1 thing is stupid but seems necessary for now.
-        // In chrome, once you transition to a totally 0 transform (matrix(1, 0, 0, 1, 0, 1))
-        // you get a 1px jump for some reason
-        // I've tried transform 3d, will-change, translateZ hacks and none of them make a difference
-        // so we're going to stop on the penultimate update instead
+        /**
+         * the currentValue !== 1 thing is stupid but seems necessary for now.
+         * In chrome, once you transition to a totally 0 transform (matrix(1, 0, 0, 1, 0, 1))
+         * you get a 1px jump for some reason
+         * I've tried transform 3d, will-change, translateZ hacks and none of them make a difference
+         * so we're going to stop on the penultimate update instead
+         */
         if (currentValue !== 1) {
           vals.matrix = fromVals.matrix.map((fromVal, index) =>
             tweenProp(fromVal, toVals.matrix[index], currentValue)
@@ -369,9 +369,17 @@ const animateFlippedElements = ({
         if (staggerConfig && staggerConfig.drag) hasDrag = true
 
         if (indexAdjustment && hasDrag) {
-          // higher stiffness = animation finishes faster
-          springConfig.stiffness = springConfig.stiffness * indexAdjustment
-          springConfig.damping = springConfig.damping * indexAdjustment
+          /**
+           * reducing the stiffness to slow down later items
+           * this is not ideal because there is no corresponding adjustment
+           * of damping. 
+           * TODO: figure out a nicer way to do this with ~~math.~~
+           */
+
+          const newStiffness =
+            ((1 - indexAdjustment) * springConfig.stiffness * 3) / 4 +
+            springConfig.stiffness / 4
+          springConfig.stiffness = newStiffness
         }
 
         return () => {
@@ -410,8 +418,9 @@ const animateFlippedElements = ({
     }, {})
 
   // earlier index = higher stiffness adjustment
-  const translateIndexToStiffnessAdjustment = (index, length) =>
-    2 - index / length
+  const translateIndexToStiffnessAdjustment = (index, length) => {
+    return (index + 1) / length
+  }
 
   Object.keys(staggeredFunctions).forEach(stagger => {
     const funcs = staggeredFunctions[stagger]

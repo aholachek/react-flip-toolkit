@@ -207,4 +207,33 @@ describe("getFlippedElementPositionsAfterUpdate", () => {
       "matrix(1, 0, 0, 1, 30, 0)"
     )
   })
+
+  it('if the element is an image with no width or height, return the string "unloadedImg" instead', () => {
+    testEl.innerHTML = `
+    <div>
+    <img src="" data-flip-id="id-1" style="height:0; width:0"></img>
+    </div>
+  `
+    const flippedElementPositions = getFlippedElementPositionsAfterUpdate({
+      element: testEl
+    })
+
+    expect(flippedElementPositions["id-1"]).to.equal("unloadedImg")
+  })
+
+  it("provided a list of ids, only return data for elements with those ids", () => {
+    testEl.innerHTML = `
+    <div>
+      <div data-flip-id="id-1" style="height:100px; width: 100px; opacity: .5"></div>
+      <div data-flip-id="id-2" style="height:200px; width: 100px; transform: rotate(30deg)"></div>
+      <div data-flip-id="id-3" style="height:300px; width: 300px; transform: translate(30px)"></div>
+    </div>
+  `
+    const flippedElementPositions = getFlippedElementPositionsAfterUpdate({
+      element: testEl,
+      ids: ["id-1", "id-3"]
+    })
+
+    expect(Object.keys(flippedElementPositions)).to.deep.equal(["id-1", "id-3"])
+  })
 })

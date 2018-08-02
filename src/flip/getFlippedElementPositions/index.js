@@ -143,7 +143,7 @@ export const getFlippedElementPositionsAfterUpdate = ({
       // filter is only for the "waitATickIds"
       .filter(child => {
         if (ids) {
-          return ids.indexOf(child.dataset.flipId > -1)
+          return ids.indexOf(child.dataset.flipId) > -1
         } else {
           return true
         }
@@ -153,9 +153,10 @@ export const getFlippedElementPositionsAfterUpdate = ({
         const computedStyle = window.getComputedStyle(child)
         // maybe the image hasn't loaded into the document yet. This is a problem
         // especially with Safari for some reason
+        // need to check for either width OR height because one could be set with CSS
         if (
-          rect.height === 0 ||
-          (rect.width === 0 && child.tagName === "IMG")
+          (rect.height === 0 || rect.width === 0) &&
+          child.tagName === "IMG"
         ) {
           return [child.dataset.flipId, "unloadedImg"]
         }
