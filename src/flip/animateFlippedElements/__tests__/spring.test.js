@@ -46,5 +46,4 @@ describe("springUpdate", () => {
 
     expect(Spring.prototype.stop).toBeCalled()
   })
-
 })

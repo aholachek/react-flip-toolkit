@@ -11,14 +11,12 @@ export default function springUpdate({
     stiffness,
     damping,
     overshootClamping,
-    initialVelocity
   } = springConfig
   const spring = new Spring({
     mass: 1,
     stiffness,
     damping,
     overshootClamping,
-    initialVelocity
   })
 
   const stop = () => spring.stop()
