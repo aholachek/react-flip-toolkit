@@ -4,7 +4,7 @@
 }
 
 .fm-description {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .fm-description h1 {
@@ -93,8 +93,7 @@
 }
 
 .fm-show-all {
-  padding: 0 1rem;
-  margin-top: 1.5rem;
+  padding: 0.5rem 1rem;
   background-color: #ff4057;
   color: white;
   font-weight: bold;
@@ -107,7 +106,7 @@
 }
 
 .fm-flex-container > label {
-  min-width: 5rem;
+  min-width: 4.5rem;
 }
 
 legend {

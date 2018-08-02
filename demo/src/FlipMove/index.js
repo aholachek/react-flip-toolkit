@@ -54,7 +54,7 @@ class ListExample extends Component {
     sort: "asc",
     filteredIds: [],
     drag: true,
-    triggerNext: 0.2
+    triggerNext: 0.15
   }
 
   render() {
@@ -62,7 +62,6 @@ class ListExample extends Component {
       <div className="fm-example">
         <div className="fm-description">
           <h1>List Animations </h1>
-          <p>Animations for: card enter/exit, sort, and list/grid toggle</p>
         </div>
         <Flipper
           flipKey={`${this.state.type}-${this.state.sort}-${JSON.stringify(
@@ -153,13 +152,13 @@ class ListExample extends Component {
                 <label>
                   <div>
                     Wait <b>{this.state.triggerNext}%</b> of current animation
-                    before triggering next one
+                    before triggering next
                   </div>
                   <input
                     type="range"
                     min="0"
                     max=".9"
-                    step=".1"
+                    step=".05"
                     name="triggerNext"
                     value={this.state.triggerNext}
                     onChange={ev => {
@@ -171,7 +170,8 @@ class ListExample extends Component {
                 </label>
               </div>
             </fieldset>
-
+          </div>
+          <div>
             {!!this.state.filteredIds.length && (
               <button
                 className="fm-show-all"
