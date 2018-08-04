@@ -11,8 +11,8 @@ export const convertMatrix3dArrayTo2dArray = matrix => [
   // scale X
   matrix[0],
   matrix[1],
-  // scale Y
   matrix[4],
+  // scale Y
   matrix[5],
   // translation X
   matrix[12],
@@ -190,7 +190,8 @@ const animateFlippedElements = ({
         flipperSpring: spring,
         flippedSpring: flipConfig.spring
       })
-      const stagger = flipConfig.stagger === true ? "all" : flipConfig.stagger
+      let stagger = flipConfig.stagger === true ? "all" : flipConfig.stagger
+      if (debug) stagger = false
 
       const flipStartId = cachedFlipChildrenPositions[id].flipComponentId
       const flipEndId = flipConfig.componentId
@@ -347,16 +348,10 @@ const animateFlippedElements = ({
 
         return () => {
           if (debug) {
-            flippedIds.map(getElement).forEach(el => {
-              const scaleXAdjustment =
-                Math.max(currentRect.width, 1) / Math.max(prevRect.width, 1)
-              const scaleYAdjustment =
-                Math.max(currentRect.height, 1) / Math.max(prevRect.height, 1)
-
-              const boxShadow = `0 ${scaleXAdjustment}px 0 ${scaleXAdjustment}px #e2606b, 0 -${scaleXAdjustment}px 0 ${scaleXAdjustment}px #e2606b, ${scaleYAdjustment}px 0 0 ${scaleYAdjustment}px #e2606b, -${scaleYAdjustment}px 0 0 ${scaleYAdjustment}px #e2606b`
-              console.log(boxShadow)
-              el.style.boxShadow = boxShadow
-            })
+            const scaleXAdjustment = 1 / fromVals.matrix[0]
+            const scaleYAdjustment = 1 / fromVals.matrix[3]
+            const boxShadow = `${scaleXAdjustment}px 0 0 ${scaleXAdjustment}px #e2606b, -${scaleXAdjustment}px 0 0 ${scaleXAdjustment}px #e2606b, 0 ${scaleYAdjustment}px 0 ${scaleYAdjustment}px #e2606b, 0 -${scaleYAdjustment}px 0 ${scaleYAdjustment}px #e2606b`
+            element.style.boxShadow = boxShadow
             return
           }
 
