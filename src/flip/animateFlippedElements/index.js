@@ -348,10 +348,14 @@ const animateFlippedElements = ({
 
         return () => {
           if (debug) {
-            const scaleXAdjustment = 1 / fromVals.matrix[0]
-            const scaleYAdjustment = 1 / fromVals.matrix[3]
-            const boxShadow = `${scaleXAdjustment}px 0 0 ${scaleXAdjustment}px #e2606b, -${scaleXAdjustment}px 0 0 ${scaleXAdjustment}px #e2606b, 0 ${scaleYAdjustment}px 0 ${scaleYAdjustment}px #e2606b, 0 -${scaleYAdjustment}px 0 ${scaleYAdjustment}px #e2606b`
-            element.style.boxShadow = boxShadow
+            const scaleXAdjustment = Math.max(1 / fromVals.matrix[0], 0.5)
+            const scaleYAdjustment = Math.max(1 / fromVals.matrix[3], 0.5)
+            element.style.borderColor = `#e2606b`
+            element.style.borderStyle = `solid`
+            element.style.borderTopWidth = `${scaleYAdjustment}px`
+            element.style.borderBottomWidth = `${scaleYAdjustment}px`
+            element.style.borderLeftWidth = `${scaleXAdjustment}px`
+            element.style.borderRightWidth = `${scaleXAdjustment}px`
             return
           }
 
