@@ -347,9 +347,16 @@ const animateFlippedElements = ({
 
         return () => {
           if (debug) {
-            flippedIds
-              .map(getElement)
-              .forEach(el => (el.style.border = "1px solid #EC5D6A"))
+            flippedIds.map(getElement).forEach(el => {
+              const scaleXAdjustment =
+                Math.max(currentRect.width, 1) / Math.max(prevRect.width, 1)
+              const scaleYAdjustment =
+                Math.max(currentRect.height, 1) / Math.max(prevRect.height, 1)
+
+              const boxShadow = `0 ${scaleXAdjustment}px 0 ${scaleXAdjustment}px #e2606b, 0 -${scaleXAdjustment}px 0 ${scaleXAdjustment}px #e2606b, ${scaleYAdjustment}px 0 0 ${scaleYAdjustment}px #e2606b, -${scaleYAdjustment}px 0 0 ${scaleYAdjustment}px #e2606b`
+              console.log(boxShadow)
+              el.style.boxShadow = boxShadow
+            })
             return
           }
 
