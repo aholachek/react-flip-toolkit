@@ -36,13 +36,15 @@ describe("springUpdate", () => {
     expect(Spring.prototype.start).toBeCalled()
   })
 
-  it("should return a stop function that calls spring.stop", () => {
+  it("should return the spring", () => {
     expect(Spring.prototype.stop).not.toBeCalled()
-    const returnedFunc = springUpdate({
+    const returnedSpringInstance = springUpdate({
       getOnUpdateFunc: () => {}
     })
 
-    returnedFunc()
+    expect(returnedSpringInstance).toBeInstanceOf(Spring)
+
+    returnedSpringInstance.stop()
 
     expect(Spring.prototype.stop).toBeCalled()
   })

@@ -2,7 +2,7 @@ import React, { Component, createContext } from "react"
 import PropTypes from "prop-types"
 import onFlipKeyUpdate from "./flip"
 import { getFlippedElementPositionsBeforeUpdate } from "./flip/getFlippedElementPositions"
-import { getSpringInterface, springPresets } from "./springSettings"
+import { springPropCheck } from "./springSettings"
 
 export const FlipContext = createContext("flip")
 export const PortalContext = createContext("portal")
@@ -13,17 +13,15 @@ class Flipper extends Component {
       PropTypes.string,
       PropTypes.number,
       PropTypes.bool
-    ]).isRequired,
-    children: PropTypes.node.isRequired,
-    spring: PropTypes.oneOf([
-      PropTypes.shape(getSpringInterface()),
-      PropTypes.oneOf([Object.keys(springPresets)])
     ]),
+    children: PropTypes.node.isRequired,
+    spring: springPropCheck,
     applyTransformOrigin: PropTypes.bool,
     debug: PropTypes.bool,
     element: PropTypes.string,
     className: PropTypes.string,
-    portalKey: PropTypes.string
+    portalKey: PropTypes.string,
+    jitterFix: PropTypes.bool
   }
 
   static defaultProps = {
@@ -59,7 +57,8 @@ class Flipper extends Component {
         applyTransformOrigin: this.props.applyTransformOrigin,
         spring: this.props.spring,
         debug: this.props.debug,
-        portalKey: this.props.portalKey
+        portalKey: this.props.portalKey,
+        jitterFix: this.props.jitterFix
       })
     }
   }

@@ -1,11 +1,11 @@
 import React, { Children, cloneElement, PureComponent } from "react"
 import PropTypes from "prop-types"
 import { FlipContext, PortalContext } from "./Flipper"
-import { getSpringInterface, springPresets } from "./springSettings"
+import { springPropCheck } from "./springSettings"
 import * as constants from "./constants"
 import assign from "object-assign"
 
-const customPropCheck = function(props, propName, componentName) {
+const customPropCheck = function(props, propName) {
   if (props.flipId && props.inverseFlipId) {
     return new Error(
       'Please only provide one of the two: "FlipId" or "inverseFlipID"'
@@ -27,10 +27,7 @@ const propTypes = {
   translate: PropTypes.bool,
   scale: PropTypes.bool,
   transformOrigin: PropTypes.string,
-  spring: PropTypes.oneOf([
-    PropTypes.shape(getSpringInterface()),
-    PropTypes.oneOf([Object.keys(springPresets)])
-  ]),
+  spring: springPropCheck,
   onStart: PropTypes.func,
   onComplete: PropTypes.func,
   onAppear: PropTypes.func,
@@ -39,11 +36,7 @@ const propTypes = {
   componentIdFilter: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   componentId: PropTypes.string,
   portalKey: PropTypes.string,
-  stagger: PropTypes.shape({
-    key: PropTypes.string,
-    triggerNext: PropTypes.number,
-    drag: PropTypes.bool
-  })
+  stagger: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
 }
 // This wrapper creates child components for the main Flipper component
 export function Flipped({

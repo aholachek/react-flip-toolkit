@@ -6,12 +6,6 @@ export interface Spring {
   overshootClamping?: boolean
 }
 
-export interface Stagger {
-  key?: string
-  triggerNext?: number
-  drag?: boolean
-}
-
 export type SpringConfig = "noWobble" | "gentle" | "wobbly" | "stiff" | Spring
 
 export type FlippedComponentIdFilter = string | any[]
@@ -24,7 +18,7 @@ export interface FlippedWithContextProps {
   translate?: boolean
   scale?: boolean
   transformOrigin?: string
-  stagger?: boolean | Stagger
+  stagger?: string | boolean
   spring?: SpringConfig
   onStart?: (element: HTMLElement) => any
   onComplete?: (element: HTMLElement) => any
@@ -53,6 +47,7 @@ export interface FlipperProps {
   element?: string
   className?: string
   portalKey?: string
+  jitterFix?: boolean
 }
 
 export class Flipper extends React.Component<FlipperProps, any> {

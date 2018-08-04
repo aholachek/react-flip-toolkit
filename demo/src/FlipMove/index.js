@@ -53,8 +53,8 @@ class ListExample extends Component {
     type: "list",
     sort: "asc",
     filteredIds: [],
-    drag: true,
-    triggerNext: 0.15
+    stagger: true,
+    spring: "noWobble"
   }
 
   render() {
@@ -67,6 +67,9 @@ class ListExample extends Component {
           flipKey={`${this.state.type}-${this.state.sort}-${JSON.stringify(
             this.state.filteredIds
           )}`}
+          spring={this.state.spring}
+          jitterFix
+          debug
         >
           <div className="fm-flex-container">
             <fieldset>
@@ -134,41 +137,44 @@ class ListExample extends Component {
             </fieldset>
 
             <fieldset>
-              <legend>Stagger config</legend>
+              <legend>Stagger</legend>
               <div className="fm-flex-container">
                 <label>
                   <input
                     type="checkbox"
-                    name="drag"
-                    checked={this.state.drag}
+                    name="stagger"
+                    checked={this.state.stagger}
                     onClick={() => {
                       this.setState({
-                        drag: !this.state.drag
+                        stagger: !this.state.stagger,
+                        sort: this.state.sort === "asc" ? "desc" : "asc"
                       })
                     }}
                   />
-                  drag
-                </label>
-                <label>
-                  <div>
-                    Wait <b>{this.state.triggerNext}%</b> of current animation
-                    before triggering next
-                  </div>
-                  <input
-                    type="range"
-                    min="0"
-                    max=".9"
-                    step=".05"
-                    name="triggerNext"
-                    value={this.state.triggerNext}
-                    onChange={ev => {
-                      this.setState({
-                        triggerNext: parseFloat(ev.target.value)
-                      })
-                    }}
-                  />
+                  stagger
                 </label>
               </div>
+            </fieldset>
+            <fieldset>
+              <legend>Spring</legend>
+              {["noWobble", "gentle", "wobbly", "stiff"].map(type => {
+                return (
+                  <label>
+                    <input
+                      type="radio"
+                      name="stagger"
+                      checked={this.state.spring === type}
+                      onChange={() => {
+                        this.setState({
+                          spring: type,
+                          sort: this.state.sort === "asc" ? "desc" : "asc"
+                        })
+                      }}
+                    />
+                    {type}
+                  </label>
+                )
+              })}
             </fieldset>
           </div>
           <div>
@@ -209,10 +215,7 @@ class ListExample extends Component {
                             this.state.type === "grid" ? onGridExit : onListExit
                           }
                           key={flipId}
-                          stagger={{
-                            triggerNext: this.state.triggerNext,
-                            drag: this.state.drag
-                          }}
+                          stagger={this.state.stagger}
                         >
                           <li className="fm-item">
                             <Flipped inverseFlipId={flipId} scale>

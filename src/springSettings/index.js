@@ -31,3 +31,23 @@ export const getSpringConfig = ({ flipperSpring, flippedSpring } = {}) => {
     normalizeSpring(flippedSpring)
   )
 }
+
+export const springPropCheck = function(props, propName) {
+  const spring = props.spring
+  const availablePresets = Object.keys(springPresets)
+  if (typeof spring === "string" && availablePresets.indexOf(spring) === -1) {
+    return new Error(
+      `Spring config should reference one of the available spring options: ${availablePresets.join(
+        " "
+      )}. You provided: ${spring}`
+    )
+  } else if (isObject(spring) && spring.preset) {
+    return new Error(
+      "To specify a preset, just provide the string name directly to the spring prop"
+    )
+  } else if (spring) {
+    return new Error(
+      "Provide a string or an object to configure spring settings"
+    )
+  }
+}

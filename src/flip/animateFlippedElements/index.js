@@ -1,8 +1,7 @@
-import assign from "object-assign"
 import * as Rematrix from "rematrix"
 import springUpdate from "./spring"
 import { getSpringConfig } from "../../springSettings"
-import { toArray, isFunction, isNumber, isObject } from "../utilities"
+import { toArray, isFunction, isNumber } from "../utilities"
 import * as constants from "../../constants"
 
 // 3d transforms were causing weird issues in chrome,
@@ -136,24 +135,6 @@ const getInvertedChildren = (element, id) =>
 export const tweenProp = (start, end, position) =>
   start + (end - start) * position
 
-const staggerDefaults = Object.freeze({
-  key: "all",
-  triggerNext: 0.15,
-  drag: true
-})
-
-export const getStaggerConfig = flipConfigStagger => {
-  if (flipConfigStagger === true) {
-    return staggerDefaults
-  } else if (typeof flipConfigStagger === "string") {
-    return assign({}, staggerDefaults, {
-      key: flipConfigStagger
-    })
-  } else if (isObject(flipConfigStagger)) {
-    return assign({}, staggerDefaults, flipConfigStagger)
-  }
-}
-
 const animateFlippedElements = ({
   flippedIds,
   flipCallbacks,
@@ -163,6 +144,7 @@ const animateFlippedElements = ({
   applyTransformOrigin,
   spring,
   getElement,
+  jitterFix,
   debug
 }) => {
   const body = document.querySelector("body")
@@ -208,8 +190,7 @@ const animateFlippedElements = ({
         flipperSpring: spring,
         flippedSpring: flipConfig.spring
       })
-
-      const staggerConfig = getStaggerConfig(flipConfig.stagger)
+      const stagger = flipConfig.stagger === true ? "all" : flipConfig.stagger
 
       const flipStartId = cachedFlipChildrenPositions[id].flipComponentId
       const flipEndId = flipConfig.componentId
@@ -315,7 +296,7 @@ const animateFlippedElements = ({
       const animateOpacity =
         isNumber(fromVals.opacity) && fromVals.opacity !== toVals.opacity
 
-      let nextFuncCalled = false
+      let updateNextFuncParams
 
       const getOnUpdateFunc = nextFunc => stop => ({ currentValue }) => {
         if (!body.contains(element)) {
@@ -323,14 +304,15 @@ const animateFlippedElements = ({
           return
         }
 
-        if (
-          nextFunc &&
-          !nextFuncCalled &&
-          currentValue > staggerConfig.triggerNext
-        ) {
-          nextFuncCalled = true
-          nextFunc()
+        //stagger
+        if (nextFunc && !updateNextFuncParams && currentValue > 0.05) {
+          updateNextFuncParams = nextFunc()
         }
+
+        if (updateNextFuncParams) {
+          updateNextFuncParams(Math.min(currentValue * 1.25, 1))
+        }
+
         const vals = {}
 
         /**
@@ -340,7 +322,7 @@ const animateFlippedElements = ({
          * I've tried transform 3d, will-change, translateZ hacks and none of them make a difference
          * so we're going to stop on the penultimate update instead
          */
-        if (currentValue !== 1) {
+        if (!(currentValue === 1 && jitterFix)) {
           vals.matrix = fromVals.matrix.map((fromVal, index) =>
             tweenProp(fromVal, toVals.matrix[index], currentValue)
           )
@@ -356,41 +338,25 @@ const animateFlippedElements = ({
         applyStyles(vals)
       }
 
-      const startAnimation = (nextFunc, indexAdjustment) => {
+      const startAnimation = nextFunc => {
         // before animating, immediately apply FLIP styles to prevent flicker
         applyStyles({
           matrix: fromVals.matrix,
-          opacity: animateOpacity && fromVals.opacity,
-          forceMinHeight: currentRect.height === 0,
-          forceMinWidth: currentRect.width === 0
+          opacity: animateOpacity && fromVals.opacity
         })
 
-        let hasDrag = false
-        if (staggerConfig && staggerConfig.drag) hasDrag = true
-
-        if (indexAdjustment && hasDrag) {
-          /**
-           * reducing the stiffness to slow down later items
-           * this is not ideal because there is no corresponding adjustment
-           * of damping. 
-           * TODO: figure out a nicer way to do this with ~~math.~~
-           */
-
-          const newStiffness =
-            ((1 - indexAdjustment) * springConfig.stiffness * 3) / 4 +
-            springConfig.stiffness / 4
-          springConfig.stiffness = newStiffness
-        }
-
         return () => {
-          if (debug) return
+          if (debug) {
+            flippedIds
+              .map(getElement)
+              .forEach(el => (el.style.border = "1px solid #EC5D6A"))
+            return
+          }
 
           if (flipCallbacks[id] && flipCallbacks[id].onStart)
             flipCallbacks[id].onStart(element, flipStartId)
 
-          let stop
-
-          stop = springUpdate({
+          const spring = springUpdate({
             springConfig,
             getOnUpdateFunc: getOnUpdateFunc(nextFunc),
             onAnimationEnd
@@ -398,12 +364,17 @@ const animateFlippedElements = ({
 
           // in case we have to cancel
           inProgressAnimations[id] = {
-            stop,
+            stop: () => spring.stop(),
             onComplete
+          }
+          return toValue => {
+            spring.updateConfig({
+              toValue
+            })
           }
         }
       }
-      return [staggerConfig && staggerConfig.key, startAnimation]
+      return [stagger, startAnimation]
     })
     // some functions might return undefined
     .filter(x => x)
@@ -417,25 +388,19 @@ const animateFlippedElements = ({
       return acc
     }, {})
 
-  // earlier index = higher stiffness adjustment
-  const translateIndexToStiffnessAdjustment = (index, length) => {
-    return (index + 1) / length
-  }
-
   Object.keys(staggeredFunctions).forEach(stagger => {
     const funcs = staggeredFunctions[stagger]
     // call with reference to the following function and information about
     // placement in the order
     const startFunc = funcs
-      .map((f, i) => [translateIndexToStiffnessAdjustment(i, funcs.length), f])
       .reverse()
-      .reduce((prev, curr) => curr[1](prev, curr[0]), () => {})
+      .reduce((prev, curr) => curr(prev), () => {})
     startFunc()
   })
 
   // just call unstaggered functions directly
   startFlipFunctions
-    .filter(arr => arr[0] === undefined)
+    .filter(arr => !arr[0])
     .map(arr => arr[1])
     .forEach(func => {
       func()()

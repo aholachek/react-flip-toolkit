@@ -35,7 +35,7 @@
 .fm-list {
   border-radius: 5px;
   background-color: #ececec;
-  margin-top: 1rem;
+  margin-top: 2.5rem;
   max-width: 800px;
 }
 
@@ -119,7 +119,7 @@ legend {
 }
 
 .fm-example label {
-  margin-right: 2rem;
+  margin-right: 1.5rem;
   cursor: pointer;
 }
 
