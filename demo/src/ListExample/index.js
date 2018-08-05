@@ -5,10 +5,14 @@ import "./index.css"
 
 const colors = ["#ff4f66", "#7971ea", "#5900d8"]
 
-const data = [].slice.apply(Array(30).keys()).map(i => ({
-  color: colors[i % colors.length],
-  key: i
-}))
+const data = Array.apply(null, Array(30))
+  .map(function(_, i) {
+    return i
+  })
+  .map(i => ({
+    color: colors[i % colors.length],
+    key: i
+  }))
 
 const onElementAppear = (el, index) => {
   anime({
@@ -74,7 +78,6 @@ class ListExample extends Component {
           <h1>
             Continually updating filtered list with appear and exit animations
           </h1>
-          <h2>Uses springs for easing</h2>
           <p>
             This is a stress test to show continuously interrupted, staggered
             animations. The top and bottom animations should be identical except
