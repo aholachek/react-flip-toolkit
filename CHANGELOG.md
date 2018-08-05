@@ -2,7 +2,7 @@
 
 ## 4.0.0 Release
 
-Summary: Went all-in on springs and removed option to hard-code easing curves.
+Summary: Went all-in on springs and removed option to hard-code easing curves. If you 
 
 ### Added
 

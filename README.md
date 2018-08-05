@@ -1,11 +1,12 @@
 
+<a href="https://codepen.io/aholachek/pen/ERRpEj">
+<img src="./example-assets/rft-logo.gif" width='550px' alt='react-flip-toolkit animated logo' />
+</a>
+
 # react-flip-toolkit
 
 🆕 The 4.0.0 version was recently released. For information about breaking changes, check out the [changelog](./CHANGELOG.md).
 
-<a href="https://codepen.io/aholachek/pen/ERRpEj">
-<img src="./example-assets/rft-logo.gif" width='550px' alt='react-flip-toolkit animated logo' />
-</a>
 
 ## Comparison with other React FLIP libraries
 
@@ -58,13 +59,11 @@
 - [Overly complex, nested cards example](https://literate-fly.surge.sh/cards)
 - [React-flip-toolkit logo](https://codepen.io/aholachek/pen/ERRpEj)
 - [Using Portals](https://literate-fly.surge.sh/portal)
-
-<p>
-Spring options explorer:
+- [Spring options explorer](https://codepen.io/aholachek/pen/gKjYNw?editors=0110)<br/>
 <a href="https://codepen.io/aholachek/pen/gKjYNw?editors=0110">
   <img src="./example-assets/spring-options.gif" width='600px' alt='spring easing explorer' />
 </a>
-</p>
+
 
 ## Quick start
 
@@ -218,13 +217,12 @@ The `Flipped` component produces no markup, it simply passes some props down to 
 
 <p>
 <a href="https://codepen.io/aholachek/pen/gKjYNw?editors=0110">
-  <figure>
   <img src="./example-assets/enter-exit.gif" width='600px' alt='an animation demoing onAppear and onExit callbacks' />
-  <figcaption>This animation uses onAppear and onExit callbacks for fade-in and fade-out animations.</figcaption>
-  </figure>
-
 </a>
 </p>
+
+The above animation uses `onAppear` and `onExit` callbacks for fade-in and fade-out animations.
+
 
 | prop            | arguments                           | details                                                                                                                                                                                                                                                                                         |
 | --------------- | :---------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
