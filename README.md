@@ -59,7 +59,7 @@
 - [Overly complex, nested cards example](https://literate-fly.surge.sh/cards)
 - [React-flip-toolkit logo](https://codepen.io/aholachek/pen/ERRpEj)
 - [Using Portals](https://literate-fly.surge.sh/portal)
-- [Spring options explorer](https://codepen.io/aholachek/pen/gKjYNw?editors=0110)<br/>
+- [Spring options explorer](https://codepen.io/aholachek/full/bKmZbV/)<br/>
 <a href="https://codepen.io/aholachek/full/bKmZbV/">
   <img src="./example-assets/spring-options.gif" width='600px' alt='spring easing explorer' />
 </a>
