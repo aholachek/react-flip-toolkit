@@ -313,7 +313,7 @@ We see here that the pink outline surrounding the center contents extends much f
 <Flipped flipId='contentContainer'>
   <div>
     <p>{this.props.text}</p>
-      <button onClick={this.toggleFullscreen}>Close</button>
+    <button onClick={this.toggleFullscreen}>Close</button>
   </div>
 </Flipped>
 ```
