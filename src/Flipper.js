@@ -2,20 +2,15 @@ import React, { Component, createContext } from "react"
 import PropTypes from "prop-types"
 import onFlipKeyUpdate from "./flip"
 import { getFlippedElementPositionsBeforeUpdate } from "./flip/getFlippedElementPositions"
-import { springPropCheck } from "./springSettings"
 
 export const FlipContext = createContext("flip")
 export const PortalContext = createContext("portal")
 
 class Flipper extends Component {
   static propTypes = {
-    flipKey: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-      PropTypes.bool
-    ]),
+    flipKey: PropTypes.any.isRequired,
     children: PropTypes.node.isRequired,
-    spring: springPropCheck,
+    spring: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     applyTransformOrigin: PropTypes.bool,
     debug: PropTypes.bool,
     element: PropTypes.string,

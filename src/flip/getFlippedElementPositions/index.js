@@ -106,19 +106,10 @@ export const getFlippedElementPositionsBeforeUpdate = ({
   // while they are mid-transition
   cancelInProgressAnimations(inProgressAnimations)
 
-  flippedElements
-    .concat(inverseFlippedElements)
-    .filter(el => {
-      const inProgressParent =
-        inProgressAnimationIds.indexOf(el.dataset.flipId) > -1
-      const inProgressInvertedChild =
-        inProgressAnimationIds.indexOf(el.dataset.inverseFlipId) > -1
-      if (inProgressParent || inProgressInvertedChild) return true
-    })
-    .forEach(el => {
-      el.style.transform = ""
-      el.style.opacity = ""
-    })
+  flippedElements.concat(inverseFlippedElements).forEach(el => {
+    el.style.transform = ""
+    el.style.opacity = ""
+  })
   return {
     flippedElementPositions,
     cachedOrderedFlipIds: flippedElements.map(el => el.dataset.flipId)

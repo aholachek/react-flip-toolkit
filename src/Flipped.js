@@ -1,7 +1,6 @@
 import React, { Children, cloneElement, PureComponent } from "react"
 import PropTypes from "prop-types"
 import { FlipContext, PortalContext } from "./Flipper"
-import { springPropCheck } from "./springSettings"
 import * as constants from "./constants"
 import assign from "object-assign"
 
@@ -27,7 +26,7 @@ const propTypes = {
   translate: PropTypes.bool,
   scale: PropTypes.bool,
   transformOrigin: PropTypes.string,
-  spring: springPropCheck,
+  spring: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   onStart: PropTypes.func,
   onComplete: PropTypes.func,
   onAppear: PropTypes.func,

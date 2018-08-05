@@ -167,7 +167,7 @@ The parent wrapper component that contains all the elements to be animated.
 | ----------------------- | :--------: | :------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | flipKey **(required)**  | -          | `string`, `number`, `bool` | Changing this tells `react-flip-toolkit` to transition child elements wrapped in `Flipped` components.                                                                                                                                                                                                                                                                                                                                                             |
 | children **(required)** | -          | `node`                     | One or more element children                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| spring                  | `noWobble` | `string` or `object`       | Provide a string referencing one of the spring presets &mdash; `noWobble` (default), `gentle`, `wobbly`, or `stiff`, OR provide an object with stiffness and damping parameters. [Explore the spring setting options here.](https://codepen.io/aholachek/full/bKmZbV/). The prop provided here will be the spring default that can be overrided on a per-element basis on the `Flipped` component.                                                                 |
+| spring                  | `noWobble` | `string` or `object`       | Provide a string referencing one of the spring presets &mdash; `noWobble` (default), `gentle`, `wobbly`, or `stiff`, OR provide an object with stiffness and damping parameters. [Explore the spring setting options here.](https://codepen.io/aholachek/full/bKmZbV/) The prop provided here will be the spring default that can be overrided on a per-element basis on the `Flipped` component.                                                                  |
 | applyTransformOrigin    | `true`     | `bool`                     | Whether or not `react-flip-toolkit` should apply a transform-origin of "0 0" to animating children (this is generally, but not always, desirable for FLIP animations)                                                                                                                                                                                                                                                                                              |
 | element                 | `div`      | `string`                   | If you'd like the wrapper element created by the `Flipped` container to be something other than a `div`, you can specify that here.                                                                                                                                                                                                                                                                                                                                |
 | className               | -          | `string`                   | A class applied to the wrapper element, helpful for styling.                                                                                                                                                                                                                                                                                                                                                                                                       |
@@ -203,14 +203,14 @@ The `Flipped` component produces no markup, it simply passes some props down to 
 
 #### Basic props
 
-| prop                    | default    | type                 | details                                                                                                                                                                                                                                                                |
-| ----------------------- | :--------: | :------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| children **(required)** | -          | `node`               | Wrap a single child with the `Flipped` component.                                                                                                                                                                                                                      |
-| flipId **(required)**   | -          | `string`             | Use this to tell `react-flip-toolkit` how elements should be matched across renders so they can be animated.                                                                                                                                                           |
-| inverseFlipId           | -          | `string`             | Refer to the id of the parent `Flipped` container whose transform you want to cancel out. [Read more about canceling out parent transforms here.](#scale-transitions-made-easier)                                                                                      |
-| transformOrigin         | `"0 0"`    | `string`             | This is a convenience method to apply the proper CSS `transform-origin` to the element being FLIP-ped. This will override `react-flip-toolkit`'s default application of `transform-origin: 0 0;` if it is provided as a prop.                                          |
-| spring                  | `noWobble` | `string` or `object` | Provide a string referencing one of the spring presets &mdash; `noWobble` (default), `gentle`, `wobbly`, or `stiff`, OR provide an object with stiffness and damping parameters. [Explore the spring setting options here.](https://codepen.io/aholachek/full/bKmZbV/) |
-| stagger                 | `false` | `boolean` or `string` | Provide a natural, spring-based staggering effect in which the position of later items is dependent on the position of previous ones. Provide `true` to stagger the element with all other staggered elements, or if you want to get more granular, you can provide a string key and the element will be staggered with other elements with the same key.  |
+| prop                    | default    | type                  | details                                                                                                                                                                                                                                                                                                                         |
+| ----------------------- | :--------: | :-------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| children **(required)** | -          | `node`                | Wrap a single child with the `Flipped` component.                                                                                                                                                                                                                                                                               |
+| flipId **(required)**   | -          | `string`              | Use this to tell `react-flip-toolkit` how elements should be matched across renders so they can be animated.                                                                                                                                                                                                                    |
+| inverseFlipId           | -          | `string`              | Refer to the id of the parent `Flipped` container whose transform you want to cancel out. [Read more about canceling out parent transforms here.](#scale-transitions-made-easier)                                                                                                                                               |
+| transformOrigin         | `"0 0"`    | `string`              | This is a convenience method to apply the proper CSS `transform-origin` to the element being FLIP-ped. This will override `react-flip-toolkit`'s default application of `transform-origin: 0 0;` if it is provided as a prop.                                                                                                   |
+| spring                  | `noWobble` | `string` or `object`  | Provide a string referencing one of the spring presets &mdash; `noWobble` (default), `gentle`, `wobbly`, or `stiff`, OR provide an object with stiffness and damping parameters. [Explore the spring setting options here.](https://codepen.io/aholachek/full/bKmZbV/)                                                          |
+| stagger                 | `false`    | `boolean` or `string` | Provide a natural, spring-based staggering effect in which the position of each item follows the previous one. Provide `true` to stagger the element with all other staggered elements. If you want to get more granular, you can provide a string key and the element will be staggered with other elements with the same key. |
 
 #### Callback props
 
@@ -275,14 +275,38 @@ But for many/most use cases, you'll want to additionally specify the `scale` pro
 
 ## Troubleshooting
 
-- **Why does my animation look "off"?**
-  - You can try temporarily adding [the `debug` prop](#props) directly on your `Flipper` component to pause transitions at the beginning to see if anything isn't working correctly.
-
-
-- **Why isn't anything animating?**
+### Problem #1: Nothing is happening:
   - Make sure you're updating the `flipKey` attribute in the `Flipper` component whenever an animation should happen.
   - If one of your `Flipped` components is wrapping another React component rather than a DOM element, make sure that component passes down unknown props directly to its DOM element, e.g.: `<div className="square" {...rest} />`
 
-
-- **Why is the element animating from or to an unexpected position?**
+### Problem #2: Things look weird:
   - At any point, there can only be one element with a specified `flipId` on the page. If there are multiple `Flipped` elements on the page with the same id, things will start to get weird. Check to make sure all `flipId`s are unique.
+  - Make sure you are animating the element you want to animate and not, for instance, a wrapper div. For instance, if you are animating an inline element like some text, but have wrapped it in a `div`, you're actually animating the div, which might have a much wider width that you'd expect at certain points, which will throw off the animation. Check to see if you need to add an  `inline-block` style to the animated element.
+
+### It's still not working: try out the `debug` prop
+
+If you still can't figure out what's going wrong, you can add the [the `debug` prop](#props)  directly on your `Flipper` component to pause transitions at the beginning and outline the `Flipped` components with a hot pink outline. Here's an example of solving a problem with the `debug` prop:
+
+The broken animation:
+<img src="./example-assets/debugging_flip.gif" width='550px' alt='react-flip-toolkit broken animation example' />
+
+Apply the debug prop to have the FLIP animation pause at the very beginning:
+<img src="./example-assets/broken_flip.png" width='550px' alt='react-flip-toolkit broken animation with debug prop'/>
+
+We see here that the pink outline surrounding the center contents extends much further than the actual text and button. It turns out that we're flipping a wrapper `div` rather than the actual text and button:
+
+```jsx
+<Flipped flipId='contentContainer'>
+  <div>
+    <p>{this.props.text}</p>
+      <button onClick={this.toggleFullscreen}>Close</button>
+  </div>
+</Flipped>
+```
+
+We can either wrap both the `p` and the `button` in their own `Flipped ` containers, or add a style of `inline-block` on the wrapper `div`. To verify once we add the fix, we can rerun the animation with the `debug` prop applied:
+
+<img src="./example-assets/corrected_flip.png" width='550px' alt='react-flip-toolkit fixed animation'/>
+
+Now, the pink outline is hugging the elements that are being animated, so they are no longer getting warped.
+

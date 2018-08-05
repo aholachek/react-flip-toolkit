@@ -12,8 +12,8 @@ export type FlippedComponentIdFilter = string | any[]
 
 export interface FlippedWithContextProps {
   children: React.ReactNode
-  inverseFlipId?: any
-  flipId?: any
+  inverseFlipId?: string
+  flipId?: string
   opacity?: boolean
   translate?: boolean
   scale?: boolean
@@ -36,10 +36,8 @@ export interface FlippedWithContextProps {
 
 export const FlippedWithContext: React.SFC<FlippedWithContextProps>
 
-export type FlipperFlipKey = string | number | boolean
-
 export interface FlipperProps {
-  flipKey: FlipperFlipKey
+  flipKey: any
   children: React.ReactNode
   spring?: SpringConfig
   applyTransformOrigin?: boolean
