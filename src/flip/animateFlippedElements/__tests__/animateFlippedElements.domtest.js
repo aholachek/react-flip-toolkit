@@ -56,9 +56,6 @@ describe("animateFlippedElements", () => {
         getComputedStyle(getElement("id-1")).transform
       ).map(n => Math.floor(n))
 
-      // it's going to be a little off from "firstElementTransform"
-      // because of the chrome hack of stopping animation on the penultimate
-      // round
       expect(newTransform).to.deep.equal([
         2,
         0,
@@ -73,7 +70,7 @@ describe("animateFlippedElements", () => {
         1,
         0,
         50,
-        24,
+        25,
         0,
         1
       ])

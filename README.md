@@ -1,6 +1,8 @@
 
 # react-flip-toolkit
 
+🆕 The 4.0.0 version was recently released. For information about breaking changes, check out the [changelog](./CHANGELOG.md).
+
 <a href="https://codepen.io/aholachek/pen/ERRpEj">
 <img src="./example-assets/rft-logo.gif" width='550px' alt='react-flip-toolkit animated logo' />
 </a>
@@ -50,19 +52,19 @@
 </a>
 </p>
 
-<p>
-<a href="https://codepen.io/aholachek/pen/gKjYNw?editors=0110">
-  <img src="./example-assets/sort-filter.gif" width='600px' alt='an animation demoing sort and filter operations' />
-</a>
-</p>
-
 - [Updating list (`react-flip-move` example clone)](https://literate-fly.surge.sh/flip-move)
 - [Simplest possible example](https://codepen.io/aholachek/pen/oyKJgL)
 - [Guitar shop](https://literate-fly.surge.sh/guitar)
-- [Absurd, overly complex, nested example](https://literate-fly.surge.sh/cards)
+- [Overly complex, nested cards example](https://literate-fly.surge.sh/cards)
 - [React-flip-toolkit logo](https://codepen.io/aholachek/pen/ERRpEj)
-- [Spring and easing options](https://codepen.io/aholachek/full/bKmZbV/)
 - [Using Portals](https://literate-fly.surge.sh/portal)
+
+<p>
+Spring options explorer:
+<a href="https://codepen.io/aholachek/pen/gKjYNw?editors=0110">
+  <img src="./example-assets/spring-options.gif" width='600px' alt='spring easing explorer' />
+</a>
+</p>
 
 ## Quick start
 
@@ -210,9 +212,19 @@ The `Flipped` component produces no markup, it simply passes some props down to 
 | inverseFlipId           | -          | `string`              | Refer to the id of the parent `Flipped` container whose transform you want to cancel out. [Read more about canceling out parent transforms here.](#scale-transitions-made-easier)                                                                                                                                               |
 | transformOrigin         | `"0 0"`    | `string`              | This is a convenience method to apply the proper CSS `transform-origin` to the element being FLIP-ped. This will override `react-flip-toolkit`'s default application of `transform-origin: 0 0;` if it is provided as a prop.                                                                                                   |
 | spring                  | `noWobble` | `string` or `object`  | Provide a string referencing one of the spring presets &mdash; `noWobble` (default), `gentle`, `wobbly`, or `stiff`, OR provide an object with stiffness and damping parameters. [Explore the spring setting options here.](https://codepen.io/aholachek/full/bKmZbV/)                                                          |
-| stagger                 | `false`    | `boolean` or `string` | Provide a natural, spring-based staggering effect in which the position of each item follows the previous one. Provide `true` to stagger the element with all other staggered elements. If you want to get more granular, you can provide a string key and the element will be staggered with other elements with the same key. |
+| stagger                 | `false`    | `boolean` or `string` | Provide a natural, spring-based staggering effect in which the spring easing of each item is pinned to the previous one's movement. Provide `true` to stagger the element with all other staggered elements. If you want to get more granular, you can provide a string key and the element will be staggered with other elements with the same key. |
 
 #### Callback props
+
+<p>
+<a href="https://codepen.io/aholachek/pen/gKjYNw?editors=0110">
+  <figure>
+  <img src="./example-assets/enter-exit.gif" width='600px' alt='an animation demoing onAppear and onExit callbacks' />
+  <figcaption>This animation uses onAppear and onExit callbacks for fade-in and fade-out animations.</figcaption>
+  </figure>
+
+</a>
+</p>
 
 | prop            | arguments                           | details                                                                                                                                                                                                                                                                                         |
 | --------------- | :---------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -280,7 +292,7 @@ But for many/most use cases, you'll want to additionally specify the `scale` pro
   - If one of your `Flipped` components is wrapping another React component rather than a DOM element, make sure that component passes down unknown props directly to its DOM element, e.g.: `<div className="square" {...rest} />`
 
 ### Problem #2: Things look weird:
-  - At any point, there can only be one element with a specified `flipId` on the page. If there are multiple `Flipped` elements on the page with the same id, things will start to get weird. Check to make sure all `flipId`s are unique.
+  - At any point, there can only be one element with a specified `flipId` on the page. If there are multiple `Flipped` elements on the page with the same id, the animation will break. Check to make sure all `flipId`s are unique.
   - Make sure you are animating the element you want to animate and not, for instance, a wrapper div. For instance, if you are animating an inline element like some text, but have wrapped it in a `div`, you're actually animating the div, which might have a much wider width that you'd expect at certain points, which will throw off the animation. Check to see if you need to add an  `inline-block` style to the animated element.
 
 ### It's still not working: try out the `debug` prop
@@ -288,9 +300,11 @@ But for many/most use cases, you'll want to additionally specify the `scale` pro
 If you still can't figure out what's going wrong, you can add the [the `debug` prop](#props)  directly on your `Flipper` component to pause transitions at the beginning and outline the `Flipped` components with a hot pink outline. Here's an example of solving a problem with the `debug` prop:
 
 The broken animation:
+
 <img src="./example-assets/debugging_flip.gif" width='550px' alt='react-flip-toolkit broken animation example' />
 
 Apply the debug prop to have the FLIP animation pause at the very beginning:
+
 <img src="./example-assets/broken_flip.png" width='550px' alt='react-flip-toolkit broken animation with debug prop'/>
 
 We see here that the pink outline surrounding the center contents extends much further than the actual text and button. It turns out that we're flipping a wrapper `div` rather than the actual text and button:
