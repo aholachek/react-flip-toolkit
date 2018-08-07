@@ -5,9 +5,6 @@
 
 # react-flip-toolkit
 
-🆕 The 4.0.0 version was recently released. For information about breaking changes, check out the [changelog](./CHANGELOG.md).
-
-
 ## Comparison with other React FLIP libraries
 
 | Feature                                        | [`react-flip-move`](https://github.com/joshwcomeau/react-flip-move) | [`react-overdrive`](https://github.com/berzniz/react-overdrive) | `react-flip-toolkit` |
@@ -292,6 +289,7 @@ But for many/most use cases, you'll want to additionally specify the `scale` pro
 ### Problem #2: Things look weird:
   - At any point, there can only be one element with a specified `flipId` on the page. If there are multiple `Flipped` elements on the page with the same id, the animation will break. Check to make sure all `flipId`s are unique.
   - Make sure you are animating the element you want to animate and not, for instance, a wrapper div. If you are animating an inline element like some text, but have wrapped it in a `div`, you're actually animating the div, which might have a much wider width that you'd expect at certain points, which will throw off the animation. Check to see if you need to add an  `inline-block` style to the animated element.
+  - Make sure you don't have any competing CSS transitions on the element in question.
 
 ### It's still not working: try out the `debug` prop
 
