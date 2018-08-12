@@ -1,4 +1,5 @@
 import * as Rematrix from "rematrix"
+import assign from "object-assign"
 import springUpdate from "./spring"
 import { getSpringConfig } from "../../springSettings"
 import { toArray, isFunction, isNumber } from "../utilities"
@@ -132,6 +133,12 @@ const getInvertedChildren = (element, id) =>
     element.querySelectorAll(`[${constants.DATA_INVERSE_FLIP_ID}="${id}"]`)
   )
 
+// for stagger
+const getFlippedChildrenIds = element =>
+  toArray(element.querySelectorAll(`[${constants.DATA_FLIP_ID} ]`)).map(
+    el => el.dataset.flipId
+  )
+
 export const tweenProp = (start, end, position) =>
   start + (end - start) * position
 
@@ -155,7 +162,7 @@ const animateFlippedElements = ({
     )
   }
 
-  const startFlipFunctions = flippedIds
+  let startFlipFunctions = flippedIds
     // take all the measurements we need
     // do all the set up work
     // and return a startAnimation function
@@ -191,6 +198,12 @@ const animateFlippedElements = ({
         flippedSpring: flipConfig.spring
       })
       let stagger = flipConfig.stagger === true ? "all" : flipConfig.stagger
+
+      const childIds = []
+
+      if (stagger) {
+        [].push.apply(childIds, getFlippedChildrenIds(element))
+      }
       if (debug) stagger = false
 
       const flipStartId = cachedFlipChildrenPositions[id].flipComponentId
@@ -311,7 +324,8 @@ const animateFlippedElements = ({
         }
 
         if (updateNextFuncParams) {
-          updateNextFuncParams(Math.min(currentValue * 1.5, 1))
+          // TODO: make configurable?
+          updateNextFuncParams(Math.min(currentValue * 1.6, 1))
         }
 
         const vals = {}
@@ -339,14 +353,22 @@ const animateFlippedElements = ({
         applyStyles(vals)
       }
 
-      const startAnimation = nextFunc => {
+      const startAnimation = childFuncs => nextFunc => {
         // before animating, immediately apply FLIP styles to prevent flicker
         applyStyles({
           matrix: fromVals.matrix,
           opacity: animateOpacity && fromVals.opacity
         })
 
+        // return a function that can be called to initialize the actual tweening
         return () => {
+          let updateChildFuncParams = []
+          if (childFuncs) {
+            // this calls the children functions to start the tweens
+            // and returns the updateParams func
+            updateChildFuncParams = childFuncs.map(f => f())
+          }
+
           if (debug) {
             const round = n => Math.round(n * 100) / 100
             const xAdjust = round(1 / fromVals.matrix[0])
@@ -384,31 +406,62 @@ const animateFlippedElements = ({
             stop: () => spring.stop(),
             onComplete
           }
+          // for staggering
           return toValue => {
             spring.updateConfig({
               toValue
             })
+            updateChildFuncParams.forEach(updateFunc => updateFunc(toValue))
           }
         }
       }
-      return [stagger, startAnimation]
+      // childIds is only relevant for staggered elements
+      // we want to make sure children are staggered too
+      return { id, stagger, childIds, startAnimation }
     })
     // some functions might return undefined
     .filter(x => x)
 
+  const allStaggeredChildrenIds = startFlipFunctions
+    .map(data => data.childIds)
+    .reduce((acc, curr) => acc.concat(curr), [])
+
+  const staggeredChildrenDict = allStaggeredChildrenIds.reduce((acc, curr) => {
+    return assign(acc, {
+      [curr]: startFlipFunctions.filter(data => data.id === curr)[0]
+    })
+  }, {})
+
+  // remove children of staggered flip element
+  startFlipFunctions = startFlipFunctions.filter(
+    data => allStaggeredChildrenIds.indexOf(data.id) === -1
+  )
+
   // staggered funcs need to be grouped and provided a reference to the next func
   const staggeredFunctions = startFlipFunctions
-    .filter(arr => arr[0])
+    .filter(data => data.stagger)
     .reduce((acc, curr) => {
-      if (acc[curr[0]]) acc[curr[0]].push(curr[1])
-      else acc[curr[0]] = [curr[1]]
+      const childFuncs = curr.childIds
+        .map(
+          id =>
+            // we don't need to preload with nextFunc or childFuncs because we currently don't allow
+            // nested stagger animations
+            // check that the function is actually there first
+            // because if the element is not in the current window, the object will not exist
+            staggeredChildrenDict[id] &&
+            staggeredChildrenDict[id].startAnimation()()
+        )
+        .filter(f => f)
+      const funcPreloadedWithChildrenFunctions = curr.startAnimation(childFuncs)
+      if (acc[curr.stagger])
+        acc[curr.stagger].push(funcPreloadedWithChildrenFunctions)
+      else acc[curr.stagger] = [funcPreloadedWithChildrenFunctions]
       return acc
     }, {})
 
   Object.keys(staggeredFunctions).forEach(stagger => {
     const funcs = staggeredFunctions[stagger]
-    // call with reference to the following function and information about
-    // placement in the order
+    // call with reference to the following function
     const startFunc = funcs
       .reverse()
       .reduce((prev, curr) => curr(prev), () => {})
@@ -417,11 +470,9 @@ const animateFlippedElements = ({
 
   // just call unstaggered functions directly
   startFlipFunctions
-    .filter(arr => !arr[0])
-    .map(arr => arr[1])
-    .forEach(func => {
-      func()()
-    })
+    .filter(arr => !arr.stagger)
+    .map(arr => arr.startAnimation)
+    .forEach(func => func()()())
 }
 
 export default animateFlippedElements

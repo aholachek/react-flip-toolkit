@@ -217,27 +217,31 @@ class ListExample extends Component {
                           stagger={this.state.stagger}
                         >
                           <li className="fm-item">
-                            <Flipped inverseFlipId={flipId} scale>
+                            <Flipped inverseFlipId={flipId}>
                               <div>
-                                <div>
-                                  <h3>{title}</h3>
-                                  <p>{title}</p>
-                                </div>
+                                <Flipped flipId={`${flipId}-content`}>
+                                  <div>
+                                    <h3>{title}</h3>
+                                    <p>{title}</p>
+                                  </div>
+                                </Flipped>
 
-                                <button
-                                  className="fm-remove"
-                                  onClick={() => {
-                                    this.setState(prevState => {
-                                      return {
-                                        filteredIds: prevState.filteredIds.concat(
-                                          id
-                                        )
-                                      }
-                                    })
-                                  }}
-                                >
-                                  &times;
-                                </button>
+                                <Flipped flipId={`${flipId}-button`}>
+                                  <button
+                                    className="fm-remove"
+                                    onClick={() => {
+                                      this.setState(prevState => {
+                                        return {
+                                          filteredIds: prevState.filteredIds.concat(
+                                            id
+                                          )
+                                        }
+                                      })
+                                    }}
+                                  >
+                                    &times;
+                                  </button>
+                                </Flipped>
                               </div>
                             </Flipped>
                           </li>
