@@ -325,7 +325,7 @@ const animateFlippedElements = ({
 
         if (updateNextFuncParams) {
           // TODO: make configurable?
-          updateNextFuncParams(Math.min(currentValue * 1.6, 1))
+          updateNextFuncParams(Math.min(currentValue * 1.5, 1))
         }
 
         const vals = {}
