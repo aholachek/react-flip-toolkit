@@ -44,6 +44,12 @@
 </p>
 
 <p>
+<a href="https://github.com/aholachek/react-flip-toolkit-router-example">
+  <img src="./example-assets/compressed-demo.gif" width='600px' alt='React-flip-toolkit with React-Router' />
+</a>
+</p>
+
+<p>
 <a href="https://codepen.io/aholachek/pen/KeevYN">
   <img src="./example-assets/dropdown.gif" width='600px' alt='a smoothly transitioning menu dropdown' />
 </a>
