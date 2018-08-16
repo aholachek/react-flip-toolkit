@@ -38,18 +38,21 @@
 ## Demos
 
 <p>
+<h4>Image Transitions</h4>
 <a href="https://literate-fly.surge.sh/photos">
   <img src="./example-assets/photogrid.gif" width='600px' alt='an animation showing click to expand a photo' />
 </a>
 </p>
 
 <p>
+<h4>Usage with React Router</h4>
 <a href="https://github.com/aholachek/react-flip-toolkit-router-example">
   <img src="./example-assets/compressed-demo.gif" width='600px' alt='React-flip-toolkit with React-Router' />
 </a>
 </p>
 
 <p>
+<h4>Stripe-Inspired Menu</h4>
 <a href="https://codepen.io/aholachek/pen/KeevYN">
   <img src="./example-assets/dropdown.gif" width='600px' alt='a smoothly transitioning menu dropdown' />
 </a>
@@ -61,11 +64,13 @@
 - [Overly complex, nested cards example](https://literate-fly.surge.sh/cards)
 - [React-flip-toolkit logo](https://codepen.io/aholachek/pen/ERRpEj)
 - [Using Portals](https://literate-fly.surge.sh/portal)
-- [Spring options explorer](https://codepen.io/aholachek/full/bKmZbV/)<br/>
+- [Spring options explorer](https://codepen.io/aholachek/full/bKmZbV/)
+
+<p style="margin-top:3rem">
 <a href="https://codepen.io/aholachek/full/bKmZbV/">
   <img src="./example-assets/spring-options.gif" width='600px' alt='spring easing explorer' />
 </a>
-
+</p>
 
 ## Quick start
 
