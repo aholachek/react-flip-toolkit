@@ -16,6 +16,7 @@
     "deploy-demo": "yarn run build; cp demo/dist/index.html demo/dist/200.html; surge demo/dist --domain literate-fly.surge.sh",
     "start": "nwb serve-react-demo",
     "test": "jest",
+    "lint": "eslint src *.js",
     "test:dom": "parcel mocha/testrunner.html",
     "test:all": "jest; yarn run test:dom",
     "preversion": "npm test",

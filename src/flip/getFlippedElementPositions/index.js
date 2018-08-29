@@ -100,8 +100,6 @@ export const getFlippedElementPositionsBeforeUpdate = ({
     })
     .reduce(addTupleToObject, {})
 
-  const inProgressAnimationIds = Object.keys(inProgressAnimations)
-
   // do this at the very end since we want to cache positions of elements
   // while they are mid-transition
   cancelInProgressAnimations(inProgressAnimations)

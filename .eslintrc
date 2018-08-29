@@ -1,3 +1,13 @@
 {
-  "extends": ["react-app", "eslint:recommended"]
+  "extends": ["react-app", "eslint:recommended"],
+  "overrides": [
+    {
+      "files": [
+        "*.domtest.js"
+      ],
+      "rules": {
+        "no-console": "off"
+      }
+    }
+  ]
 }
