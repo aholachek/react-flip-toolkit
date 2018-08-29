@@ -5,6 +5,7 @@
 /node_modules
 /umd
 npm-debug.log*
+yarn-error.log*
 TODO
 .cache
 dist
