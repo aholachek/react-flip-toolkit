@@ -157,6 +157,7 @@ const animateFlippedElements = ({
   const body = document.querySelector("body")
 
   if (debug) {
+    // eslint-disable-next-line no-console
     console.error(
       'The "debug" prop is set to true. All FLIP animations will return at the beginning of the transition.'
     )
