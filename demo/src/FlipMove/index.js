@@ -68,7 +68,6 @@ class ListExample extends Component {
             this.state.filteredIds
           )}`}
           spring={this.state.spring}
-          jitterFix
         >
           <div className="fm-flex-container">
             <fieldset>

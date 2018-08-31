@@ -37,48 +37,48 @@ class FocusedUser extends Component {
             role="button"
             ref={el => (this.el = el)}
           >
-            <Flipped inverseFlipId={parentFlipId} componentId="focusedUser">
+            <div>
               <div>
-                <div>
-                  <button
-                    className="gridItemFocusedClose"
-                    onClick={close}
-                    data-fade-in
-                  >
-                    ✖
-                  </button>
-                  <h2 className="gridItemTitle" data-fade-in>
-                    {data.name}
-                  </h2>
-                  <Flipped
-                    flipId={`${parentFlipId}-avatar`}
-                    componentId="focusedUserAvatar"
-                  >
-                    <img
-                      src={data.avatar}
-                      alt={`user profile for ${data.name}`}
-                      className="gridItemAvatar"
-                    />
-                  </Flipped>
+                <button
+                  className="gridItemFocusedClose"
+                  onClick={close}
+                  data-fade-in
+                >
+                  ✖
+                </button>
+                <h2 className="gridItemTitle" data-fade-in>
+                  {data.name}
+                </h2>
+                <Flipped
+                  flipId={`${parentFlipId}-avatar`}
+                  componentId="focusedUserAvatar"
+                  freeAgent={3}
+                >
+                  <img
+                    src={data.avatar}
+                    alt={`user profile for ${data.name}`}
+                    className="gridItemAvatar"
+                  />
+                </Flipped>
 
-                  <h2 data-fade-in className="gridItemJob">
-                    {data.job}
-                  </h2>
-                  <p data-fade-in className="gridItemDescription">
-                    {data.text}
-                  </p>
-                  <Flipped
-                    flipId={`${parentFlipId}-background`}
-                    componentId="focusedUserBackground"
-                  >
-                    <div
-                      className="gridItemBackground"
-                      style={{ backgroundColor: data.color }}
-                    />
-                  </Flipped>
-                </div>
+                <h2 data-fade-in className="gridItemJob">
+                  {data.job}
+                </h2>
+                <p data-fade-in className="gridItemDescription">
+                  {data.text}
+                </p>
+                <Flipped
+                  flipId={`${parentFlipId}-background`}
+                  componentId="focusedUserBackground"
+                  freeAgent={2}
+                >
+                  <div
+                    className="gridItemBackground"
+                    style={{ backgroundColor: data.color }}
+                  />
+                </Flipped>
               </div>
-            </Flipped>
+            </div>
           </div>
         </Flipped>
       </div>

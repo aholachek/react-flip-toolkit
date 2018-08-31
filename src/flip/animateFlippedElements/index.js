@@ -22,14 +22,7 @@ export const convertMatrix3dArrayTo2dArray = matrix => [
 ]
 
 export const convertMatrix2dArrayToString = matrix =>
-  `matrix(${[
-    matrix[0],
-    matrix[1],
-    matrix[2],
-    matrix[3],
-    matrix[4],
-    matrix[5]
-  ].join(", ")})`
+  `matrix(${matrix.join(", ")})`
 
 export const invertTransformsForChildren = ({
   invertedChildren,
@@ -40,6 +33,7 @@ export const invertTransformsForChildren = ({
     if (!body.contains(child)) {
       return
     }
+    console.count("transform application")
 
     const scaleX = matrix[0]
     const scaleY = matrix[3]
@@ -82,7 +76,8 @@ export const createApplyStylesFunc = ({ element, invertedChildren, body }) => ({
   }
 
   if (!matrix) return
-  element.style.transform = convertMatrix2dArrayToString(matrix)
+  const s = convertMatrix2dArrayToString(matrix)
+  element.style.transform = s
 
   if (invertedChildren) {
     invertTransformsForChildren({
@@ -151,7 +146,6 @@ const animateFlippedElements = ({
   applyTransformOrigin,
   spring,
   getElement,
-  jitterFix,
   debug
 }) => {
   const body = document.querySelector("body")
@@ -172,7 +166,7 @@ const animateFlippedElements = ({
       const currentRect = newFlipChildrenPositions[id].rect
       const prevOpacity = cachedFlipChildrenPositions[id].opacity
       const currentOpacity = newFlipChildrenPositions[id].opacity
-      // don't animate invisible elements
+      // don't animate elements outside of the user's viewport
       if (!rectInViewport(prevRect) && !rectInViewport(currentRect)) {
         return
       }
@@ -223,6 +217,22 @@ const animateFlippedElements = ({
         newFlipChildrenPositions[id].transform
       )
 
+      let parent, nextSibling
+
+      if (flipConfig.freeAgent) {
+        parent = element.parentNode
+        nextSibling = element.nextSibling
+        element.style.position = "fixed"
+        element.style.top = currentRect.top - currentTransform[12] + "px"
+        element.style.left = currentRect.left - currentTransform[13] + "px"
+        element.style.width = currentRect.width + "px"
+        element.style.height = currentRect.height + "px"
+        element.style.zIndex = isNumber(flipConfig.freeAgent)
+          ? flipConfig.freeAgent
+          : 2
+        document.body.appendChild(element)
+      }
+
       const toVals = { matrix: currentTransform }
 
       const fromVals = {}
@@ -256,12 +266,6 @@ const animateFlippedElements = ({
         toVals.opacity = currentOpacity
       }
 
-      if (flipConfig.transformOrigin) {
-        element.style.transformOrigin = flipConfig.transformOrigin
-      } else if (applyTransformOrigin) {
-        element.style.transformOrigin = "0 0"
-      }
-
       // we're going to pass around the children in this weird [child, childData]
       // structure because we only want to parse the children's config data 1x
       const invertedChildren = getInvertedChildren(element, id)
@@ -273,14 +277,6 @@ const animateFlippedElements = ({
             flipEndId
           )
         )
-
-      invertedChildren.forEach(([child, childFlipConfig]) => {
-        if (childFlipConfig.transformOrigin) {
-          child.style.transformOrigin = childFlipConfig.transformOrigin
-        } else if (applyTransformOrigin) {
-          child.style.transformOrigin = "0 0"
-        }
-      })
 
       fromVals.matrix = transformsArray.reduce(Rematrix.multiply)
 
@@ -304,6 +300,16 @@ const animateFlippedElements = ({
       // but also when it is interrupted
       // when it is called, the animation has already been cancelled
       const onAnimationEnd = () => {
+        if (flipConfig.freeAgent) {
+          element.parentNode.removeChild(element)
+          element.style.position = ""
+          element.style.left = ""
+          element.style.top = ""
+          element.style.width = ""
+          element.style.height = ""
+          element.style.zIndex = ""
+          parent.insertBefore(element, nextSibling)
+        }
         delete inProgressAnimations[id]
         isFunction(onComplete) && onComplete()
       }
@@ -331,18 +337,9 @@ const animateFlippedElements = ({
 
         const vals = {}
 
-        /**
-         * the currentValue !== 1 thing is stupid but seems necessary for now.
-         * In chrome, once you transition to a totally 0 transform (matrix(1, 0, 0, 1, 0, 1))
-         * you get a 1px jump for some reason
-         * I've tried transform 3d, will-change, translateZ hacks and none of them make a difference
-         * so we're going to stop on the penultimate update instead
-         */
-        if (!(currentValue === 1 && jitterFix)) {
-          vals.matrix = fromVals.matrix.map((fromVal, index) =>
-            tweenProp(fromVal, toVals.matrix[index], currentValue)
-          )
-        }
+        vals.matrix = fromVals.matrix.map((fromVal, index) =>
+          tweenProp(fromVal, toVals.matrix[index], currentValue)
+        )
 
         if (animateOpacity) {
           vals.opacity = tweenProp(
@@ -359,6 +356,20 @@ const animateFlippedElements = ({
         applyStyles({
           matrix: fromVals.matrix,
           opacity: animateOpacity && fromVals.opacity
+        })
+        // and batch any other style updates if necessary
+        if (flipConfig.transformOrigin) {
+          element.style.transformOrigin = flipConfig.transformOrigin
+        } else if (applyTransformOrigin) {
+          element.style.transformOrigin = "0 0"
+        }
+
+        invertedChildren.forEach(([child, childFlipConfig]) => {
+          if (childFlipConfig.transformOrigin) {
+            child.style.transformOrigin = childFlipConfig.transformOrigin
+          } else if (applyTransformOrigin) {
+            child.style.transformOrigin = "0 0"
+          }
         })
 
         // return a function that can be called to initialize the actual tweening

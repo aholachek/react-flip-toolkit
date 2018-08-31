@@ -82,11 +82,11 @@ body {
 
 .gridItemBackground {
   position: absolute;
-  height: 200%;
+  height: 50%;
   top: 50%;
   bottom: 0;
-  left: -100%;
-  width: 300%;
+  left: 0%;
+  width: 100%;
   z-index: -1;
   background-color: var(--primary-color);
   opacity: 0.3;
@@ -136,6 +136,8 @@ body {
   right: 0;
   bottom: 0;
   z-index: 2;
+  width: 100%;
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -158,6 +160,7 @@ body {
 .gridItemFocused .gridItemBackground {
   top: 0%;
   opacity: 1;
+  height: 100%;
 }
 
 .gridItemFocused .gridItemTitle {

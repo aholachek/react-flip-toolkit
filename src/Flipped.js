@@ -91,6 +91,12 @@ class FlippedWithContext extends PureComponent {
       onExit,
       ...rest
     } = this.props
+    if (rest.inverseFlipId)
+      return (
+        <Flipped {...rest}>
+          {children}
+        </Flipped>
+      )
     return (
       <PortalContext.Consumer>
         {portalKey => (

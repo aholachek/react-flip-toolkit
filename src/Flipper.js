@@ -16,7 +16,6 @@ class Flipper extends Component {
     element: PropTypes.string,
     className: PropTypes.string,
     portalKey: PropTypes.string,
-    jitterFix: PropTypes.bool
   }
 
   static defaultProps = {
@@ -53,7 +52,6 @@ class Flipper extends Component {
         spring: this.props.spring,
         debug: this.props.debug,
         portalKey: this.props.portalKey,
-        jitterFix: this.props.jitterFix
       })
     }
   }

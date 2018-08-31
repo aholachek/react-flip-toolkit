@@ -138,8 +138,8 @@ export const getFlippedElementPositionsAfterUpdate = ({
         }
       })
       .map(child => {
-        const rect = child.getBoundingClientRect()
         const computedStyle = window.getComputedStyle(child)
+        const rect = child.getBoundingClientRect()
         // maybe the image hasn't loaded into the document yet. This is a problem
         // especially with Safari for some reason
         // need to check for either width OR height because one could be set with CSS
@@ -152,7 +152,7 @@ export const getFlippedElementPositionsAfterUpdate = ({
         return [
           child.dataset.flipId,
           {
-            rect: child.getBoundingClientRect(),
+            rect,
             opacity: parseFloat(computedStyle.opacity),
             domData: {},
             transform: computedStyle.transform
