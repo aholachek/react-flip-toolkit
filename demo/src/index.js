@@ -1,7 +1,6 @@
 import React, { Component } from "react"
 import { render } from "react-dom"
 import "normalize.css"
-import CardsExample from "./CardsExample"
 import CardsInverseExample from "./CardsExample-Inverse"
 import GuitarsExample from "./GuitarsExample"
 import SidebarExample from "./SidebarExample"
@@ -14,10 +13,7 @@ import TransformFromZeroExample from "./TransformFromZeroExample"
 
 class Demo extends Component {
   render() {
-    if (window.location.pathname === "/free-agent-cards")
-      return <CardsExample />
-    else if (window.location.pathname === "/cards")
-      return <CardsInverseExample />
+    if (window.location.pathname === "/cards") return <CardsInverseExample />
     else if (window.location.pathname === "/guitar") return <GuitarsExample />
     else if (window.location.pathname === "/sidebar") return <SidebarExample />
     else if (window.location.pathname === "/photos") return <PhotosExample />
@@ -38,9 +34,7 @@ class Demo extends Component {
             <li>
               <a href="/cards">Avatar cards example</a>
             </li>
-            <li>
-              <a href="/free-agent-cards">Avatar cards example (free agent)</a>
-            </li>
+
             <li>
               <a href="/sidebar">Sidebar example</a>
             </li>

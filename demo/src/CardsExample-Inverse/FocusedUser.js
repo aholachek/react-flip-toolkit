@@ -53,7 +53,6 @@ class FocusedUser extends Component {
                   <Flipped
                     flipId={`${parentFlipId}-avatar`}
                     componentId="focusedUserAvatar"
-                    freeAgent
                   >
                     <img
                       src={data.avatar}

@@ -14,7 +14,6 @@ export interface FlippedWithContextProps {
   children: React.ReactNode
   inverseFlipId?: string
   flipId?: string
-  freeAgent?: boolean
   opacity?: boolean
   translate?: boolean
   scale?: boolean

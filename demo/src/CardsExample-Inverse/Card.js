@@ -42,30 +42,29 @@ class Card extends PureComponent {
             onClick={() => setFocusedIndex(i)}
             role="button"
           >
-            {/* <Flipped
+            <Flipped
               inverseFlipId={parentFlipId}
               componentIdFilter={["focusedUser"]}
-            > */}
-            <div>
-              <h2 className="gridItemTitle" data-fade-in>
-                {d.name}
-              </h2>
-              <Flipped
-                flipId={`${parentFlipId}-avatar`}
-                componentIdFilter="focusedUserAvatar"
-                freeAgent
-              >
-                <img
-                  src={d.avatar}
-                  alt={`user profile for ${d.name}`}
-                  className="gridItemAvatar"
-                />
-              </Flipped>
-              <h2 className="gridItemJob" data-fade-in>
-                {d.job}
-              </h2>
+            >
+              <div>
+                <h2 className="gridItemTitle" data-fade-in>
+                  {d.name}
+                </h2>
+                <Flipped
+                  flipId={`${parentFlipId}-avatar`}
+                  componentIdFilter="focusedUserAvatar"
+                >
+                  <img
+                    src={d.avatar}
+                    alt={`user profile for ${d.name}`}
+                    className="gridItemAvatar"
+                  />
+                </Flipped>
+                <h2 className="gridItemJob" data-fade-in>
+                  {d.job}
+                </h2>
 
-              <Flipped
+                <Flipped
                   flipId={`${parentFlipId}-background`}
                   componentIdFilter="focusedUserBackground"
                 >
@@ -74,8 +73,8 @@ class Card extends PureComponent {
                     style={{ backgroundColor: d.color }}
                   />
                 </Flipped>
-            </div>
-            {/* </Flipped> */}
+              </div>
+            </Flipped>
           </div>
         </Flipped>
       </li>

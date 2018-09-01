@@ -218,7 +218,7 @@ class ListExample extends Component {
                           <li className="fm-item">
                             <Flipped inverseFlipId={flipId}>
                               <div>
-                                <Flipped flipId={`${flipId}-content`}>
+                                <Flipped flipId={`${flipId}-content`} translate>
                                   <div>
                                     <h3>{title}</h3>
                                     <p>{title}</p>

@@ -26,11 +26,11 @@ export default class AnimatedSquare extends Component {
         className="transform-example-container"
       >
         {this.state.fullScreen ? (
-          <Flipped flipId="square" freeAgent>
+          <Flipped flipId="square">
             <BigSquare onClick={this.toggleFullScreen} />
           </Flipped>
         ) : (
-          <Flipped flipId="square" freeAgent>
+          <Flipped flipId="square">
             <SmallSquare onClick={this.toggleFullScreen} />
           </Flipped>
         )}

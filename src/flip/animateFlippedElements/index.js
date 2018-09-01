@@ -33,8 +33,6 @@ export const invertTransformsForChildren = ({
     if (!body.contains(child)) {
       return
     }
-    console.count("transform application")
-
     const scaleX = matrix[0]
     const scaleY = matrix[3]
     const translateX = matrix[4]
@@ -217,26 +215,6 @@ const animateFlippedElements = ({
         newFlipChildrenPositions[id].transform
       )
 
-      let parent, dupNode
-
-      if (flipConfig.freeAgent) {
-        dupNode = element.cloneNode(true)
-        dupNode.style.visibility = "hidden"
-
-        parent = element.parentNode
-        element.style.position = "fixed"
-        element.style.top = currentRect.top - currentTransform[12] + "px"
-        element.style.left = currentRect.left - currentTransform[13] + "px"
-        element.style.width = currentRect.width + "px"
-        element.style.height = currentRect.height + "px"
-        element.style.zIndex = isNumber(flipConfig.freeAgent)
-          ? flipConfig.freeAgent
-          : 2
-
-        parent.replaceChild(dupNode, element)
-        document.body.appendChild(element)
-      }
-
       const toVals = { matrix: currentTransform }
 
       const fromVals = {}
@@ -304,16 +282,6 @@ const animateFlippedElements = ({
       // but also when it is interrupted
       // when it is called, the animation has already been cancelled
       const onAnimationEnd = () => {
-        if (flipConfig.freeAgent) {
-          element.parentNode.removeChild(element)
-          element.style.position = ""
-          element.style.left = ""
-          element.style.top = ""
-          element.style.width = ""
-          element.style.height = ""
-          element.style.zIndex = ""
-          parent.replaceChild(element, dupNode)
-        }
         delete inProgressAnimations[id]
         isFunction(onComplete) && onComplete()
       }
