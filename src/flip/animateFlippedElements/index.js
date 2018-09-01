@@ -217,13 +217,12 @@ const animateFlippedElements = ({
         newFlipChildrenPositions[id].transform
       )
 
-      let parent, spacer
+      let parent, dupNode
 
       if (flipConfig.freeAgent) {
-        spacer = document.createElement("span")
-        spacer.style.display = "inline-block"
-        spacer.style.height = currentRect.height
-        spacer.style.width = currentRect.width
+        dupNode = element.cloneNode(true)
+        dupNode.style.visibility = "hidden"
+
         parent = element.parentNode
         element.style.position = "fixed"
         element.style.top = currentRect.top - currentTransform[12] + "px"
@@ -234,7 +233,7 @@ const animateFlippedElements = ({
           ? flipConfig.freeAgent
           : 2
 
-        parent.replaceChild(spacer, element)
+        parent.replaceChild(dupNode, element)
         document.body.appendChild(element)
       }
 
@@ -313,7 +312,7 @@ const animateFlippedElements = ({
           element.style.width = ""
           element.style.height = ""
           element.style.zIndex = ""
-          parent.replaceChild(element, spacer)
+          parent.replaceChild(element, dupNode)
         }
         delete inProgressAnimations[id]
         isFunction(onComplete) && onComplete()
