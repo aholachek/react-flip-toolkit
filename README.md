@@ -8,16 +8,15 @@
 
 ## Comparison with other React FLIP libraries
 
-| Feature                                        | [`react-flip-move`](https://github.com/joshwcomeau/react-flip-move) | [`react-overdrive`](https://github.com/berzniz/react-overdrive) | `react-flip-toolkit` |
-| ---------------------------------------------- | :-----------------------------------------------------------------: | :-------------------------------------------------------------: | :------------------: |
-| Animate position                               | ✅                                                                   | ✅                                                               | ✅                    |
-| Animate size                                   | ❌                                                                   | ✅                                                               | ✅                    |
-| Animate opacity                                | ❌                                                                   | ✅                                                               | ✅                    |
-| Animate parent's size without warping children | ❌                                                                   | ❌                                                               | ✅                    |
-| Use real FLIP instead of cloning & crossfading | ✅                                                                   | ❌                                                               | ✅                    |
-| Enable nested animations                       | ❌                                                                   | ❌                                                               | ✅                    |
-| Use springs for animations                     | ❌                                                                   | ❌                                                               | ✅                    |
-| Easy to set up & beginner-friendly             | ✅                                                                   | ✅                                                               | 🤷                   |
+| Feature                                        | [`react-flip-move`](https://github.com/joshwcomeau/react-flip-move) | [`react-overdrive`](https://github.com/berzniz/react-overdrive) | `react-flip-toolkit`                                |
+| ---------------------------------------------- | :-----------------------------------------------------------------: | :-------------------------------------------------------------: | :-------------------------------------------------: |
+| Animate position                               | ✅                                                                   | ✅                                                               | ✅                                                   |
+| Animate scale                                  | ❌                                                                   | ✅                                                               | ✅                                                   |
+| Animate opacity                                | ❌                                                                   | ✅                                                               | ✅                                                   |
+| Animate parent's size without warping children | ❌                                                                   | ❌                                                               | ✅                                                   |
+| Use real FLIP instead of cloning & crossfading | ✅                                                                   | ❌                                                               | ✅                                                   |
+| Use springs for animations                     | ❌                                                                   | ❌                                                               | ✅                                                   |
+| Easy to set up & beginner-friendly             | ✅                                                                   | ✅                                                               | <img src='./example-assets/shrug.png' width="26px"> |
 
 
 ## Table of Contents
@@ -36,6 +35,7 @@
 - [Scale transitions made eas(ier)](#scale-transitions-made-easier)
 - [Library details](#library-details)
 - [Troubleshooting](#troubleshooting)
+- [Performance](#performance)
 
 ## Demos
 
@@ -163,7 +163,7 @@ class AnimatedSquare extends Component {
 
 ### 1. `Flipper`
 
-The parent wrapper component that contains all the elements to be animated.
+The parent wrapper component that contains all the elements to be animated. You'll most typically need only one of these per page.
 
 ```jsx
 <Flipper flipKey={someKeyThatChanges}>
@@ -271,9 +271,9 @@ Some other FLIP libraries just allow you to animate position changes, but things
 The problem with scale animations has to do with children &mdash; if you scale a div up 2x, you will warp any children it has by scaling them up too, creating a weird-looking animation. That's why this library allows you to wrap the child with a `Flipped` component that has an `inverseFlipId` to counteract the transforms of the parent:
 
 ```jsx
-<Flipped flipId={parentFlipId}>
+<Flipped flipId={id}>
   <div>
-    <Flipped inverseFlipId={parentFlipId} scale>
+    <Flipped inverseFlipId={id} scale>
       <div>some text that will not be warped</div>
     </Flipped>
   </div>
@@ -332,3 +332,53 @@ We can either wrap both the `p` and the `button` in their own `Flipped ` contain
 
 Now, the pink outline is hugging the elements that are being animated, so they are no longer getting warped.
 
+
+## Performance
+
+`React-flip-toolkit` does a lot of work under the hood to try to maximize the performance of your animations &mdash; for instance, off-screen elements won't be animated, and style updates are batched to prevent [layout thrashing](https://developers.google.com/web/fundamentals/performance/rendering/avoid-large-complex-layouts-and-layout-thrashing).
+However, if you are building particularly complex animations&mdash;ones that involve dozens of elements or large images&mdash; there are some additional strategies you can use to ensure performant animations.
+
+### 1. `PureComponent`
+When you trigger a complex FLIP animation with react-flip-toolkit, React could be spending vital milliseconds doing unnecessary reconciliation work before allowing the animation to start. If you notice a slight delay between when the animation is triggered, and when it begins, this is probably the culprit. To short-circuit this possibly unnecessary work, try using [`PureComponent`](https://reactjs.org/docs/react-api.html#reactpurecomponent) for your animated elements, and seeing if you can refactor your code to minimize prop updates to animated children when an animation is about to occur.
+
+For example, in a hypothetical UI where you are animating the positions of several cards at once, you might want to update a `Card` component that looks like this:
+
+```jsx
+
+import React, { Component } from 'react'
+
+class Card extends Component {
+  render() {
+    return (
+        <Flipped flipId={this.props.id}>
+          <div>
+          {/* card content goes here */ }
+          </div>
+        </Flipped>
+    )
+  }
+}
+
+```
+
+to this:
+
+```jsx
+import React, { PureComponent } from 'react'
+
+class Card extends PureComponent {
+ // everything  else is the same
+}
+```
+
+Remember [to always provide `key` props as appropriate to your elements](https://reactjs.org/docs/lists-and-keys.html), and check [the React docs](https://reactjs.org/docs/react-api.html#reactpurecomponent) for some caveats on when to not use `PureComponent`. But if you have complex animations with noticeable lag, think about giving `PureComponent` a try!
+
+### 2. `will-change:transform`
+
+```css
+.image {
+  will-change:transform;
+}
+```
+
+This [somewhat mysterious CSS property](https://dev.opera.com/articles/css-will-change-property/) tells the browser to anticipate changes to an element. It should be used with caution, because it can increase browser resource usage. If you are animating images (`svg`, `jpg`, etc), I would recommend trying it out and seeing if it increases the performance of the animation. In my tests, when animating large images, `will-change:transform` increased animation frame rate considerably.

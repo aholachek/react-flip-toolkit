@@ -1,107 +1,107 @@
 @import url("https://fonts.googleapis.com/css?family=Poppins:200,400,700");
 .photoGridExample {
-    font-family: Poppins;
-    color: black;
+  font-family: Poppins;
+  color: black;
 }
 
 .photoGrid {
-    display: grid;
-    grid-gap: 3rem;
-    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-    grid-auto-rows: calc(100vh/2 - 6rem);
-    justify-items: center;
-    margin: 3rem;
+  display: grid;
+  grid-gap: 3rem;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  grid-auto-rows: calc(100vh / 2 - 6rem);
+  justify-items: center;
+  margin: 3rem;
 }
 
 .photoGridTitle {
-    font-size: 1rem;
-    position: absolute;
-    left: 33%;
-    margin-top: 0;
+  font-size: 1rem;
+  position: absolute;
+  left: 33%;
+  margin-top: 0;
 }
 
 .photoGridSquare {
-    cursor: pointer;
-    width: 100%;
-    height: 100%;
-    position: relative;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
 
 .photoGridShader {
-    background-image: linear-gradient(hsla(0, 0%, 100%, 0.3), white);
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    right: 0;
-    top: 0;
-    opacity: 1;
-    z-index: 1;
+  background-image: linear-gradient(hsla(0, 0%, 100%, 0.3), white);
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  right: 0;
+  top: 0;
+  opacity: 1;
+  z-index: 1;
 }
 
 .photoGridImg {
-    width: 100%;
-    height: 90%;
-    object-fit: cover;
-    position: relative;
-    will-change: transform;
+  width: 100%;
+  height: 90%;
+  object-fit: cover;
+  position: relative;
+  will-change: transform;
 }
 
 .photoGridSquareExpanded {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 2;
-    cursor: pointer;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  cursor: pointer;
 }
 
 .photoGridSquareExpanded .photoGridImg {
-    position: absolute;
-    height: 100%;
-    will-change: transform;
+  position: absolute;
+  height: 100%;
+  will-change: transform;
 }
 
 .photoGridContentContainer {
-    width: 830px;
-    margin: auto;
-    position: absolute;
-    top: 8vh;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 1.6rem;
-    line-height: 1.6;
-    z-index: 4;
+  width: 830px;
+  margin: auto;
+  position: absolute;
+  top: 8vh;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.6rem;
+  line-height: 1.6;
+  z-index: 4;
 }
 
 .photoHeading {
-    position: relative;
-    z-index: 2;
-    font-size: 1.5rem;
-    margin: 1rem 0;
+  position: relative;
+  z-index: 2;
+  font-size: 1.5rem;
+  margin: 1rem 0;
 }
 
 .photoHeadingFocused {
-    font-size: 3rem;
-    margin: 1rem 0;
+  font-size: 3rem;
+  margin: 1rem 0;
 }
 
 .photoGridShaderHidden {
-    opacity: 0;
+  opacity: 0;
 }
 
 .photoGridExample [data-fade-in] {
-    opacity: 0;
+  opacity: 0;
 }
 
 .photoGridLead {
-    font-size: 2rem;
-    font-weight: 200;
-    margin-bottom: 2rem;
+  font-size: 2rem;
+  font-weight: 200;
+  margin-bottom: 2rem;
 }
 
 .photoGridFocused {
-    position: absolute;
-    top: 0;
-    width: 100%;
+  position: absolute;
+  top: 0;
+  width: 100%;
 }

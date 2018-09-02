@@ -45,7 +45,6 @@ export interface FlipperProps {
   element?: string
   className?: string
   portalKey?: string
-  jitterFix?: boolean
 }
 
 export class Flipper extends React.Component<FlipperProps, any> {

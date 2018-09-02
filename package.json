@@ -1,6 +1,6 @@
 {
   "name": "react-flip-toolkit",
-  "version": "4.0.2",
+  "version": "4.0.3-beta1",
   "description": "Configurable FLIP animation helpers for React",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -13,14 +13,14 @@
   "scripts": {
     "build": "nwb build-react-component; cp src/index.d.ts lib; cp src/index.d.ts es",
     "clean": "nwb clean-module && nwb clean-demo",
-    "deploy-demo": "yarn run build; cp demo/dist/index.html demo/dist/200.html; surge demo/dist --domain literate-fly.surge.sh",
+    "deploy-demo": "npm run build; cp demo/dist/index.html demo/dist/200.html; surge demo/dist --domain literate-fly.surge.sh",
     "start": "nwb serve-react-demo",
     "test": "jest",
     "lint": "eslint src *.js",
     "test:dom": "parcel mocha/testrunner.html",
-    "test:all": "jest; yarn run test:dom",
+    "test:all": "jest; npm run test:dom",
     "preversion": "npm test",
-    "version": "yarn run build"
+    "version": "npm run build"
   },
   "repository": {
     "type": "git",

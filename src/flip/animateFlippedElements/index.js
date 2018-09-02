@@ -22,14 +22,7 @@ export const convertMatrix3dArrayTo2dArray = matrix => [
 ]
 
 export const convertMatrix2dArrayToString = matrix =>
-  `matrix(${[
-    matrix[0],
-    matrix[1],
-    matrix[2],
-    matrix[3],
-    matrix[4],
-    matrix[5]
-  ].join(", ")})`
+  `matrix(${matrix.join(", ")})`
 
 export const invertTransformsForChildren = ({
   invertedChildren,
@@ -40,7 +33,6 @@ export const invertTransformsForChildren = ({
     if (!body.contains(child)) {
       return
     }
-
     const scaleX = matrix[0]
     const scaleY = matrix[3]
     const translateX = matrix[4]
@@ -151,7 +143,6 @@ const animateFlippedElements = ({
   applyTransformOrigin,
   spring,
   getElement,
-  jitterFix,
   debug
 }) => {
   const body = document.querySelector("body")
@@ -172,7 +163,7 @@ const animateFlippedElements = ({
       const currentRect = newFlipChildrenPositions[id].rect
       const prevOpacity = cachedFlipChildrenPositions[id].opacity
       const currentOpacity = newFlipChildrenPositions[id].opacity
-      // don't animate invisible elements
+      // don't animate elements outside of the user's viewport
       if (!rectInViewport(prevRect) && !rectInViewport(currentRect)) {
         return
       }
@@ -256,12 +247,6 @@ const animateFlippedElements = ({
         toVals.opacity = currentOpacity
       }
 
-      if (flipConfig.transformOrigin) {
-        element.style.transformOrigin = flipConfig.transformOrigin
-      } else if (applyTransformOrigin) {
-        element.style.transformOrigin = "0 0"
-      }
-
       // we're going to pass around the children in this weird [child, childData]
       // structure because we only want to parse the children's config data 1x
       const invertedChildren = getInvertedChildren(element, id)
@@ -273,14 +258,6 @@ const animateFlippedElements = ({
             flipEndId
           )
         )
-
-      invertedChildren.forEach(([child, childFlipConfig]) => {
-        if (childFlipConfig.transformOrigin) {
-          child.style.transformOrigin = childFlipConfig.transformOrigin
-        } else if (applyTransformOrigin) {
-          child.style.transformOrigin = "0 0"
-        }
-      })
 
       fromVals.matrix = transformsArray.reduce(Rematrix.multiply)
 
@@ -331,18 +308,9 @@ const animateFlippedElements = ({
 
         const vals = {}
 
-        /**
-         * the currentValue !== 1 thing is stupid but seems necessary for now.
-         * In chrome, once you transition to a totally 0 transform (matrix(1, 0, 0, 1, 0, 1))
-         * you get a 1px jump for some reason
-         * I've tried transform 3d, will-change, translateZ hacks and none of them make a difference
-         * so we're going to stop on the penultimate update instead
-         */
-        if (!(currentValue === 1 && jitterFix)) {
-          vals.matrix = fromVals.matrix.map((fromVal, index) =>
-            tweenProp(fromVal, toVals.matrix[index], currentValue)
-          )
-        }
+        vals.matrix = fromVals.matrix.map((fromVal, index) =>
+          tweenProp(fromVal, toVals.matrix[index], currentValue)
+        )
 
         if (animateOpacity) {
           vals.opacity = tweenProp(
@@ -359,6 +327,20 @@ const animateFlippedElements = ({
         applyStyles({
           matrix: fromVals.matrix,
           opacity: animateOpacity && fromVals.opacity
+        })
+        // and batch any other style updates if necessary
+        if (flipConfig.transformOrigin) {
+          element.style.transformOrigin = flipConfig.transformOrigin
+        } else if (applyTransformOrigin) {
+          element.style.transformOrigin = "0 0"
+        }
+
+        invertedChildren.forEach(([child, childFlipConfig]) => {
+          if (childFlipConfig.transformOrigin) {
+            child.style.transformOrigin = childFlipConfig.transformOrigin
+          } else if (applyTransformOrigin) {
+            child.style.transformOrigin = "0 0"
+          }
         })
 
         // return a function that can be called to initialize the actual tweening
