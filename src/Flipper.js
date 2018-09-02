@@ -8,15 +8,14 @@ export const PortalContext = createContext("portal")
 
 class Flipper extends Component {
   static propTypes = {
-    flipKey: PropTypes.any.isRequired,
+    flipKey: PropTypes.any,
     children: PropTypes.node.isRequired,
     spring: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     applyTransformOrigin: PropTypes.bool,
     debug: PropTypes.bool,
     element: PropTypes.string,
     className: PropTypes.string,
-    portalKey: PropTypes.string,
-    jitterFix: PropTypes.bool
+    portalKey: PropTypes.string
   }
 
   static defaultProps = {
@@ -52,8 +51,7 @@ class Flipper extends Component {
         applyTransformOrigin: this.props.applyTransformOrigin,
         spring: this.props.spring,
         debug: this.props.debug,
-        portalKey: this.props.portalKey,
-        jitterFix: this.props.jitterFix
+        portalKey: this.props.portalKey
       })
     }
   }
