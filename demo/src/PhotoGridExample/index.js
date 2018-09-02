@@ -65,6 +65,7 @@ class PhotoGrid extends Component {
                         flipId={`heading-${i}`}
                         onStart={this.applyZIndexHeader}
                         onComplete={this.removeZIndex}
+                        translate
                       >
                         <h2 className="photoHeading">{data[i].title}</h2>
                       </Flipped>{" "}
