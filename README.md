@@ -41,7 +41,7 @@
 
 <p>
 <h4>Image Transitions</h4>
-<a href="https://literate-fly.surge.sh/photos">
+<a href="https://react-flip-toolkit-demos.surge.sh/photos">
   <img src="./example-assets/photogrid.gif" width='600px' alt='an animation showing click to expand a photo' />
 </a>
 </p>
@@ -60,12 +60,12 @@
 </a>
 </p>
 
-- [Updating list (`react-flip-move` example clone)](https://literate-fly.surge.sh/flip-move)
+- [Updating list (`react-flip-move` example clone)](https://react-flip-toolkit-demos.surge.sh/flip-move)
 - [Simplest possible example](https://codepen.io/aholachek/pen/oyKJgL)
-- [Guitar shop](https://literate-fly.surge.sh/guitar)
-- [Overly complex, nested cards example](https://literate-fly.surge.sh/cards)
+- [Guitar shop](https://react-flip-toolkit-demos.surge.sh/guitar)
+- [Overly complex, nested cards example](https://react-flip-toolkit-demos.surge.sh/cards)
 - [React-flip-toolkit logo](https://codepen.io/aholachek/pen/ERRpEj)
-- [Using Portals](https://literate-fly.surge.sh/portal)
+- [Using Portals](https://react-flip-toolkit-demos.surge.sh/portal)
 - [Spring options explorer](https://codepen.io/aholachek/full/bKmZbV/)
 
 <p style="margin-top:3rem">
