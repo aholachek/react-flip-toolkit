@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import { Flipper, Flipped } from "../../../src"
-import anime from "animejs"
+import Card from "./Card"
 import "./index.css"
 
 const data = [
@@ -18,35 +18,6 @@ const data = [
   { id: 6, title: "In the Shape of an L on her Forehead" },
   { id: 7, title: "Well the years start coming" }
 ]
-
-const onElementAppear = (el, index) => {
-  anime({
-    targets: el,
-    opacity: [0, 1],
-    duration: 400,
-    delay: index * 50,
-    easing: "easeOutSine"
-  })
-}
-
-const onExit = type => (el, index, removeElement) => {
-  anime({
-    targets: el,
-    scaleY: type === "list" ? 0 : 1,
-    scaleX: type === "grid" ? 0 : 1,
-    duration: 200,
-    complete: removeElement,
-    easing: "easeOutSine"
-  }).pause
-
-  return () => {
-    el.style.opacity = ""
-    removeElement()
-  }
-}
-
-const onGridExit = onExit("grid")
-const onListExit = onExit("list")
 
 class ListExample extends Component {
   state = {
@@ -68,7 +39,6 @@ class ListExample extends Component {
             this.state.filteredIds
           )}`}
           spring={this.state.spring}
-          jitterFix
         >
           <div className="fm-flex-container">
             <fieldset>
@@ -204,50 +174,15 @@ class ListExample extends Component {
                         return b.id - a.id
                       }
                     })
-                    .map(({ title, id }, i) => {
-                      const flipId = `item-${id}`
-                      return (
-                        <Flipped
-                          flipId={flipId}
-                          onAppear={onElementAppear}
-                          onExit={
-                            this.state.type === "grid" ? onGridExit : onListExit
-                          }
-                          key={flipId}
-                          stagger={this.state.stagger}
-                        >
-                          <li className="fm-item">
-                            <Flipped inverseFlipId={flipId}>
-                              <div>
-                                <Flipped flipId={`${flipId}-content`}>
-                                  <div>
-                                    <h3>{title}</h3>
-                                    <p>{title}</p>
-                                  </div>
-                                </Flipped>
-
-                                <Flipped flipId={`${flipId}-button`}>
-                                  <button
-                                    className="fm-remove"
-                                    onClick={() => {
-                                      this.setState(prevState => {
-                                        return {
-                                          filteredIds: prevState.filteredIds.concat(
-                                            id
-                                          )
-                                        }
-                                      })
-                                    }}
-                                  >
-                                    &times;
-                                  </button>
-                                </Flipped>
-                              </div>
-                            </Flipped>
-                          </li>
-                        </Flipped>
-                      )
-                    })}
+                    .map(({ title, id }) => (
+                      <Card
+                        id={id}
+                        title={title}
+                        stagger={this.state.stagger}
+                        type={this.state.type}
+                        // key={id}
+                      />
+                    ))}
                 </ul>
               </Flipped>
             </div>

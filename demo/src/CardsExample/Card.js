@@ -2,7 +2,7 @@ import React, { PureComponent } from "react"
 import { Flipped } from "../../../src"
 import anime from "animejs"
 
-class UserGrid extends PureComponent {
+class Card extends PureComponent {
   hideElements = (el, startId) => {
     if (startId !== "focusedUser") return
     const elements = [].slice.apply(el.querySelectorAll("*[data-fade-in]"))
@@ -23,6 +23,7 @@ class UserGrid extends PureComponent {
   }
   render() {
     const { parentFlipId, d, i, setFocusedIndex } = this.props
+    console.log("re-rendering")
     return (
       <li key={parentFlipId}>
         <Flipped
@@ -76,4 +77,4 @@ class UserGrid extends PureComponent {
   }
 }
 
-export default UserGrid
+export default Card
