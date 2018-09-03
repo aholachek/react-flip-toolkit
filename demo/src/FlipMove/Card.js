@@ -33,8 +33,7 @@ const onListExit = onExit("list")
 
 class Card extends PureComponent {
   render() {
-    console.log("card rendering", this.props)
-    const { id, title, type, stagger } = this.props
+    const { id, title, type, stagger, addToFilteredIds } = this.props
     const flipId = `item-${id}`
     return (
       <Flipped
@@ -47,7 +46,7 @@ class Card extends PureComponent {
         <li className="fm-item">
           <Flipped inverseFlipId={flipId}>
             <div>
-              <Flipped flipId={`${flipId}-content`}>
+              <Flipped flipId={`${flipId}-content`} translate>
                 <div>
                   <h3>{title}</h3>
                   <p>{title}</p>
@@ -57,13 +56,7 @@ class Card extends PureComponent {
               <Flipped flipId={`${flipId}-button`}>
                 <button
                   className="fm-remove"
-                  onClick={() => {
-                    this.setState(prevState => {
-                      return {
-                        filteredIds: prevState.filteredIds.concat(id)
-                      }
-                    })
-                  }}
+                  onClick={() => addToFilteredIds(id)}
                 >
                   &times;
                 </button>

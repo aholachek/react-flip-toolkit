@@ -28,6 +28,14 @@ class ListExample extends Component {
     spring: "noWobble"
   }
 
+  addToFilteredIds = id => {
+    this.setState(prevState => {
+      return {
+        filteredIds: prevState.filteredIds.concat(id)
+      }
+    })
+  }
+
   render() {
     return (
       <div className="fm-example">
@@ -180,7 +188,8 @@ class ListExample extends Component {
                         title={title}
                         stagger={this.state.stagger}
                         type={this.state.type}
-                        // key={id}
+                        key={id}
+                        addToFilteredIds={this.addToFilteredIds}
                       />
                     ))}
                 </ul>
