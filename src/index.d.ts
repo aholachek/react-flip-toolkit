@@ -10,7 +10,7 @@ export type SpringConfig = "noWobble" | "gentle" | "wobbly" | "stiff" | Spring
 
 export type FlippedComponentIdFilter = string | any[]
 
-export interface FlippedWithContextProps {
+export interface FlippedProps {
   children: React.ReactNode
   inverseFlipId?: string
   flipId?: string
@@ -34,7 +34,7 @@ export interface FlippedWithContextProps {
   portalKey?: string
 }
 
-export const FlippedWithContext: React.SFC<FlippedWithContextProps>
+export const Flipped: React.ComponentType<FlippedProps>
 
 export interface FlipperProps {
   flipKey: any
@@ -47,6 +47,5 @@ export interface FlipperProps {
   portalKey?: string
 }
 
-export class Flipper extends React.Component<FlipperProps, any> {
-  render(): JSX.Element
-}
+export const Flipper: React.ComponentType<FlipperProps>
+
