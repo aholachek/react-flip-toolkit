@@ -1,12 +1,12 @@
-<a href="https://codepen.io/aholachek/pen/ERRpEj">
-<img src="./example-assets/rft-logo.gif" width='550px' alt='react-flip-toolkit animated logo' />
-</a>
-
-# react-flip-toolkit
+<p align="center">
+  <a href="https://codepen.io/aholachek/pen/ERRpEj">
+  <img src="./example-assets/rft-logo.gif" width='600px' alt='react-flip-toolkit animated logo' />
+  </a>
+</p>
 
 [![Build Status](https://travis-ci.com/aholachek/react-flip-toolkit.svg?branch=master)](https://travis-ci.com/aholachek/react-flip-toolkit)
 
-## Comparison with other React FLIP libraries
+**Comparison with other React FLIP libraries**
 
 | Feature                                        | [`react-flip-move`](https://github.com/joshwcomeau/react-flip-move) | [`react-overdrive`](https://github.com/berzniz/react-overdrive) | `react-flip-toolkit`                                |
 | ---------------------------------------------- | :-----------------------------------------------------------------: | :-------------------------------------------------------------: | :-------------------------------------------------: |
@@ -21,9 +21,7 @@
 
 ## Table of Contents
 - [Demos](#demos)
-- [Quick start](#quick-start)
-  - [Simplest example: tweening a single element](#simplest-example-tweening-a-single-element)
-  - [More useful: tweening different elements](#more-useful-tweening-different-elements)
+- [**Quick start**](#quick-start)
 - [The Components](#the-components)
   - [1. `Flipper`](#1-flipper)
     - [Props](#props)
@@ -60,19 +58,20 @@
 </a>
 </p>
 
+<p>
+<h4>Spring Options Explorer</h4>
+<a href="https://codepen.io/aholachek/full/bKmZbV/">
+  <img src="./example-assets/spring-options.gif" width='600px' alt='spring easing explorer' />
+</a>
+</p>
+
 - [Updating list (`react-flip-move` example clone)](https://react-flip-toolkit-demos.surge.sh/flip-move)
 - [Simplest possible example](https://codepen.io/aholachek/pen/oyKJgL)
 - [Guitar shop](https://react-flip-toolkit-demos.surge.sh/guitar)
 - [Overly complex, nested cards example](https://react-flip-toolkit-demos.surge.sh/cards)
 - [React-flip-toolkit logo](https://codepen.io/aholachek/pen/ERRpEj)
 - [Using Portals](https://react-flip-toolkit-demos.surge.sh/portal)
-- [Spring options explorer](https://codepen.io/aholachek/full/bKmZbV/)
 
-<p style="margin-top:3rem">
-<a href="https://codepen.io/aholachek/full/bKmZbV/">
-  <img src="./example-assets/spring-options.gif" width='600px' alt='spring easing explorer' />
-</a>
-</p>
 
 ## Quick start
 
@@ -116,7 +115,7 @@ class AnimatedSquare extends Component {
 
 ### More useful: tweening different elements
 
-The power of FLIP lies in smoothly tweening two completely separate elements to appear as if they are one:
+The FLIP technique allows you to smoothly tween two completely separate elements to appear as if they are one:
 
 ```jsx
 import React, { Component } from React;
