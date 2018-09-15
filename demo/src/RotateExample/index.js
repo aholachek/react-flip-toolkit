@@ -25,6 +25,17 @@ class RotateExample extends Component {
               }
             />
           </Flipped>
+          <Flipped flipId={color}>
+            <div
+              style={{ backgroundColor: "blue", width: "50px", height: "50px" }}
+            />
+          </Flipped>
+
+          <Flipped flipId={color}>
+            <div
+              style={{ backgroundColor: "blue", width: "50px", height: "50px" }}
+            />
+          </Flipped>
         </Flipper>
       </div>
     )

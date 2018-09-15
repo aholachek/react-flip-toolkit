@@ -2,7 +2,12 @@ import * as Rematrix from "rematrix"
 import assign from "object-assign"
 import springUpdate from "./spring"
 import { getSpringConfig } from "../../springSettings"
-import { toArray, isFunction, isNumber } from "../utilities"
+import {
+  toArray,
+  isFunction,
+  isNumber,
+  getDuplicateValsAsStrings
+} from "../utilities"
 import * as constants from "../../constants"
 
 // 3d transforms were causing weird issues in chrome,
@@ -150,7 +155,16 @@ const animateFlippedElements = ({
   if (debug) {
     // eslint-disable-next-line no-console
     console.error(
-      'The "debug" prop is set to true. All FLIP animations will return at the beginning of the transition.'
+      '[react-flip-toolkit]\nThe "debug" prop is set to true. All FLIP animations will return at the beginning of the transition.'
+    )
+  }
+
+  const duplicateFlipIds = getDuplicateValsAsStrings(flippedIds)
+  if (duplicateFlipIds.length) {
+    console.error(
+      `[react-flip-toolkit]\nThere are currently multiple elements with the same flipId on the page.\nThe animation will only work if each Flipped component has a unique flipId.\nDuplicate flipId${
+        duplicateFlipIds.length > 1 ? "s" : ""
+      }: ${duplicateFlipIds.join("\n")}`
     )
   }
 
