@@ -161,6 +161,7 @@ const animateFlippedElements = ({
 
   const duplicateFlipIds = getDuplicateValsAsStrings(flippedIds)
   if (duplicateFlipIds.length) {
+    // eslint-disable-next-line no-console
     console.error(
       `[react-flip-toolkit]\nThere are currently multiple elements with the same flipId on the page.\nThe animation will only work if each Flipped component has a unique flipId.\nDuplicate flipId${
         duplicateFlipIds.length > 1 ? "s" : ""
