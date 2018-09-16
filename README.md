@@ -59,6 +59,13 @@
 </p>
 
 <p>
+<h4>List Transition</h4>
+<a href="https://codepen.io/aholachek/pen/jvvarq?editors=0110">
+  <img src="./example-assets/list-transition.gif" height="300px" alt='animation for the selected state of a list item' />
+</a>
+</p>
+
+<p>
 <h4>Spring Options Explorer</h4>
 <a href="https://codepen.io/aholachek/full/bKmZbV/">
   <img src="./example-assets/spring-options.gif" width='600px' alt='spring easing explorer' />
