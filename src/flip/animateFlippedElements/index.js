@@ -64,17 +64,14 @@ export const invertTransformsForChildren = ({
 export const createApplyStylesFunc = ({ element, invertedChildren, body }) => ({
   matrix,
   opacity,
-  forceMinHeight,
-  forceMinWidth
+  forceMinVals
 }) => {
   if (isNumber(opacity)) {
     element.style.opacity = opacity
   }
 
-  if (forceMinHeight) {
+  if (forceMinVals) {
     element.style.minHeight = "1px"
-  }
-  if (forceMinWidth) {
     element.style.minWidth = "1px"
   }
 
@@ -178,6 +175,8 @@ const animateFlippedElements = ({
       const currentRect = newFlipChildrenPositions[id].rect
       const prevOpacity = cachedFlipChildrenPositions[id].opacity
       const currentOpacity = newFlipChildrenPositions[id].opacity
+      const needsForcedMinVals = currentRect.width < 1 || currentRect.height < 1
+
       // don't animate elements outside of the user's viewport
       if (!rectInViewport(prevRect) && !rectInViewport(currentRect)) {
         return
@@ -297,6 +296,10 @@ const animateFlippedElements = ({
       // when it is called, the animation has already been cancelled
       const onAnimationEnd = () => {
         delete inProgressAnimations[id]
+        if (needsForcedMinVals && element) {
+          element.style.minHeight = ""
+          element.style.minWidth = ""
+        }
         isFunction(onComplete) && onComplete()
       }
 
@@ -341,7 +344,8 @@ const animateFlippedElements = ({
         // before animating, immediately apply FLIP styles to prevent flicker
         applyStyles({
           matrix: fromVals.matrix,
-          opacity: animateOpacity && fromVals.opacity
+          opacity: animateOpacity && fromVals.opacity,
+          forceMinVals: needsForcedMinVals
         })
         // and batch any other style updates if necessary
         if (flipConfig.transformOrigin) {

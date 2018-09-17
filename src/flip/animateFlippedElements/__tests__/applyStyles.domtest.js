@@ -157,8 +157,7 @@ describe("createApplyStylesFunc", () => {
 
     applyStyles({
       matrix: [0.2, 0, 0, 0.5, -300, 250],
-      forceMinHeight: true,
-      forceMinWidth: true
+      forceMinVals: true
     })
 
     expect(element.style.minWidth).to.equal("1px")
