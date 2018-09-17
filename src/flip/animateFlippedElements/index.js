@@ -191,6 +191,13 @@ const animateFlippedElements = ({
       ) {
         return
       }
+      // it's never going to be visible, so dont animate it
+      if (
+        (prevRect.width === 0 && currentRect.width === 0) ||
+        (prevRect.height === 0 && currentRect.height === 0)
+      ) {
+        return
+      }
 
       const element = getElement(id)
 
