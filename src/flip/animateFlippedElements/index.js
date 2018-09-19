@@ -1,13 +1,13 @@
 import * as Rematrix from "rematrix"
-import assign from "object-assign"
 import springUpdate from "./spring"
 import { getSpringConfig } from "../../springSettings"
 import {
   toArray,
   isFunction,
   isNumber,
-  getDuplicateValsAsStrings
-} from "../utilities"
+  getDuplicateValsAsStrings,
+  assign
+} from "../../utilities"
 import * as constants from "../../constants"
 
 // 3d transforms were causing weird issues in chrome,
@@ -145,7 +145,8 @@ const animateFlippedElements = ({
   applyTransformOrigin,
   spring,
   getElement,
-  debug
+  debug,
+  staggerConfig
 }) => {
   const body = document.querySelector("body")
 
@@ -212,11 +213,8 @@ const animateFlippedElements = ({
       })
       let stagger = flipConfig.stagger === true ? "all" : flipConfig.stagger
 
-      const childIds = []
+      const childIds = stagger ? getFlippedChildrenIds(element) : []
 
-      if (stagger) {
-        [].push.apply(childIds, getFlippedChildrenIds(element))
-      }
       if (debug) stagger = false
 
       const flipStartId = cachedFlipChildrenPositions[id].flipComponentId
@@ -470,6 +468,7 @@ const animateFlippedElements = ({
 
   Object.keys(staggeredFunctions).forEach(stagger => {
     const funcs = staggeredFunctions[stagger]
+    if (staggerConfig && staggerConfig[stagger] === "reverse") funcs.reverse()
     // call with reference to the following function
     const startFunc = funcs
       .reverse()

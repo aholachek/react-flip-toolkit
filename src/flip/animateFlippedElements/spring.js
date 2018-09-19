@@ -5,20 +5,16 @@ export default function springUpdate({
   onAnimationEnd,
   springConfig = {}
 }) {
-  // avoid potential passing in of variables that will cause a mistake
-  // by destructuring to pass in only allowed vars
-  const { stiffness, damping, overshootClamping } = springConfig
+  // pass in only allowed vars
   const spring = new Spring({
     mass: 1,
-    stiffness,
-    damping,
-    overshootClamping
+    stiffness: springConfig.stiffness,
+    damping: springConfig.damping,
+    overshootClamping: springConfig.overshootClamping
   })
-
-  const stop = () => spring.stop()
-  const onUpdate = getOnUpdateFunc(stop)
-
-  spring.onUpdate(onUpdate)
+  
+  const stop = spring.stop.bind(spring)
+  spring.onUpdate(getOnUpdateFunc(stop))
   spring.onStop(onAnimationEnd)
 
   spring.start()

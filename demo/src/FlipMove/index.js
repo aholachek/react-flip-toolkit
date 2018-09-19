@@ -24,7 +24,7 @@ class ListExample extends Component {
     type: "list",
     sort: "asc",
     filteredIds: [],
-    stagger: true,
+    stagger: "forward",
     spring: "noWobble"
   }
 
@@ -45,8 +45,9 @@ class ListExample extends Component {
         <Flipper
           flipKey={`${this.state.type}-${this.state.sort}-${JSON.stringify(
             this.state.filteredIds
-          )}`}
+          )}-${JSON.stringify(this.state.stagger)}`}
           spring={this.state.spring}
+          staggerConfig={{ all: this.state.stagger }}
         >
           <div className="fm-flex-container">
             <fieldset>
@@ -116,20 +117,24 @@ class ListExample extends Component {
             <fieldset>
               <legend>Stagger</legend>
               <div className="fm-flex-container">
-                <label>
-                  <input
-                    type="checkbox"
-                    name="stagger"
-                    checked={this.state.stagger}
-                    onClick={() => {
-                      this.setState({
-                        stagger: !this.state.stagger,
-                        sort: this.state.sort === "asc" ? "desc" : "asc"
-                      })
-                    }}
-                  />
-                  stagger
-                </label>
+                {["forward", "reverse", "none"].map(type => {
+                  return (
+                    <label>
+                      <input
+                        type="radio"
+                        name="stagger"
+                        checked={this.state.stagger === type}
+                        onChange={() => {
+                          this.setState({
+                            stagger: type,
+                            sort: this.state.sort === "asc" ? "desc" : "asc"
+                          })
+                        }}
+                      />
+                      {type}
+                    </label>
+                  )
+                })}
               </div>
             </fieldset>
             <fieldset>
@@ -139,7 +144,7 @@ class ListExample extends Component {
                   <label>
                     <input
                       type="radio"
-                      name="stagger"
+                      name="spring"
                       checked={this.state.spring === type}
                       onChange={() => {
                         this.setState({
@@ -186,7 +191,9 @@ class ListExample extends Component {
                       <Card
                         id={id}
                         title={title}
-                        stagger={this.state.stagger}
+                        stagger={["forward", "reverse"].includes(
+                          this.state.stagger
+                        )}
                         type={this.state.type}
                         key={id}
                         addToFilteredIds={this.addToFilteredIds}

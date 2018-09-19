@@ -19,6 +19,7 @@ export interface FlippedProps {
   scale?: boolean
   transformOrigin?: string
   stagger?: string | boolean
+  staggerConfig?: object
   spring?: SpringConfig
   onStart?: (element: HTMLElement) => any
   onComplete?: (element: HTMLElement) => any
@@ -48,4 +49,3 @@ export interface FlipperProps {
 }
 
 export const Flipper: React.ComponentType<FlipperProps>
-

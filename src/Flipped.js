@@ -2,14 +2,14 @@ import React, { Children, cloneElement, PureComponent } from "react"
 import PropTypes from "prop-types"
 import { FlipContext, PortalContext } from "./Flipper"
 import * as constants from "./constants"
-import assign from "object-assign"
+import { assign } from "./utilities"
 
 const customPropCheck = function(props, propName) {
   if (props.flipId && props.inverseFlipId) {
     return new Error(
       'Please only provide one of the two: "FlipId" or "inverseFlipID"'
     )
-  } else if (!props.flipId && !props.inverseFlipId) {
+  } else if (props.flipId === undefined && props.inverseFlipId === undefined) {
     return new Error(
       `Must provide either a "FlipId" or an "InverseFlipId" prop`
     )
@@ -91,12 +91,7 @@ class FlippedWithContext extends PureComponent {
       onExit,
       ...rest
     } = this.props
-    if (rest.inverseFlipId)
-      return (
-        <Flipped {...rest}>
-          {children}
-        </Flipped>
-      )
+    if (rest.inverseFlipId) return <Flipped {...rest}>{children}</Flipped>
     return (
       <PortalContext.Consumer>
         {portalKey => (

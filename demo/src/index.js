@@ -11,6 +11,7 @@ import TransformExample from "./TransformExample"
 import PortalExample from "./PortalExample"
 import TransformFromZeroExample from "./TransformFromZeroExample"
 import RotateExample from "./RotateExample"
+import StaggeredList from "./StaggeredList"
 
 class Demo extends Component {
   render() {
@@ -26,6 +27,8 @@ class Demo extends Component {
     else if (window.location.pathname === "/transform-from-zero")
       return <TransformFromZeroExample />
     else if (window.location.pathname === "/rotate") return <RotateExample />
+    else if (window.location.pathname === "/staggered-list")
+      return <StaggeredList />
     else
       return (
         <nav>

@@ -29,7 +29,6 @@
   },
   "bugs": "https://github.com/aholachek/react-flip-toolkit/issues",
   "dependencies": {
-    "object-assign": "^4.1.1",
     "prop-types": "^15.6.2",
     "rematrix": "^0.2.2",
     "wobble": "^1.5.0"
