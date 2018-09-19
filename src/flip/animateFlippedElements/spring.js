@@ -1,4 +1,4 @@
-import { Spring } from "wobble"
+import Spring from "rebound/src/Spring"
 
 export default function springUpdate({
   getOnUpdateFunc,
