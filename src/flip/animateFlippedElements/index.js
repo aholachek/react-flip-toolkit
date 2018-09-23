@@ -1,6 +1,5 @@
 import * as Rematrix from "rematrix"
-import StaggeredSpring from "./staggeredSpring"
-import createSynchronousSpring from "./synchronousSpring"
+import { createSpring, staggeredSprings } from "./spring"
 import { getSpringConfig } from "../../springSettings"
 import {
   toArray,
@@ -313,7 +312,7 @@ const animateFlippedElements = ({
       const getOnUpdateFunc = stop => {
         // in case we have to cancel
         inProgressAnimations[id] = {
-          stop: () => stop(),
+          stop,
           onComplete
         }
         return spring => {
@@ -388,7 +387,6 @@ const animateFlippedElements = ({
 
   // now, dealing with stagger which could be recursively scheduled
   // depending on the depth of the stagger tree
-
   const selectFlipChildIds = (base, selector) =>
     toArray(base.querySelectorAll(selector)).map(el => el.dataset.flipId)
 
@@ -424,6 +422,20 @@ const animateFlippedElements = ({
     )
   })
 
+  const initiateImmediateAnimations = immediate => {
+    if (!immediate) return
+    immediate.forEach(flipped => {
+      createSpring(flipped)
+      initiateImmediateAnimations(flipped.immediate)
+    })
+  }
+
+  const initiateStaggeredAnimations = staggered => {
+    Object.keys(staggered).forEach(staggerKey => {
+      staggeredSprings(staggered[staggerKey])
+    })
+  }
+
   //build a data struct to run the springs
   const d = {
     root: {
@@ -432,6 +444,7 @@ const animateFlippedElements = ({
     }
   }
 
+  // helper function to build the nested structure
   const appendChild = (node, flipId) => {
     const flipData = flipDict[flipId]
     // might have been filtered (e.g. because it was off screen)
@@ -444,25 +457,24 @@ const animateFlippedElements = ({
         : (node.staggered[flipData.stagger] = [flipDict[flipId]])
     } else node.immediate.push(flipDict[flipId])
 
+    // only when the spring is first activated, activate the child animations as well
+    // this enables nested stagger
+    flipData.onSpringActivate = () => {
+      debugger
+      initiateImmediateAnimations(flipData.immediate)
+      initiateStaggeredAnimations(flipData.staggered)
+    }
+
     flipData.childIds.forEach(childId => appendChild(flipDict[flipId], childId))
   }
 
+  // create the nested structure
   levelToChildren["0"].forEach(c => {
     appendChild(d.root, c)
   })
 
-  const initiateImmediateAnimations = immediate => {
-    if (!immediate) return
-    immediate.forEach(flipped => {
-      createSynchronousSpring(flipped)
-      initiateImmediateAnimations(flipped.immediate)
-    })
-  }
-
   initiateImmediateAnimations(d.root.immediate)
-
-  const flippedArray = d.root.immediate[0].staggered.all
-  const scheduler = new StaggeredSpring({ flippedArray })
+  initiateStaggeredAnimations(d.root.staggered)
 }
 
 export default animateFlippedElements

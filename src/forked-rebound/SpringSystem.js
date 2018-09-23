@@ -87,6 +87,7 @@ class SpringSystem {
    * @public
    */
   deregisterSpring(spring: Spring): void {
+    debugger
     removeFirst(this._activeSprings, spring)
     delete this._springRegistry[spring.getId()]
   }

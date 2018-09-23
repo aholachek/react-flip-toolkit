@@ -46,24 +46,14 @@ class Card extends PureComponent {
         <li className="fm-item">
           <Flipped inverseFlipId={flipId}>
             <div>
-              <div>
-                <Flipped
-                  flipId={`${flipId}-h3`}
-                  translate
-                  stagger="card-internal"
-                >
+              <Flipped flipId={`${flipId}-content`} translate>
+                <div>
                   <h3>{title}</h3>
-                </Flipped>
-                <Flipped
-                  flipId={`${flipId}-p`}
-                  translate
-                  stagger="card-internal"
-                >
                   <p>{title}</p>
-                </Flipped>
-              </div>
+                </div>
+              </Flipped>
 
-              <Flipped flipId={`${flipId}-button`} stagger="card-internal">
+              <Flipped flipId={`${flipId}-button`}>
                 <button
                   className="fm-remove"
                   onClick={() => addToFilteredIds(id)}

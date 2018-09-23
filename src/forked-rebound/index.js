@@ -10,5 +10,4 @@
  */
 
 export { default as SpringSystem } from "./SpringSystem"
-export { SimulationLooper } from "./Loopers"
 export { onFrame } from "./util"

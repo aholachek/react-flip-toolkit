@@ -68,6 +68,7 @@ class Spring {
    * @public
    */
   destroy(): void {
+    debugger
     this.listeners = []
     this._springSystem.deregisterSpring(this)
   }
@@ -291,6 +292,7 @@ class Spring {
   notifyPositionUpdated(notifyActivate: boolean, notifyAtRest: boolean): void {
     for (let i = 0, len = this.listeners.length; i < len; i++) {
       const listener = this.listeners[i]
+
       if (notifyActivate && listener.onSpringActivate) {
         listener.onSpringActivate(this)
       }
