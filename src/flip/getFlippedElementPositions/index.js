@@ -1,5 +1,4 @@
-import { toArray } from "../utilities"
-import assign from "object-assign"
+import { toArray, assign } from "../../utilities"
 import * as constants from "../../constants"
 
 const cancelInProgressAnimations = inProgressAnimations => {

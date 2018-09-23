@@ -14,3 +14,17 @@ export const getDuplicateValsAsStrings = arr => {
   }, {})
   return Object.keys(obj).filter(val => obj[val] > 1)
 }
+
+export const assign = (target, ...args) => {
+  args.forEach(arg => {
+    if (arg === null) return
+    // Skip over if undefined or null
+    for (var nextKey in arg) {
+      // Avoid bugs when hasOwnProperty is shadowed
+      if (Object.prototype.hasOwnProperty.call(arg, nextKey)) {
+        target[nextKey] = arg[nextKey]
+      }
+    }
+  })
+  return target
+}

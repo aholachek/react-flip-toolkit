@@ -194,6 +194,17 @@ class ListExample extends Component {
                     ))}
                 </ul>
               </Flipped>
+              <Flipped flipId="immediate-list-child">
+                <div
+                  style={{
+                    border: "1px solid",
+                    width: this.state.type === "grid" ? "100px" : "200px",
+                    height: "100px"
+                  }}
+                >
+                  hi there
+                </div>
+              </Flipped>
             </div>
           </Flipped>
         </Flipper>

@@ -1,9 +1,29 @@
 import sinon from "sinon"
 import * as Rematrix from "rematrix"
 import animateFlippedElements from "../index"
+import { getDirectFlippedChildrenIds } from "../index"
 
 const testEl = document.querySelector("#test")
 const getElement = id => testEl.querySelector(`[data-flip-id=${id}]`)
+
+describe("getDirectFlippedChildrenIds", () => {
+  testEl.innerHTML = ` <div>
+    <div data-flip-id="id-1" class="visible-block">
+      <div data-flip-id="id-2" class="visible-block">
+        <div data-flip-id="id-3" class="visible-block">
+          <div data-flip-id="id-4" class="visible-block"></div>
+        </div>
+      </div>
+    </div>
+    <div data-flip-id="id-1-second-child" class="visible-block"></div>
+  </div>
+`
+
+  // const directChildrenOne = getDirectFlippedChildrenIds(testEl)
+  // expect(directChildrenOne).to.deep.equal(["id-1", "id-1-second-child"])
+  const directChildrenTwo = getDirectFlippedChildrenIds(getElement("id-2"))
+  expect(directChildrenTwo).to.deep.equal(["id-3"])
+})
 
 describe("animateFlippedElements", () => {
   it("should preserve transforms in the final state of the element", done => {

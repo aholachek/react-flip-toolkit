@@ -1,5 +1,4 @@
 import React, { Component } from "react"
-import assign from "object-assign"
 import { Flipper } from "../../../src"
 import GuitarItem from "./GuitarItem"
 import SelectedGuitar from "./SelectedGuitar"
@@ -27,7 +26,8 @@ class GuitarExample extends Component {
               <span className="info">
                 <a href="https://tympanus.net/Development/ExpandingGridItemAnimation/">
                   Codrop's vanilla JS implementation
-                </a>&nbsp; rewritten in React with react-flip-toolkit
+                </a>
+                &nbsp; rewritten in React with react-flip-toolkit
               </span>
             </header>
           </div>

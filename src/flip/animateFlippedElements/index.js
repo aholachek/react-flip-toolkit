@@ -1,30 +1,20 @@
 import * as Rematrix from "rematrix"
-import assign from "object-assign"
-import springUpdate from "./spring"
+import StaggeredSpring from "./staggeredSpring"
+import createSynchronousSpring from "./synchronousSpring"
 import { getSpringConfig } from "../../springSettings"
 import {
   toArray,
   isFunction,
   isNumber,
   getDuplicateValsAsStrings
-} from "../utilities"
+} from "../../utilities"
 import * as constants from "../../constants"
 
 // 3d transforms were causing weird issues in chrome,
 // especially when opacity was also being tweened,
 // so convert to a 2d matrix
-export const convertMatrix3dArrayTo2dArray = matrix => [
-  // scale X
-  matrix[0],
-  matrix[1],
-  matrix[4],
-  // scale Y
-  matrix[5],
-  // translation X
-  matrix[12],
-  // translation Y
-  matrix[13]
-]
+export const convertMatrix3dArrayTo2dArray = matrix =>
+  [0, 1, 4, 5, 12, 13].map(index => matrix[index])
 
 export const convertMatrix2dArrayToString = matrix =>
   `matrix(${matrix.join(", ")})`
@@ -127,12 +117,6 @@ const getInvertedChildren = (element, id) =>
     element.querySelectorAll(`[${constants.DATA_INVERSE_FLIP_ID}="${id}"]`)
   )
 
-// for stagger
-const getFlippedChildrenIds = element =>
-  toArray(element.querySelectorAll(`[${constants.DATA_FLIP_ID} ]`)).map(
-    el => el.dataset.flipId
-  )
-
 export const tweenProp = (start, end, position) =>
   start + (end - start) * position
 
@@ -166,7 +150,7 @@ const animateFlippedElements = ({
     )
   }
 
-  let startFlipFunctions = flippedIds
+  const flipData = flippedIds
     // take all the measurements we need
     // do all the set up work
     // and return a startAnimation function
@@ -177,32 +161,22 @@ const animateFlippedElements = ({
       const currentOpacity = newFlipChildrenPositions[id].opacity
       const needsForcedMinVals = currentRect.width < 1 || currentRect.height < 1
 
-      // don't animate elements outside of the user's viewport
+      // don't initiateImmediateAnimations elements outside of the user's viewport
       if (!rectInViewport(prevRect) && !rectInViewport(currentRect)) {
-        return
+        return false
       }
-      // don't animate elements that didn't change
-      if (
-        prevRect.left === currentRect.left &&
-        prevRect.top === currentRect.top &&
-        prevRect.width === currentRect.width &&
-        prevRect.height === currentRect.height &&
-        prevOpacity === currentOpacity
-      ) {
-        return
-      }
-      // it's never going to be visible, so dont animate it
+      // it's never going to be visible, so dont initiateImmediateAnimations it
       if (
         (prevRect.width === 0 && currentRect.width === 0) ||
         (prevRect.height === 0 && currentRect.height === 0)
       ) {
-        return
+        return false
       }
 
       const element = getElement(id)
 
       // this might happen if we are rapidly adding & removing elements(?)
-      if (!element) return
+      if (!element) return false
 
       const flipConfig = JSON.parse(element.dataset.flipConfig)
 
@@ -210,14 +184,20 @@ const animateFlippedElements = ({
         flipperSpring: spring,
         flippedSpring: flipConfig.spring
       })
-      let stagger = flipConfig.stagger === true ? "all" : flipConfig.stagger
 
-      const childIds = []
+      const stagger = debug
+        ? false
+        : flipConfig.stagger === true
+          ? "all"
+          : flipConfig.stagger
 
-      if (stagger) {
-        [].push.apply(childIds, getFlippedChildrenIds(element))
+      const toReturn = {
+        element,
+        id,
+        stagger,
+        springConfig,
+        noOp: true
       }
-      if (debug) stagger = false
 
       const flipStartId = cachedFlipChildrenPositions[id].flipComponentId
       const flipEndId = flipConfig.componentId
@@ -229,7 +209,23 @@ const animateFlippedElements = ({
           flipEndId
         )
       )
-        return
+        // this element wont be animated, but its children might be
+        return toReturn
+
+      // don't initiateImmediateAnimations elements that didn't change
+      // but we might want to initiateImmediateAnimations children
+      if (
+        prevRect.left === currentRect.left &&
+        prevRect.top === currentRect.top &&
+        prevRect.width === currentRect.width &&
+        prevRect.height === currentRect.height &&
+        prevOpacity === currentOpacity
+      ) {
+        // this element wont be animated, but its children might be
+        return toReturn
+      }
+
+      toReturn.noOp = false
 
       const currentTransform = Rematrix.parse(
         newFlipChildrenPositions[id].transform
@@ -240,7 +236,7 @@ const animateFlippedElements = ({
       const fromVals = {}
       const transformsArray = [currentTransform]
 
-      // we're only going to animate the values that the child wants animated
+      // we're only going to initiateImmediateAnimations the values that the child wants animated
       if (flipConfig.translate) {
         transformsArray.push(
           Rematrix.translateX(prevRect.left - currentRect.left)
@@ -280,9 +276,10 @@ const animateFlippedElements = ({
           )
         )
 
-      fromVals.matrix = transformsArray.reduce(Rematrix.multiply)
+      fromVals.matrix = convertMatrix3dArrayTo2dArray(
+        transformsArray.reduce(Rematrix.multiply)
+      )
 
-      fromVals.matrix = convertMatrix3dArrayTo2dArray(fromVals.matrix)
       toVals.matrix = convertMatrix3dArrayTo2dArray(toVals.matrix)
 
       const applyStyles = createApplyStylesFunc({
@@ -313,42 +310,39 @@ const animateFlippedElements = ({
       const animateOpacity =
         isNumber(fromVals.opacity) && fromVals.opacity !== toVals.opacity
 
-      let updateNextFuncParams
-
-      const getOnUpdateFunc = nextFunc => stop => ({ currentValue }) => {
-        if (!body.contains(element)) {
-          stop()
-          return
+      const getOnUpdateFunc = stop => {
+        // in case we have to cancel
+        inProgressAnimations[id] = {
+          stop: () => stop(),
+          onComplete
         }
+        return spring => {
+          const currentValue = spring.getCurrentValue()
 
-        //stagger
-        if (nextFunc && !updateNextFuncParams && currentValue > 0.05) {
-          updateNextFuncParams = nextFunc()
-        }
+          if (!body.contains(element)) {
+            stop()
+            return
+          }
 
-        if (updateNextFuncParams) {
-          // TODO: make configurable?
-          updateNextFuncParams(Math.min(currentValue * 1.5, 1))
-        }
+          const vals = {}
 
-        const vals = {}
-
-        vals.matrix = fromVals.matrix.map((fromVal, index) =>
-          tweenProp(fromVal, toVals.matrix[index], currentValue)
-        )
-
-        if (animateOpacity) {
-          vals.opacity = tweenProp(
-            fromVals.opacity,
-            toVals.opacity,
-            currentValue
+          vals.matrix = fromVals.matrix.map((fromVal, index) =>
+            tweenProp(fromVal, toVals.matrix[index], currentValue)
           )
+
+          if (animateOpacity) {
+            vals.opacity = tweenProp(
+              fromVals.opacity,
+              toVals.opacity,
+              currentValue
+            )
+          }
+          applyStyles(vals)
         }
-        applyStyles(vals)
       }
 
-      const startAnimation = childFuncs => nextFunc => {
-        // before animating, immediately apply FLIP styles to prevent flicker
+      const onStart = () => {
+        // before animating, nodely apply FLIP styles to prevent flicker
         applyStyles({
           matrix: fromVals.matrix,
           opacity: animateOpacity && fromVals.opacity,
@@ -369,119 +363,106 @@ const animateFlippedElements = ({
           }
         })
 
-        // return a function that can be called to initialize the actual tweening
-        return () => {
-          let updateChildFuncParams = []
-          if (childFuncs) {
-            // this calls the children functions to start the tweens
-            // and returns the updateParams func
-            updateChildFuncParams = childFuncs.map(f => f())
-          }
-
-          if (debug) {
-            const round = n => Math.round(n * 100) / 100
-            const xAdjust = round(1 / fromVals.matrix[0])
-            const yAdjust = round(1 / fromVals.matrix[3])
-            const boxShadowLeft = `${xAdjust * 3}px 0 0 -${xAdjust}px #e2606b`
-            const boxShadowRight = `-${xAdjust * 3}px 0 0 -${xAdjust}px #e2606b`
-            const boxShadowTop = `0 ${yAdjust * 3}px 0 -${yAdjust}px #e2606b`
-            const boxShadowBottom = `0 -${yAdjust *
-              3}px 0 -${yAdjust}px #e2606b`
-
-            const boxShadow =
-              boxShadowLeft +
-              ", " +
-              boxShadowRight +
-              ", " +
-              boxShadowTop +
-              ", " +
-              boxShadowBottom
-
-            element.style.boxShadow = boxShadow
-            return
-          }
-
-          if (flipCallbacks[id] && flipCallbacks[id].onStart)
-            flipCallbacks[id].onStart(element, flipStartId)
-
-          const spring = springUpdate({
-            springConfig,
-            getOnUpdateFunc: getOnUpdateFunc(nextFunc),
-            onAnimationEnd
-          })
-
-          // in case we have to cancel
-          inProgressAnimations[id] = {
-            stop: () => spring.stop(),
-            onComplete
-          }
-          // for staggering
-          return toValue => {
-            spring.updateConfig({
-              toValue
-            })
-            updateChildFuncParams.forEach(updateFunc => updateFunc(toValue))
-          }
-        }
+        if (flipCallbacks[id] && flipCallbacks[id].onStart)
+          flipCallbacks[id].onStart(element, flipStartId)
       }
-      // childIds is only relevant for staggered elements
-      // we want to make sure children are staggered too
-      return { id, stagger, childIds, startAnimation }
+
+      return {
+        ...toReturn,
+        stagger,
+        springConfig,
+        getOnUpdateFunc,
+        onStart,
+        onAnimationEnd
+      }
     })
-    // some functions might return undefined
     .filter(x => x)
 
-  const allStaggeredChildrenIds = startFlipFunctions
-    .map(data => data.childIds)
-    .reduce((acc, curr) => acc.concat(curr), [])
+  // call this immediately to put items back in place
+  flipData.forEach(({ onStart }) => onStart && onStart())
 
-  const staggeredChildrenDict = allStaggeredChildrenIds.reduce((acc, curr) => {
-    return assign(acc, {
-      [curr]: startFlipFunctions.filter(data => data.id === curr)[0]
-    })
+  const flipDict = flipData.reduce((acc, curr) => {
+    acc[curr.id] = curr
+    return acc
   }, {})
 
-  // remove children of staggered flip element
-  startFlipFunctions = startFlipFunctions.filter(
-    data => allStaggeredChildrenIds.indexOf(data.id) === -1
-  )
+  // now, dealing with stagger which could be recursively scheduled
+  // depending on the depth of the stagger tree
 
-  // staggered funcs need to be grouped and provided a reference to the next func
-  const staggeredFunctions = startFlipFunctions
-    .filter(data => data.stagger)
-    .reduce((acc, curr) => {
-      const childFuncs = curr.childIds
-        .map(
-          id =>
-            // we don't need to preload with nextFunc or childFuncs because we currently don't allow
-            // nested stagger animations
-            // check that the function is actually there first
-            // because if the element is not in the current window, the object will not exist
-            staggeredChildrenDict[id] &&
-            staggeredChildrenDict[id].startAnimation()()
-        )
-        .filter(f => f)
-      const funcPreloadedWithChildrenFunctions = curr.startAnimation(childFuncs)
-      if (acc[curr.stagger])
-        acc[curr.stagger].push(funcPreloadedWithChildrenFunctions)
-      else acc[curr.stagger] = [funcPreloadedWithChildrenFunctions]
-      return acc
-    }, {})
+  const selectFlipChildIds = (base, selector) =>
+    toArray(base.querySelectorAll(selector)).map(el => el.dataset.flipId)
 
-  Object.keys(staggeredFunctions).forEach(stagger => {
-    const funcs = staggeredFunctions[stagger]
-    // call with reference to the following function
-    const startFunc = funcs
-      .reverse()
-      .reduce((prev, curr) => curr(prev), () => {})
-    startFunc()
+  // building this helps grab only immediate Flipped children later on
+  const levelToChildren = {}
+  const baseSelector = `[${constants.DATA_FLIP_ID}]`
+
+  const buildHierarchy = (selector, level, oldResult) => {
+    const newSelector = `${selector} ${baseSelector}`
+    const newResult = selectFlipChildIds(document, newSelector)
+
+    const oldLevelChildren = oldResult.filter(
+      id => newResult.indexOf(id) === -1
+    )
+    levelToChildren[level] = oldLevelChildren
+    oldLevelChildren.forEach(childId => {
+      if (flipDict[childId]) {
+        flipDict[childId].level = level
+      }
+    })
+
+    if (newResult.length !== 0)
+      buildHierarchy(newSelector, level + 1, newResult)
+  }
+
+  buildHierarchy(baseSelector, 0, selectFlipChildIds(document, baseSelector))
+
+  // now make sure childIds in each flippedData contains only direct children
+  Object.keys(flipDict).forEach(flipId => {
+    const data = flipDict[flipId]
+    data.childIds = selectFlipChildIds(data.element, baseSelector).filter(
+      id => levelToChildren[data.level + 1].indexOf(id) > -1
+    )
   })
 
-  // just call unstaggered functions directly
-  startFlipFunctions
-    .filter(arr => !arr.stagger)
-    .map(arr => arr.startAnimation)
-    .forEach(func => func()()())
+  //build a data struct to run the springs
+  const d = {
+    root: {
+      staggered: {},
+      immediate: []
+    }
+  }
+
+  const appendChild = (node, flipId) => {
+    const flipData = flipDict[flipId]
+    // might have been filtered (e.g. because it was off screen)
+    if (!flipData) return
+    flipData.staggered = {}
+    flipData.immediate = []
+    if (flipData.stagger) {
+      node.staggered[flipData.stagger]
+        ? node.staggered[flipData.stagger].push(flipDict[flipId])
+        : (node.staggered[flipData.stagger] = [flipDict[flipId]])
+    } else node.immediate.push(flipDict[flipId])
+
+    flipData.childIds.forEach(childId => appendChild(flipDict[flipId], childId))
+  }
+
+  levelToChildren["0"].forEach(c => {
+    appendChild(d.root, c)
+  })
+
+  const initiateImmediateAnimations = immediate => {
+    if (!immediate) return
+    immediate.forEach(flipped => {
+      createSynchronousSpring(flipped)
+      initiateImmediateAnimations(flipped.immediate)
+    })
+  }
+
+  initiateImmediateAnimations(d.root.immediate)
+
+  const flippedArray = d.root.immediate[0].staggered.all
+  const scheduler = new StaggeredSpring({ flippedArray })
 }
 
 export default animateFlippedElements

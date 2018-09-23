@@ -1,6 +1,5 @@
-import assign from "object-assign"
 import PropTypes from "prop-types"
-import { isObject } from "../flip/utilities"
+import { isObject, assign } from "../utilities"
 
 export const getSpringInterface = () => ({
   stiffness: PropTypes.number,
