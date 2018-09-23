@@ -460,7 +460,6 @@ const animateFlippedElements = ({
     // only when the spring is first activated, activate the child animations as well
     // this enables nested stagger
     flipData.onSpringActivate = () => {
-      debugger
       initiateImmediateAnimations(flipData.immediate)
       initiateStaggeredAnimations(flipData.staggered)
     }
