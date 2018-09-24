@@ -9,7 +9,7 @@ const customPropCheck = function(props, propName) {
     return new Error(
       'Please only provide one of the two: "FlipId" or "inverseFlipID"'
     )
-  } else if (!props.flipId && !props.inverseFlipId) {
+  } else if (props.flipId === undefined && props.inverseFlipId === undefined) {
     return new Error(
       `Must provide either a "FlipId" or an "InverseFlipId" prop`
     )

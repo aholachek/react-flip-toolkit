@@ -25,7 +25,8 @@ const onFlipKeyUpdate = ({
   applyTransformOrigin,
   spring,
   debug,
-  portalKey
+  portalKey,
+  staggerConfig
 }) => {
   const newFlipChildrenPositions = getFlippedElementPositionsAfterUpdate({
     element: containerEl,
@@ -60,13 +61,16 @@ const onFlipKeyUpdate = ({
     id => newFlipChildrenPositions[id] !== "unloadedImg"
   )
 
-  animateFlippedElements({
+  const animateFlippedElementsArgs = {
     flippedIds: readyToBeFlippedIds,
     ...baseArgs,
     applyTransformOrigin,
     spring,
-    debug
-  })
+    debug,
+    staggerConfig
+  }
+
+  animateFlippedElements(animateFlippedElementsArgs)
 
   const waitATickIds = flippedIds.filter(
     id => newFlipChildrenPositions[id] === "unloadedImg"
@@ -84,12 +88,8 @@ const onFlipKeyUpdate = ({
         id => newFlipChildrenPositions[id] !== "unloadedImg"
       )
       animateFlippedElements({
-        ...baseArgs,
-        applyTransformOrigin,
-        spring,
-        debug,
-        flippedIds: loadedImgIds,
-        newFlipChildrenPositions
+        ...animateFlippedElementsArgs,
+        flippedIds: loadedImgIds
       })
     })
   }

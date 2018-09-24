@@ -128,7 +128,8 @@ const animateFlippedElements = ({
   applyTransformOrigin,
   spring,
   getElement,
-  debug
+  debug,
+  staggerConfig
 }) => {
   const body = document.querySelector("body")
 
@@ -299,11 +300,11 @@ const animateFlippedElements = ({
       // when it is called, the animation has already been cancelled
       const onAnimationEnd = () => {
         delete inProgressAnimations[id]
+        isFunction(onComplete) && onComplete()
         if (needsForcedMinVals && element) {
           element.style.minHeight = ""
           element.style.minWidth = ""
         }
-        isFunction(onComplete) && onComplete()
       }
 
       const animateOpacity =
@@ -432,7 +433,12 @@ const animateFlippedElements = ({
 
   const initiateStaggeredAnimations = staggered => {
     Object.keys(staggered).forEach(staggerKey => {
-      staggeredSprings(staggered[staggerKey])
+      const funcs =
+        staggerConfig && staggerConfig[staggerKey] === "reverse"
+          ? staggered[staggerKey].reverse()
+          : staggered[staggerKey]
+
+      staggeredSprings(funcs)
     })
   }
 

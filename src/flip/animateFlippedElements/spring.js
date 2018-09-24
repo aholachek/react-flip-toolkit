@@ -17,7 +17,8 @@ export const createSuspendedSpring = ({
     onSpringActivate,
     onSpringUpdate: getOnUpdateFunc(spring.destroy.bind(spring)),
     onSpringAtRest: () => {
-      // spring.destroy()
+      // prevent SpringSystem from caching unused springs
+      spring.destroy()
       onAnimationEnd()
     }
   })

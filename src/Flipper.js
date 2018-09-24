@@ -15,7 +15,8 @@ class Flipper extends Component {
     debug: PropTypes.bool,
     element: PropTypes.string,
     className: PropTypes.string,
-    portalKey: PropTypes.string
+    portalKey: PropTypes.string,
+    staggerConfig: PropTypes.object
   }
 
   static defaultProps = {
@@ -51,7 +52,8 @@ class Flipper extends Component {
         applyTransformOrigin: this.props.applyTransformOrigin,
         spring: this.props.spring,
         debug: this.props.debug,
-        portalKey: this.props.portalKey
+        portalKey: this.props.portalKey,
+        staggerConfig: this.props.staggerConfig
       })
     }
   }

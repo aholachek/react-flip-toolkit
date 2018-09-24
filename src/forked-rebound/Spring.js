@@ -68,7 +68,6 @@ class Spring {
    * @public
    */
   destroy(): void {
-    debugger
     this.listeners = []
     this._springSystem.deregisterSpring(this)
   }

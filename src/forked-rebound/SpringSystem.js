@@ -87,7 +87,6 @@ class SpringSystem {
    * @public
    */
   deregisterSpring(spring: Spring): void {
-    debugger
     removeFirst(this._activeSprings, spring)
     delete this._springRegistry[spring.getId()]
   }
@@ -98,6 +97,8 @@ class SpringSystem {
     }
     for (let i = 0, len = this._activeSprings.length; i < len; i++) {
       const spring = this._activeSprings[i]
+      // note from alex: had to add this otherwise deleting springs caused errors
+      if (!spring) return
       if (spring.systemShouldAdvance()) {
         spring.advance(time / 1000.0, deltaTime / 1000.0)
       } else {
