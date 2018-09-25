@@ -3,14 +3,14 @@ import { Flipped } from "../../../src"
 import anime from "animejs"
 
 class Card extends PureComponent {
-  hideElements = (el, startId) => {
-    if (startId !== "focusedUser") return
+  hideElements = (el, prev, current) => {
+    if (prev !== this.props.i) return
     const elements = [].slice.apply(el.querySelectorAll("*[data-fade-in]"))
     elements.forEach(el => (el.style.opacity = "0"))
     el.style.zIndex = 2
   }
-  animateIn = (el, startId) => {
-    if (startId !== "focusedUser") return
+  animateIn = (el, prev, current) => {
+    if (prev !== this.props.i) return
     anime({
       targets: el.querySelectorAll("*[data-fade-in]"),
       translateY: [-30, 0],
@@ -21,33 +21,34 @@ class Card extends PureComponent {
     })
     el.style.zIndex = 1
   }
+
+  shouldFlip = (prev, current) => {
+    if (current === this.props.i) return true
+    return false
+  }
   render() {
     const { parentFlipId, d, i, setFocusedIndex } = this.props
-    console.log("re-rendering")
     return (
       <li key={parentFlipId}>
         <Flipped
           flipId={parentFlipId}
           onStart={this.hideElements}
           onComplete={this.animateIn}
-          componentId="gridItem"
+          shouldInvert={this.shouldFlip}
         >
           <div
             className="gridItem"
             onClick={() => setFocusedIndex(i)}
             role="button"
           >
-            <Flipped
-              inverseFlipId={parentFlipId}
-              componentIdFilter={["focusedUser"]}
-            >
+            <Flipped inverseFlipId={parentFlipId}>
               <div>
                 <h2 className="gridItemTitle" data-fade-in>
                   {d.name}
                 </h2>
                 <Flipped
                   flipId={`${parentFlipId}-avatar`}
-                  componentIdFilter="focusedUserAvatar"
+                  shouldFlip={this.shouldFlip}
                 >
                   <img
                     src={d.avatar}
@@ -61,7 +62,7 @@ class Card extends PureComponent {
 
                 <Flipped
                   flipId={`${parentFlipId}-background`}
-                  componentIdFilter="focusedUserBackground"
+                  shouldFlip={this.shouldFlip}
                 >
                   <div
                     className="gridItemBackground"

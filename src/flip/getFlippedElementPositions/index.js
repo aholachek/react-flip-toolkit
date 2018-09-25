@@ -92,7 +92,6 @@ export const getFlippedElementPositionsBeforeUpdate = ({
         {
           rect: childBCR,
           opacity: parseFloat(window.getComputedStyle(child).opacity),
-          flipComponentId: child.dataset.flipComponentId,
           domData
         }
       ]

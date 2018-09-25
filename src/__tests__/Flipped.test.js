@@ -19,27 +19,18 @@ describe("Flipped Component", () => {
     )
     expect(testRenderer.toJSON().props["data-inverse-flip-id"]).toEqual("foo2")
   })
-  it("puts the data-flip-component-id directly onto the attributes as well for performance reasons", () => {
-    const testRenderer = TestRenderer.create(
-      <Flipped componentId="fooComponent">
-        <div />
-      </Flipped>
-    )
-    expect(testRenderer.toJSON().props["data-flip-component-id"]).toEqual(
-      "fooComponent"
-    )
-  })
+
 
   it("only if provided with a portalKey prop, puts that on the attributes to help with document scoped selection ", () => {
     const testRenderer = TestRenderer.create(
-      <Flipped componentId="fooComponent" portalKey="plants">
+      <Flipped portalKey="plants">
         <div />
       </Flipped>
     )
     expect(testRenderer.toJSON().props["data-portal-key"]).toBe("plants")
 
     const testRenderer2 = TestRenderer.create(
-      <Flipped componentId="fooComponent">
+      <Flipped>
         <div />
       </Flipped>
     )

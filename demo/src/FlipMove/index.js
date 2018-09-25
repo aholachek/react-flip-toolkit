@@ -48,6 +48,7 @@ class ListExample extends Component {
           )}-${JSON.stringify(this.state.stagger)}`}
           spring={this.state.spring}
           staggerConfig={{ all: this.state.stagger }}
+          decisionData={this.state}
         >
           <div className="fm-flex-container">
             <fieldset>

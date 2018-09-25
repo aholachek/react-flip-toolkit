@@ -32,6 +32,12 @@ const onGridExit = onExit("grid")
 const onListExit = onExit("list")
 
 class Card extends PureComponent {
+  shouldFlip = (prev, current) => {
+    if (prev.type !== current.type) {
+      return true
+    }
+    return false
+  }
   render() {
     const { id, title, type, stagger, addToFilteredIds } = this.props
     const flipId = `item-${id}`
@@ -42,18 +48,23 @@ class Card extends PureComponent {
         onExit={type === "grid" ? onGridExit : onListExit}
         key={flipId}
         stagger={stagger}
+        shouldInvert={this.shouldFlip}
       >
         <li className="fm-item">
-          <Flipped inverseFlipId={flipId}>
+          <Flipped inverseFlipId={flipId} shouldFlip={this.shouldFlip}>
             <div>
-              <Flipped flipId={`${flipId}-content`} translate>
+              <Flipped
+                flipId={`${flipId}-content`}
+                translate
+                shouldFlip={this.shouldFlip}
+              >
                 <div>
                   <h3>{title}</h3>
                   <p>{title}</p>
                 </div>
               </Flipped>
 
-              <Flipped flipId={`${flipId}-button`}>
+              <Flipped flipId={`${flipId}-button`} shouldFlip={this.shouldFlip}>
                 <button
                   className="fm-remove"
                   onClick={() => addToFilteredIds(id)}

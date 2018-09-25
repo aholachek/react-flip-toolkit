@@ -23,6 +23,7 @@ export default class CardsExample extends Component {
         className="cardsExample"
         flipKey={this.state.focusedIndex}
         spring={this.state.speed !== "normal" && { stiffness: 5, damping: 4 }}
+        decisionData={this.state.focusedIndex}
       >
         <div className="header" ref={el => (this.el = el)}>
           <h1>Avatar cards</h1>

@@ -261,8 +261,7 @@ By default the FLIP-ped elements' translate, scale, and opacity properties are a
 
 | prop              | type             | details                                                                                                                                                                                                                                                                                                                                     |
 | ----------------- | :--------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| componentId       | `string`         | Unique identifier for the component                                                                                                                                                                                                                                                                                                         |
-| componentIdFilter | `array`,`string` | Only apply FLIP transitions if the transition originates or ends with a component with the specified `componentId`. To limit the application of an inverse transform, you refer to the parent's `componentId` [as seen in this example.](https://github.com/aholachek/react-flip-toolkit/blob/master/demo/src/CardsExample/UserGrid.js#L44) |
+
 
 ## Scale transitions made eas(ier)
 
@@ -311,33 +310,7 @@ But for many/most use cases, you'll want to additionally specify the `scale` pro
 
 ### It's still not working: try out the `debug` prop
 
-If you still can't figure out what's going wrong, you can add the [the `debug` prop](#props)  directly on your `Flipper` component to pause transitions at the beginning and outline the `Flipped` components with a hot pink outline. Here's an example of solving a problem with the `debug` prop:
-
-The broken animation:
-
-<img src="./example-assets/debugging_flip.gif" width='550px' alt='react-flip-toolkit broken animation example' />
-
-Apply the debug prop to have the FLIP animation pause at the very beginning:
-
-<img src="./example-assets/broken_flip.png" width='550px' alt='react-flip-toolkit broken animation with debug prop'/>
-
-We see here that the pink outline surrounding the center contents extends much further than the actual text and button. It turns out that we're flipping a wrapper `div` rather than the actual text and button:
-
-```jsx
-<Flipped flipId='contentContainer'>
-  <div>
-    <p>{this.props.text}</p>
-    <button onClick={this.toggleFullscreen}>Close</button>
-  </div>
-</Flipped>
-```
-
-We can either wrap both the `p` and the `button` in their own `Flipped ` containers, or add a style of `inline-block` on the wrapper `div`. To verify once we add the fix, we can rerun the animation with the `debug` prop applied:
-
-<img src="./example-assets/corrected_flip.png" width='550px' alt='react-flip-toolkit fixed animation'/>
-
-Now, the pink outline is hugging the elements that are being animated, so they are no longer getting warped.
-
+If you still can't figure out what's going wrong, you can add the [the `debug` prop](#props)  directly on your `Flipper` component to pause transitions at the beginning.
 
 ## Performance
 

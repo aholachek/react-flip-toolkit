@@ -8,8 +8,6 @@ export interface Spring {
 
 export type SpringConfig = "noWobble" | "gentle" | "wobbly" | "stiff" | Spring
 
-export type FlippedComponentIdFilter = string | any[]
-
 export interface FlippedProps {
   children: React.ReactNode
   inverseFlipId?: string
@@ -29,8 +27,6 @@ export interface FlippedProps {
     index: number,
     removeElement: () => any
   ) => any
-  componentIdFilter?: FlippedComponentIdFilter
-  componentId?: string
   portalKey?: string
 }
 

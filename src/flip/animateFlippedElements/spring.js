@@ -27,7 +27,13 @@ export const createSuspendedSpring = ({
 
 export const createSpring = flipped => {
   const spring = createSuspendedSpring(flipped)
-  spring && spring.setEndValue(1)
+  if (spring) spring.setEndValue(1)
+  else {
+    // even if it was a noop,
+    // we still need to call onSpringActivate in case it calls
+    // cascading flip initiation functions
+    flipped.onSpringActivate()
+  }
 }
 
 export const staggeredSprings = flippedArray => {

@@ -5,45 +5,52 @@ import { Flipper, Flipped } from "../../../src/index.js"
 import "./styles.css"
 const listData = [0, 1, 2, 3, 4, 5, 6, 7]
 const colors = ["#ff4f66", "#7971ea", "#5900d8"]
+
+const shouldFlip = index => (prev, current) => {
+  if (index === prev || index === current) return true
+  return false
+}
+
 const ListItem = ({ index, color, onClick }) => {
   return (
-    <Flipped flipId={`listItem-${index}`} stagger="card">
+    <Flipped
+      flipId={`listItem-${index}`}
+      stagger="card"
+      shouldInvert={shouldFlip(index)}
+    >
       <div
         className="listItem"
         style={{ backgroundColor: color }}
         onClick={() => onClick(index)}
       >
-        <Flipped
-          inverseFlipId={`listItem-${index}`}
-          componentIdFilter="expanded-list-item"
-        >
+        <Flipped inverseFlipId={`listItem-${index}`}>
           <div className="listItemContent">
             <Flipped
               flipId={`avatar-${index}`}
-              componentIdFilter="expanded-list-avatar"
               stagger="card-content"
+              shouldFlip={shouldFlip(index)}
             >
               <div className="avatar" />
             </Flipped>
             <div className="description">
               <Flipped
                 flipId={`description-${index}-1`}
-                componentIdFilter="expanded-description-item"
                 stagger="card-content"
+                shouldFlip={shouldFlip(index)}
               >
                 <div />
               </Flipped>
               <Flipped
                 flipId={`description-${index}-2`}
-                componentIdFilter="expanded-description-item"
                 stagger="card-content"
+                shouldFlip={shouldFlip(index)}
               >
                 <div />
               </Flipped>
               <Flipped
                 flipId={`description-${index}-3`}
-                componentIdFilter="expanded-description-item"
                 stagger="card-content"
+                shouldFlip={shouldFlip(index)}
               >
                 <div />
               </Flipped>
@@ -54,11 +61,11 @@ const ListItem = ({ index, color, onClick }) => {
     </Flipped>
   )
 }
+
 const ExpandedListItem = ({ index, color, onClick }) => {
   return (
     <Flipped
       flipId={`listItem-${index}`}
-      componentId="expanded-list-item"
       stagger="card"
       onComplete={el => {
         el.classList.add("animated-in")
@@ -71,33 +78,17 @@ const ExpandedListItem = ({ index, color, onClick }) => {
       >
         <Flipped inverseFlipId={`listItem-${index}`}>
           <div className="expandedListItemContent">
-            <Flipped
-              flipId={`avatar-${index}`}
-              componentId="expanded-list-avatar"
-              stagger="card-content"
-            >
+            <Flipped flipId={`avatar-${index}`} stagger="card-content">
               <div className="avatar avatarExpanded" />
             </Flipped>
             <div className="description">
-              <Flipped
-                flipId={`description-${index}-1`}
-                componentId="expanded-description-item"
-                stagger="card-content"
-              >
+              <Flipped flipId={`description-${index}-1`} stagger="card-content">
                 <div />
               </Flipped>
-              <Flipped
-                flipId={`description-${index}-2`}
-                componentId="expanded-description-item"
-                stagger="card-content"
-              >
+              <Flipped flipId={`description-${index}-2`} stagger="card-content">
                 <div />
               </Flipped>
-              <Flipped
-                flipId={`description-${index}-3`}
-                componentId="expanded-description-item"
-                stagger="card-content"
-              >
+              <Flipped flipId={`description-${index}-3`} stagger="card-content">
                 <div />
               </Flipped>
             </div>
@@ -122,11 +113,12 @@ export default class AnimatedList extends Component {
     return (
       <Flipper
         flipKey={this.state.focused}
-        className="content"
+        className="staggered-list-content"
         spring="gentle"
         staggerConfig={{
           card: this.state.focused !== null ? "reverse" : "forwards"
         }}
+        decisionData={this.state.focused}
       >
         <ul className="list">
           {listData.map(index => {

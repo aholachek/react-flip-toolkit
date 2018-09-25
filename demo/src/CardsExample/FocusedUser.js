@@ -30,14 +30,13 @@ class FocusedUser extends Component {
           flipId={parentFlipId}
           onStart={this.hideElements}
           onComplete={this.animateIn}
-          componentId="focusedUser"
         >
           <div
             className="gridItem gridItemFocused"
             role="button"
             ref={el => (this.el = el)}
           >
-            <Flipped inverseFlipId={parentFlipId} componentId="focusedUser">
+            <Flipped inverseFlipId={parentFlipId}>
               <div>
                 <div>
                   <button
@@ -50,10 +49,7 @@ class FocusedUser extends Component {
                   <h2 className="gridItemTitle" data-fade-in>
                     {data.name}
                   </h2>
-                  <Flipped
-                    flipId={`${parentFlipId}-avatar`}
-                    componentId="focusedUserAvatar"
-                  >
+                  <Flipped flipId={`${parentFlipId}-avatar`}>
                     <img
                       src={data.avatar}
                       alt={`user profile for ${data.name}`}
@@ -67,10 +63,7 @@ class FocusedUser extends Component {
                   <p data-fade-in className="gridItemDescription">
                     {data.text}
                   </p>
-                  <Flipped
-                    flipId={`${parentFlipId}-background`}
-                    componentId="focusedUserBackground"
-                  >
+                  <Flipped flipId={`${parentFlipId}-background`}>
                     <div
                       className="gridItemBackground"
                       style={{ backgroundColor: data.color }}

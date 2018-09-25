@@ -26,7 +26,8 @@ const onFlipKeyUpdate = ({
   spring,
   debug,
   portalKey,
-  staggerConfig
+  staggerConfig = {},
+  decisionData = {}
 }) => {
   const newFlipChildrenPositions = getFlippedElementPositionsAfterUpdate({
     element: containerEl,
@@ -67,7 +68,8 @@ const onFlipKeyUpdate = ({
     applyTransformOrigin,
     spring,
     debug,
-    staggerConfig
+    staggerConfig,
+    decisionData
   }
 
   animateFlippedElements(animateFlippedElementsArgs)

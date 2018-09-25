@@ -31,9 +31,9 @@ const propTypes = {
   onComplete: PropTypes.func,
   onAppear: PropTypes.func,
   onDelayedAppear: PropTypes.func,
+  shouldFlip: PropTypes.func,
+  shouldInvert: PropTypes.func,
   onExit: PropTypes.func,
-  componentIdFilter: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-  componentId: PropTypes.string,
   portalKey: PropTypes.string,
   stagger: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
 }
@@ -42,7 +42,6 @@ export function Flipped({
   children,
   flipId,
   inverseFlipId,
-  componentId,
   portalKey,
   ...rest
 }) {
@@ -68,8 +67,7 @@ export function Flipped({
     // we need to access this in getFlippedElementPositions
     // which is called in getSnapshotBeforeUpdate
     // so for performance add it as a data attribute
-    [constants.DATA_FLIP_COMPONENT_ID]: componentId,
-    [constants.DATA_FLIP_CONFIG]: JSON.stringify(assign(rest, { componentId }))
+    [constants.DATA_FLIP_CONFIG]: JSON.stringify(rest)
   }
 
   if (portalKey) {
@@ -84,6 +82,8 @@ class FlippedWithContext extends PureComponent {
     const {
       children,
       flipId,
+      shouldFlip,
+      shouldInvert,
       onAppear,
       onDelayedAppear,
       onStart,
@@ -98,6 +98,8 @@ class FlippedWithContext extends PureComponent {
           <FlipContext.Consumer>
             {data => {
               data[flipId] = {
+                shouldFlip,
+                shouldInvert,
                 onAppear,
                 onDelayedAppear,
                 onStart,
