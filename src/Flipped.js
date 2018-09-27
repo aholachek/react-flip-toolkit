@@ -91,23 +91,23 @@ class FlippedWithContext extends PureComponent {
       onExit,
       ...rest
     } = this.props
-    if (rest.inverseFlipId)
-      return (
-        <Flipped {...rest}>
-          {children}
-        </Flipped>
-      )
+    if (rest.inverseFlipId) return <Flipped {...rest}>{children}</Flipped>
     return (
       <PortalContext.Consumer>
         {portalKey => (
           <FlipContext.Consumer>
             {data => {
-              data[flipId] = {
-                onAppear,
-                onDelayedAppear,
-                onStart,
-                onComplete,
-                onExit
+              // if there is no surrounding Flipper component.
+              // we don't want to throw an error here, so check
+              // that data exists and is not the default string
+              if (data instanceof Object) {
+                data[flipId] = {
+                  onAppear,
+                  onDelayedAppear,
+                  onStart,
+                  onComplete,
+                  onExit
+                }
               }
               return (
                 <Flipped flipId={flipId} {...rest} portalKey={portalKey}>
