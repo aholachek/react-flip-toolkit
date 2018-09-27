@@ -97,8 +97,8 @@ class FlippedWithContext extends PureComponent {
         {portalKey => (
           <FlipContext.Consumer>
             {data => {
-              // if there is no surrounding Flipper component.
-              // we don't want to throw an error here, so check
+              // if there is no surrounding Flipper component,
+              // we don't want to throw an error, so check
               // that data exists and is not the default string
               if (data instanceof Object) {
                 data[flipId] = {
