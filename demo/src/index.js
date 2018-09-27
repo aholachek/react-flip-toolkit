@@ -12,6 +12,7 @@ import PortalExample from "./PortalExample"
 import TransformFromZeroExample from "./TransformFromZeroExample"
 import RotateExample from "./RotateExample"
 import StaggeredList from "./StaggeredList"
+import RemountedFlipperExample from "./RemountedFlipperExample"
 
 class Demo extends Component {
   render() {
@@ -29,6 +30,8 @@ class Demo extends Component {
     else if (window.location.pathname === "/rotate") return <RotateExample />
     else if (window.location.pathname === "/staggered-list")
       return <StaggeredList />
+    else if (window.location.pathname === "/remounted-flipper")
+      return <RemountedFlipperExample />
     else
       return (
         <nav>
