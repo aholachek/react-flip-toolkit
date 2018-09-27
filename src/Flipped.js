@@ -1,4 +1,4 @@
-import React, { Children, cloneElement, PureComponent } from "react"
+import React, { Component, Children, cloneElement } from "react"
 import PropTypes from "prop-types"
 import { FlipContext, PortalContext } from "./Flipper"
 import * as constants from "./constants"
@@ -77,7 +77,7 @@ export function Flipped({
   return cloneElement(child, dataAttributes)
 }
 
-class FlippedWithContext extends PureComponent {
+class FlippedWithContext extends Component {
   render() {
     const {
       children,
