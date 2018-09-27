@@ -120,50 +120,6 @@ class AnimatedSquare extends Component {
 
 [view on Codepen](https://codepen.io/aholachek/pen/oyKJgL)
 
-### More useful: tweening different elements
-
-The FLIP technique allows you to smoothly tween two completely separate elements to appear as if they are one:
-
-```jsx
-import React, { Component } from React;
-import { Flipper, Flipped } from 'react-flip-toolkit';
-
-const SmallSquare = ({ onClick }) => (
-  <Flipped flipId="square">
-    <div className="square" onClick={onClick} />
-  </Flipped>
-);
-
-const BigSquare = ({ onClick }) => (
-  <Flipped flipId="square">
-    <div className="full-screen-square" onClick={onClick}/>
-  </Flipped>
-);
-
-class AnimatedSquare extends Component {
-  state = { fullScreen: false };
-
-  toggleFullScreen = () => {
-    this.setState(prevState => ({
-      fullScreen: !prevState.fullScreen
-    }));
-  };
-
-  render() {
-    return (
-      <Flipper flipKey={this.state.fullScreen}>
-        {this.state.fullScreen ? (
-          <BigSquare onClick={this.toggleFullScreen} />
-        ) : (
-          <SmallSquare onClick={this.toggleFullScreen} />
-        )}
-      </Flipper>
-    );
-  }
-}
-```
-[view on Codepen](https://codepen.io/aholachek/pen/qKeLaN)
-
 
 ## The Components
 
@@ -183,15 +139,27 @@ The parent wrapper component that contains all the elements to be animated. You'
 | ----------------------- | :--------: | :------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | flipKey **(required)**  | -          | `string`, `number`, `bool` | Changing this tells `react-flip-toolkit` to transition child elements wrapped in `Flipped` components.                                                                                                                                                                                                                                                                                                                                                             |
 | children **(required)** | -          | `node`                     | One or more element children                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| spring                  | `noWobble` | `string` or `object`       | Provide a string referencing one of the spring presets &mdash; `noWobble` (default), `gentle`, `wobbly`, or `stiff`, OR provide an object with stiffness and damping parameters. [Explore the spring setting options here.](https://codepen.io/aholachek/full/bKmZbV/) The prop provided here will be the spring default that can be overrided on a per-element basis on the `Flipped` component.                                                                  |
+| spring                  | `noWobble` | `string` or `object`       | Provide a string referencing one of the spring presets &mdash; `noWobble` (default), `veryGentle`, `gentle`, `wobbly`, or `stiff`, OR provide an object with stiffness and damping parameters. [Explore the spring setting options here.](https://codepen.io/aholachek/full/bKmZbV/) The prop provided here will be the spring default that can be overrided on a per-element basis on the `Flipped` component.                                                    |
 | applyTransformOrigin    | `true`     | `bool`                     | Whether or not `react-flip-toolkit` should apply a transform-origin of "0 0" to animating children (this is generally, but not always, desirable for FLIP animations)                                                                                                                                                                                                                                                                                              |
 | element                 | `div`      | `string`                   | If you'd like the wrapper element created by the `Flipped` container to be something other than a `div`, you can specify that here.                                                                                                                                                                                                                                                                                                                                |
 | className               | -          | `string`                   | A class applied to the wrapper element, helpful for styling.                                                                                                                                                                                                                                                                                                                                                                                                       |
 | portalKey               | -          | `string`                   | In general, the `Flipper` component will only apply transitions to its descendents. This allows multiple `Flipper` elements to coexist on the same page, but it will prevent animations from working if you use [portals](https://reactjs.org/docs/portals.html). You can provide a unique `portalKey` prop to `Flipper` to tell it to scope element selections to the entire document, not just to its children, so that elements in portals can be transitioned. |
 | debug                   | `false`    | `bool`                     | This experimental prop will pause your animation right at the initial application of FLIP-ped styles. That will allow you to inspect the state of the animation at the very beginning, when it should look similar or identical to the UI before the animation began.                                                                                                                                                                                              |
+| decisionData            | -          | `any`                      | Sometimes, you'll want the animated children of the `Flipper` element to behave differently depending on the state transition &mdash; maybe only certain elements should animate in response to a particular change. By providing this data to the `Flipper` object, you'll pass it into the `shouldFlip` and `shouldInvert` methods of each child `Flipped` component so they can decided for themselves whether to animate or not.                               |
+| staggerConfig           | -          | `object`                   | Here you can provide some configuration for any staggered `Flipped` children. The config object looks like this:                                                                                                                                                                                                                                                                                                                                                   |
 
-
-
+```js
+staggerConfig={{
+  // default will apply to all staggered elements without explicit keys
+      default: {
+        // default is 'forward'
+        direction: 'reverse',
+        // int between 0 and 1
+        speed: .5
+      },
+      namedStagger : {...}
+  }}
+ ```
 
 ### 2. `Flipped`
 
@@ -225,7 +193,7 @@ The `Flipped` component produces no markup, it simply passes some props down to 
 | flipId **(required)**   | -          | `string`              | Use this to tell `react-flip-toolkit` how elements should be matched across renders so they can be animated.                                                                                                                                                                                                                                         |
 | inverseFlipId           | -          | `string`              | Refer to the id of the parent `Flipped` container whose transform you want to cancel out. [Read more about canceling out parent transforms here.](#scale-transitions-made-easier)                                                                                                                                                                    |
 | transformOrigin         | `"0 0"`    | `string`              | This is a convenience method to apply the proper CSS `transform-origin` to the element being FLIP-ped. This will override `react-flip-toolkit`'s default application of `transform-origin: 0 0;` if it is provided as a prop.                                                                                                                        |
-| spring                  | `noWobble` | `string` or `object`  | Provide a string referencing one of the spring presets &mdash; `noWobble` (default), `gentle`, `wobbly`, or `stiff`, OR provide an object with stiffness and damping parameters. [Explore the spring setting options here.](https://codepen.io/aholachek/full/bKmZbV/)                                                                               |
+| spring                  | `noWobble` | `string` or `object`  | Provide a string referencing one of the spring presets &mdash; (default), `veryGentle`, `gentle`, `wobbly`, or `stiff`, OR provide an object with stiffness and damping parameters. [Explore the spring setting options here.](https://codepen.io/aholachek/full/bKmZbV/)                                                                            |
 | stagger                 | `false`    | `boolean` or `string` | Provide a natural, spring-based staggering effect in which the spring easing of each item is pinned to the previous one's movement. Provide `true` to stagger the element with all other staggered elements. If you want to get more granular, you can provide a string key and the element will be staggered with other elements with the same key. |
 
 #### Callback props
@@ -257,11 +225,13 @@ By default the FLIP-ped elements' translate, scale, and opacity properties are a
 | scale     | `bool` | Tween `scaleX` and `scaleY`         |
 | opacity   | `bool` |                                     |
 
-#### Advanced props
 
-| prop              | type             | details                                                                                                                                                                                                                                                                                                                                     |
-| ----------------- | :--------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+#### Advanced props (gating functions)
 
+| prop         | arguments                                 | details                                                                                                                                                                                                                                |
+| ------------ | :---------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| shouldFlip   | `prevDecisionData`, `currentDecisionData` | A function provided with the current and previous `decisionData` props passed down by the `Flipper` component. Returns a `boolean` to indicate whether a `Flipped` component should animate or not.                                    |
+| shouldInvert | `prevDecisionData`, `currentDecisionData` | A function provided with the current and previous `decisionData` props passed down by the `Flipper` component. Returns a `boolean` indicating whether to apply inverted transforms to children that request it via an `inverseFlipId`. |
 
 ## Scale transitions made eas(ier)
 
@@ -295,7 +265,7 @@ But for many/most use cases, you'll want to additionally specify the `scale` pro
 - ~7kb minified and gzipped
 - React 16+
 - Tested in latest Chrome, Firefox, Safari, Edge, and IE 11.
-- Uses [Rematrix](https://github.com/jlmakes/rematrix) for matrix calculations and [Wobble](https://github.com/skevy/wobble) for spring animations.
+- Uses [Rematrix](https://github.com/jlmakes/rematrix) for matrix calculations and a simplified fork of  [Rebound](https://github.com/facebook/rebound-js) for spring animations.
 
 ## Troubleshooting
 
@@ -318,7 +288,7 @@ If you still can't figure out what's going wrong, you can add the [the `debug` p
 However, if you are building particularly complex animations&mdash;ones that involve dozens of elements or large images&mdash; there are some additional strategies you can use to ensure performant animations.
 
 ### 1. `PureComponent`
-When you trigger a complex FLIP animation with react-flip-toolkit, React could be spending vital milliseconds doing unnecessary reconciliation work before allowing the animation to start. If you notice a slight delay between when the animation is triggered, and when it begins, this is probably the culprit. To short-circuit this possibly unnecessary work, try using [`PureComponent`](https://reactjs.org/docs/react-api.html#reactpurecomponent) for your animated elements, and seeing if you can refactor your code to minimize prop updates to animated children when an animation is about to occur.
+When you trigger a complex FLIP animation with `react-flip-toolkit`, React could be spending vital milliseconds doing unnecessary reconciliation work before allowing the animation to start. If you notice a slight delay between when the animation is triggered, and when it begins, this is probably the culprit. To short-circuit this possibly unnecessary work, try using [`PureComponent`](https://reactjs.org/docs/react-api.html#reactpurecomponent) for your animated elements, and seeing if you can refactor your code to minimize prop updates to animated children when an animation is about to occur.
 
 For example, in a hypothetical UI where you are animating the positions of several cards at once, you might want to update a `Card` component that looks like this:
 
@@ -350,7 +320,7 @@ class Card extends PureComponent {
 }
 ```
 
-Remember [to always provide `key` props as appropriate to your elements](https://reactjs.org/docs/lists-and-keys.html), and check [the React docs](https://reactjs.org/docs/react-api.html#reactpurecomponent) for some caveats on when to not use `PureComponent`. But if you have complex animations with noticeable lag, think about giving `PureComponent` a try!
+Remember [to always provide `key` props as appropriate to your elements](https://reactjs.org/docs/lists-and-keys.html), and check [the React docs](https://reactjs.org/docs/react-api.html#reactpurecomponent) for some caveats on when to not use `PureComponent`. But if you have complex animations with noticeable lag, think about giving `PureComponent` a try.
 
 ### 2. `will-change:transform`
 

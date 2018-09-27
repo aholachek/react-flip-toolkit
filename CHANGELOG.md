@@ -1,5 +1,24 @@
 # Changelog
 
+## 5.0.0 Release
+
+Summary:
+
+### Improved
+1. Better performance
+2. Nested Stagger
+
+### Added
+2. More stagger configuration options: `speed` and `direction`
+
+
+3. An improved API for deciding whether a `Flipped` component should actually flip.
+
+### Removed
+
+1. As a corollary to #3 in the Added section, removed the old way of telling a `Flipped` element whether or not to animate (`)
+
+
 ## 4.0.0 Release
 
 Summary: Went all-in on springs and removed option to hard-code easing curves.

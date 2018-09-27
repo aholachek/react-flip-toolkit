@@ -6,7 +6,13 @@ export interface Spring {
   overshootClamping?: boolean
 }
 
-export type SpringConfig = "noWobble" | "gentle" | "wobbly" | "stiff" | Spring
+export type SpringConfig =
+  | "stiff"
+  | "noWobble"
+  | "veryGentle"
+  | "gentle"
+  | "wobbly"
+  | Spring
 
 export interface FlippedProps {
   children: React.ReactNode
@@ -27,6 +33,8 @@ export interface FlippedProps {
     index: number,
     removeElement: () => any
   ) => any
+  shouldFlip?: (prevDecisionData, currentDecisionData) => boolean
+  shouldInvert?: (prevDecisionData, currentDecisionData) => boolean
   portalKey?: string
 }
 
@@ -41,7 +49,7 @@ export interface FlipperProps {
   element?: string
   className?: string
   portalKey?: string
+  decisionData?: any
 }
 
 export const Flipper: React.ComponentType<FlipperProps>
-
