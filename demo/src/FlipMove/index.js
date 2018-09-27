@@ -47,7 +47,11 @@ class ListExample extends Component {
             this.state.filteredIds
           )}-${JSON.stringify(this.state.stagger)}`}
           spring={this.state.spring}
-          staggerConfig={{ all: this.state.stagger }}
+          staggerConfig={{
+            default: {
+              direction: this.state.stagger
+            }
+          }}
           decisionData={this.state}
         >
           <div className="fm-flex-container">
@@ -140,24 +144,26 @@ class ListExample extends Component {
             </fieldset>
             <fieldset>
               <legend>Spring</legend>
-              {["noWobble", "gentle", "wobbly", "stiff"].map(type => {
-                return (
-                  <label>
-                    <input
-                      type="radio"
-                      name="spring"
-                      checked={this.state.spring === type}
-                      onChange={() => {
-                        this.setState({
-                          spring: type,
-                          sort: this.state.sort === "asc" ? "desc" : "asc"
-                        })
-                      }}
-                    />
-                    {type}
-                  </label>
-                )
-              })}
+              {["stiff", "noWobble", "veryGentle", "gentle", "wobbly"].map(
+                type => {
+                  return (
+                    <label>
+                      <input
+                        type="radio"
+                        name="spring"
+                        checked={this.state.spring === type}
+                        onChange={() => {
+                          this.setState({
+                            spring: type,
+                            sort: this.state.sort === "asc" ? "desc" : "asc"
+                          })
+                        }}
+                      />
+                      {type}
+                    </label>
+                  )
+                }
+              )}
             </fieldset>
           </div>
           <div>

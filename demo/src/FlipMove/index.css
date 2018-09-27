@@ -21,6 +21,7 @@
   list-style-type: none;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  grid-auto-rows: 8rem;
   grid-gap: 1rem;
   padding: 0;
   margin: 0;
@@ -104,6 +105,7 @@
 
 .fm-flex-container {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .fm-flex-container > label {

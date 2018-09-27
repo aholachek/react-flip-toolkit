@@ -6,7 +6,7 @@
  *  LICENSE file in the root directory of this source tree. An additional grant
  *  of patent rights can be found in the PATENTS file in the same directory.
  *
- * @flow
+ *
  */
 
 /* eslint-disable flowtype/no-weak-types */
@@ -14,7 +14,7 @@
 import _onFrame from "./onFrame"
 
 // Cross browser/node timer functions.
-export function onFrame(func: Function) {
+export function onFrame(func) {
   return _onFrame(func)
 }
 
@@ -25,7 +25,7 @@ export const performanceNow =
     : () => Date.now() - start
 
 // Lop off the first occurence of the reference in the Array.
-export function removeFirst<T>(array: Array<T>, item: T): void {
+export function removeFirst(array, item) {
   const idx = array.indexOf(item)
   idx !== -1 && array.splice(idx, 1)
 }

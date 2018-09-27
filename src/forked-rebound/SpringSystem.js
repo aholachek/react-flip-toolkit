@@ -1,3 +1,4 @@
+//
 /**
  *  Copyright (c) 2013, Facebook, Inc.
  *  All rights reserved.
@@ -9,11 +10,8 @@
  * @flow
  */
 
-import type { Looper, SpringSystemListener } from "./types"
-
 import { AnimationLooper } from "./Loopers"
 import Spring from "./Spring"
-import SpringConfig from "./SpringConfig"
 import { removeFirst } from "./util"
 
 /**
@@ -23,17 +21,16 @@ import { removeFirst } from "./util"
  * @public
  */
 class SpringSystem {
-  listeners: Array<SpringSystemListener> = []
-  looper: Looper
-  _activeSprings: Array<Spring> = []
-  _idleSpringIndices: Array<number> = []
-  _isIdle: boolean = true
-  _lastTimeMillis: number = -1
-  _springRegistry: { [id: string]: Spring } = {}
-
-  constructor(looper: Looper) {
+  constructor(looper) {
     this.looper = looper || new AnimationLooper()
     this.looper.springSystem = this
+
+    this.listeners = []
+    this._activeSprings = []
+    this._idleSpringIndices = []
+    this._isIdle = true
+    this._lastTimeMillis = -1
+    this._springRegistry = {}
   }
 
   /**
@@ -43,14 +40,14 @@ class SpringSystem {
    * also provide your own values here.
    * @public
    */
-  createSpring(tension: number, friction: number): Spring {
+  createSpring(tension, friction) {
     return this.createSpringWithConfig({ tension, friction })
   }
   /**
    * Add a spring with the provided SpringConfig.
    * @public
    */
-  createSpringWithConfig(springConfig: SpringConfig): Spring {
+  createSpringWithConfig(springConfig) {
     const spring = new Spring(this)
     this.registerSpring(spring)
     spring.setSpringConfig(springConfig)
@@ -63,7 +60,7 @@ class SpringSystem {
    * then this method will return true.
    * @public
    */
-  getIsIdle(): boolean {
+  getIsIdle() {
     return this._isIdle
   }
 
@@ -75,7 +72,7 @@ class SpringSystem {
    * in the solver loop.
    * @public
    */
-  registerSpring(spring: Spring): void {
+  registerSpring(spring) {
     this._springRegistry[spring.getId()] = spring
   }
 
@@ -86,12 +83,12 @@ class SpringSystem {
    * you call Spring#destroy.
    * @public
    */
-  deregisterSpring(spring: Spring): void {
+  deregisterSpring(spring) {
     removeFirst(this._activeSprings, spring)
     delete this._springRegistry[spring.getId()]
   }
 
-  advance(time: number, deltaTime: number): void {
+  advance(time, deltaTime) {
     while (this._idleSpringIndices.length > 0) {
       this._idleSpringIndices.pop()
     }
@@ -127,7 +124,7 @@ class SpringSystem {
    * SpringSystem.
    * @public
    */
-  loop(currentTimeMillis: number): void {
+  loop(currentTimeMillis) {
     let listener
     if (this._lastTimeMillis === -1) {
       this._lastTimeMillis = currentTimeMillis - 1
@@ -162,7 +159,7 @@ class SpringSystem {
    * Used to notify the SpringSystem that a Spring has become displaced.
    * The system responds by starting its solver loop up if it is currently idle.
    */
-  activateSpring(springId: string): void {
+  activateSpring(springId) {
     const spring = this._springRegistry[springId]
     if (this._activeSprings.indexOf(spring) === -1) {
       this._activeSprings.push(spring)

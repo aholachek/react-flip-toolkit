@@ -9,7 +9,7 @@
   height: 10rem;
 }
 
-@keyframes fadeIn {
+@keyframes ModalFadeIn {
   0% {
     transform: translateX(-100vw);
   }
@@ -18,13 +18,13 @@
   }
 }
 
-@keyframes fadeOut {
+@keyframes ModalFadeOut {
   100% {
     transform: translateX(100vw);
   }
 }
 
-@keyframes fadeInOpposite {
+@keyframes ModalFadeInOpposite {
   0% {
     transform: translateX(100vw);
   }
@@ -33,7 +33,7 @@
   }
 }
 
-@keyframes fadeOutOpposite {
+@keyframes ModalFadeOutOpposite {
   100% {
     transform: translateX(-100vw);
   }
@@ -52,28 +52,28 @@
 }
 
 .portal-modal::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
-  animation: fadeIn .4s forwards;
+  animation: ModalFadeIn 0.4s forwards;
   z-index: 0;
-  background-color: #66CDFA;
+  background-color: #66cdfa;
 }
 
 .portal-modal.environment::after {
-  background-color: #93E7A3;
-  animation: fadeInOpposite .4s forwards;
+  background-color: #93e7a3;
+  animation: ModalFadeInOpposite 0.4s forwards;
 }
 
 .portal-modal--animating-out::after {
-  animation: fadeOut .4s forwards;
+  animation: ModalFadeOut 0.4s forwards;
 }
 
 .portal-modal--animating-out.environment::after {
-  animation: fadeOutOpposite .4s forwards;
+  animation: ModalFadeOutOpposite 0.4s forwards;
 }
 
 .portal-image-list {

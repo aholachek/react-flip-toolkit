@@ -34,6 +34,9 @@ class Demo extends Component {
         <nav>
           <ul>
             <li>
+              <a href="/staggered-list">Staggered List</a>
+            </li>
+            <li>
               <a href="/guitar">Guitar example</a>
             </li>
             <li>

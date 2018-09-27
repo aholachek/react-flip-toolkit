@@ -12,6 +12,7 @@ export const getSpringInterface = () => ({
 export const springPresets = {
   noWobble: { stiffness: 200, damping: 26 },
   gentle: { stiffness: 120, damping: 14 },
+  veryGentle: { stiffness: 130, damping: 17 },
   wobbly: { stiffness: 180, damping: 12 },
   stiff: { stiffness: 260, damping: 26 }
 }

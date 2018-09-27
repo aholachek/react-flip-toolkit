@@ -4,7 +4,8 @@ import {
   toArray,
   isFunction,
   isNumber,
-  getDuplicateValsAsStrings
+  getDuplicateValsAsStrings,
+  assign
 } from "../../utilities"
 import * as constants from "../../constants"
 import filterFlipDescendants from "./filterFlipDescendants"
@@ -160,7 +161,8 @@ const animateFlippedElements = ({
         flippedSpring: flipConfig.spring
       })
 
-      const stagger = flipConfig.stagger === true ? "all" : flipConfig.stagger
+      const stagger =
+        flipConfig.stagger === true ? "default" : flipConfig.stagger
 
       const toReturn = {
         element,
@@ -234,6 +236,7 @@ const animateFlippedElements = ({
       let invertedChildren = []
 
       if (
+        !flipCallbacks[id] ||
         !flipCallbacks[id].shouldInvert ||
         flipCallbacks[id].shouldInvert(decisionData.prev, decisionData.current)
       ) {
@@ -278,13 +281,25 @@ const animateFlippedElements = ({
       const animateOpacity =
         isNumber(fromVals.opacity) && fromVals.opacity !== toVals.opacity
 
+      let onStartCalled = false
+
       const getOnUpdateFunc = stop => {
-        // in case we have to cancel
         inProgressAnimations[id] = {
           stop,
           onComplete
         }
         return spring => {
+          //trigger the user provided onStart function
+          if (!onStartCalled) {
+            onStartCalled = true
+            if (flipCallbacks[id] && flipCallbacks[id].onStart)
+              flipCallbacks[id].onStart(
+                element,
+                decisionData.prev,
+                decisionData.current
+              )
+          }
+
           const currentValue = spring.getCurrentValue()
 
           if (!body.contains(element)) {
@@ -309,7 +324,7 @@ const animateFlippedElements = ({
         }
       }
 
-      const onStart = () => {
+      const initializeFlip = () => {
         // before animating, immediately apply FLIP styles to prevent flicker
         applyStyles({
           matrix: fromVals.matrix,
@@ -330,28 +345,20 @@ const animateFlippedElements = ({
             child.style.transformOrigin = "0 0"
           }
         })
-
-        if (flipCallbacks[id] && flipCallbacks[id].onStart)
-          flipCallbacks[id].onStart(
-            element,
-            decisionData.prev,
-            decisionData.current
-          )
       }
 
-      return {
-        ...toReturn,
+      return assign({}, toReturn, {
         stagger,
         springConfig,
         getOnUpdateFunc,
-        onStart,
+        initializeFlip,
         onAnimationEnd
-      }
+      })
     })
     .filter(x => x)
 
   // call this immediately to put items back in place
-  flipData.forEach(({ onStart }) => onStart && onStart())
+  flipData.forEach(({ initializeFlip }) => initializeFlip && initializeFlip())
 
   if (debug) return
 
@@ -363,7 +370,7 @@ const animateFlippedElements = ({
   // this function modifies flipData in-place
   // by removing references to non-direct children
   // to enable recursive stagger
-  const { topLevelChildren } = filterFlipDescendants(flipDict)
+  const { topLevelChildren } = filterFlipDescendants(flipDict, flippedIds)
 
   initiateAnimations({ topLevelChildren, flipDict, staggerConfig })
 }

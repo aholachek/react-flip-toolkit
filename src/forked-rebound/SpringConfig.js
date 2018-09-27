@@ -6,7 +6,7 @@
  *  LICENSE file in the root directory of this source tree. An additional grant
  *  of patent rights can be found in the PATENTS file in the same directory.
  *
- * @flow
+ *
  */
 
 /**
@@ -17,7 +17,7 @@
  * @public
  */
 class SpringConfig {
-  constructor(tension: number, friction: number) {
+  constructor(tension, friction) {
     this.tension = tension
     this.friction = friction
   }

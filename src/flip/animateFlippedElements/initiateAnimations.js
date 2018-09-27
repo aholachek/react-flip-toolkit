@@ -8,55 +8,66 @@ const initiateImmediateAnimations = immediate => {
   })
 }
 
-export default ({ staggerConfig, flipDict, topLevelChildren }) => {
-  const initiateStaggeredAnimations = staggered => {
-    if (!staggered || !Object.keys(staggered).length) return
-    Object.keys(staggered).forEach(staggerKey => {
-      const funcs =
-        staggerConfig && staggerConfig[staggerKey] === "reverse"
-          ? staggered[staggerKey].reverse()
-          : staggered[staggerKey]
-
-      staggeredSprings(funcs)
-    })
-  }
-
+export const createCallTree = ({
+  flipDict,
+  topLevelChildren,
+  initiateStaggeredAnimations
+}) => {
   //build a data struct to run the springs
-  const d = {
+  const tree = {
     root: {
-      staggered: {},
-      immediate: []
+      staggeredChildren: {},
+      immediateChildren: []
     }
   }
 
   // helper function to build the nested structure
-  const appendChild = (node, flipId) => {
-    const flipData = flipDict[flipId]
+  const appendChild = (parent, childId) => {
+    const flipData = flipDict[childId]
     // might have been filtered (e.g. because it was off screen)
     if (!flipData) return
-    flipData.staggered = {}
-    flipData.immediate = []
+
     if (flipData.stagger) {
-      node.staggered[flipData.stagger]
-        ? node.staggered[flipData.stagger].push(flipDict[flipId])
-        : (node.staggered[flipData.stagger] = [flipDict[flipId]])
-    } else node.immediate.push(flipDict[flipId])
+      parent.staggeredChildren[flipData.stagger]
+        ? parent.staggeredChildren[flipData.stagger].push(flipData)
+        : (parent.staggeredChildren[flipData.stagger] = [flipData])
+    } else parent.immediateChildren.push(flipData)
 
     // only when the spring is first activated, activate the child animations as well
     // this enables nested stagger
     flipData.onSpringActivate = () => {
-      initiateImmediateAnimations(flipData.immediate)
-      initiateStaggeredAnimations(flipData.staggered)
+      initiateImmediateAnimations(flipData.immediateChildren)
+      initiateStaggeredAnimations(flipData.staggeredChildren)
     }
 
-    flipData.childIds.forEach(childId => appendChild(flipDict[flipId], childId))
+    flipData.staggeredChildren = {}
+    flipData.immediateChildren = []
+
+    flipData.childIds.forEach(childId => appendChild(flipData, childId))
   }
 
   // create the nested structure
   topLevelChildren.forEach(c => {
-    appendChild(d.root, c)
+    appendChild(tree.root, c)
   })
 
-  initiateImmediateAnimations(d.root.immediate)
-  initiateStaggeredAnimations(d.root.staggered)
+  return tree
+}
+
+export default ({ staggerConfig, flipDict, topLevelChildren }) => {
+  const initiateStaggeredAnimations = staggered => {
+    if (!staggered || !Object.keys(staggered).length) return
+    Object.keys(staggered).forEach(staggerKey =>
+      staggeredSprings(staggered[staggerKey], staggerConfig[staggerKey])
+    )
+  }
+
+  const tree = createCallTree({
+    flipDict,
+    topLevelChildren,
+    initiateStaggeredAnimations
+  })
+
+  initiateImmediateAnimations(tree.root.immediateChildren)
+  initiateStaggeredAnimations(tree.root.staggeredChildren)
 }

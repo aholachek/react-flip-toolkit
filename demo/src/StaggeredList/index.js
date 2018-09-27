@@ -67,8 +67,10 @@ const ExpandedListItem = ({ index, color, onClick }) => {
     <Flipped
       flipId={`listItem-${index}`}
       stagger="card"
-      onComplete={el => {
-        el.classList.add("animated-in")
+      onStart={el => {
+        setTimeout(() => {
+          el.classList.add("animated-in")
+        }, 400)
       }}
     >
       <div
@@ -116,7 +118,10 @@ export default class AnimatedList extends Component {
         className="staggered-list-content"
         spring="gentle"
         staggerConfig={{
-          card: this.state.focused !== null ? "reverse" : "forwards"
+          card: {
+            direction: this.state.focused !== null ? "reverse" : "forwards",
+            speed: 0.5
+          }
         }}
         decisionData={this.state.focused}
       >

@@ -2,6 +2,7 @@ import animateUnflippedElements from "./animateUnflippedElements"
 import animateFlippedElements from "./animateFlippedElements"
 import { getFlippedElementPositionsAfterUpdate } from "./getFlippedElementPositions"
 import * as constants from "../constants"
+import { assign } from "../utilities"
 
 const createGetElementFunc = (element, portalKey) => {
   if (portalKey) {
@@ -51,10 +52,11 @@ const onFlipKeyUpdate = ({
     inProgressAnimations
   }
 
-  animateUnflippedElements({
-    unflippedIds,
-    ...baseArgs
-  })
+  animateUnflippedElements(
+    assign({}, baseArgs, {
+      unflippedIds
+    })
+  )
 
   const flippedIds = cachedOrderedFlipIds.filter(isFlipped)
 
@@ -62,15 +64,14 @@ const onFlipKeyUpdate = ({
     id => newFlipChildrenPositions[id] !== "unloadedImg"
   )
 
-  const animateFlippedElementsArgs = {
+  const animateFlippedElementsArgs = assign({}, baseArgs, {
     flippedIds: readyToBeFlippedIds,
-    ...baseArgs,
     applyTransformOrigin,
     spring,
     debug,
     staggerConfig,
     decisionData
-  }
+  })
 
   animateFlippedElements(animateFlippedElementsArgs)
 
@@ -89,10 +90,11 @@ const onFlipKeyUpdate = ({
       const loadedImgIds = waitATickIds.filter(
         id => newFlipChildrenPositions[id] !== "unloadedImg"
       )
-      animateFlippedElements({
-        ...animateFlippedElementsArgs,
-        flippedIds: loadedImgIds
-      })
+      animateFlippedElements(
+        assign({}, animateFlippedElementsArgs, {
+          flippedIds: loadedImgIds
+        })
+      )
     })
   }
 }

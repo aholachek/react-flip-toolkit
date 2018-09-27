@@ -6,10 +6,9 @@
  *  LICENSE file in the root directory of this source tree. An additional grant
  *  of patent rights can be found in the PATENTS file in the same directory.
  *
- * @flow
+ *
  */
 
-import type SpringSystem from "./SpringSystem"
 import { onFrame, performanceNow } from "./util"
 
 /**
@@ -19,8 +18,6 @@ import { onFrame, performanceNow } from "./util"
  * @public
  */
 export class AnimationLooper {
-  springSystem: ?SpringSystem = null
-
   run() {
     onFrame(() => {
       this.springSystem.loop(performanceNow())

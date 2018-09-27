@@ -17,7 +17,7 @@ export const getDuplicateValsAsStrings = arr => {
 
 export const assign = (target, ...args) => {
   args.forEach(arg => {
-    if (arg === null) return
+    if (!arg) return
     // Skip over if undefined or null
     for (var nextKey in arg) {
       // Avoid bugs when hasOwnProperty is shadowed

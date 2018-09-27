@@ -36,8 +36,15 @@ export const createSpring = flipped => {
   }
 }
 
-export const staggeredSprings = flippedArray => {
+export const staggeredSprings = (flippedArray, staggerConfig = {}) => {
   if (!flippedArray || !flippedArray.length) return
+
+  if (staggerConfig.direction === "reverse") flippedArray.reverse()
+
+  const normalizedSpeed = staggerConfig.speed
+    ? 1 + Math.max(Math.min(staggerConfig.speed, 0), 1)
+    : 1.1
+
   const nextThreshold = 1 / Math.max(Math.min(flippedArray.length, 100), 10)
 
   const springFuncs = flippedArray
@@ -51,7 +58,9 @@ export const staggeredSprings = flippedArray => {
           const currentValue = spring.getCurrentValue()
           if (currentValue > nextThreshold) {
             springFuncs[i + 1] &&
-              springFuncs[i + 1].setEndValue(Math.min(currentValue * 1.2, 1))
+              springFuncs[i + 1].setEndValue(
+                Math.min(currentValue * normalizedSpeed, 1)
+              )
           }
           // now call the actual update function
           onUpdate(spring)

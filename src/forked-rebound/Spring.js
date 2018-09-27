@@ -6,17 +6,16 @@
  *  LICENSE file in the root directory of this source tree. An additional grant
  *  of patent rights can be found in the PATENTS file in the same directory.
  *
- * @flow
+ *
  */
 
-import type SpringSystem from "./SpringSystem"
-import type SpringConfig from "./SpringConfig"
-import type { SpringListener } from "./types"
 import { removeFirst } from "./util"
 
 class PhysicsState {
-  position: number = 0
-  velocity: number = 0
+  constructor() {
+    this.position = 0
+    this.velocity = 0
+  }
 }
 
 /**
@@ -35,28 +34,23 @@ class PhysicsState {
  * @public
  */
 class Spring {
-  static _ID: number = 0
-  static MAX_DELTA_TIME_SEC: number = 0.064
-  static SOLVER_TIMESTEP_SEC: number = 0.001
-
-  listeners: Array<SpringListener> = []
-  _startValue: number = 0
-  _id: string
-  _currentState = new PhysicsState()
-  _displacementFromRestThreshold: number = 0.001
-  _endValue: number = 0
-  _overshootClampingEnabled: boolean = false
-  _previousState = new PhysicsState()
-  _restSpeedThreshold: number = 0.001
-  _springConfig: SpringConfig
-  _springSystem: SpringSystem
-  _tempState = new PhysicsState()
-  _timeAccumulator: number = 0
-  _wasAtRest: boolean = true
-
-  constructor(springSystem: SpringSystem) {
+  constructor(springSystem) {
     this._id = "s" + Spring._ID++
     this._springSystem = springSystem
+
+    this.listeners = []
+    this._startValue = 0
+
+    this._currentState = new PhysicsState()
+    this._displacementFromRestThreshold = 0.001
+    this._endValue = 0
+    this._overshootClampingEnabled = false
+    this._previousState = new PhysicsState()
+    this._restSpeedThreshold = 0.001
+
+    this._tempState = new PhysicsState()
+    this._timeAccumulator = 0
+    this._wasAtRest = true
   }
 
   getId() {
@@ -67,7 +61,7 @@ class Spring {
    * Remove a Spring from simulation and clear its listeners.
    * @public
    */
-  destroy(): void {
+  destroy() {
     this.listeners = []
     this._springSystem.deregisterSpring(this)
   }
@@ -78,7 +72,7 @@ class Spring {
    * equilibrium of the Spring in the physics loop.
    * @public
    */
-  setSpringConfig(springConfig: SpringConfig) {
+  setSpringConfig(springConfig) {
     this._springConfig = springConfig
     return this
   }
@@ -86,14 +80,14 @@ class Spring {
    * Retrieve the current value of the Spring.
    * @public
    */
-  getCurrentValue(): number {
+  getCurrentValue() {
     return this._currentState.position
   }
 
   /**
    * Get the absolute distance of the Spring from a given state value
    */
-  getDisplacementDistanceForState(state: PhysicsState) {
+  getDisplacementDistanceForState(state) {
     return Math.abs(this._endValue - state.position)
   }
 
@@ -106,7 +100,7 @@ class Spring {
    * immediately.
    * @public
    */
-  setEndValue(endValue: number): this {
+  setEndValue(endValue) {
     if (this._endValue === endValue && this.isAtRest()) {
       return this
     }
@@ -131,7 +125,7 @@ class Spring {
    * govern its motion to return to rest on a natural feeling curve.
    * @public
    */
-  setVelocity(velocity: number): this {
+  setVelocity(velocity) {
     if (velocity === this._currentState.velocity) {
       return this
     }
@@ -148,7 +142,7 @@ class Spring {
    * down to 0 or alpha fade.
    * @public
    */
-  setOvershootClampingEnabled(enabled: boolean): this {
+  setOvershootClampingEnabled(enabled) {
     this._overshootClampingEnabled = enabled
     return this
   }
@@ -159,7 +153,7 @@ class Spring {
    * position and end value.
    * @public
    */
-  isOvershooting(): boolean {
+  isOvershooting() {
     const start = this._startValue
     const end = this._endValue
     return (
@@ -177,7 +171,7 @@ class Spring {
    * displacement of the Spring.
    * @public
    */
-  advance(time: number, realDeltaTime: number): void {
+  advance(time, realDeltaTime) {
     let isAtRest = this.isAtRest()
 
     if (isAtRest && this._wasAtRest) {
@@ -288,7 +282,7 @@ class Spring {
     this.notifyPositionUpdated(notifyActivate, notifyAtRest)
   }
 
-  notifyPositionUpdated(notifyActivate: boolean, notifyAtRest: boolean): void {
+  notifyPositionUpdated(notifyActivate, notifyAtRest) {
     for (let i = 0, len = this.listeners.length; i < len; i++) {
       const listener = this.listeners[i]
 
@@ -313,11 +307,11 @@ class Spring {
    * displacement threshold.
    * @public
    */
-  systemShouldAdvance(): boolean {
+  systemShouldAdvance() {
     return !this.isAtRest() || !this.wasAtRest()
   }
 
-  wasAtRest(): boolean {
+  wasAtRest() {
     return this._wasAtRest
   }
 
@@ -330,7 +324,7 @@ class Spring {
    * restSpeedThreshold.
    * @public
    */
-  isAtRest(): boolean {
+  isAtRest() {
     return (
       Math.abs(this._currentState.velocity) < this._restSpeedThreshold &&
       (this.getDisplacementDistanceForState(this._currentState) <=
@@ -339,7 +333,7 @@ class Spring {
     )
   }
 
-  _interpolate(alpha: number): void {
+  _interpolate(alpha) {
     this._currentState.position =
       this._currentState.position * alpha +
       this._previousState.position * (1 - alpha)
@@ -348,15 +342,19 @@ class Spring {
       this._previousState.velocity * (1 - alpha)
   }
 
-  addListener(newListener: SpringListener): this {
+  addListener(newListener) {
     this.listeners.push(newListener)
     return this
   }
 
-  removeListener(listenerToRemove: SpringListener): this {
+  removeListener(listenerToRemove) {
     removeFirst(this.listeners, listenerToRemove)
     return this
   }
 }
+
+Spring._ID = 0
+Spring.MAX_DELTA_TIME_SEC = 0.064
+Spring.SOLVER_TIMESTEP_SEC = 0.001
 
 export default Spring

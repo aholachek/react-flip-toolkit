@@ -6,7 +6,7 @@
  *  LICENSE file in the root directory of this source tree. An additional grant
  *  of patent rights can be found in the PATENTS file in the same directory.
  *
- * @flow
+ *
  */
 
 let _onFrame
@@ -16,7 +16,7 @@ if (typeof window !== "undefined") {
 
 _onFrame =
   _onFrame ||
-  function(callback: () => mixed) {
+  function(callback) {
     window.setTimeout(callback, 1000 / 60)
   }
 
