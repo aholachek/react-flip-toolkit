@@ -146,18 +146,18 @@ The parent wrapper component that contains all the elements to be animated. You'
 | portalKey               | -          | `string`                   | In general, the `Flipper` component will only apply transitions to its descendents. This allows multiple `Flipper` elements to coexist on the same page, but it will prevent animations from working if you use [portals](https://reactjs.org/docs/portals.html). You can provide a unique `portalKey` prop to `Flipper` to tell it to scope element selections to the entire document, not just to its children, so that elements in portals can be transitioned. |
 | debug                   | `false`    | `bool`                     | This experimental prop will pause your animation right at the initial application of FLIP-ped styles. That will allow you to inspect the state of the animation at the very beginning, when it should look similar or identical to the UI before the animation began.                                                                                                                                                                                              |
 | decisionData            | -          | `any`                      | Sometimes, you'll want the animated children of the `Flipper` element to behave differently depending on the state transition &mdash; maybe only certain elements should animate in response to a particular change. By providing this data to the `Flipper` object, you'll pass it into the `shouldFlip` and `shouldInvert` methods of each child `Flipped` component so they can decided for themselves whether to animate or not.                               |
-| staggerConfig           | -          | `object`                   | Here you can provide some configuration for any staggered `Flipped` children. The config prop might look something like the code snippet below:                                                                                                                                                                                                                                                                                                                    |
+| staggerConfig           | -          | `object`                   | Provide configuration for staggered `Flipped` children. The config object might look something like the code snippet below:                                                                                                                                                                                                                                                                                                                                        |
 
 ```js
 staggerConfig={{
-  // the "default" config will apply to all staggered elements without explicit keys
+  // the "default" config will apply to staggered elements without explicit keys
       default: {
         // default direction is forwards
         reverse: true,
         // default is .1, 0 < n < 1
         speed: .5
       },
-  // this will apply to  Flipped element with the prop stagger='namedStagger'
+  // this will apply to Flipped elements with the prop stagger='namedStagger'
     namedStagger : { speed: .2 }
   }}
  ```
