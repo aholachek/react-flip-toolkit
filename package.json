@@ -29,10 +29,10 @@
   },
   "bugs": "https://github.com/aholachek/react-flip-toolkit/issues",
   "dependencies": {
-    "prop-types": "^15.6.2",
     "rematrix": "^0.2.2"
   },
   "peerDependencies": {
+    "prop-types": "^15.6.2",
     "react": "16.x"
   },
   "devDependencies": {
