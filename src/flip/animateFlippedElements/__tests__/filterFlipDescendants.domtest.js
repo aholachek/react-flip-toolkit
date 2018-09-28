@@ -33,7 +33,15 @@ describe("filterFlipDescendants", () => {
       {}
     )
 
-    const { topLevelChildren } = filterFlipDescendants(flipData)
+    const { topLevelChildren } = filterFlipDescendants(flipData, [
+      "id-1",
+      "id-2",
+      "id-3",
+      "id-4",
+      "id-1--2",
+      "id-1--3",
+      "id-2--2"
+    ])
 
     Object.keys(flipData).forEach(flipId => {
       delete flipData[flipId].element

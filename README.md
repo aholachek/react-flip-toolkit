@@ -263,7 +263,7 @@ But for many/most use cases, you'll want to additionally specify the `scale` pro
 
 ## Library details
 
-- ~7.5kb minified and gzipped
+- [8kb minified and gzipped](https://bundlephobia.com/result?p=react-flip-toolkit)
 - React 16+
 - Tested in latest Chrome, Firefox, Safari, Edge, and IE 11.
 - Uses [Rematrix](https://github.com/jlmakes/rematrix) for matrix calculations and a simplified fork of  [Rebound](https://github.com/facebook/rebound-js) for spring animations.

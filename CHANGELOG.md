@@ -6,8 +6,9 @@
 
 ### Improved
 
-1. **Better performance:** Moved from the library `Wobblejs`, that creates a render loop for each spring animation, to a custom fork of `Reboundjs`, that creates only a single render loop for all existing animations. Chrome perftools profiling shows significantly less JavaScript needed for each frame, resulting in a slightly higher average frame rate.
-2. **Nested Stagger:** Before, you could only stagger elements a single level. Now, you can have elements that are staggered for arbitrarily deep levels, enabling animations such as [this one]().
+1. **Better performance:** Moved from the library `Wobblejs`, that creates a render loop for each spring animation, to a custom fork of `Reboundjs`, that creates only a single render loop for all existing animations. Chrome perftools profiling shows significantly less JavaScript time for each frame, resulting in a slightly higher average frame rate.
+
+2. **Nested Stagger:** Before, you could only stagger elements a single level. Now, you can have elements that are staggered for arbitrarily deep levels, enabling animations such as [this one](https://react-flip-toolkit-demos.surge.sh/staggered-list).
 
 ### Added
 
@@ -15,13 +16,15 @@
 
 2. An improved API for deciding whether a `Flipped` component should actually flip. Now you can pass down some state from the `Flipper` component in the `decisionData` prop, which will be passed into the `shouldFlip` or `shouldInvert` functions on the children `Flipped` components.
 
+3. A new spring preset, `veryGentle`, that has just the tiniest bit of bounce.
+
 ### Removed
 
 1. As a corollary to #3 in the **Added** section, removed the old way of telling a `Flipped` element whether or not to animate (`componentId` and `componentIdFilter`).
 
 ### Degraded
 
-The size of the library increased by about .5kb (gzipped) to 7.5kb gzipped. Most of the additional code was handling improved stagger configurability.
+The size of the library increased by about 1kb (gzipped) to 8kb gzipped. Most of the additional code was handling improved stagger configurability although the switch to rebound added a tiny bit as well. I'll be attempting to reduce the size of the library in an upcoming pr.
 
 ## 4.0.0 Release
 

@@ -9,8 +9,6 @@
  *
  */
 
-/* eslint-disable flowtype/no-weak-types */
-
 import _onFrame from "./onFrame"
 
 // Cross browser/node timer functions.

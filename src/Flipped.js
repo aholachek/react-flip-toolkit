@@ -2,7 +2,7 @@ import React, { Component, Children, cloneElement } from "react"
 import PropTypes from "prop-types"
 import { FlipContext, PortalContext } from "./Flipper"
 import * as constants from "./constants"
-import { assign } from "./utilities"
+import { assign, isObject } from "./utilities"
 
 const customPropCheck = function(props, propName) {
   if (props.flipId && props.inverseFlipId) {
@@ -100,7 +100,7 @@ class FlippedWithContext extends Component {
               // if there is no surrounding Flipper component,
               // we don't want to throw an error, so check
               // that data exists and is not the default string
-              if (data instanceof Object) {
+              if (isObject(data)) {
                 data[flipId] = {
                   shouldFlip,
                   shouldInvert,

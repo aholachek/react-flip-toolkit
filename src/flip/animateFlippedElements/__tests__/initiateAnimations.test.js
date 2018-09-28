@@ -1,4 +1,4 @@
-import initiateAnimations, { createCallTree } from "../initiateAnimations"
+import { createCallTree } from "../initiateAnimations"
 
 describe("createCallTree", () => {
   it("should build the correct tree if there are nested immediate flip functions", () => {

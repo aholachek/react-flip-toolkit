@@ -1,6 +1,6 @@
 {
   "name": "react-flip-toolkit",
-  "version": "5.0.0-beta0",
+  "version": "5.0.0-beta1",
   "description": "Configurable FLIP animation helpers for React",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -44,6 +44,7 @@
     "chai": "^4.1.2",
     "eslint": "^5.0.1",
     "eslint-config-react-app": "^2.1.0",
+    "eslint-plugin-flowtype": "^2.50.3",
     "eslint-plugin-import": "^2.13.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.1.0",
@@ -54,7 +55,6 @@
     "parcel": "^1.10.0",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
-    "react-motion": "^0.5.2",
     "react-router": "^4.3.1",
     "react-test-renderer": "^16.4.1",
     "sinon": "^6.1.3",

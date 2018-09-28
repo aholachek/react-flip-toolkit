@@ -119,7 +119,7 @@ export default class AnimatedList extends Component {
         spring="gentle"
         staggerConfig={{
           card: {
-            direction: this.state.focused !== null ? "reverse" : "forwards",
+            reverse: this.state.focused !== null ? true : false,
             speed: 0.5
           }
         }}
