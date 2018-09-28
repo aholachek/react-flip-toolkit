@@ -2,22 +2,26 @@
 
 ## 5.0.0 Release
 
-Summary:
+**Summary:** Use a `Reboundjs` fork instead of `Wobblejs` for better performance. Add a lot more options for staggering.
 
 ### Improved
-1. Better performance
-2. Nested Stagger
+
+1. **Better performance:** Moved from the library `Wobblejs`, that creates a render loop for each spring animation, to a custom fork of `Reboundjs`, that creates only a single render loop for all existing animations. Chrome perftools profiling shows significantly less JavaScript needed for each frame, resulting in a slightly higher average frame rate.
+2. **Nested Stagger:** Before, you could only stagger elements a single level. Now, you can have elements that are staggered for arbitrarily deep levels, enabling animations such as [this one]().
 
 ### Added
-2. More stagger configuration options: `speed` and `direction`
 
+1. More stagger configuration options: `speed` and `reverse`. You can config the stagger in the `staggerConfig` prop on the `Flipper` component.
 
-3. An improved API for deciding whether a `Flipped` component should actually flip.
+2. An improved API for deciding whether a `Flipped` component should actually flip. Now you can pass down some state from the `Flipper` component in the `decisionData` prop, which will be passed into the `shouldFlip` or `shouldInvert` functions on the children `Flipped` components.
 
 ### Removed
 
-1. As a corollary to #3 in the Added section, removed the old way of telling a `Flipped` element whether or not to animate (`)
+1. As a corollary to #3 in the **Added** section, removed the old way of telling a `Flipped` element whether or not to animate (`componentId` and `componentIdFilter`).
 
+### Degraded
+
+The size of the library increased by about .5kb (gzipped) to 7.5kb gzipped. Most of the additional code was handling improved stagger configurability.
 
 ## 4.0.0 Release
 

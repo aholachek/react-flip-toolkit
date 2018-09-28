@@ -39,7 +39,7 @@ export const createSpring = flipped => {
 export const staggeredSprings = (flippedArray, staggerConfig = {}) => {
   if (!flippedArray || !flippedArray.length) return
 
-  if (staggerConfig.direction === "reverse") flippedArray.reverse()
+  if (staggerConfig.reverse) flippedArray.reverse()
 
   const normalizedSpeed = staggerConfig.speed
     ? 1 + Math.max(Math.min(staggerConfig.speed, 0), 1)
@@ -52,6 +52,8 @@ export const staggeredSprings = (flippedArray, staggerConfig = {}) => {
     .map((flipped, i) => {
       const cachedGetOnUpdate = flipped.getOnUpdateFunc
 
+      // modify the update function to adjust
+      // the end value of the trailing Flipped component
       flipped.getOnUpdateFunc = stop => {
         const onUpdate = cachedGetOnUpdate(stop)
         return spring => {

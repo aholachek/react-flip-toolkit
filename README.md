@@ -146,24 +146,25 @@ The parent wrapper component that contains all the elements to be animated. You'
 | portalKey               | -          | `string`                   | In general, the `Flipper` component will only apply transitions to its descendents. This allows multiple `Flipper` elements to coexist on the same page, but it will prevent animations from working if you use [portals](https://reactjs.org/docs/portals.html). You can provide a unique `portalKey` prop to `Flipper` to tell it to scope element selections to the entire document, not just to its children, so that elements in portals can be transitioned. |
 | debug                   | `false`    | `bool`                     | This experimental prop will pause your animation right at the initial application of FLIP-ped styles. That will allow you to inspect the state of the animation at the very beginning, when it should look similar or identical to the UI before the animation began.                                                                                                                                                                                              |
 | decisionData            | -          | `any`                      | Sometimes, you'll want the animated children of the `Flipper` element to behave differently depending on the state transition &mdash; maybe only certain elements should animate in response to a particular change. By providing this data to the `Flipper` object, you'll pass it into the `shouldFlip` and `shouldInvert` methods of each child `Flipped` component so they can decided for themselves whether to animate or not.                               |
-| staggerConfig           | -          | `object`                   | Here you can provide some configuration for any staggered `Flipped` children. The config object looks like this:                                                                                                                                                                                                                                                                                                                                                   |
+| staggerConfig           | -          | `object`                   | Here you can provide some configuration for any staggered `Flipped` children. The config prop might look something like the code snippet below:                                                                                                                                                                                                                                                                                                                    |
 
 ```js
 staggerConfig={{
-  // default will apply to all staggered elements without explicit keys
+  // the "default" config will apply to all staggered elements without explicit keys
       default: {
-        // default is 'forward'
-        direction: 'reverse',
-        // int between 0 and 1
+        // default direction is forwards
+        reverse: true,
+        // default is .1, 0 < n < 1
         speed: .5
       },
-      namedStagger : {...}
+  // this will apply to  Flipped element with the prop stagger='namedStagger'
+    namedStagger : { speed: .2 }
   }}
  ```
 
 ### 2. `Flipped`
 
-Wraps an element that should be animated.
+Wraps an **element** that should be animated.
 
 E.g. in one component you can have
 
@@ -226,12 +227,12 @@ By default the FLIP-ped elements' translate, scale, and opacity properties are a
 | opacity   | `bool` |                                     |
 
 
-#### Advanced props (gating functions)
+#### Advanced props: Functions to control when FLIP happens
 
-| prop         | arguments                                 | details                                                                                                                                                                                                                                |
-| ------------ | :---------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| shouldFlip   | `prevDecisionData`, `currentDecisionData` | A function provided with the current and previous `decisionData` props passed down by the `Flipper` component. Returns a `boolean` to indicate whether a `Flipped` component should animate or not.                                    |
-| shouldInvert | `prevDecisionData`, `currentDecisionData` | A function provided with the current and previous `decisionData` props passed down by the `Flipper` component. Returns a `boolean` indicating whether to apply inverted transforms to children that request it via an `inverseFlipId`. |
+| prop         | arguments                                 | details                                                                                                                                                                                                                                          |
+| ------------ | :---------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| shouldFlip   | `prevDecisionData`, `currentDecisionData` | A function provided with the current and previous `decisionData` props passed down by the `Flipper` component. Returns a `boolean` to indicate whether a `Flipped` component should animate at that particular moment or not.                    |
+| shouldInvert | `prevDecisionData`, `currentDecisionData` | A function provided with the current and previous `decisionData` props passed down by the `Flipper` component. Returns a `boolean` indicating whether to apply inverted transforms to `Flipped` children that request it via an `inverseFlipId`. |
 
 ## Scale transitions made eas(ier)
 
@@ -262,7 +263,7 @@ But for many/most use cases, you'll want to additionally specify the `scale` pro
 
 ## Library details
 
-- ~7kb minified and gzipped
+- ~7.5kb minified and gzipped
 - React 16+
 - Tested in latest Chrome, Firefox, Safari, Edge, and IE 11.
 - Uses [Rematrix](https://github.com/jlmakes/rematrix) for matrix calculations and a simplified fork of  [Rebound](https://github.com/facebook/rebound-js) for spring animations.

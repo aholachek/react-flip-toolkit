@@ -49,7 +49,8 @@ class ListExample extends Component {
           spring={this.state.spring}
           staggerConfig={{
             default: {
-              direction: this.state.stagger
+              reverse: this.state.stagger !== "forward",
+              speed: 0
             }
           }}
           decisionData={this.state}
