@@ -6,8 +6,6 @@
 
 [![Build Status](https://travis-ci.com/aholachek/react-flip-toolkit.svg?branch=master)](https://travis-ci.com/aholachek/react-flip-toolkit)
 
-`React-Flip-Toolkit` helps you build sophisticated, natural-feeling layout transitions.
-
 **Comparison with other React FLIP libraries**
 
 | Feature                                        | [`react-flip-move`](https://github.com/joshwcomeau/react-flip-move) | [`react-overdrive`](https://github.com/berzniz/react-overdrive) | `react-flip-toolkit`                                |
@@ -24,7 +22,8 @@
 
 ## Table of Contents
 - [Demos](#demos)
-- [**Quick start**](#quick-start)
+- [**Interactive Tutorial**](https://alex.holachek.com/rft-tutorial/)
+- [Quick start](#quick-start)
 - [The Components](#the-components)
   - [1. `Flipper`](#1-flipper)
     - [Props](#props)
@@ -120,7 +119,6 @@ class AnimatedSquare extends Component {
 ```
 
 [view on Codepen](https://codepen.io/aholachek/pen/oyKJgL)
-
 
 ## The Components
 
