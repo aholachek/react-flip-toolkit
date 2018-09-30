@@ -22,7 +22,7 @@
 
 ## Table of Contents
 - [Demos](#demos)
-- [**Interactive Tutorial**](https://alex.holachek.com/rft-tutorial/)
+- [🆕 Interactive Tutorial](https://alex.holachek.com/rft-tutorial/)
 - [Quick start](#quick-start)
 - [The Components](#the-components)
   - [1. `Flipper`](#1-flipper)
