@@ -23,7 +23,7 @@ class Card extends PureComponent {
   }
 
   shouldFlip = (prev, current) => {
-    if (current === this.props.i) return true
+    if (prev === this.props.i) return true
     return false
   }
   render() {
