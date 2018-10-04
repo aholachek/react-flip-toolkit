@@ -33,8 +33,8 @@ export interface FlippedProps {
     index: number,
     removeElement: () => any
   ) => any
-  shouldFlip?: (prevDecisionData, currentDecisionData) => boolean
-  shouldInvert?: (prevDecisionData, currentDecisionData) => boolean
+  shouldFlip?: (prevDecisionData: any, currentDecisionData: any) => boolean
+  shouldInvert?: (prevDecisionData: any, currentDecisionData: any) => boolean
   portalKey?: string
 }
 
