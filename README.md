@@ -40,36 +40,41 @@
 ## Demos
 
 <p>
-<h4>Image Transitions</h4>
 <a href="https://react-flip-toolkit-demos.surge.sh/photos">
+<h4>Image Transitions</h4>
+
   <img src="./example-assets/photogrid.gif" width='600px' alt='an animation showing click to expand a photo' />
 </a>
 </p>
 
 <p>
-<h4>Usage with React Router</h4>
 <a href="https://github.com/aholachek/react-flip-toolkit-router-example">
+<h4>Usage with React Router</h4>
+
   <img src="./example-assets/compressed-demo.gif" width='600px' alt='React-flip-toolkit with React-Router' />
 </a>
 </p>
 
 <p>
-<h4>Stripe-Inspired Menu</h4>
 <a href="https://codepen.io/aholachek/pen/KeevYN">
+<h4>Stripe-Inspired Menu</h4>
+
   <img src="./example-assets/dropdown.gif" width='600px' alt='a smoothly transitioning menu dropdown' />
 </a>
 </p>
 
 <p>
-<h4>List Transition</h4>
 <a href="https://codepen.io/aholachek/pen/jvvarq?editors=0110">
+<h4>List Transition</h4>
+
   <img src="./example-assets/list-transition.gif" height="300px" alt='animation for the selected state of a list item' />
 </a>
 </p>
 
 <p>
-<h4>Spring Options Explorer</h4>
 <a href="https://codepen.io/aholachek/full/bKmZbV/">
+<h4>Spring Options Explorer</h4>
+
   <img src="./example-assets/spring-options.gif" width='600px' alt='spring easing explorer' />
 </a>
 </p>
@@ -260,7 +265,9 @@ The problem with scale animations has to do with children &mdash; if you scale a
 By default, both the scale and the translation transforms of the parent will be counteracted (this allows children components to make their own FLIP animations without being affected by the parent).
 But for many/most use cases, you'll want to additionally specify the `scale` prop to limit the adjustment to the scale and allow the positioning to move with the parent.
 
-**For the most seamless results** the DOM element with the inverse transform applied should lie flush against its parent container &mdash; that means any padding should be applied to the inverted container rather than the parent container.
+**The DOM element with the inverse transform should lie flush against its parent container** for the most seamless animation.
+
+That means any layout styles &mdash; padding, flexbox, etc&mdash;should be applied to the inverted container (the element wrapped with a `Flipped` component with an `inverseFlipId`) rather than the parent `Flipped` container.
 
 ## Library details
 
