@@ -177,7 +177,7 @@ class ListExample extends Component {
             </button>
           </div>
           <h2>Regular onAppear</h2>
-          <ul className="list">
+          <ul className="updating-list">
             {[...this.state.data]
               .sort((a, b) => {
                 if (this.state.sort === "ascending") {
@@ -212,7 +212,7 @@ class ListExample extends Component {
 
           <h2>Delayed onAppear</h2>
 
-          <ul className="list">
+          <ul className="updating-list">
             {[...this.state.data]
               .sort((a, b) => {
                 if (this.state.sort === "ascending") {

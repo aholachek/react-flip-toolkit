@@ -83,6 +83,7 @@ const animateUnflippedElements = ({
       if (getComputedStyle(parent).position === "static") {
         parent.style.position = "relative"
       }
+      element.style.transform = "matrix(1, 0, 0, 1, 0, 0)"
       element.style.position = "absolute"
       element.style.top = top + "px"
       element.style.left = left + "px"
