@@ -40,6 +40,15 @@ export interface FlippedProps {
 
 export const Flipped: React.ComponentType<FlippedProps>
 
+export interface StaggerConfigValue {
+  reverse: boolean
+  speed: number
+}
+
+export interface StaggerConfig {
+  [key: string]: StaggerConfigValue
+}
+
 export interface FlipperProps {
   flipKey: any
   children: React.ReactNode
@@ -50,6 +59,7 @@ export interface FlipperProps {
   className?: string
   portalKey?: string
   decisionData?: any
+  staggerConfig?: StaggerConfig
 }
 
 export const Flipper: React.ComponentType<FlipperProps>
