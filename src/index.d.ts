@@ -41,11 +41,12 @@ export interface FlippedProps {
 export const Flipped: React.ComponentType<FlippedProps>
 
 export interface StaggerConfigValue {
-  reverse: boolean
+  reverse?: boolean
   speed: number
 }
 
 export interface StaggerConfig {
+  default?: StaggerConfigValue
   [key: string]: StaggerConfigValue
 }
 
