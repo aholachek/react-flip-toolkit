@@ -46,7 +46,6 @@ export interface StaggerConfigValue {
 }
 
 export interface StaggerConfig {
-  default?: StaggerConfigValue
   [key: string]: StaggerConfigValue
 }
 
