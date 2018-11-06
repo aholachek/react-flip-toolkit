@@ -116,6 +116,15 @@ const animateFlippedElements = ({
 }) => {
   const body = document.querySelector("body")
 
+  // the stuff below is used so we can return a promise that resolves when all FLIP animations have
+  // completed
+  let closureResolve
+  const flipCompletedPromise = new Promise((resolve, reject) => {
+    closureResolve = resolve
+  })
+  let withInitFuncs
+  const completedAnimationIds = []
+
   if (debug) {
     // eslint-disable-next-line no-console
     console.error(
@@ -133,7 +142,7 @@ const animateFlippedElements = ({
     )
   }
 
-  const flipData = flippedIds
+  const flipDataArray = flippedIds
     // take all the measurements we need
     // and return an object with animation functions + necessary data
     .map(id => {
@@ -143,11 +152,11 @@ const animateFlippedElements = ({
       const currentOpacity = newFlipChildrenPositions[id].opacity
       const needsForcedMinVals = currentRect.width < 1 || currentRect.height < 1
 
-      // don't initiateImmediateAnimations elements outside of the user's viewport
+      // don't animate elements outside of the user's viewport
       if (!rectInViewport(prevRect) && !rectInViewport(currentRect)) {
         return false
       }
-      // it's never going to be visible, so dont initiateImmediateAnimations it
+      // it's never going to be visible, so dont animate it
       if (
         (prevRect.width === 0 && currentRect.width === 0) ||
         (prevRect.height === 0 && currentRect.height === 0)
@@ -187,8 +196,8 @@ const animateFlippedElements = ({
         if (!elementShouldFlip) return toReturn
       }
 
-      // don't initiateImmediateAnimations elements that didn't change
-      // but we might want to initiateImmediateAnimations children
+      // don't animate elements that didn't change
+      // but we might want to animate children
       if (
         prevRect.left === currentRect.left &&
         prevRect.top === currentRect.top &&
@@ -211,7 +220,7 @@ const animateFlippedElements = ({
       const fromVals = {}
       const transformsArray = [currentTransform]
 
-      // we're only going to initiateImmediateAnimations the values that the child wants animated
+      // we're only going to animate the values that the child wants animated
       if (flipConfig.translate) {
         transformsArray.push(
           Rematrix.translateX(prevRect.left - currentRect.left)
@@ -277,11 +286,15 @@ const animateFlippedElements = ({
       // when it is called, the animation has already been cancelled
       const onAnimationEnd = () => {
         delete inProgressAnimations[id]
+        completedAnimationIds.push(id)
         isFunction(onComplete) && onComplete()
         if (needsForcedMinVals && element) {
           element.style.minHeight = ""
           element.style.minWidth = ""
         }
+        completedAnimationIds.push(id)
+        if (completedAnimationIds.length === withInitFuncs.length)
+          closureResolve()
       }
 
       const animateOpacity =
@@ -363,22 +376,33 @@ const animateFlippedElements = ({
     })
     .filter(x => x)
 
-  // call this immediately to put items back in place
-  flipData.forEach(({ initializeFlip }) => initializeFlip && initializeFlip())
+  // we use this array to compare with completed animations
+  // to decide when all animations are completed
+  withInitFuncs = flipDataArray.filter(({ initializeFlip }) =>
+    Boolean(initializeFlip)
+  )
+  //  put items back in place
+  withInitFuncs.forEach(({ initializeFlip }) => initializeFlip())
 
   if (debug) return
 
-  const flipDict = flipData.reduce((acc, curr) => {
+  const flipDict = flipDataArray.reduce((acc, curr) => {
     acc[curr.id] = curr
     return acc
   }, {})
 
-  // this function modifies flipData in-place
+  // this function modifies flipDataArray in-place
   // by removing references to non-direct children
   // to enable recursive stagger
   const { topLevelChildren } = filterFlipDescendants(flipDict, flippedIds)
 
-  initiateAnimations({ topLevelChildren, flipDict, staggerConfig })
+  return () => {
+    // there are no active FLIP animations, so immediately resolve the
+    // returned promise
+    if (!withInitFuncs.length) closureResolve()
+    initiateAnimations({ topLevelChildren, flipDict, staggerConfig })
+    return flipCompletedPromise
+  }
 }
 
 export default animateFlippedElements

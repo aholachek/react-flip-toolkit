@@ -30,7 +30,6 @@ const propTypes = {
   onStart: PropTypes.func,
   onComplete: PropTypes.func,
   onAppear: PropTypes.func,
-  onDelayedAppear: PropTypes.func,
   shouldFlip: PropTypes.func,
   shouldInvert: PropTypes.func,
   onExit: PropTypes.func,
@@ -85,7 +84,6 @@ class FlippedWithContext extends Component {
       shouldFlip,
       shouldInvert,
       onAppear,
-      onDelayedAppear,
       onStart,
       onComplete,
       onExit,
@@ -105,7 +103,6 @@ class FlippedWithContext extends Component {
                   shouldFlip,
                   shouldInvert,
                   onAppear,
-                  onDelayedAppear,
                   onStart,
                   onComplete,
                   onExit

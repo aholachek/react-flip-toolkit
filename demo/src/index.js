@@ -13,6 +13,7 @@ import TransformFromZeroExample from "./TransformFromZeroExample"
 import RotateExample from "./RotateExample"
 import StaggeredList from "./StaggeredList"
 import RemountedFlipperExample from "./RemountedFlipperExample"
+import HandleEnterUpdateDelete from "./HandleEnterUpdateDelete"
 
 class Demo extends Component {
   render() {
@@ -32,6 +33,8 @@ class Demo extends Component {
       return <StaggeredList />
     else if (window.location.pathname === "/remounted-flipper")
       return <RemountedFlipperExample />
+    else if (window.location.pathname === "/enter-update-delete")
+      return <HandleEnterUpdateDelete />
     else
       return (
         <nav>
@@ -65,6 +68,9 @@ class Demo extends Component {
             </li>
             <li>
               <a href="/transform-from-zero">Transform from Zero</a>
+            </li>
+            <li>
+              <a href="/enter-update-delete">Enter update delete</a>
             </li>
           </ul>
         </nav>

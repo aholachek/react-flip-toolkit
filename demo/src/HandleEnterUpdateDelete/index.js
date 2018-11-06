@@ -67,14 +67,40 @@ class ListExample extends Component {
     }
   }
 
+  handleEnterUpdateDelete = ({
+    hideEnteringElements,
+    animateEnteringElements,
+    animateExitingElements,
+    animateFlippedElements
+  }) => {
+    hideEnteringElements()
+    animateExitingElements()
+    this.setState({
+      next: [animateFlippedElements, animateEnteringElements]
+    })
+  }
+
   render() {
     return (
       <Flipper
         flipKey={`${this.state.filter ? this.state.filter : ""}-${
           this.state.sort
         }-${JSON.stringify(this.state.data)}`}
+        handleEnterUpdateDelete={this.handleEnterUpdateDelete}
       >
         <main className="list-example">
+          <button
+            onClick={() => {
+              if (this.state.next && this.state.next.length) {
+                this.state.next[0]()
+                this.setState({
+                  next: this.state.next.slice(1)
+                })
+              }
+            }}
+          >
+            next ({this.state.next && this.state.next.length})
+          </button>
           <h1>
             Continually updating filtered list with appear and exit animations
           </h1>
@@ -198,41 +224,6 @@ class ListExample extends Component {
                 return (
                   <Flipped
                     flipId={`item-${key}`}
-                    onAppear={onElementAppear}
-                    onExit={onExit}
-                    key={`item-${key}`}
-                  >
-                    <li className="listItem" style={{ backgroundColor: color }}>
-                      {key}
-                    </li>
-                  </Flipped>
-                )
-              })}
-          </ul>
-
-          <h2>Delayed onAppear</h2>
-
-          <ul className="updating-list">
-            {[...this.state.data]
-              .sort((a, b) => {
-                if (this.state.sort === "ascending") {
-                  return a.key - b.key
-                } else if (this.state.sort === "descending") {
-                  return b.key - a.key
-                } else if (this.state.sort === "color") {
-                  if (a.color < b.color) return -1
-                  else if (b.color < a.color) return 1
-                  return 0
-                }
-              })
-              .filter(d => {
-                if (!this.state.filter) return true
-                return d.color !== this.state.filter
-              })
-              .map(({ color, key }, i) => {
-                return (
-                  <Flipped
-                    flipId={`item-2-${key}`}
                     onAppear={onElementAppear}
                     onExit={onExit}
                     key={`item-${key}`}

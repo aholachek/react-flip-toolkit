@@ -24,10 +24,9 @@ export interface FlippedProps {
   transformOrigin?: string
   stagger?: string | boolean
   spring?: SpringConfig
-  onStart?: (element: HTMLElement) => any
-  onComplete?: (element: HTMLElement) => any
+  onStart?: (element: HTMLElement) => void
+  onComplete?: (element: HTMLElement) => void
   onAppear?: (element: HTMLElement, index: number) => any
-  onDelayedAppear?: (element: HTMLElement, index: number) => any
   onExit?: (
     element: HTMLElement,
     index: number,

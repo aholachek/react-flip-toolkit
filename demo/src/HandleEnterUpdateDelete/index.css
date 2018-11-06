@@ -1,0 +1,90 @@
+.list-example {
+  max-width: 900px;
+  margin: 2rem auto;
+}
+
+.list-example h1 {
+  font-size: 1.5rem;
+}
+
+.list-example .updating-list {
+  list-style-type: none;
+  display: grid;
+  align-content: start;
+  grid-template-columns: repeat(auto-fill, minmax(5rem, 1fr));
+  grid-gap: 1rem;
+  margin: 0;
+  margin: 2rem auto;
+  min-height: 15rem;
+}
+
+.list-example .listItem {
+  height: 2.5rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  transform-origin: 0 0;
+  transform: translate(30px, 15px);
+}
+
+.list-example .colorLabel {
+  display: inline-block;
+  height: 1.2rem;
+  width: 2rem;
+  margin-left: 0.5rem;
+}
+
+.list-example fieldset {
+  border: 0;
+  padding: 1rem;
+}
+
+.list-example label {
+  margin-right: 1rem;
+  cursor: pointer;
+}
+
+.list-example input {
+  position: relative;
+  margin-right: 0.5rem;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.list-example .fade-in {
+  animation: fadeIn 0.5s forwards;
+}
+
+@keyframes fadeOut {
+  100% {
+    opacity: 0;
+  }
+}
+
+.fade-out-list-item {
+  animation: fadeOut 0.5s forwards;
+}
+
+.list-flex {
+  display: flex;
+}
+
+.list-toggle-updating {
+  padding: 0.75rem 1rem;
+  margin-top: 1rem;
+  background-color: #240041;
+  color: white;
+  font-weight: bold;
+  border: 0;
+  border-radius: 3px;
+  cursor: pointer;
+}

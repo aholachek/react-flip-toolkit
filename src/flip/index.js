@@ -28,7 +28,8 @@ const onFlipKeyUpdate = ({
   debug,
   portalKey,
   staggerConfig = {},
-  decisionData = {}
+  decisionData = {},
+  handleEnterUpdateDelete
 }) => {
   const newFlipChildrenPositions = getFlippedElementPositionsAfterUpdate({
     element: containerEl,
@@ -52,20 +53,19 @@ const onFlipKeyUpdate = ({
     inProgressAnimations
   }
 
-  animateUnflippedElements(
+  const {
+    hideEnteringElements,
+    animateEnteringElements,
+    animateExitingElements
+  } = animateUnflippedElements(
     assign({}, baseArgs, {
       unflippedIds
     })
   )
 
   const flippedIds = cachedOrderedFlipIds.filter(isFlipped)
-
-  const readyToBeFlippedIds = flippedIds.filter(
-    id => newFlipChildrenPositions[id] !== "unloadedImg"
-  )
-
   const animateFlippedElementsArgs = assign({}, baseArgs, {
-    flippedIds: readyToBeFlippedIds,
+    flippedIds,
     applyTransformOrigin,
     spring,
     debug,
@@ -73,29 +73,19 @@ const onFlipKeyUpdate = ({
     decisionData
   })
 
-  animateFlippedElements(animateFlippedElementsArgs)
+  const flip = animateFlippedElements(animateFlippedElementsArgs)
 
-  const waitATickIds = flippedIds.filter(
-    id => newFlipChildrenPositions[id] === "unloadedImg"
-  )
-
-  if (waitATickIds.length) {
-    setTimeout(() => {
-      // we'll re-measure size in the DOM, hopefully the image is rendered by now
-      const newFlipChildrenPositions = getFlippedElementPositionsAfterUpdate({
-        element: containerEl,
-        portalKey,
-        ids: waitATickIds
-      })
-      const loadedImgIds = waitATickIds.filter(
-        id => newFlipChildrenPositions[id] !== "unloadedImg"
-      )
-      animateFlippedElements(
-        assign({}, animateFlippedElementsArgs, {
-          flippedIds: loadedImgIds
-        })
-      )
+  if (handleEnterUpdateDelete) {
+    handleEnterUpdateDelete({
+      hideEnteringElements,
+      animateEnteringElements,
+      animateExitingElements,
+      animateFlippedElements: flip
     })
+  } else {
+    hideEnteringElements()
+    animateExitingElements().then(animateEnteringElements)
+    flip()
   }
 }
 

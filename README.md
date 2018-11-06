@@ -89,7 +89,7 @@
 
 ## Quick start
 
-`npm install react-flip-toolkit`
+`npm install react-flip-toolkit` or `yarn add react-flip-toolkit`
 
 1. Wrap your animations with a single `Flipper` component that has a `flipKey` prop that changes every time animations should happen.
 
@@ -166,6 +166,15 @@ staggerConfig={{
   }}
  ```
 
+
+ ```js
+    handleEnterUpdateDelete({
+      hideEnteringElements,
+      animateEnteringElements,
+      animateExitingElements,
+      flipFunc
+ ```
+
 ### 2. `Flipped`
 
 Wraps an element that should be animated.
@@ -212,13 +221,12 @@ The `Flipped` component produces no markup, it simply passes some props down to 
 The above animation uses `onAppear` and `onExit` callbacks for fade-in and fade-out animations.
 
 
-| prop            | arguments                           | details                                                                                                                                                                                                                                                                                         |
-| --------------- | :---------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| onAppear        | `element`, `index`                  | Called when the element first appears. It is provided a reference to the DOM element being transitioned as the first argument, and the index of the element relative to all appearing elements as the second.                                                                                   |
-| onDelayedAppear | `element`, `index`                  | This is a replacement for  `onAppear` that is called only after all exiting elements have finished exiting. It automatically applies `opacity: 0` to newly appeared elements at the very beginning. The `onDelayedAppear` function is responsible for setting the `opacity` to the final value. |
-| onStart         | `element`                           | Called when the FLIP animation starts. It is provided a reference to the DOM element being transitioned as the first argument                                                                                                                                                                   |
-| onComplete      | `element`                           | Called when the FLIP animation completes. It is provided a reference to the DOM element being transitioned as the first argument. (If transitions are interruped by new ones, `onComplete` will still be called.)                                                                               |
-| onExit          | `element`, `index`, `removeElement` | Called when the element is removed from the DOM. It must call the `removeElement` function when the exit transition has completed.                                                                                                                                                              |
+| prop       | arguments                           | details                                                                                                                                                                                                           |
+| ---------- | :---------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| onAppear   | `element`, `index`                  | Called when the element first appears. It is provided a reference to the DOM element being transitioned as the first argument, and the index of the element relative to all appearing elements as the second.     |
+| onStart    | `element`                           | Called when the FLIP animation starts. It is provided a reference to the DOM element being transitioned as the first argument                                                                                     |
+| onComplete | `element`                           | Called when the FLIP animation completes. It is provided a reference to the DOM element being transitioned as the first argument. (If transitions are interruped by new ones, `onComplete` will still be called.) |
+| onExit     | `element`, `index`, `removeElement` | Called when the element is removed from the DOM. It must call the `removeElement` function when the exit transition has completed.                                                                                |
 
 #### Transform props
 

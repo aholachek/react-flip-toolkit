@@ -39,6 +39,7 @@ class Flipper extends Component {
         debug: this.props.debug,
         portalKey: this.props.portalKey,
         staggerConfig: this.props.staggerConfig,
+        handleEnterUpdateDelete: this.props.handleEnterUpdateDelete,
         decisionData: {
           prev: prevProps.decisionData,
           current: this.props.decisionData
@@ -73,7 +74,8 @@ Flipper.propTypes = {
   className: PropTypes.string,
   portalKey: PropTypes.string,
   staggerConfig: PropTypes.object,
-  decisionData: PropTypes.any
+  decisionData: PropTypes.any,
+  handleEnterUpdateDelete: PropTypes.func
 }
 
 Flipper.defaultProps = {
