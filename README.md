@@ -21,12 +21,13 @@
 
 
 ## Table of Contents
+- [Table of Contents](#table-of-contents)
 - [Demos](#demos)
-- [🆕 Interactive Tutorial](https://alex.holachek.com/rft-tutorial/)
 - [Quick start](#quick-start)
 - [The Components](#the-components)
   - [1. `Flipper`](#1-flipper)
-    - [Props](#props)
+    - [Basic Props](#basic-props)
+    - [Advanced Props](#advanced-props)
   - [2. `Flipped`](#2-flipped)
     - [Basic props](#basic-props)
     - [Callback props](#callback-props)
@@ -35,7 +36,12 @@
 - [Scale transitions made eas(ier)](#scale-transitions-made-easier)
 - [Library details](#library-details)
 - [Troubleshooting](#troubleshooting)
+  - [Problem #1: Nothing is happening](#problem-1-nothing-is-happening)
+  - [Problem #2: Things look weird:](#problem-2-things-look-weird)
+  - [It's still not working: try out the `debug` prop](#its-still-not-working-try-out-the-debug-prop)
 - [Performance](#performance)
+  - [1. `PureComponent`](#1-purecomponent)
+  - [2. `will-change:transform`](#2-will-changetransform)
 
 ## Demos
 
@@ -96,7 +102,7 @@
 2. Wrap elements that should be animated with `Flipped` components that have a `flipId` prop matching them across renders.
 
 ```jsx
-import React, { Component } from React;
+import React, { Component } from 'react';
 import { Flipper, Flipped } from 'react-flip-toolkit';
 
 class AnimatedSquare extends Component {
@@ -122,8 +128,40 @@ class AnimatedSquare extends Component {
   }
 }
 ```
+[Fork it on Code Sandbox](https://codesandbox.io/s/j7klm66885)
 
-[view on Codepen](https://codepen.io/aholachek/pen/oyKJgL)
+### List Shuffle
+
+```jsx
+class ListShuffler extends Component {
+  state = { data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] };
+
+  shuffle = () =>
+    this.setState(({ data }) => ({
+      data: shuffle(data)
+    }));
+
+  render() {
+    return (
+      <div>
+        <button onClick={this.shuffle}> shuffle</button>
+        <Flipper
+          flipKey={this.state.data.join("")}
+          element="ul"
+          className="list"
+        >
+          {this.state.data.map(d => (
+            <Flipped key={d} flipId={d}>
+              <li>{d}</li>
+            </Flipped>
+          ))}
+        </Flipper>
+      </div>
+    );
+  }
+}
+```
+[Fork it on Code Sandbox](https://codesandbox.io/s/14v8o5xy44)
 
 ## The Components
 
@@ -137,20 +175,17 @@ The parent wrapper component that contains all the elements to be animated. You'
 </Flipper>
 ```
 
-#### Props
+#### Basic Props
 
-| prop                    | default    | type                       | details                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| ----------------------- | :--------: | :------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| flipKey **(required)**  | -          | `string`, `number`, `bool` | Changing this tells `react-flip-toolkit` to transition child elements wrapped in `Flipped` components.                                                                                                                                                                                                                                                                                                                                                              |
-| children **(required)** | -          | `node`                     | One or more element children                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| spring                  | `noWobble` | `string` or `object`       | Provide a string referencing one of the spring presets &mdash; `noWobble` (default), `veryGentle`, `gentle`, `wobbly`, or `stiff`, OR provide an object with stiffness and damping parameters. [Explore the spring setting options here.](https://codepen.io/aholachek/full/bKmZbV/) The prop provided here will be the spring default that can be overrided on a per-element basis on the `Flipped` component.                                                     |
-| applyTransformOrigin    | `true`     | `bool`                     | Whether or not `react-flip-toolkit` should apply a transform-origin of "0 0" to animating children (this is generally, but not always, desirable for FLIP animations)                                                                                                                                                                                                                                                                                               |
-| element                 | `div`      | `string`                   | If you'd like the wrapper element created by the `Flipped` container to be something other than a `div`, you can specify that here.                                                                                                                                                                                                                                                                                                                                 |
-| className               | -          | `string`                   | A class applied to the wrapper element, helpful for styling.                                                                                                                                                                                                                                                                                                                                                                                                        |
-| portalKey               | -          | `string`                   | In general, the `Flipper` component will only apply transitions to its descendents. This allows multiple `Flipper` elements to coexist on the same page, but it will prevent animations from working if you use [portals](https://reactjs.org/docs/portals.html). You can provide a unique `portalKey` prop to `Flipper` to tell it to scope element selections to the entire document, not just to its children, so that elements in portals can be transitioned.  |
-| debug                   | `false`    | `bool`                     | This experimental prop will pause your animation right at the initial application of FLIP-ped styles. That will allow you to inspect the state of the animation at the very beginning, when it should look similar or identical to the UI before the animation began.                                                                                                                                                                                               |
-| decisionData            | -          | `any`                      | Sometimes, you'll want the animated children of `Flipper` to behave differently depending on the state transition &mdash; maybe only certain `Flipped` elements should animate in response to a particular change. By providing the `decisionData` prop to the `Flipper` component, you'll make that data available to the `shouldFlip` and `shouldInvert` methods of each child `Flipped` component, so they can decided for themselves whether to animate or not. |
-| staggerConfig           | -          | `object`                   | Provide configuration for staggered `Flipped` children. The config object might look something like the code snippet below:                                                                                                                                                                                                                                                                                                                                         |
+| prop                    | default    | type                       | details                                                                                                                                                                                                                                                                                                                                                                                                         |
+| ----------------------- | :--------: | :------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| flipKey **(required)**  | -          | `string`, `number`, `bool` | Changing this tells `react-flip-toolkit` to transition child elements wrapped in `Flipped` components.                                                                                                                                                                                                                                                                                                          |
+| children **(required)** | -          | `node`                     | One or more element children                                                                                                                                                                                                                                                                                                                                                                                    |
+| spring                  | `noWobble` | `string` or `object`       | Provide a string referencing one of the spring presets &mdash; `noWobble` (default), `veryGentle`, `gentle`, `wobbly`, or `stiff`, OR provide an object with stiffness and damping parameters. [Explore the spring setting options here.](https://codepen.io/aholachek/full/bKmZbV/) The prop provided here will be the spring default that can be overrided on a per-element basis on the `Flipped` component. |
+| applyTransformOrigin    | `true`     | `bool`                     | Whether or not `react-flip-toolkit` should apply a transform-origin of "0 0" to animating children (this is generally, but not always, desirable for FLIP animations)                                                                                                                                                                                                                                           |
+| element                 | `div`      | `string`                   | If you'd like the wrapper element created by the `Flipped` container to be something other than a `div`, you can specify that here.                                                                                                                                                                                                                                                                             |
+| className               | -          | `string`                   | A class applied to the wrapper element, helpful for styling.                                                                                                                                                                                                                                                                                                                                                    |
+| staggerConfig           | -          | `object`                   | Provide configuration for staggered `Flipped` children. The config object might look something like the code snippet below:                                                                                                                                                                                                                                                                                     |
 
 ```js
 staggerConfig={{
@@ -167,13 +202,31 @@ staggerConfig={{
  ```
 
 
+#### Advanced Props
+
+ | prop                    | default | type       | details                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+ | ----------------------- | :-----: | :--------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+ | decisionData            | -       | `any`      | Sometimes, you'll want the animated children of `Flipper` to behave differently depending on the state transition &mdash; maybe only certain `Flipped` elements should animate in response to a particular change. By providing the `decisionData` prop to the `Flipper` component, you'll make that data available to the `shouldFlip` and `shouldInvert` methods of each child `Flipped` component, so they can decided for themselves whether to animate or not.                                                                                                                          |
+ | debug                   | `false` | `bool`     | This experimental prop will pause your animation right at the initial application of FLIP-ped styles. That will allow you to inspect the state of the animation at the very beginning, when it should look similar or identical to the UI before the animation began.                                                                                                                                                                                                                                                                                                                        |
+ | portalKey               | -       | `string`   | In general, the `Flipper` component will only apply transitions to its descendents. This allows multiple `Flipper` elements to coexist on the same page, but it will prevent animations from working if you use [portals](https://reactjs.org/docs/portals.html). You can provide a unique `portalKey` prop to `Flipper` to tell it to scope element selections to the entire document, not just to its children, so that elements in portals can be transitioned.                                                                                                                           |
+ | handleEnterUpdateDelete | -       | `function` | By default, `react-flip-toolkit` finishes animating out exiting elements before animating in new elements, with updating elements transforming immediately. You might want to have more control over the sequence of transitions in some cases &mdash; say, if you wanted to hide elements, pause, update elements, pause again, and finally animate in new elements. Or in other cases, you might want transitions to happen simultaneously. If so, provide the function `handleEnterUpdateDelete` as a prop. The function receives the following arguments every time a transition occurs: |
  ```js
     handleEnterUpdateDelete({
+      // this func applies an opacity of 0 to entering elements so
+      // they can be faded in - it should be called immediately
       hideEnteringElements,
+      // calls `onAppear` for all entering elements
       animateEnteringElements,
+      //calls `onExit` for all exiting elements
+      // returns a promise that resolves when all elements have exited
       animateExitingElements,
-      flipFunc
+      // the main event: `FLIP` animations for updating elements
+      // this also returns a promise that resolves when
+      // animations have completed
+      animateFlippedElements
  ```
+
+[Check out a live example of `handleEnterUpdateDelete` here](https://codesandbox.io/s/4q7qpkn8q0)
 
 ### 2. `Flipped`
 
@@ -286,7 +339,7 @@ That means any layout styles &mdash; padding, flexbox, etc&mdash;should be appli
 
 ## Troubleshooting
 
-### Problem #1: Nothing is happening:
+### Problem #1: Nothing is happening
   - Make sure you're updating the `flipKey` attribute in the `Flipper` component whenever an animation should happen.
   - If one of your `Flipped` components is wrapping another React component rather than a DOM element, make sure that component passes down unknown props directly to its DOM element, e.g.: `<div className="square" {...rest} />`
 

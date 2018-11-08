@@ -1,0 +1,27 @@
+.enter-update-delete-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.enter-update-delete-list {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+}
+
+.enter-update-delete-list li {
+  width: 2rem;
+  display: inline-block;
+}
+
+.enterUpdateDeleteLabel {
+  margin: 1rem;
+  display: inline-block;
+}
+
+.enterUpdateDeleteLabel > input {
+  margin-right: 0.5rem;
+}

@@ -29,7 +29,8 @@ const animateUnflippedElements = ({
   const animateEnteringElements = () => {
     enteringElements.forEach((id, i) => {
       const element = getElement(id)
-      flipCallbacks[id].onAppear(element, i)
+      if (flipCallbacks[id] && flipCallbacks[id].onAppear)
+        flipCallbacks[id].onAppear(element, i)
     })
   }
 
