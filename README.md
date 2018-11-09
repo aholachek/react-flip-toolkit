@@ -5,6 +5,9 @@
 </p>
 
 [![Build Status](https://travis-ci.com/aholachek/react-flip-toolkit.svg?branch=master)](https://travis-ci.com/aholachek/react-flip-toolkit)
+[![Minified & Gzipped size](https://badgen.net/bundlephobia/minzip/react-flip-toolkit)](
+  https://bundlephobia.com/result?p=react-flip-toolkit
+)
 
 **Comparison with other React FLIP libraries**
 
