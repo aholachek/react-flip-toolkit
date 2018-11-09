@@ -30,11 +30,7 @@ describe("animateUnflippedElements", () => {
     const fakeOnAppear2 = sinon.fake()
     const fakeOnAppear3 = sinon.fake()
 
-    const {
-      hideEnteringElements,
-      animateEnteringElements,
-      animateExitingElements
-    } = animateUnflippedElements({
+    const { animateEnteringElements } = animateUnflippedElements({
       unflippedIds: ["id-1", "id-3", "id-4"],
       flipCallbacks: {
         "id-1": { onAppear: fakeOnAppear1 },
@@ -62,11 +58,7 @@ describe("animateUnflippedElements", () => {
     const fakeOnAppear1 = sinon.fake()
     const fakeOnAppear2 = sinon.fake()
 
-    const {
-      hideEnteringElements,
-      animateEnteringElements,
-      animateExitingElements
-    } = animateUnflippedElements({
+    const { hideEnteringElements } = animateUnflippedElements({
       unflippedIds: ["id-1", "id-2"],
       flipCallbacks: {
         "id-1": { onAppear: fakeOnAppear1 },
@@ -283,11 +275,7 @@ describe("animateUnflippedElements", () => {
     const exitedElement = document.createElement("div")
     const parent = testEl.querySelector("#container")
 
-    const {
-      hideEnteringElements,
-      animateEnteringElements,
-      animateExitingElements
-    } = animateUnflippedElements({
+    const { animateExitingElements } = animateUnflippedElements({
       unflippedIds: ["id-0", "id-1"],
       flipCallbacks: {
         "id-0": { onExit: () => {} },

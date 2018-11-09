@@ -111,8 +111,6 @@ describe("animateFlippedElements", () => {
         getComputedStyle(getElement("id-1")).transform
       ).map(n => Math.floor(n))
 
-      debugger
-
       expect(newTransform).to.deep.equal([
         2,
         0,
