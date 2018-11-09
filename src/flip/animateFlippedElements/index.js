@@ -286,15 +286,18 @@ const animateFlippedElements = ({
       // when it is called, the animation has already been cancelled
       const onAnimationEnd = () => {
         delete inProgressAnimations[id]
-        completedAnimationIds.push(id)
         isFunction(onComplete) && onComplete()
         if (needsForcedMinVals && element) {
           element.style.minHeight = ""
           element.style.minWidth = ""
         }
         completedAnimationIds.push(id)
-        if (completedAnimationIds.length === withInitFuncs.length)
+
+        if (completedAnimationIds.length >= withInitFuncs.length) {
+          // we can theoretically call multiple times since a promise only resolves 1x
+          // but that shouldnt happen
           closureResolve()
+        }
       }
 
       const animateOpacity =

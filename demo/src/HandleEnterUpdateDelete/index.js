@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import { Flipper, Flipped } from "../../../src"
+import anime from "animejs"
 import getRandomList from "./getRandomList"
 import styles from "./styles.css"
 
@@ -34,9 +35,9 @@ const exitAndFlipThenEnter = ({
   animateFlippedElements
 }) => {
   hideEnteringElements()
-  Promise.all([animateExitingElements, animateFlippedElements]).then(() => {
-    debugger
-  })
+  Promise.all([animateExitingElements(), animateFlippedElements()]).then(
+    animateEnteringElements
+  )
 }
 
 const transitions = {
@@ -49,6 +50,23 @@ class EnterUpdateDeleteDemo extends Component {
   state = { list: getRandomList(), transitionType: "exitThenFlipThenEnter" }
   updateList = () => {
     this.setState({ list: getRandomList() })
+  }
+  onAppear = (el, i) => {
+    anime({
+      targets: el,
+      opacity: 1,
+      delay: i * 20,
+      easing: "easeOutSine"
+    })
+  }
+  onExit = (el, i, onComplete) => {
+    anime({
+      targets: el,
+      opacity: 0,
+      delay: i * 20,
+      easing: "easeOutSine",
+      complete: onComplete
+    })
   }
   render() {
     return (
@@ -79,7 +97,12 @@ class EnterUpdateDeleteDemo extends Component {
           handleEnterUpdateDelete={transitions[this.state.transitionType]}
         >
           {this.state.list.map(d => (
-            <Flipped key={d} flipId={d}>
+            <Flipped
+              key={d}
+              flipId={d.toString()}
+              onAppear={this.onAppear}
+              onExit={this.onExit}
+            >
               <li>{d}</li>
             </Flipped>
           ))}
