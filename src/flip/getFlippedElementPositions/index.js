@@ -44,16 +44,17 @@ export const getFlippedElementPositionsBeforeUpdate = ({
 
   const childIdsToParentBCRs = {}
   const parentBCRs = []
+  const childIdsToParents = {}
   // this is for exit animations so we can re-insert exiting elements in the
   // DOM later
-  const flippedElementsWithParentsTuples = flippedElements
+  flippedElements
     .filter(
       el =>
         flipCallbacks &&
         flipCallbacks[el.dataset.flipId] &&
         flipCallbacks[el.dataset.flipId].onExit
     )
-    .map(el => {
+    .forEach(el => {
       let parent = el.parentNode
       // this won't work for IE11
       if (el.closest) {
@@ -66,15 +67,16 @@ export const getFlippedElementPositionsBeforeUpdate = ({
         bcrIndex = parentBCRs.length - 1
       }
       childIdsToParentBCRs[el.dataset.flipId] = parentBCRs[bcrIndex][1]
-
-      return [el, parent]
+      childIdsToParents[el.dataset.flipId] = parent
     })
 
-  const flippedElementPositions = flippedElementsWithParentsTuples
-    .map(([child, parent]) => {
+  const flippedElementPositions = flippedElements
+    .map(child => {
       let domData = {}
       const childBCR = child.getBoundingClientRect()
 
+      // only cache extra data for exit animations
+      // if the element has an onExit listener
       if (
         flipCallbacks &&
         flipCallbacks[child.dataset.flipId] &&
@@ -84,7 +86,7 @@ export const getFlippedElementPositionsBeforeUpdate = ({
 
         assign(domData, {
           element: child,
-          parent,
+          parent: childIdsToParents[child.dataset.flipId],
           childPosition: {
             top: childBCR.top - parentBCR.top,
             left: childBCR.left - parentBCR.left,
@@ -127,43 +129,21 @@ export const getFlippedElementPositionsBeforeUpdate = ({
  */
 export const getFlippedElementPositionsAfterUpdate = ({
   element,
-  portalKey,
-  ids
+  portalKey
 }) => {
-  const els = getAllElements(element, portalKey)
-
-  return (
-    els
-      // filter is only for the "waitATickIds"
-      .filter(child => {
-        if (ids) {
-          return ids.indexOf(child.dataset.flipId) > -1
-        } else {
-          return true
+  return getAllElements(element, portalKey)
+    .map(child => {
+      const computedStyle = window.getComputedStyle(child)
+      const rect = child.getBoundingClientRect()
+      return [
+        child.dataset.flipId,
+        {
+          rect,
+          opacity: parseFloat(computedStyle.opacity),
+          domData: {},
+          transform: computedStyle.transform
         }
-      })
-      .map(child => {
-        const computedStyle = window.getComputedStyle(child)
-        const rect = child.getBoundingClientRect()
-        // maybe the image hasn't loaded into the document yet. This is a problem
-        // especially with Safari for some reason
-        // need to check for either width OR height because one could be set with CSS
-        if (
-          (rect.height === 0 || rect.width === 0) &&
-          child.tagName === "IMG"
-        ) {
-          return [child.dataset.flipId, "unloadedImg"]
-        }
-        return [
-          child.dataset.flipId,
-          {
-            rect,
-            opacity: parseFloat(computedStyle.opacity),
-            domData: {},
-            transform: computedStyle.transform
-          }
-        ]
-      })
-      .reduce(addTupleToObject, {})
-  )
+      ]
+    })
+    .reduce(addTupleToObject, {})
 }
