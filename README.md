@@ -100,6 +100,8 @@
 
 2. Wrap elements that should be animated with `Flipped` components that have a `flipId` prop matching them across renders.
 
+### Expanding div ([Fork on Code Sandbox](https://codesandbox.io/s/j7klm66885))
+
 ```jsx
 import React, { Component } from 'react';
 import { Flipper, Flipped } from 'react-flip-toolkit';
@@ -127,9 +129,8 @@ class AnimatedSquare extends Component {
   }
 }
 ```
-[Fork it on Code Sandbox](https://codesandbox.io/s/j7klm66885)
 
-### List Shuffle
+### List Shuffle ([Fork on Code Sandbox](https://codesandbox.io/s/14v8o5xy44))
 
 ```jsx
 import React, { Component } from 'react';
@@ -159,7 +160,6 @@ class ListShuffler extends Component {
   }
 }
 ```
-[Fork it on Code Sandbox](https://codesandbox.io/s/14v8o5xy44)
 
 ## The Components
 
