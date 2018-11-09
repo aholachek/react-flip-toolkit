@@ -335,7 +335,7 @@ That means any layout styles &mdash; padding, flexbox, etc&mdash;should be appli
 
 ## Library details
 
-- [7.6kb minified and gzipped](https://bundlephobia.com/result?p=react-flip-toolkit)
+- [7.4kb minified and gzipped](https://bundlephobia.com/result?p=react-flip-toolkit)
 - React 16+
 - Tested in latest Chrome, Firefox, Safari, Edge, and IE 11.
 - Uses [Rematrix](https://github.com/jlmakes/rematrix) for matrix calculations and a simplified fork of  [Rebound](https://github.com/facebook/rebound-js) for spring animations.
