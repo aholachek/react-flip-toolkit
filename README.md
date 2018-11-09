@@ -8,16 +8,16 @@
 
 **Comparison with other React FLIP libraries**
 
-| Feature                                        | [`react-flip-move`](https://github.com/joshwcomeau/react-flip-move) | [`react-overdrive`](https://github.com/berzniz/react-overdrive) | `react-flip-toolkit`                                |
-| ---------------------------------------------- | :-----------------------------------------------------------------: | :-------------------------------------------------------------: | :-------------------------------------------------: |
-| Animate position                               | ✅                                                                   | ✅                                                               | ✅                                                   |
-| Animate scale                                  | ❌                                                                   | ✅                                                               | ✅                                                   |
-| Animate opacity                                | ❌                                                                   | ✅                                                               | ✅                                                   |
-| Animate parent's size without warping children | ❌                                                                   | ❌                                                               | ✅                                                   |
-| Use real FLIP instead of cloning & crossfading | ✅                                                                   | ❌                                                               | ✅                                                   |
-| Use springs for animations                     | ❌                                                                   | ❌                                                               | ✅                                                   |
-| Support spring-based stagger effects           | ❌                                                                   | ❌                                                               | ✅                                                   |
-| Easy to set up & beginner-friendly             | ✅                                                                   | ✅                                                               | <img src='./example-assets/shrug.png' width="26px"> |
+| Feature                                        | [`react-flip-move`](https://github.com/joshwcomeau/react-flip-move) | [`react-overdrive`](https://github.com/berzniz/react-overdrive) | `react-flip-toolkit` |
+| ---------------------------------------------- | :-----------------------------------------------------------------: | :-------------------------------------------------------------: | :------------------: |
+| Animate position                               | ✅                                                                   | ✅                                                               | ✅                    |
+| Animate scale                                  | ❌                                                                   | ✅                                                               | ✅                    |
+| Animate opacity                                | ❌                                                                   | ✅                                                               | ✅                    |
+| Animate parent's size without warping children | ❌                                                                   | ❌                                                               | ✅                    |
+| Use real FLIP instead of cloning & crossfading | ✅                                                                   | ❌                                                               | ✅                    |
+| Use springs for animations                     | ❌                                                                   | ❌                                                               | ✅                    |
+| Support spring-based stagger effects           | ❌                                                                   | ❌                                                               | ✅                    |
+
 
 
 ## Table of Contents
@@ -85,8 +85,7 @@
 </a>
 </p>
 
-- [Updating list (`react-flip-move` example clone)](https://react-flip-toolkit-demos.surge.sh/flip-move)
-- [Simplest possible example](https://codepen.io/aholachek/pen/oyKJgL)
+- [Animated List (`react-flip-move` clone)](https://react-flip-toolkit-demos.surge.sh/flip-move)
 - [Guitar shop](https://react-flip-toolkit-demos.surge.sh/guitar)
 - [Overly complex, nested cards example](https://react-flip-toolkit-demos.surge.sh/cards)
 - [React-flip-toolkit logo](https://codepen.io/aholachek/pen/ERRpEj)
