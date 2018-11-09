@@ -50,8 +50,8 @@ export interface StaggerConfig {
 
 export interface handleEnterUpdateDeleteArgs {
   hideEnteringElements: () => void
-  animateExitingElements: () => Promise
-  animateFlippedElements: () => Promise
+  animateExitingElements: () => Promise<void>
+  animateFlippedElements: () => Promise<void>
   animateEnteringElements: () => void
 }
 
