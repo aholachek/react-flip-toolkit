@@ -46,25 +46,32 @@ export const getFlippedElementPositionsBeforeUpdate = ({
   const parentBCRs = []
   // this is for exit animations so we can re-insert exiting elements in the
   // DOM later
-  flippedElements
+  const flippedElementsWithParentsTuples = flippedElements
     .filter(
       el =>
         flipCallbacks &&
         flipCallbacks[el.dataset.flipId] &&
         flipCallbacks[el.dataset.flipId].onExit
     )
-    .forEach(el => {
-      const parent = el.parentNode
+    .map(el => {
+      let parent = el.parentNode
+      // this won't work for IE11
+      if (el.closest) {
+        const exitContainer = el.closest(`[${constants.DATA_EXIT_CONTAINER}]`)
+        if (exitContainer) parent = exitContainer
+      }
       let bcrIndex = parentBCRs.findIndex(n => n[0] === parent)
       if (bcrIndex === -1) {
         parentBCRs.push([parent, parent.getBoundingClientRect()])
         bcrIndex = parentBCRs.length - 1
       }
       childIdsToParentBCRs[el.dataset.flipId] = parentBCRs[bcrIndex][1]
+
+      return [el, parent]
     })
 
-  const flippedElementPositions = flippedElements
-    .map(child => {
+  const flippedElementPositions = flippedElementsWithParentsTuples
+    .map(([child, parent]) => {
       let domData = {}
       const childBCR = child.getBoundingClientRect()
 
@@ -77,7 +84,7 @@ export const getFlippedElementPositionsBeforeUpdate = ({
 
         assign(domData, {
           element: child,
-          parent: child.parentNode,
+          parent,
           childPosition: {
             top: childBCR.top - parentBCR.top,
             left: childBCR.left - parentBCR.left,
