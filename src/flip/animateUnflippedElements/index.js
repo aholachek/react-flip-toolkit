@@ -78,7 +78,6 @@ const animateUnflippedElements = ({
         if (exitingElementCount === 0) closureResolve()
       } catch (DOMException) {
         // the element is already gone
-        // TODO: figure out why this get triggered 2x
       }
     }
     inProgressAnimations[id] = { stop }

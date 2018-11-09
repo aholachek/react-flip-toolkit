@@ -51,27 +51,32 @@ class EnterUpdateDeleteDemo extends Component {
   updateList = () => {
     this.setState({ list: getRandomList() })
   }
+  currentAnimations = []
   onAppear = (el, i) => {
-    anime({
-      targets: el,
-      opacity: 1,
-      delay: i * 20,
-      easing: "easeOutSine"
-    })
+    this.currentAnimations.push(
+      anime({
+        targets: el,
+        opacity: 1,
+        delay: i * 20,
+        easing: "easeOutSine"
+      })
+    )
   }
   onExit = (el, i, onComplete) => {
-    anime({
-      targets: el,
-      opacity: 0,
-      delay: i * 20,
-      easing: "easeOutSine",
-      complete: onComplete
-    })
+    el.style.color = "red"
+    this.currentAnimations.push(
+      anime({
+        targets: el,
+        opacity: 0,
+        delay: i * 20,
+        easing: "easeOutSine",
+        complete: onComplete
+      })
+    )
   }
   render() {
     return (
       <div className="enter-update-delete-container">
-        <button onClick={this.updateList}> generate new list</button>
         <div>
           {Object.keys(transitions).map(transition => {
             return (
@@ -81,9 +86,10 @@ class EnterUpdateDeleteDemo extends Component {
                   name="transition"
                   value={transition}
                   checked={transition === this.state.transitionType}
-                  onChange={ev =>
+                  onChange={ev => {
                     this.setState({ transitionType: ev.currentTarget.value })
-                  }
+                    this.updateList()
+                  }}
                 />
                 {transition}
               </label>
@@ -94,7 +100,11 @@ class EnterUpdateDeleteDemo extends Component {
           flipKey={this.state.list.join("")}
           element="ul"
           className="enter-update-delete-list"
-          handleEnterUpdateDelete={transitions[this.state.transitionType]}
+          handleEnterUpdateDelete={callbacks => {
+            this.currentAnimations.forEach(animation => animation.pause())
+            this.currentAnimations = []
+            transitions[this.state.transitionType](callbacks)
+          }}
         >
           {this.state.list.map(d => (
             <Flipped

@@ -21,9 +21,9 @@
 
 
 ## Table of Contents
-- [Table of Contents](#table-of-contents)
 - [Demos](#demos)
 - [Quick start](#quick-start)
+- [🆕 Interactive Tutorial](https://alex.holachek.com/rft-tutorial/)
 - [The Components](#the-components)
   - [1. `Flipper`](#1-flipper)
     - [Basic Props](#basic-props)
@@ -133,6 +133,9 @@ class AnimatedSquare extends Component {
 ### List Shuffle
 
 ```jsx
+import React, { Component } from 'react';
+import { Flipper, Flipped } from 'react-flip-toolkit';
+
 class ListShuffler extends Component {
   state = { data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] };
 
@@ -204,12 +207,12 @@ staggerConfig={{
 
 #### Advanced Props
 
- | prop                    | default | type       | details                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
- | ----------------------- | :-----: | :--------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
- | decisionData            | -       | `any`      | Sometimes, you'll want the animated children of `Flipper` to behave differently depending on the state transition &mdash; maybe only certain `Flipped` elements should animate in response to a particular change. By providing the `decisionData` prop to the `Flipper` component, you'll make that data available to the `shouldFlip` and `shouldInvert` methods of each child `Flipped` component, so they can decided for themselves whether to animate or not.                                                                                                                          |
- | debug                   | `false` | `bool`     | This experimental prop will pause your animation right at the initial application of FLIP-ped styles. That will allow you to inspect the state of the animation at the very beginning, when it should look similar or identical to the UI before the animation began.                                                                                                                                                                                                                                                                                                                        |
- | portalKey               | -       | `string`   | In general, the `Flipper` component will only apply transitions to its descendents. This allows multiple `Flipper` elements to coexist on the same page, but it will prevent animations from working if you use [portals](https://reactjs.org/docs/portals.html). You can provide a unique `portalKey` prop to `Flipper` to tell it to scope element selections to the entire document, not just to its children, so that elements in portals can be transitioned.                                                                                                                           |
- | handleEnterUpdateDelete | -       | `function` | By default, `react-flip-toolkit` finishes animating out exiting elements before animating in new elements, with updating elements transforming immediately. You might want to have more control over the sequence of transitions in some cases &mdash; say, if you wanted to hide elements, pause, update elements, pause again, and finally animate in new elements. Or in other cases, you might want transitions to happen simultaneously. If so, provide the function `handleEnterUpdateDelete` as a prop. The function receives the following arguments every time a transition occurs: |
+ | prop                    | default | type       | details                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+ | ----------------------- | :-----: | :--------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+ | decisionData            | -       | `any`      | Sometimes, you'll want the animated children of `Flipper` to behave differently depending on the state transition &mdash; maybe only certain `Flipped` elements should animate in response to a particular change. By providing the `decisionData` prop to the `Flipper` component, you'll make that data available to the `shouldFlip` and `shouldInvert` methods of each child `Flipped` component, so they can decided for themselves whether to animate or not.                                                                                                                                                                                                                                    |
+ | debug                   | `false` | `bool`     | This experimental prop will pause your animation right at the initial application of FLIP-ped styles. That will allow you to inspect the state of the animation at the very beginning, when it should look similar or identical to the UI before the animation began.                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+ | portalKey               | -       | `string`   | In general, the `Flipper` component will only apply transitions to its descendents. This allows multiple `Flipper` elements to coexist on the same page, but it will prevent animations from working if you use [portals](https://reactjs.org/docs/portals.html). You can provide a unique `portalKey` prop to `Flipper` to tell it to scope element selections to the entire document, not just to its children, so that elements in portals can be transitioned.                                                                                                                                                                                                                                     |
+ | handleEnterUpdateDelete | -       | `function` | By default, `react-flip-toolkit` finishes animating out exiting elements before animating in new elements, with updating elements transforming immediately. You might want to have more control over the sequence of transitions &mdash; say, if you wanted to hide elements, pause, update elements, pause again, and finally animate in new elements. Or you might want transitions to happen simultaneously. If so, provide the function `handleEnterUpdateDelete` as a prop. [The best way to understand how this works is to check out this interactive example.](https://codesandbox.io/s/4q7qpkn8q0) `handleEnterUpdateDelete` receives the following arguments every time a transition occurs: |
  ```js
     handleEnterUpdateDelete({
       // this func applies an opacity of 0 to entering elements so
@@ -224,9 +227,9 @@ staggerConfig={{
       // this also returns a promise that resolves when
       // animations have completed
       animateFlippedElements
+    })
  ```
 
-[Check out a live example of `handleEnterUpdateDelete` here](https://codesandbox.io/s/4q7qpkn8q0)
 
 ### 2. `Flipped`
 

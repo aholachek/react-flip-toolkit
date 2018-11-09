@@ -26,12 +26,12 @@ export interface FlippedProps {
   spring?: SpringConfig
   onStart?: (element: HTMLElement) => void
   onComplete?: (element: HTMLElement) => void
-  onAppear?: (element: HTMLElement, index: number) => any
+  onAppear?: (element: HTMLElement, index: number) => void
   onExit?: (
     element: HTMLElement,
     index: number,
-    removeElement: () => any
-  ) => any
+    removeElement: () => void
+  ) => void
   shouldFlip?: (prevDecisionData: any, currentDecisionData: any) => boolean
   shouldInvert?: (prevDecisionData: any, currentDecisionData: any) => boolean
   portalKey?: string
@@ -48,6 +48,13 @@ export interface StaggerConfig {
   [key: string]: StaggerConfigValue
 }
 
+export interface handleEnterUpdateDeleteArgs {
+  hideEnteringElements: () => void
+  animateExitingElements: () => Promise
+  animateFlippedElements: () => Promise
+  animateEnteringElements: () => void
+}
+
 export interface FlipperProps {
   flipKey: any
   children: React.ReactNode
@@ -58,6 +65,7 @@ export interface FlipperProps {
   className?: string
   portalKey?: string
   decisionData?: any
+  handleEnterUpdateDelete?: (handleEnterUpdateDeleteArgs) => void
   staggerConfig?: StaggerConfig
 }
 
