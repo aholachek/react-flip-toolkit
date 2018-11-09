@@ -6,7 +6,7 @@ const testEl = document.querySelector("#test")
 const getElement = id => testEl.querySelector(`[data-flip-id=${id}]`)
 
 describe("animateFlippedElements", () => {
-  it("should call onStart with reference to the element on the first tick of the animation", done => {
+  it("should return a function that calls onStart with reference to the element on the first tick of the animation", done => {
     testEl.innerHTML = ` <div>
     <div data-flip-id="id-1" data-flip-config='{}'></div>
     </div>
@@ -16,7 +16,7 @@ describe("animateFlippedElements", () => {
 
     const onStart = sinon.fake()
 
-    animateFlippedElements({
+    const flip = animateFlippedElements({
       applyTransformOrigin: true,
       flippedIds: ["id-1"],
       flipCallbacks: {
@@ -52,6 +52,8 @@ describe("animateFlippedElements", () => {
       getElement
     })
 
+    flip()
+
     setTimeout(() => {
       expect(onStart.callCount).to.equal(1)
       expect(onStart.args[0][0]).to.equal(getElement("id-1"))
@@ -66,8 +68,7 @@ describe("animateFlippedElements", () => {
   `
     const firstElementTransform = getComputedStyle(getElement("id-1")).transform
 
-    animateFlippedElements({
-      spring: { stiffness: 1000, damping: 1000 },
+    const flip = animateFlippedElements({
       flippedIds: ["id-1", "id-2"],
       flipCallbacks: {},
       inProgressAnimations: {},
@@ -103,10 +104,14 @@ describe("animateFlippedElements", () => {
       getElement
     })
 
+    flip()
+
     setTimeout(() => {
       const newTransform = Rematrix.parse(
         getComputedStyle(getElement("id-1")).transform
       ).map(n => Math.floor(n))
+
+      debugger
 
       expect(newTransform).to.deep.equal([
         2,
@@ -219,7 +224,7 @@ describe("animateFlippedElements", () => {
 
     const inProgressAnimations = {}
 
-    animateFlippedElements({
+    const flip = animateFlippedElements({
       applyTransformOrigin: true,
       flippedIds: ["id-1"],
       flipCallbacks: {
@@ -254,6 +259,8 @@ describe("animateFlippedElements", () => {
       },
       getElement
     })
+
+    flip()
 
     expect(typeof inProgressAnimations["id-1"].stop).to.equal("function")
     expect(typeof inProgressAnimations["id-1"].onComplete).to.equal("function")

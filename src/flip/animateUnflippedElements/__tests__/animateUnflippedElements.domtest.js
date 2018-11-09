@@ -18,7 +18,7 @@ function getBoundingClientRect(element) {
 }
 
 describe("animateUnflippedElements", () => {
-  it("should call onAppear callbacks and pass in the correct element reference", () => {
+  it("should return a function to call onAppear callbacks and pass in the correct element reference", () => {
     testEl.innerHTML = ` <div>
     <div data-flip-id="id-1"></div>
     <div data-flip-id="id-2"></div>
@@ -30,7 +30,11 @@ describe("animateUnflippedElements", () => {
     const fakeOnAppear2 = sinon.fake()
     const fakeOnAppear3 = sinon.fake()
 
-    animateUnflippedElements({
+    const {
+      hideEnteringElements,
+      animateEnteringElements,
+      animateExitingElements
+    } = animateUnflippedElements({
       unflippedIds: ["id-1", "id-3", "id-4"],
       flipCallbacks: {
         "id-1": { onAppear: fakeOnAppear1 },
@@ -41,12 +45,13 @@ describe("animateUnflippedElements", () => {
       newFlipChildrenPositions: { "id-1": {}, "id-3": {} },
       cachedFlipChildrenPositions: {}
     })
+    animateEnteringElements()
     expect(fakeOnAppear1.callCount).to.equal(1)
     expect(fakeOnAppear2.callCount).to.equal(0)
     expect(fakeOnAppear3.callCount).to.equal(1)
   })
 
-  it("should immediately apply an opacity of 0 to elements with a delayedOnAppear callback", () => {
+  it("should return a function to immediately apply an opacity of 0 to elements with an onAppear callback", () => {
     testEl.innerHTML = ` <div>
     <div data-flip-id="id-1"></div>
     <div data-flip-id="id-2"></div>
@@ -55,19 +60,24 @@ describe("animateUnflippedElements", () => {
     </div>
   `
     const fakeOnAppear1 = sinon.fake()
-    const fakeDelayedOnAppear2 = sinon.fake()
+    const fakeOnAppear2 = sinon.fake()
 
-    animateUnflippedElements({
+    const {
+      hideEnteringElements,
+      animateEnteringElements,
+      animateExitingElements
+    } = animateUnflippedElements({
       unflippedIds: ["id-1", "id-2"],
       flipCallbacks: {
         "id-1": { onAppear: fakeOnAppear1 },
-        "id-2": { onDelayedAppear: fakeDelayedOnAppear2 }
+        "id-2": { onAppear: fakeOnAppear2 }
       },
       getElement: getElement,
       newFlipChildrenPositions: { "id-1": {}, "id-2": {} },
       cachedFlipChildrenPositions: {}
     })
-    expect(getElement("id-1").style.opacity).to.equal("")
+    hideEnteringElements()
+    expect(getElement("id-1").style.opacity).to.equal("0")
     expect(getElement("id-2").style.opacity).to.equal("0")
   })
 
@@ -262,7 +272,7 @@ describe("animateUnflippedElements", () => {
     expect(newBounding.left).to.equal(200)
   })
 
-  it("should call onExit with an element reference to the element that has been placed back in the DOM", () => {
+  it("should return a function to call onExit with an element reference to the element that has been placed back in the DOM", () => {
     testEl.innerHTML = ` <div id="container">
     <div data-flip-id="id-2"></div>
     <div data-flip-id="id-3"></div>
@@ -273,7 +283,11 @@ describe("animateUnflippedElements", () => {
     const exitedElement = document.createElement("div")
     const parent = testEl.querySelector("#container")
 
-    animateUnflippedElements({
+    const {
+      hideEnteringElements,
+      animateEnteringElements,
+      animateExitingElements
+    } = animateUnflippedElements({
       unflippedIds: ["id-0", "id-1"],
       flipCallbacks: {
         "id-0": { onExit: () => {} },
@@ -299,99 +313,11 @@ describe("animateUnflippedElements", () => {
         }
       }
     })
+    animateExitingElements()
     expect(fakeOnExit.callCount).to.equal(1)
     expect(fakeOnExit.args[0][0]).to.equal(exitedElement)
     // index of exiting element in terms of all exiting elements
     expect(fakeOnExit.args[0][1]).to.equal(1)
     expect(typeof fakeOnExit.args[0][2]).to.equal("function")
-  })
-
-  it("should wait until all exit callbacks have called the provided stop function to trigger delayedOnAppear callbacks ", () => {
-    testEl.innerHTML = ` <div id="container">
-    <div data-flip-id="id-3"></div>
-    </div>
-  `
-
-    const exitedElement1 = document.createElement("div")
-    const parent = testEl.querySelector("#container")
-    const exitedElement2 = document.createElement("div")
-
-    const removeElementCallbacks = []
-    const fakeOnExit1 = sinon.fake((el, index, func) => {
-      removeElementCallbacks.push(func)
-    })
-    const fakeOnExit2 = sinon.fake((el, index, func) => {
-      removeElementCallbacks.push(func)
-    })
-
-    let onDelayedAppearCalled = false
-
-    const fakeOnDelayedAppear = sinon.fake(() => {
-      onDelayedAppearCalled = true
-    })
-
-    animateUnflippedElements({
-      unflippedIds: ["id-1", "id-2", "id-3"],
-      flipCallbacks: {
-        "id-1": { onExit: fakeOnExit1 },
-        "id-2": { onExit: fakeOnExit2 },
-        "id-3": { onDelayedAppear: fakeOnDelayedAppear }
-      },
-      getElement: getElement,
-      newFlipChildrenPositions: { "id-3": {} },
-      inProgressAnimations: {},
-      cachedFlipChildrenPositions: {
-        "id-1": {
-          domData: {
-            element: exitedElement1,
-            parent: parent,
-            childPosition: { top: 100, left: 200, width: 50, height: 75 }
-          }
-        },
-        "id-2": {
-          domData: {
-            element: exitedElement2,
-            parent: parent,
-            childPosition: { top: 100, left: 200, width: 50, height: 75 }
-          }
-        }
-      }
-    })
-
-    expect(onDelayedAppearCalled).to.equal(false)
-
-    removeElementCallbacks[0]()
-
-    expect(onDelayedAppearCalled).to.equal(false)
-
-    removeElementCallbacks[1]()
-
-    expect(onDelayedAppearCalled).to.equal(true)
-  })
-
-  it("should call the onDelayedAppearCallbacks immediately if there are no exiting elements ", () => {
-    testEl.innerHTML = ` <div id="container">
-    <div data-flip-id="id-3"></div>
-    </div>
-  `
-
-    let onDelayedAppearCalled = false
-
-    const fakeOnDelayedAppear = sinon.fake(() => {
-      onDelayedAppearCalled = true
-    })
-
-    animateUnflippedElements({
-      unflippedIds: ["id-3"],
-      flipCallbacks: {
-        "id-3": { onDelayedAppear: fakeOnDelayedAppear }
-      },
-      getElement: getElement,
-      newFlipChildrenPositions: { "id-3": {} },
-      inProgressAnimations: {},
-      cachedFlipChildrenPositions: {}
-    })
-
-    expect(onDelayedAppearCalled).to.equal(true)
   })
 })
