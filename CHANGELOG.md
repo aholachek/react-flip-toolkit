@@ -1,5 +1,20 @@
 # Changelog
 
+## 6.0.0 Release
+
+**Summary:** A small release with only one breaking change: streamlining animation sequencing by removing the option to provide `onDelayedAppear` callbacks to `Flipped` components, and adding a new optional callback to the `Flipper` component, `handleEnterUpdateDelete`, that allows for complete control of animation sequencing.
+
+### Improved
+
+Animation sequencing is now more flexible with the `handleEnterUpdateDelete` function.
+[Check out this Codesandbox for a comprehensive example.](https://codesandbox.io/s/4q7qpkn8q0)
+
+### Removed
+
+Instead of optionally using `onDelayedAppear`, all entering animations should be specified with the standard `onAppear` callback.
+
+Some code that was handling an edge case with FLIP-ped images in the Safari browser has been removed for simplicity's sake. Please be sure to QA FLIP animations that use images in Safari.
+
 ## 5.0.0 Release
 
 **Summary:** Use a `Reboundjs` fork instead of `Wobblejs` for better performance. Add a lot more options for staggering.

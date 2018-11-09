@@ -146,20 +146,16 @@ class ListShuffler extends Component {
 
   render() {
     return (
-      <div>
+      <Flipper flipKey={this.state.data.join("")}>
         <button onClick={this.shuffle}> shuffle</button>
-        <Flipper
-          flipKey={this.state.data.join("")}
-          element="ul"
-          className="list"
-        >
+        <ul className="list">
           {this.state.data.map(d => (
             <Flipped key={d} flipId={d}>
               <li>{d}</li>
             </Flipped>
           ))}
-        </Flipper>
-      </div>
+        </ul>
+      </Flipper>
     );
   }
 }
@@ -335,7 +331,7 @@ That means any layout styles &mdash; padding, flexbox, etc&mdash;should be appli
 
 ## Library details
 
-- [7.6kb minified and gzipped](https://bundlephobia.com/result?p=react-flip-toolkit)
+- [7.4kb minified and gzipped](https://bundlephobia.com/result?p=react-flip-toolkit)
 - React 16+
 - Tested in latest Chrome, Firefox, Safari, Edge, and IE 11.
 - Uses [Rematrix](https://github.com/jlmakes/rematrix) for matrix calculations and a simplified fork of  [Rebound](https://github.com/facebook/rebound-js) for spring animations.
