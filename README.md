@@ -325,15 +325,13 @@ The problem with scale animations has to do with children &mdash; if you scale a
 ```
 
 By default, both the scale and the translation transforms of the parent will be counteracted (this allows children components to make their own FLIP animations without being affected by the parent).
-But for many/most use cases, you'll want to additionally specify the `scale` prop to limit the adjustment to the scale and allow the positioning to move with the parent.
+But for many use cases, you'll want to additionally specify the `scale` prop to limit the adjustment to the scale and allow the positioning to move with the parent.
 
 **The DOM element with the inverse transform should lie flush against its parent container** for the most seamless animation.
 
 That means any layout styles &mdash; padding, flexbox, etc&mdash;should be applied to the inverted container (the element wrapped with a `Flipped` component with an `inverseFlipId`) rather than the parent `Flipped` container.
 
 ## Library details
-
-- [7.4kb minified and gzipped](https://bundlephobia.com/result?p=react-flip-toolkit)
 - React 16+
 - Tested in latest Chrome, Firefox, Safari, Edge, and IE 11.
 - Uses [Rematrix](https://github.com/jlmakes/rematrix) for matrix calculations and a simplified fork of  [Rebound](https://github.com/facebook/rebound-js) for spring animations.
