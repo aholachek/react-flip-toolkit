@@ -40,8 +40,8 @@
 - [Library details](#library-details)
 - [Troubleshooting](#troubleshooting)
   - [Problem #1: Nothing is happening](#problem-1-nothing-is-happening)
-  - [Problem #2: Things look weird:](#problem-2-things-look-weird)
-  - [It's still not working: try out the `debug` prop](#its-still-not-working-try-out-the-debug-prop)
+  - [Problem #2: Things look weird](#problem-2-things-look-weird)
+  - [Problem #3: It's still not working](#its-still-not-working-try-out-the-debug-prop)
 - [Performance](#performance)
   - [1. `PureComponent`](#1-purecomponent)
   - [2. `will-change:transform`](#2-will-changetransform)
@@ -344,14 +344,16 @@ That means any layout styles &mdash; padding, flexbox, etc&mdash;should be appli
   - Make sure you're updating the `flipKey` attribute in the `Flipper` component whenever an animation should happen.
   - If one of your `Flipped` components is wrapping another React component rather than a DOM element, make sure that component passes down unknown props directly to its DOM element, e.g.: `<div className="square" {...rest} />`
 
-### Problem #2: Things look weird:
+### Problem #2: Things look weird
   - At any point, there can only be one element with a specified `flipId` on the page. If there are multiple `Flipped` elements on the page with the same id, the animation will break. Check to make sure all `flipId`s are unique.
   - Make sure you are animating the element you want to animate and not, for instance, a wrapper div. If you are animating an inline element like some text, but have wrapped it in a `div`, you're actually animating the div, which might have a much wider width that you'd expect at certain points, which will throw off the animation. Check to see if you need to add an  `inline-block` style to the animated element.
   - Make sure you don't have any competing CSS transitions on the element in question.
 
-### It's still not working: try out the `debug` prop
+### Problem #3: It's still not working
 
-If you still can't figure out what's going wrong, you can add the [the `debug` prop](#props)  directly on your `Flipper` component to pause transitions at the beginning.
+- Try out the `debug` prop. If you still can't figure out what's going wrong, you can add the [the `debug` prop](#props)  directly on your `Flipper` component to pause transitions at the beginning.
+- If you think something might actually be broken, or are completely stuck, please feel free to make an issue.
+
 
 ## Performance
 

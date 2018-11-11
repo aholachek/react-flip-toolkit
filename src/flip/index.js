@@ -4,17 +4,23 @@ import { getFlippedElementPositionsAfterUpdate } from "./getFlippedElementPositi
 import * as constants from "../constants"
 import { assign } from "../utilities"
 
-const createGetElementFunc = (element, portalKey) => {
+const createScopedSelector = (element, portalKey) => {
   if (portalKey) {
-    return id =>
-      document.querySelector(
-        `[${constants.DATA_FLIP_ID}="${id}"][${
-          constants.DATA_PORTAL_KEY
-        }=${portalKey}]`
+    return selector =>
+      document.querySelectorAll(
+        `[${constants.DATA_PORTAL_KEY}=${portalKey}]${selector}`
       )
   } else {
-    return id => element.querySelector(`[${constants.DATA_FLIP_ID}="${id}"]`)
+    return selector => element.querySelectorAll(selector)
   }
+}
+
+const createGetElementFunc = (element, portalKey) => {
+  // this should only ever return 1 element
+  return id =>
+    createScopedSelector(element, portalKey)(
+      `[${constants.DATA_FLIP_ID}="${id}"]`
+    )[0]
 }
 
 const onFlipKeyUpdate = ({
@@ -36,6 +42,7 @@ const onFlipKeyUpdate = ({
     portalKey
   })
 
+  const scopedSelector = createScopedSelector(containerEl, portalKey)
   const getElement = createGetElementFunc(containerEl, portalKey)
 
   const isFlipped = id =>
@@ -70,7 +77,8 @@ const onFlipKeyUpdate = ({
     spring,
     debug,
     staggerConfig,
-    decisionData
+    decisionData,
+    scopedSelector
   })
 
   // the function handles putting flipped elements back in their original positions

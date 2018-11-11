@@ -112,7 +112,8 @@ const animateFlippedElements = ({
   getElement,
   debug,
   staggerConfig,
-  decisionData
+  decisionData,
+  scopedSelector
 }) => {
   const body = document.querySelector("body")
 
@@ -397,7 +398,11 @@ const animateFlippedElements = ({
   // this function modifies flipDataArray in-place
   // by removing references to non-direct children
   // to enable recursive stagger
-  const { topLevelChildren } = filterFlipDescendants(flipDict, flippedIds)
+  const { topLevelChildren } = filterFlipDescendants({
+    flipDict,
+    flippedIds,
+    scopedSelector
+  })
 
   return () => {
     // there are no active FLIP animations, so immediately resolve the
