@@ -1,11 +1,4 @@
-import PropTypes from "prop-types"
 import { isObject, assign } from "../utilities"
-
-export const getSpringInterface = () => ({
-  stiffness: PropTypes.number,
-  damping: PropTypes.number,
-  overshootClamping: PropTypes.bool
-})
 
 // adapted from
 // https://github.com/chenglou/react-motion/blob/master/src/presets.js

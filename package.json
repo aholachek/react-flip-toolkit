@@ -19,7 +19,7 @@
     "lint": "eslint src *.js",
     "test:dom": "parcel mocha/testrunner.html",
     "test:all": "jest; npm run test:dom",
-    "test:vanilla": "parcel 'src/__tests__/vanilla-test/index.html'",
+    "test:core": "parcel 'src/__tests__/core-test/index.html'",
     "preversion": "npm test",
     "version": "npm run build",
     "inspect": "npx source-map-explorer umd/react-flip-toolkit.min.js umd/react-flip-toolkit.min.js.map"

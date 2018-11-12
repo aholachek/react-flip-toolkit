@@ -1,4 +1,4 @@
-import Flipper from "../../vanilla"
+import Flipper from "../../core"
 
 const container = document.querySelector(".container")
 const box = document.querySelector(".box")
