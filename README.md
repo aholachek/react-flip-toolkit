@@ -36,7 +36,7 @@
     - [Callback props](#callback-props)
     - [Transform props](#transform-props)
     - [Advanced props](#advanced-props)
-- [Scale transitions made eas(ier)](#scale-transitions-made-easier)
+- [Practical scale transitions](#scale-transitions-made-practical)
 - [Library details](#library-details)
 - [Troubleshooting](#troubleshooting)
   - [Problem #1: Nothing is happening](#problem-1-nothing-is-happening)
@@ -259,7 +259,7 @@ The `Flipped` component produces no markup, it simply passes some props down to 
 | ----------------------- | :--------: | :-------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | children **(required)** | -          | `node`                | Wrap a single child with the `Flipped` component.                                                                                                                                                                                                                                                                                                    |
 | flipId **(required)**   | -          | `string`              | Use this to tell `react-flip-toolkit` how elements should be matched across renders so they can be animated.                                                                                                                                                                                                                                         |
-| inverseFlipId           | -          | `string`              | Refer to the id of the parent `Flipped` container whose transform you want to cancel out. [Read more about canceling out parent transforms here.](#scale-transitions-made-easier)                                                                                                                                                                    |
+| inverseFlipId           | -          | `string`              | Refer to the id of the parent `Flipped` container whose transform you want to cancel out. [Read more about canceling out parent transforms here.](#scale-transitions-made-practical)                                                                                                                                                                 |
 | transformOrigin         | `"0 0"`    | `string`              | This is a convenience method to apply the proper CSS `transform-origin` to the element being FLIP-ped. This will override `react-flip-toolkit`'s default application of `transform-origin: 0 0;` if it is provided as a prop.                                                                                                                        |
 | spring                  | `noWobble` | `string` or `object`  | Provide a string referencing one of the spring presets &mdash; (default), `veryGentle`, `gentle`, `wobbly`, or `stiff`, OR provide an object with stiffness and damping parameters. [Explore the spring setting options here.](https://codepen.io/aholachek/full/bKmZbV/)                                                                            |
 | stagger                 | `false`    | `boolean` or `string` | Provide a natural, spring-based staggering effect in which the spring easing of each item is pinned to the previous one's movement. Provide `true` to stagger the element with all other staggered elements. If you want to get more granular, you can provide a string key and the element will be staggered with other elements with the same key. |
@@ -302,7 +302,7 @@ Functions to control when FLIP happens
 | shouldFlip   | `prevDecisionData`, `currentDecisionData` | A function provided with the current and previous `decisionData` props passed down by the `Flipper` component. Returns a `boolean` to indicate whether a `Flipped` component should animate at that particular moment or not.                    |
 | shouldInvert | `prevDecisionData`, `currentDecisionData` | A function provided with the current and previous `decisionData` props passed down by the `Flipper` component. Returns a `boolean` indicating whether to apply inverted transforms to `Flipped` children that request it via an `inverseFlipId`. |
 
-## Scale transitions made eas(ier)
+## Practical scale transitions
 
 Some other FLIP libraries just allow you to animate position changes, but things get more interesting [once you can animate scale changes as well](#demos).
 
@@ -327,14 +327,14 @@ The problem with scale animations has to do with children &mdash; if you scale a
 By default, both the scale and the translation transforms of the parent will be counteracted (this allows children components to make their own FLIP animations without being affected by the parent).
 But for many use cases, you'll want to additionally specify the `scale` prop to limit the adjustment to the scale and allow the positioning to move with the parent.
 
-**The DOM element with the inverse transform should lie flush against its parent container** for the most seamless animation.
+**The DOM element with the inverse transform should lie flush against its parent container for the most seamless animation.**
 
 That means any layout styles &mdash; padding, flexbox, etc&mdash;should be applied to the inverted container (the element wrapped with a `Flipped` component with an `inverseFlipId`) rather than the parent `Flipped` container.
 
 ## Library details
-- React 16+
-- Tested in latest Chrome, Firefox, Safari, Edge, and IE 11.
-- Uses [Rematrix](https://github.com/jlmakes/rematrix) for matrix calculations and a simplified fork of  [Rebound](https://github.com/facebook/rebound-js) for spring animations.
+- Requires React 16+
+- Tested in latest Chrome, Firefox, Safari, Edge, and IE 11
+- Uses [Rematrix](https://github.com/jlmakes/rematrix) for matrix calculations and a simplified fork of  [Rebound](https://github.com/facebook/rebound-js) for spring animations
 
 ## Troubleshooting
 
@@ -401,4 +401,4 @@ Remember [to always provide `key` props as appropriate to your elements](https:/
 }
 ```
 
-This [somewhat mysterious CSS property](https://dev.opera.com/articles/css-will-change-property/) tells the browser to anticipate changes to an element. It should be used with caution, because it can increase browser resource usage. If you are animating images (`svg`, `jpg`, etc), I would recommend trying it out and seeing if it increases the performance of the animation. In my tests, when animating large images, `will-change:transform` increased animation frame rate considerably.
+This [somewhat mysterious CSS property](https://dev.opera.com/articles/css-will-change-property/) tells the browser to anticipate changes to an element. It should be used with caution, because it can increase browser resource usage. If you are animating images (`svg`, `jpg`, etc), I would recommend trying it out and seeing if it increases the performance of the animation. In my tests, when animating one or two large images, `will-change:transform` increased animation frame rate. However, trying to apply it to too many components at once (20+) actually decreased performance considerably.

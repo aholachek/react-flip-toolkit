@@ -4,6 +4,7 @@ import animateFlippedElements from "../index"
 
 const testEl = document.querySelector("#test")
 const getElement = id => testEl.querySelector(`[data-flip-id=${id}]`)
+const scopedSelector = selector => testEl.querySelectorAll(selector)
 
 describe("animateFlippedElements", () => {
   it("should return a function that calls onStart with reference to the element on the first tick of the animation", done => {
@@ -49,7 +50,8 @@ describe("animateFlippedElements", () => {
       },
 
       decisionData: {},
-      getElement
+      getElement,
+      scopedSelector
     })
 
     flip()
@@ -101,7 +103,8 @@ describe("animateFlippedElements", () => {
         },
         "id-2": { rect: getElement("id-2").getBoundingClientRect() }
       },
-      getElement
+      getElement,
+      scopedSelector
     })
 
     flip()
@@ -167,7 +170,8 @@ describe("animateFlippedElements", () => {
           }
         }
       },
-      getElement
+      getElement,
+      scopedSelector
     })
 
     expect(getElement("id-1").style.transformOrigin).to.equal("75% 75% 0px")
@@ -208,7 +212,8 @@ describe("animateFlippedElements", () => {
           }
         }
       },
-      getElement
+      getElement,
+      scopedSelector
     })
 
     expect(getElement("id-1").style.transformOrigin).to.equal("0px 0px 0px")
@@ -255,7 +260,8 @@ describe("animateFlippedElements", () => {
           }
         }
       },
-      getElement
+      getElement,
+      scopedSelector
     })
 
     flip()

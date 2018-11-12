@@ -33,15 +33,19 @@ describe("filterFlipDescendants", () => {
       {}
     )
 
-    const { topLevelChildren } = filterFlipDescendants(flipData, [
-      "id-1",
-      "id-2",
-      "id-3",
-      "id-4",
-      "id-1--2",
-      "id-1--3",
-      "id-2--2"
-    ])
+    const { topLevelChildren } = filterFlipDescendants({
+      flipDict: flipData,
+      flippedIds: [
+        "id-1",
+        "id-2",
+        "id-3",
+        "id-4",
+        "id-1--2",
+        "id-1--3",
+        "id-2--2"
+      ],
+      scopedSelector: selector => document.querySelectorAll(selector)
+    })
 
     Object.keys(flipData).forEach(flipId => {
       delete flipData[flipId].element
