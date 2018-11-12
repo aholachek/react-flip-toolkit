@@ -20,15 +20,17 @@
 | Use real FLIP instead of cloning & crossfading | ✅                                                                   | ❌                                                               | ✅                    |
 | Use springs for animations                     | ❌                                                                   | ❌                                                               | ✅                    |
 | Support spring-based stagger effects           | ❌                                                                   | ❌                                                               | ✅                    |
+| Usable with frameworks other than React        | ❌                                                                   | ❌                                                               | ✅                    |
 
 
 
 ## Table of Contents
 - [Demos](#demos)
 - [Quick start](#quick-start)
-  - [Expanding Div](#expanding-div-fork-on-code-sandbox)
-  - [List Shuffle](#list-shuffle-fork-on-code-sandbox)
-- [🆕 Interactive Tutorial](https://alex.holachek.com/rft-tutorial/)
+  - [Expanding Div (Fork on Code Sandbox)](#expanding-div-fork-on-code-sandbox)
+  - [List Shuffle (Fork on Code Sandbox)](#list-shuffle-fork-on-code-sandbox)
+- [Usage with Vanilla JS or Other Frameworks Like Vue.js](#usage-with-vanilla-js-or-other-frameworks-like-vuejs)
+  - [Expanding Div (Fork on Code Sandbox)](#expanding-div-fork-on-code-sandbox-1)
 - [The Components](#the-components)
   - [1. `Flipper`](#1-flipper)
     - [Basic Props](#basic-props)
@@ -38,6 +40,7 @@
     - [Callback props](#callback-props)
     - [Transform props](#transform-props)
     - [Advanced props](#advanced-props)
+- [Intermediate Tutorial](#intermediate-tutorial)
 - [Practical scale transitions](#practical-scale-transitions)
 - [Library details](#library-details)
 - [Troubleshooting](#troubleshooting)
@@ -164,6 +167,52 @@ class ListShuffler extends Component {
     );
   }
 }
+```
+
+## Usage with Vanilla JS or Other Frameworks Like Vue.js
+
+`React-Flip-Toolkit` exports a special file, `core`, that allows you to use the methods from the library imperatively, without requiring React. You could use this with vanilla JavaScript, or hook into the lifecycle events of a Vue.js component.
+
+You can refer to the React documentation below to see what options can be passed to the `Flipper` class constructor as well as the `addFlipped` function exposed by the `Flipper` instance (which takes options corresponding to the `Flipped` component's props).
+
+
+### Expanding Div ([Fork on Code Sandbox](https://codesandbox.io/s/5v1k1nwz8l))
+```js
+import Flipper from "react-flip-toolkit/es/core";
+// or if you're using commonjs imports: import Flipper from "react-flip-toolkit/lib/core
+const container = document.querySelector(".container");
+const square = document.querySelector(".square");
+const innerSquare = document.querySelector(".inner-square");
+
+// the config options for the Flipper class are the same
+// as the allowed props for the Flipper component
+const flipper = new Flipper({ element: container });
+
+// add flipped children to the parent
+// options are the same as the props
+// for the Flipped component
+flipper.addFlipped({
+  element: square,
+  flipId: "square",
+  onStart: () => console.log("animation started!"),
+  onComplete: () => console.log("animation completed!")
+});
+
+// to add an inverted child, use this method with
+// a reference to the parent element
+flipper.addInverted({
+  element: innerSquare,
+  parent: square
+});
+
+square.addEventListener("click", () => {
+  // record positions before they change
+  flipper.recordBeforeUpdate();
+  square.classList.toggle("big-square");
+  // record new positions and begin animations
+  flipper.onUpdate();
+});
+
 ```
 
 ## The Components
@@ -304,12 +353,19 @@ Functions to control when FLIP happens
 | shouldFlip   | `prevDecisionData`, `currentDecisionData` | A function provided with the current and previous `decisionData` props passed down by the `Flipper` component. Returns a `boolean` to indicate whether a `Flipped` component should animate at that particular moment or not.                    |
 | shouldInvert | `prevDecisionData`, `currentDecisionData` | A function provided with the current and previous `decisionData` props passed down by the `Flipper` component. Returns a `boolean` indicating whether to apply inverted transforms to `Flipped` children that request it via an `inverseFlipId`. |
 
+## Intermediate Tutorial
+  <a href="https://alex.holachek.com/rft-tutorial/">
+  <img src="./example-assets/stagger-small.gif" height='300px' alt='a bouncy, staggered list animation' />
+  </a>
+
+  [Learn how to easily set up the above animation with this step-by-step tutorial.](https://alex.holachek.com/rft-tutorial/)
+
 ## Practical scale transitions
 
 Some other FLIP libraries just allow you to animate position changes, but things get more interesting [once you can animate scale changes as well](#demos).
 
 <a href="https://codepen.io/aholachek/pen/mKXBJR?editors=0110">
-<img src="./example-assets/nested-example.gif" width='600px' alt='an animation demoing nested scale transforms' />
+<img src="./example-assets/nested-example.gif" height="600px" alt="an animation demoing nested scale transforms" />
 </a>
 
 [view on Codepen](https://codepen.io/aholachek/pen/mKXBJR)
