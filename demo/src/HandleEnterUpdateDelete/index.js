@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { Flipper, Flipped, ExitContainer } from "../../../src"
 import anime from "animejs"
 import getRandomList from "./getRandomList"
-import styles from "./styles.css"
+import "./styles.css"
 
 const simultaneousAnimations = ({
   hideEnteringElements,

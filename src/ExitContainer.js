@@ -1,4 +1,4 @@
-import React, { cloneElement } from "react"
+import { cloneElement } from "react"
 import { DATA_EXIT_CONTAINER } from "./constants"
 
 const ExitContainer = ({ children }) => {
