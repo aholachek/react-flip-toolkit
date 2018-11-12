@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { Flipper, Flipped } from "../../../src"
+import { Flipper, Flipped, ExitContainer } from "../../../src"
 import anime from "animejs"
 import getRandomList from "./getRandomList"
 import styles from "./styles.css"
@@ -47,7 +47,11 @@ const transitions = {
 }
 
 class EnterUpdateDeleteDemo extends Component {
-  state = { list: getRandomList(), transitionType: "exitThenFlipThenEnter" }
+  state = {
+    list: getRandomList(),
+    transitionType: "exitThenFlipThenEnter",
+    exitContainer: false
+  }
   updateList = () => {
     this.setState({ list: getRandomList() })
   }
@@ -75,8 +79,39 @@ class EnterUpdateDeleteDemo extends Component {
     )
   }
   render() {
+    const flippedStuff = (
+      <div>
+        {this.state.list.map(d => (
+          //break transitions by having a parent that is also removed
+          // to demo ExitContainer use case
+          <div key={d}>
+            <Flipped
+              flipId={d.toString()}
+              onAppear={this.onAppear}
+              onExit={this.onExit}
+            >
+              <li>{d}</li>
+            </Flipped>
+          </div>
+        ))}
+      </div>
+    )
+
     return (
       <div className="enter-update-delete-container">
+        <label>
+          <input
+            type="checkbox"
+            checked={this.state.exitContainer}
+            name="exit-container"
+            onChange={ev =>
+              this.setState({
+                exitContainer: ev.target.checked
+              })
+            }
+          />
+          with exit container
+        </label>
         <div>
           {Object.keys(transitions).map(transition => {
             return (
@@ -106,16 +141,11 @@ class EnterUpdateDeleteDemo extends Component {
             transitions[this.state.transitionType](callbacks)
           }}
         >
-          {this.state.list.map(d => (
-            <Flipped
-              key={d}
-              flipId={d.toString()}
-              onAppear={this.onAppear}
-              onExit={this.onExit}
-            >
-              <li>{d}</li>
-            </Flipped>
-          ))}
+          {this.state.exitContainer ? (
+            <ExitContainer>{flippedStuff}</ExitContainer>
+          ) : (
+            flippedStuff
+          )}
         </Flipper>
       </div>
     )

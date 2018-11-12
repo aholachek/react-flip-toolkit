@@ -70,3 +70,9 @@ export interface FlipperProps {
 }
 
 export const Flipper: React.ComponentType<FlipperProps>
+
+export interface ExitContainerProps {
+  children: React.ReactNode
+}
+
+export const ExitContainer: React.SFC<ExitContainerProps>
