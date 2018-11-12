@@ -28,6 +28,7 @@
 - [Quick start](#quick-start)
   - [Expanding Div](#expanding-div-fork-on-code-sandbox)
   - [List Shuffle](#list-shuffle-fork-on-code-sandbox)
+- [🆕 Interactive Tutorial](https://alex.holachek.com/rft-tutorial/)
 - [The Components](#the-components)
   - [1. `Flipper`](#1-flipper)
     - [Basic Props](#basic-props)
