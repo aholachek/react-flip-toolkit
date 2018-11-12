@@ -350,7 +350,7 @@ That means any layout styles &mdash; padding, flexbox, etc&mdash;should be appli
 ### Problem #3: It's still not working
 
 - Try out the `debug` prop. If you still can't figure out what's going wrong, you can add the [the `debug` prop](#props)  directly on your `Flipper` component to pause transitions at the beginning.
-- If you think something might actually be broken, or are completely stuck, please feel free to make an issue.
+- If you think something might actually be broken, or are completely stuck, feel free to make an issue.
 
 
 ## Performance
