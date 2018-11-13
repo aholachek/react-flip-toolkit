@@ -74,7 +74,7 @@ export const createApplyStylesFunc = ({ element, invertedChildren, body }) => ({
   // are removed
   stringTransform =
     stringTransform === "matrix(1, 0, 0, 1, 0, 0)"
-      ? "rotateY(.01)"
+      ? "rotateY(.001)"
       : stringTransform
   element.style.transform = stringTransform
 
