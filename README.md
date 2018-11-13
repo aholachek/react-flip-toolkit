@@ -365,7 +365,7 @@ Functions to control when FLIP happens
 Some other FLIP libraries just allow you to animate position changes, but things get more interesting [once you can animate scale changes as well](#demos).
 
 <a href="https://codepen.io/aholachek/pen/mKXBJR?editors=0110">
-<img src="./example-assets/nested-example.gif" height="600px" alt="an animation demoing nested scale transforms" />
+<img src="./example-assets/nested-example.gif" height="400px" alt="an animation demoing nested scale transforms" />
 </a>
 
 [view on Codepen](https://codepen.io/aholachek/pen/mKXBJR)
