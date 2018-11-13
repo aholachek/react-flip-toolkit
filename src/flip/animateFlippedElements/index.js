@@ -69,10 +69,13 @@ export const createApplyStylesFunc = ({ element, invertedChildren, body }) => ({
   if (!matrix) return
   let stringTransform = convertMatrix2dArrayToString(matrix)
 
-  // saw some weird behavior when the identity transform was left on the element
-  // on a table
+  // keep an invisible transform on the element to try to
+  // prevent Chrome from pixel-snapping when scale transforms
+  // are removed
   stringTransform =
-    stringTransform === "matrix(1, 0, 0, 1, 0, 0)" ? "" : stringTransform
+    stringTransform === "matrix(1, 0, 0, 1, 0, 0)"
+      ? "rotateY(.01)"
+      : stringTransform
   element.style.transform = stringTransform
 
   if (invertedChildren) {
