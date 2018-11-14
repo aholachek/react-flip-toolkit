@@ -354,11 +354,8 @@ Functions to control when FLIP happens
 | shouldInvert | `prevDecisionData`, `currentDecisionData` | A function provided with the current and previous `decisionData` props passed down by the `Flipper` component. Returns a `boolean` indicating whether to apply inverted transforms to `Flipped` children that request it via an `inverseFlipId`. |
 
 ## Intermediate Tutorial
-  <a href="https://alex.holachek.com/rft-tutorial/">
-  <img src="./example-assets/stagger-small.gif" height='300px' alt='a bouncy, staggered list animation' />
-  </a>
 
-  [Learn how to easily set up the above animation with this step-by-step tutorial.](https://alex.holachek.com/rft-tutorial/)
+[Learn how to easily set up an elegant animation with this step-by-step tutorial.](https://alex.holachek.com/rft-tutorial/)
 
 ## Practical scale transitions
 
