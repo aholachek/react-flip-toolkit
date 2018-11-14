@@ -69,12 +69,12 @@ export const createApplyStylesFunc = ({ element, invertedChildren, body }) => ({
   if (!matrix) return
   let stringTransform = convertMatrix2dArrayToString(matrix)
 
-  // keep an invisible transform on the element to try to
+  // keep a tiny, invisible rotateZ transform on the element to try to
   // prevent Chrome from pixel-snapping when scale transforms
   // are removed
   stringTransform =
     stringTransform === "matrix(1, 0, 0, 1, 0, 0)"
-      ? "rotateZ(.001)"
+      ? "matrix(1, 0.0001, -0.0001, 1, 0, 0)"
       : stringTransform
   element.style.transform = stringTransform
 
