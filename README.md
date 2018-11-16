@@ -78,6 +78,13 @@
 </p>
 
 <p>
+<a href="https://codesandbox.io/s/q787wz5lx">
+<h4>Control the sequence of entering, updating, and exiting elements</h4>
+  <img src="./example-assets/enter-update-delete.gif" height="300px" alt='animation of a sentence transforming into another sentence' />
+</a>
+</p>
+
+<p>
 <a href="https://codepen.io/aholachek/pen/jvvarq?editors=0110">
 <h4>List Transition</h4>
 
@@ -318,8 +325,8 @@ The `Flipped` component produces no markup, it simply passes some props down to 
 #### Callback props
 
 <p>
-<a href="https://codepen.io/aholachek/pen/gKjYNw?editors=0110">
-  <img src="./example-assets/enter-exit.gif" width='600px' alt='an animation demoing onAppear and onExit callbacks' />
+<a href="https://codesandbox.io/s/q787wz5lx4">
+  <img src="./example-assets/enter-update-delete.gif" height="300px" alt='animation of a sentence transforming into another sentence' />
 </a>
 </p>
 
