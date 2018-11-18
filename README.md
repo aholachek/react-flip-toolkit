@@ -78,7 +78,7 @@
 </p>
 
 <p>
-<a href="https://codesandbox.io/s/q787wz5lx">
+<a href="https://codesandbox.io/s/q787wz5lx4">
 <h4>Control the sequence of entering, updating, and exiting elements</h4>
   <img src="./example-assets/enter-update-delete.gif" height="300px" alt='animation of a sentence transforming into another sentence' />
 </a>
