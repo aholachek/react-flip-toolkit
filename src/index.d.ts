@@ -48,7 +48,7 @@ export interface StaggerConfig {
   [key: string]: StaggerConfigValue
 }
 
-export interface handleEnterUpdateDeleteArgs {
+export interface HandleEnterUpdateDeleteArgs {
   hideEnteringElements: () => void
   animateExitingElements: () => Promise<void>
   animateFlippedElements: () => Promise<void>
@@ -65,7 +65,7 @@ export interface FlipperProps {
   className?: string
   portalKey?: string
   decisionData?: any
-  handleEnterUpdateDelete?: (handleEnterUpdateDeleteArgs) => void
+  handleEnterUpdateDelete?: (args: HandleEnterUpdateDeleteArgs) => void
   staggerConfig?: StaggerConfig
 }
 
