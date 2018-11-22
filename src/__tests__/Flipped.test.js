@@ -94,4 +94,17 @@ describe("Flipped Component", () => {
   describe("spring props", () => {
     it("if it detects the ", () => {})
   })
+
+  it("passed props if function as a child", () => {
+    const testRenderer = TestRenderer.create(
+      <Flipped flipId="foo" inverseFlipId="bar">
+        {(flippedProps => <div {...flippedProps} />)}
+      </Flipped>
+    )
+    expect(testRenderer.toJSON().props).toEqual({
+      'data-flip-id': 'foo',
+      'data-inverse-flip-id': 'bar',
+      'data-flip-config': JSON.stringify({ translate: true, scale: true, opacity: true })
+    });
+  });
 })
