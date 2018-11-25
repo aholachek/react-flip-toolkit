@@ -10,3 +10,4 @@ TODO
 .cache
 dist
 stats.json
+.idea

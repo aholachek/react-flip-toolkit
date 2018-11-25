@@ -19,7 +19,7 @@ const customPropCheck = function(props, propName) {
 }
 
 const propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
   inverseFlipId: customPropCheck,
   flipId: customPropCheck,
   opacity: PropTypes.bool,
@@ -44,12 +44,17 @@ export function Flipped({
   portalKey,
   ...rest
 }) {
-  let child
-  try {
-    child = Children.only(children)
-  } catch (e) {
-    throw new Error("Each Flipped component must wrap a single child")
+  let child = children
+  const isFunctionAsChildren = typeof child === 'function'
+
+  if (!isFunctionAsChildren) {
+    try {
+      child = Children.only(children)
+    } catch (e) {
+      throw new Error("Each Flipped component must wrap a single child")
+    }
   }
+
   // if nothing is being animated, assume everything is being animated
   if (!rest.scale && !rest.translate && !rest.opacity) {
     assign(rest, {
@@ -73,7 +78,7 @@ export function Flipped({
     dataAttributes[constants.DATA_PORTAL_KEY] = portalKey
   }
 
-  return cloneElement(child, dataAttributes)
+  return isFunctionAsChildren ? child(dataAttributes) : cloneElement(child, dataAttributes)
 }
 
 class FlippedWithContext extends Component {
