@@ -68,9 +68,6 @@ export function Flipped({
     // these are both used as selectors so they have to be separate
     [constants.DATA_FLIP_ID]: flipId,
     [constants.DATA_INVERSE_FLIP_ID]: inverseFlipId,
-    // we need to access this in getFlippedElementPositions
-    // which is called in getSnapshotBeforeUpdate
-    // so for performance add it as a data attribute
     [constants.DATA_FLIP_CONFIG]: JSON.stringify(rest)
   }
 
