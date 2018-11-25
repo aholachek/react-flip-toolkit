@@ -95,7 +95,7 @@ describe("Flipped Component", () => {
     it("if it detects the ", () => {})
   })
 
-  it("passed props if function as a child", () => {
+  it("passes props if it receives a function as a child", () => {
     const testRenderer = TestRenderer.create(
       <Flipped flipId="foo" inverseFlipId="bar">
         {(flippedProps => <div {...flippedProps} />)}

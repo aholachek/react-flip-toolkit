@@ -16,11 +16,11 @@
 | Animate position                               | ✅                                                                   | ✅                                                               | ✅                    |
 | Animate scale                                  | ❌                                                                   | ✅                                                               | ✅                    |
 | Animate opacity                                | ❌                                                                   | ✅                                                               | ✅                    |
-| Animate parent's size without warping children | ❌                                                                   | ❌                                                               | ✅                    |
+| [Animate parent's size without warping children](#practical-scale-transitions) | ❌                                                                   | ❌                                                               | ✅                    |
 | Use real FLIP instead of cloning & crossfading | ✅                                                                   | ❌                                                               | ✅                    |
 | Use springs for animations                     | ❌                                                                   | ❌                                                               | ✅                    |
 | Support spring-based stagger effects           | ❌                                                                   | ❌                                                               | ✅                    |
-| Usable with frameworks other than React        | ❌                                                                   | ❌                                                               | ✅                    |
+| [Usable with frameworks other than React](#usage-with-vanilla-js-or-other-frameworks-like-vuejs)        | ❌                                                                   | ❌                                                               | ✅                    |
 
 
 
@@ -309,13 +309,34 @@ and in another component somewhere else you can have
 
 and they will be tweened by `react-flip-toolkit`.
 
-The `Flipped` component produces no markup, it simply passes some props down to its wrapped child. If the child is a React component or a function, make sure it passes down Flipped props directly to the rendered DOM element.
+The `Flipped` component produces no markup, it simply passes some props down to its wrapped child.
+
+#### Wrapping a React Component
+
+If you want to wrap a React component rather than a JSX element like a `div`, the cleanest way is to provide a render prop and then apply the `flippedProps` directly to the wrapped element in your component:
+
+ ```jsx
+<Flipped>
+  {flippedProps => <MyCoolComponent flippedProps={flippedProps} />}
+</Flipped>
+
+const MyCoolComponent = ({ flippedProps }) => (<div {...flippedProps}/>)
+  ```
+
+You can also simply provide a regular React component as long as that component spreads unrecognized props onto the wrapped element:
+```jsx
+<Flipped>
+ <MyCoolComponent />
+</Flipped>
+
+const MyCoolComponent = ({ knownProp, ...rest }) => (<div {...rest}/>)
+```
 
 #### Basic props
 
 | prop                    | default    | type                  | details                                                                                                                                                                                                                                                                                                                                              |
 | ----------------------- | :--------: | :-------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| children **(required)** | -          | `node` or `function`                | Wrap a single child with the `Flipped` component.                                                                                                                                                                                                                                                                                                    |
+| children **(required)** | -          | `node` or `function`  | Wrap a single child with the `Flipped` component.                                                                                                                                                                                                                                                                                                    |
 | flipId **(required)**   | -          | `string`              | Use this to tell `react-flip-toolkit` how elements should be matched across renders so they can be animated.                                                                                                                                                                                                                                         |
 | inverseFlipId           | -          | `string`              | Refer to the id of the parent `Flipped` container whose transform you want to cancel out. [Read more about canceling out parent transforms here.](#practical-scale-transitions)                                                                                                                                                                      |
 | transformOrigin         | `"0 0"`    | `string`              | This is a convenience method to apply the proper CSS `transform-origin` to the element being FLIP-ped. This will override `react-flip-toolkit`'s default application of `transform-origin: 0 0;` if it is provided as a prop.                                                                                                                        |
@@ -402,12 +423,7 @@ That means any layout styles &mdash; padding, flexbox, etc&mdash;should be appli
 
 ### Problem #1: Nothing is happening
   - Make sure you're updating the `flipKey` attribute in the `Flipper` component whenever an animation should happen.
-  - If one of your `Flipped` components is wrapping another React component rather than a DOM element, make sure that component passes down unknown props directly to its DOM element, e.g.: `<div className="square" {...rest} />`. Or use function as a children to get Flipped props to passes down to the DOM element e.g.:
-  ```jsx
-  <Flipped>
-    {flippedProps => <MyComponent flippedProps={flippedProps} />}
-  </Flipped>
-  ```
+  - If one of your `Flipped` components is wrapping another React component rather than a DOM element,  [use a render prop to get the Flipped props](#wrapping-a-react-component) and pass down to the necessary DOM element.
 
 ### Problem #2: Things look weird
   - At any point, there can only be one element with a specified `flipId` on the page. If there are multiple `Flipped` elements on the page with the same id, the animation will break. Check to make sure all `flipId`s are unique.
