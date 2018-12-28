@@ -391,7 +391,7 @@ const animateFlippedElements = ({
   //  put items back in place
   withInitFuncs.forEach(({ initializeFlip }) => initializeFlip())
 
-  if (debug) return
+  if (debug) return () => {}
 
   const flipDict = flipDataArray.reduce((acc, curr) => {
     acc[curr.id] = curr
