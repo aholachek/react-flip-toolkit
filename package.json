@@ -1,6 +1,6 @@
 {
   "name": "react-flip-toolkit",
-  "version": "6.3.1",
+  "version": "6.3.2",
   "description": "Configurable FLIP animation helpers for React",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -30,7 +30,7 @@
   },
   "bugs": "https://github.com/aholachek/react-flip-toolkit/issues",
   "dependencies": {
-    "rematrix": "^0.2.2"
+    "rematrix": "0.2.2"
   },
   "peerDependencies": {
     "prop-types": "^15.6.2",
