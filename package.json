@@ -91,6 +91,8 @@
     "typescript": "^3.2.2"
   },
   "files": [
-    "dist"
+    "es",
+    "lib",
+    "umd"
   ]
 }
