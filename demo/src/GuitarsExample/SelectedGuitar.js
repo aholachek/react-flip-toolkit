@@ -1,6 +1,6 @@
-import React, { Component } from "react"
-import { Flipped } from "../../../src"
-import anime from "animejs"
+import React, { Component } from "react";
+import { Flipped } from "../../../src";
+import anime from "animejs";
 
 class SelectedGuitar extends Component {
   animateIn = () => {
@@ -11,8 +11,8 @@ class SelectedGuitar extends Component {
       duration: 200,
       easing: "easeOutSine",
       delay: (d, i) => i * 75
-    })
-  }
+    });
+  };
 
   animateOut = () => {
     anime({
@@ -23,12 +23,12 @@ class SelectedGuitar extends Component {
       easing: "easeOutSine",
       complete: this.props.closeSelected,
       delay: (d, i) => i * 50
-    })
-  }
+    });
+  };
 
   render() {
-    const { title, subtitle, description, price, index } = this.props
-    const parentId = `guitar-${index}`
+    const { title, subtitle, description, price, index } = this.props;
+    const parentId = `guitar-${index}`;
     return (
       <div className="details details--open" ref={el => (this.el = el)}>
         <div className="details__bg details__bg--up" />
@@ -76,8 +76,8 @@ class SelectedGuitar extends Component {
           </div>
         </button>
       </div>
-    )
+    );
   }
 }
 
-export default SelectedGuitar
+export default SelectedGuitar;

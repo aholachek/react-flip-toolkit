@@ -1,16 +1,14 @@
-import sinon from "sinon"
-import {
-  getFlippedElementPositionsBeforeUpdate,
-  getFlippedElementPositionsAfterUpdate,
-  getAllElements
-} from "../index"
+import sinon from 'sinon'
+import getFlippedElementPositionsBeforeUpdate from '../getFlippedElementPositionsBeforeUpdate'
+import getFlippedElementPositionsAfterUpdate from '../getFlippedElementPositionsAfterUpdate'
+import { getAllElements } from '../utilities'
 
-const testEl = document.querySelector("#test")
+const testEl = document.querySelector('#test')
 
-describe("getAllElements", () => {
-  it("should return a func that selects all elements in the entire document with a specific data portal key if a portal key is provided", () => {
-    const otherEl = document.createElement("div")
-    document.querySelector("body").appendChild(otherEl)
+describe('getAllElements', () => {
+  it('should return a func that selects all elements in the entire document with a specific data portal key if a portal key is provided', () => {
+    const otherEl = document.createElement('div')
+    document.querySelector('body').appendChild(otherEl)
     otherEl.innerHTML = `
     <div>
     <div data-flip-id="id-1" data-portal-key='some-portal-key'></div>
@@ -22,13 +20,13 @@ describe("getAllElements", () => {
     <div data-flip-id="id-4" data-portal-key='some-portal-key'></div>
       </div>
     `
-    const elements = getAllElements(testEl, "some-portal-key")
+    const elements = getAllElements(testEl, 'some-portal-key')
     expect(elements.length).to.equal(4)
   })
 
-  it("should otherwise get all children elements with a data-flip-id attribute  ", () => {
-    const otherEl = document.createElement("div")
-    document.querySelector("body").appendChild(otherEl)
+  it('should otherwise get all children elements with a data-flip-id attribute  ', () => {
+    const otherEl = document.createElement('div')
+    document.querySelector('body').appendChild(otherEl)
     otherEl.innerHTML = `
     <div>
     <div data-flip-id="id-1" data-portal-key='some-portal-key'></div>
@@ -45,8 +43,8 @@ describe("getAllElements", () => {
   })
 })
 
-describe("getFlippedElementPositionsBeforeUpdate", () => {
-  it("returns position data for elements with flip-ids", () => {
+describe('getFlippedElementPositionsBeforeUpdate', () => {
+  it('returns position data for elements with flip-ids', () => {
     testEl.innerHTML = `
       <div>
       <div data-flip-id="id-1" style="height:100px; width: 100px; opacity: .5"></div>
@@ -57,18 +55,22 @@ describe("getFlippedElementPositionsBeforeUpdate", () => {
     const { flippedElementPositions } = getFlippedElementPositionsBeforeUpdate({
       element: testEl
     })
-    expect(flippedElementPositions["id-1"].opacity).to.equal(0.5)
-    expect(flippedElementPositions["id-1"].rect.width).to.equal(100)
-    expect(flippedElementPositions["id-1"].rect.height).to.equal(100)
-    expect(flippedElementPositions["id-1"].domData).to.deep.equal({})
+    expect(flippedElementPositions['id-1'].opacity).to.equal(0.5)
+    expect(flippedElementPositions['id-1'].rect.width).to.equal(100)
+    expect(flippedElementPositions['id-1'].rect.height).to.equal(100)
+    expect(
+      flippedElementPositions['id-1'].domDataForExitAnimations
+    ).to.deep.equal({})
 
-    expect(flippedElementPositions["id-2"].domData).to.deep.equal({})
-    expect(flippedElementPositions["id-2"].opacity).to.equal(1)
-    expect(flippedElementPositions["id-2"].rect.width).to.equal(186.6025390625)
-    expect(flippedElementPositions["id-2"].rect.height).to.equal(223.205078125)
+    expect(
+      flippedElementPositions['id-2'].domDataForExitAnimations
+    ).to.deep.equal({})
+    expect(flippedElementPositions['id-2'].opacity).to.equal(1)
+    expect(flippedElementPositions['id-2'].rect.width).to.equal(186.6025390625)
+    expect(flippedElementPositions['id-2'].rect.height).to.equal(223.205078125)
   })
 
-  it("for elements with onExit callbacks (and only for them), caches the DOM node and information about the parent", () => {
+  it('for elements with onExit callbacks (and only for them), caches the DOM node and information about the parent', () => {
     testEl.innerHTML = `
     <div id="parent-node-1">
     <div data-flip-id="id-2" style="height:200px; width: 100px; transform: rotate(30deg)"></div>
@@ -82,45 +84,47 @@ describe("getFlippedElementPositionsBeforeUpdate", () => {
     const { flippedElementPositions } = getFlippedElementPositionsBeforeUpdate({
       element: testEl,
       flipCallbacks: {
-        "id-2": {
+        'id-2': {
           onExit: () => {
-            console.log("yo, i am exiting")
+            console.log('yo, i am exiting')
           }
         },
-        "id-3": {
+        'id-3': {
           onExit: () => {
-            console.log("yo, i am exiting")
+            console.log('yo, i am exiting')
           }
         }
       },
       inProgressAnimations: {}
     })
 
-    expect(flippedElementPositions["id-1"].domData).to.deep.equal({})
+    expect(
+      flippedElementPositions['id-1'].domDataForExitAnimations
+    ).to.deep.equal({})
 
-    expect(flippedElementPositions["id-2"].domData.childPosition).to.deep.equal(
-      {
-        top: -11.6025390625,
-        left: -43.30126953125,
-        width: 186.6025390625,
-        height: 223.205078125
-      }
-    )
+    expect(
+      flippedElementPositions['id-2'].domDataForExitAnimations.childPosition
+    ).to.deep.equal({
+      top: -11.6025390625,
+      left: -43.30126953125,
+      width: 186.6025390625,
+      height: 223.205078125
+    })
 
-    expect(flippedElementPositions["id-2"].domData.element).to.equal(
-      testEl.querySelector("div[data-flip-id='id-2']")
-    )
+    expect(
+      flippedElementPositions['id-2'].domDataForExitAnimations.element
+    ).to.equal(testEl.querySelector('div[data-flip-id=\'id-2\']'))
 
-    expect(flippedElementPositions["id-2"].domData.parent).to.equal(
-      testEl.querySelector("#parent-node-1")
-    )
+    expect(
+      flippedElementPositions['id-2'].domDataForExitAnimations.parent
+    ).to.equal(testEl.querySelector('#parent-node-1'))
 
-    expect(flippedElementPositions["id-3"].domData.parent).to.deep.equal(
-      testEl.querySelector("#parent-node-2")
-    )
+    expect(
+      flippedElementPositions['id-3'].domDataForExitAnimations.parent
+    ).to.deep.equal(testEl.querySelector('#parent-node-2'))
   })
 
-  it("cancels in-progress animations and removes transforms only after recording position data, for interruptible animations", () => {
+  it('cancels in-progress animations and removes transforms only after recording position data, for interruptible animations', () => {
     testEl.innerHTML = `
     <div>
     <div data-flip-id="id-1" style="height:100px; width: 100px; opacity: .5"></div>
@@ -130,13 +134,13 @@ describe("getFlippedElementPositionsBeforeUpdate", () => {
   `
     const fakeStop = sinon.fake()
     const inProgressAnimations = {
-      "id-1": {},
-      "id-2": { stop: fakeStop }
+      'id-1': {},
+      'id-2': { stop: fakeStop }
     }
 
     expect(
-      testEl.querySelector("div[data-flip-id='id-2']").style.transform
-    ).to.equal("rotate(30deg)")
+      testEl.querySelector('div[data-flip-id=\'id-2\']').style.transform
+    ).to.equal('rotate(30deg)')
 
     const { flippedElementPositions } = getFlippedElementPositionsBeforeUpdate({
       element: testEl,
@@ -144,19 +148,19 @@ describe("getFlippedElementPositionsBeforeUpdate", () => {
       inProgressAnimations
     })
 
-    expect(flippedElementPositions["id-2"].rect.width).to.equal(186.6025390625)
-    expect(flippedElementPositions["id-2"].rect.height).to.equal(223.205078125)
+    expect(flippedElementPositions['id-2'].rect.width).to.equal(186.6025390625)
+    expect(flippedElementPositions['id-2'].rect.height).to.equal(223.205078125)
 
     expect(
-      testEl.querySelector("div[data-flip-id='id-2']").style.transform
-    ).to.equal("")
+      testEl.querySelector('div[data-flip-id=\'id-2\']').style.transform
+    ).to.equal('')
 
     expect(fakeStop.callCount).to.equal(1)
 
     expect(Object.keys(inProgressAnimations).length).to.equal(0)
   })
 
-  it("returns an ordered array of ids so that stagger effects can happen later", () => {
+  it('returns an ordered array of ids so that stagger effects can happen later', () => {
     testEl.innerHTML = `
     <div>
     <div data-flip-id="id-1" style="height:100px; width: 100px; opacity: .5"></div>
@@ -168,12 +172,12 @@ describe("getFlippedElementPositionsBeforeUpdate", () => {
       element: testEl
     })
 
-    expect(cachedOrderedFlipIds).to.deep.eql(["id-1", "id-2", "id-3"])
+    expect(cachedOrderedFlipIds).to.deep.eql(['id-1', 'id-2', 'id-3'])
   })
 })
 
-describe("getFlippedElementPositionsAfterUpdate", () => {
-  it("returns position data for elements with flip-ids", () => {
+describe('getFlippedElementPositionsAfterUpdate', () => {
+  it('returns position data for elements with flip-ids', () => {
     testEl.innerHTML = `
     <div>
     <div data-flip-id="id-1" style="height:100px; width: 100px; opacity: .5"></div>
@@ -185,26 +189,23 @@ describe("getFlippedElementPositionsAfterUpdate", () => {
       element: testEl
     })
 
-    expect(flippedElementPositions["id-1"].opacity).to.equal(0.5)
-    expect(flippedElementPositions["id-1"].rect.width).to.equal(100)
-    expect(flippedElementPositions["id-1"].rect.height).to.equal(100)
-    expect(flippedElementPositions["id-1"].domData).to.deep.equal({})
-    expect(flippedElementPositions["id-1"].transform).to.equal("none")
+    expect(flippedElementPositions['id-1'].opacity).to.equal(0.5)
+    expect(flippedElementPositions['id-1'].rect.width).to.equal(100)
+    expect(flippedElementPositions['id-1'].rect.height).to.equal(100)
+    expect(flippedElementPositions['id-1'].transform).to.equal('none')
 
-    expect(flippedElementPositions["id-2"].domData).to.deep.equal({})
-    expect(flippedElementPositions["id-2"].opacity).to.equal(1)
-    expect(flippedElementPositions["id-2"].rect.width).to.equal(186.6025390625)
-    expect(flippedElementPositions["id-2"].rect.height).to.equal(223.205078125)
-    expect(flippedElementPositions["id-2"].transform).to.equal(
-      "matrix(0.866025, 0.5, -0.5, 0.866025, 0, 0)"
+    expect(flippedElementPositions['id-2'].opacity).to.equal(1)
+    expect(flippedElementPositions['id-2'].rect.width).to.equal(186.6025390625)
+    expect(flippedElementPositions['id-2'].rect.height).to.equal(223.205078125)
+    expect(flippedElementPositions['id-2'].transform).to.equal(
+      'matrix(0.866025, 0.5, -0.5, 0.866025, 0, 0)'
     )
 
-    expect(flippedElementPositions["id-3"].domData).to.deep.equal({})
-    expect(flippedElementPositions["id-3"].opacity).to.equal(1)
-    expect(flippedElementPositions["id-3"].rect.width).to.equal(300)
-    expect(flippedElementPositions["id-3"].rect.height).to.equal(300)
-    expect(flippedElementPositions["id-3"].transform).to.equal(
-      "matrix(1, 0, 0, 1, 30, 0)"
+    expect(flippedElementPositions['id-3'].opacity).to.equal(1)
+    expect(flippedElementPositions['id-3'].rect.width).to.equal(300)
+    expect(flippedElementPositions['id-3'].rect.height).to.equal(300)
+    expect(flippedElementPositions['id-3'].transform).to.equal(
+      'matrix(1, 0, 0, 1, 30, 0)'
     )
   })
 })

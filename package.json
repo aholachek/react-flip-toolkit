@@ -2,34 +2,49 @@
   "name": "react-flip-toolkit",
   "version": "6.3.3",
   "description": "Configurable FLIP animation helpers for React",
-  "main": "lib/index.js",
-  "module": "es/index.js",
-  "types": "lib/index.d.ts",
-  "files": [
-    "es",
-    "lib",
-    "umd"
-  ],
-  "scripts": {
-    "build": "nwb build-react-component; cp src/index.d.ts lib; cp src/index.d.ts es",
-    "clean": "nwb clean-module && nwb clean-demo",
-    "deploy-demo": "npm run build; cp demo/dist/index.html demo/dist/200.html; surge demo/dist --domain react-flip-toolkit-demos.surge.sh",
-    "start": "nwb serve-react-demo",
-    "test": "jest",
-    "lint": "eslint src *.js",
-    "test:dom": "parcel mocha/testrunner.html",
-    "test:all": "jest; npm run test:dom",
-    "test:core": "parcel 'src/__tests__/core-test/index.html'",
-    "preversion": "npm test",
-    "version": "npm run build",
-    "inspect": "npx source-map-explorer umd/react-flip-toolkit.min.js umd/react-flip-toolkit.min.js.map"
-  },
+  "license": "MIT",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "browser": "dist/index.umd.js",
+  "jsnext:main": "dist/index.es.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/aholachek/react-flip-toolkit"
   },
   "bugs": "https://github.com/aholachek/react-flip-toolkit/issues",
+  "author": "Alex Holachek",
+  "keywords": [
+    "react-component",
+    "FLIP",
+    "transition",
+    "animation"
+  ],
+  "engines": {
+    "node": ">=8",
+    "npm": ">=5"
+  },
+  "scripts": {
+    "demo": "parcel --no-cache demo/src/index.html",
+    "deploy-demo": "yarn run build; cp demo/dist/index.html demo/dist/200.html; surge demo/dist --domain react-flip-toolkit-demos.surge.sh",
+    "test": "jest",
+    "test:watch": "react-scripts-ts test --env=jsdom",
+    "build": "rollup -c",
+    "start": "rollup -c -w",
+    "prepare": "yarn run build",
+    "predeploy": "cd example && yarn install && yarn run build",
+    "deploy": "gh-pages -d example/build",
+    "inspect": "npx source-map-explorer dist/index.umd.js dist/index.umd.js.map",
+    "tslint-fix": "tslint --fix 'src/**/*.{ts,tsx}'",
+    "format": "prettier --write 'src/**/*.{ts,tsx}",
+    "format-and-fix": "npm-run-all format tslint-fix",
+    "test:dom": "parcel mocha/testrunner.html",
+    "test:all": "npm-run-all jest npm run test:dom",
+    "test:core": "parcel 'src/__tests__/core-test/index.html'",
+    "preversion": "npm test",
+    "version": "npm run build"
+  },
   "dependencies": {
+    "react": "^16.7.0",
     "rematrix": "0.2.2"
   },
   "peerDependencies": {
@@ -37,44 +52,44 @@
     "react": "16.x"
   },
   "devDependencies": {
+    "react-test-renderer": "^16.7.0",
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-proposal-class-properties": "^7.2.3",
+    "@babel/plugin-transform-typescript": "^7.2.0",
+    "@babel/preset-env": "^7.2.3",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/preset-typescript": "7.1.0",
+    "@babel/runtime": "^7.2.0",
+    "@types/jest": "^23.3.11",
+    "@types/react": "^16.7.18",
+    "@types/react-dom": "^16.0.11",
     "animejs": "^2.2.0",
-    "babel-core": "^6.26.3",
-    "babel-eslint": "^7.2.3",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-react": "^6.24.1",
-    "chai": "^4.1.2",
-    "eslint": "^5.0.1",
-    "eslint-config-react-app": "^2.1.0",
-    "eslint-plugin-flowtype": "^2.50.3",
-    "eslint-plugin-import": "^2.13.0",
-    "eslint-plugin-jsx-a11y": "^5.1.1",
-    "eslint-plugin-react": "^7.1.0",
-    "jest": "^23.1.0",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^23.6.0",
+    "babel-preset-react-app": "^7.0.0",
+    "chai": "^4.2.0",
+    "jest": "^23.6.0",
     "mocha": "^5.2.0",
-    "normalize.css": "^8.0.0",
-    "nwb": "0.22.0",
-    "parcel": "^1.10.0",
-    "react": "^16.5.2",
-    "react-dom": "^16.5.2",
-    "react-router": "^4.3.1",
-    "react-test-renderer": "^16.4.1",
-    "sinon": "^6.1.3",
-    "source-map-explorer": "^1.6.0"
+    "normalize.css": "^8.0.1",
+    "npm-run-all": "^4.1.5",
+    "parcel": "^1.11.0",
+    "prettier": "1.15.3",
+    "react-dom": "^16.7.0",
+    "react-scripts": "^2.1.2",
+    "regenerator-runtime": "^0.13.1",
+    "rollup": "^1.0.0",
+    "rollup-plugin-commonjs": "^9.1.3",
+    "rollup-plugin-node-resolve": "^4.0.0",
+    "rollup-plugin-peer-deps-external": "^2.2.0",
+    "rollup-plugin-terser": "^3.0.0",
+    "rollup-plugin-typescript2": "^0.18.1",
+    "sinon": "^7.2.2",
+    "ts-jest": "^23.10.5",
+    "tslint": "^5.12.0",
+    "tslint-react": "^3.6.0",
+    "typescript": "^3.2.2"
   },
-  "jest": {
-    "transform": {
-      "^.+\\.js$": "<rootDir>/jest.transform.js"
-    },
-    "testPathIgnorePatterns": [
-      "domtest"
-    ]
-  },
-  "author": "Alex Holachek",
-  "license": "MIT",
-  "keywords": [
-    "react-component",
-    "FLIP",
-    "transition",
-    "animation"
+  "files": [
+    "dist"
   ]
 }

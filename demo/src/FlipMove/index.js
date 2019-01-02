@@ -1,7 +1,7 @@
-import React, { Component } from "react"
-import { Flipper, Flipped } from "../../../src"
-import Card from "./Card"
-import "./index.css"
+import React, { Component } from "react";
+import { Flipper, Flipped } from "../../../src";
+import Card from "./Card";
+import "./index.css";
 
 const data = [
   { id: 1, title: "Somebody once told me" },
@@ -17,7 +17,7 @@ const data = [
   },
   { id: 6, title: "In the Shape of an L on her Forehead" },
   { id: 7, title: "Well the years start coming" }
-]
+];
 
 class ListExample extends Component {
   state = {
@@ -26,15 +26,15 @@ class ListExample extends Component {
     filteredIds: [],
     stagger: "forward",
     spring: "noWobble"
-  }
+  };
 
   addToFilteredIds = id => {
     this.setState(prevState => {
       return {
         filteredIds: prevState.filteredIds.concat(id)
-      }
-    })
-  }
+      };
+    });
+  };
 
   render() {
     return (
@@ -62,7 +62,7 @@ class ListExample extends Component {
                 onClick={() => {
                   this.setState({
                     sort: "asc"
-                  })
+                  });
                 }}
               >
                 <input
@@ -76,7 +76,7 @@ class ListExample extends Component {
                 onClick={() => {
                   this.setState({
                     sort: "desc"
-                  })
+                  });
                 }}
               >
                 <input
@@ -94,7 +94,7 @@ class ListExample extends Component {
                 onClick={() => {
                   this.setState({
                     type: "grid"
-                  })
+                  });
                 }}
               >
                 <input
@@ -108,7 +108,7 @@ class ListExample extends Component {
                 onClick={() => {
                   this.setState({
                     type: "list"
-                  })
+                  });
                 }}
               >
                 <input
@@ -134,52 +134,55 @@ class ListExample extends Component {
                           this.setState({
                             stagger: type,
                             sort: this.state.sort === "asc" ? "desc" : "asc"
-                          })
+                          });
                         }}
                       />
                       {type}
                     </label>
-                  )
+                  );
                 })}
               </div>
             </fieldset>
             <fieldset>
               <legend>Spring</legend>
-              {["stiff", "noWobble", "veryGentle", "gentle", "wobbly"].map(
-                type => {
-                  return (
-                    <label>
-                      <input
-                        type="radio"
-                        name="spring"
-                        checked={this.state.spring === type}
-                        onChange={() => {
-                          this.setState({
-                            spring: type,
-                            sort: this.state.sort === "asc" ? "desc" : "asc"
-                          })
-                        }}
-                      />
-                      {type}
-                    </label>
-                  )
-                }
-              )}
+              {[
+                "stiff",
+                "noWobble",
+                "veryGentle",
+                "gentle",
+                "wobbly"
+              ].map(type => {
+                return (
+                  <label>
+                    <input
+                      type="radio"
+                      name="spring"
+                      checked={this.state.spring === type}
+                      onChange={() => {
+                        this.setState({
+                          spring: type,
+                          sort: this.state.sort === "asc" ? "desc" : "asc"
+                        });
+                      }}
+                    />
+                    {type}
+                  </label>
+                );
+              })}
             </fieldset>
           </div>
           <div>
-            {!!this.state.filteredIds.length && (
+            {!!this.state.filteredIds.length &&
               <button
                 className="fm-show-all"
                 onClick={() => {
                   this.setState({
                     filteredIds: []
-                  })
+                  });
                 }}
               >
                 show all cards
-              </button>
-            )}
+              </button>}
           </div>
 
           <Flipped flipId="list">
@@ -190,12 +193,12 @@ class ListExample extends Component {
                     .filter(d => !this.state.filteredIds.includes(d.id))
                     .sort((a, b) => {
                       if (this.state.sort === "asc") {
-                        return a.id - b.id
+                        return a.id - b.id;
                       } else {
-                        return b.id - a.id
+                        return b.id - a.id;
                       }
                     })
-                    .map(({ title, id }) => (
+                    .map(({ title, id }) =>
                       <Card
                         id={id}
                         title={title}
@@ -206,15 +209,15 @@ class ListExample extends Component {
                         key={id}
                         addToFilteredIds={this.addToFilteredIds}
                       />
-                    ))}
+                    )}
                 </ul>
               </Flipped>
             </div>
           </Flipped>
         </Flipper>
       </div>
-    )
+    );
   }
 }
 
-export default ListExample
+export default ListExample;

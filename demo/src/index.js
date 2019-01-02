@@ -1,39 +1,39 @@
-import React, { Component } from "react"
-import { render } from "react-dom"
-import "normalize.css"
-import CardsExample from "./CardsExample"
-import GuitarsExample from "./GuitarsExample"
-import SidebarExample from "./SidebarExample"
-import PhotosExample from "./PhotoGridExample"
-import ListExample from "./ListExample"
-import FlipMove from "./FlipMove"
-import TransformExample from "./TransformExample"
-import PortalExample from "./PortalExample"
-import TransformFromZeroExample from "./TransformFromZeroExample"
-import RotateExample from "./RotateExample"
-import StaggeredList from "./StaggeredList"
-import RemountedFlipperExample from "./RemountedFlipperExample"
-import HandleEnterUpdateDelete from "./HandleEnterUpdateDelete"
+import React, { Component } from 'react'
+import { render } from 'react-dom'
+import 'normalize.css'
+import CardsExample from './CardsExample'
+import GuitarsExample from './GuitarsExample'
+import SidebarExample from './SidebarExample'
+import PhotosExample from './PhotoGridExample'
+import ListExample from './ListExample'
+import FlipMove from './FlipMove'
+import TransformExample from './TransformExample'
+import PortalExample from './PortalExample'
+import TransformFromZeroExample from './TransformFromZeroExample'
+import RotateExample from './RotateExample'
+import StaggeredList from './StaggeredList'
+import RemountedFlipperExample from './RemountedFlipperExample'
+import HandleEnterUpdateDelete from './HandleEnterUpdateDelete'
 
 class Demo extends Component {
   render() {
-    if (window.location.pathname === "/cards") return <CardsExample />
-    else if (window.location.pathname === "/guitar") return <GuitarsExample />
-    else if (window.location.pathname === "/sidebar") return <SidebarExample />
-    else if (window.location.pathname === "/photos") return <PhotosExample />
-    else if (window.location.pathname === "/list") return <ListExample />
-    else if (window.location.pathname === "/flip-move") return <FlipMove />
-    else if (window.location.pathname === "/transform")
+    if (window.location.pathname === '/cards') return <CardsExample />
+    else if (window.location.pathname === '/guitar') return <GuitarsExample />
+    else if (window.location.pathname === '/sidebar') return <SidebarExample />
+    else if (window.location.pathname === '/photos') return <PhotosExample />
+    else if (window.location.pathname === '/list') return <ListExample />
+    else if (window.location.pathname === '/flip-move') return <FlipMove />
+    else if (window.location.pathname === '/transform')
       return <TransformExample />
-    else if (window.location.pathname === "/portal") return <PortalExample />
-    else if (window.location.pathname === "/transform-from-zero")
+    else if (window.location.pathname === '/portal') return <PortalExample />
+    else if (window.location.pathname === '/transform-from-zero')
       return <TransformFromZeroExample />
-    else if (window.location.pathname === "/rotate") return <RotateExample />
-    else if (window.location.pathname === "/staggered-list")
+    else if (window.location.pathname === '/rotate') return <RotateExample />
+    else if (window.location.pathname === '/staggered-list')
       return <StaggeredList />
-    else if (window.location.pathname === "/remounted-flipper")
+    else if (window.location.pathname === '/remounted-flipper')
       return <RemountedFlipperExample />
-    else if (window.location.pathname === "/enter-update-delete")
+    else if (window.location.pathname === '/enter-update-delete')
       return <HandleEnterUpdateDelete />
     else
       return (
@@ -78,4 +78,4 @@ class Demo extends Component {
   }
 }
 
-render(<Demo />, document.querySelector("#demo"))
+render(<Demo />, document.querySelector('#demo'))

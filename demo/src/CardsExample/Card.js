@@ -1,16 +1,16 @@
-import React, { PureComponent } from "react"
-import { Flipped } from "../../../src"
-import anime from "animejs"
+import React, { PureComponent } from "react";
+import { Flipped } from "../../../src";
+import anime from "animejs";
 
 class Card extends PureComponent {
   hideElements = (el, prev, current) => {
-    if (prev !== this.props.i) return
-    const elements = [].slice.apply(el.querySelectorAll("*[data-fade-in]"))
-    elements.forEach(el => (el.style.opacity = "0"))
-    el.style.zIndex = 2
-  }
+    if (prev !== this.props.i) return;
+    const elements = [].slice.apply(el.querySelectorAll("*[data-fade-in]"));
+    elements.forEach(el => (el.style.opacity = "0"));
+    el.style.zIndex = 2;
+  };
   animateIn = (el, prev, current) => {
-    if (prev !== this.props.i) return
+    if (prev !== this.props.i) return;
     anime({
       targets: el.querySelectorAll("*[data-fade-in]"),
       translateY: [-30, 0],
@@ -18,16 +18,16 @@ class Card extends PureComponent {
       duration: 250,
       easing: "easeOutSine",
       delay: (d, i) => i * 75
-    })
-    el.style.zIndex = 1
-  }
+    });
+    el.style.zIndex = 1;
+  };
 
   shouldFlip = (prev, current) => {
-    if (prev === this.props.i) return true
-    return false
-  }
+    if (prev === this.props.i) return true;
+    return false;
+  };
   render() {
-    const { parentFlipId, d, i, setFocusedIndex } = this.props
+    const { parentFlipId, d, i, setFocusedIndex } = this.props;
     return (
       <li key={parentFlipId}>
         <Flipped
@@ -74,8 +74,8 @@ class Card extends PureComponent {
           </div>
         </Flipped>
       </li>
-    )
+    );
   }
 }
 
-export default Card
+export default Card;

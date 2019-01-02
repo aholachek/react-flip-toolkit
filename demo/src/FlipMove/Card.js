@@ -1,6 +1,6 @@
-import React, { PureComponent } from "react"
-import { Flipped } from "../../../src"
-import anime from "animejs"
+import React, { PureComponent } from "react";
+import { Flipped } from "../../../src";
+import anime from "animejs";
 
 const onElementAppear = (el, index) => {
   anime({
@@ -9,8 +9,8 @@ const onElementAppear = (el, index) => {
     duration: 400,
     delay: index * 50,
     easing: "easeOutSine"
-  })
-}
+  });
+};
 
 const onExit = type => (el, index, removeElement) => {
   anime({
@@ -20,27 +20,27 @@ const onExit = type => (el, index, removeElement) => {
     duration: 200,
     complete: removeElement,
     easing: "easeOutSine"
-  }).pause
+  }).pause;
 
   return () => {
-    el.style.opacity = ""
-    removeElement()
-  }
-}
+    el.style.opacity = "";
+    removeElement();
+  };
+};
 
-const onGridExit = onExit("grid")
-const onListExit = onExit("list")
+const onGridExit = onExit("grid");
+const onListExit = onExit("list");
 
 class Card extends PureComponent {
   shouldFlip = (prev, current) => {
     if (prev.type !== current.type) {
-      return true
+      return true;
     }
-    return false
-  }
+    return false;
+  };
   render() {
-    const { id, title, type, stagger, addToFilteredIds } = this.props
-    const flipId = `item-${id}`
+    const { id, title, type, stagger, addToFilteredIds } = this.props;
+    const flipId = `item-${id}`;
     return (
       <Flipped
         flipId={flipId}
@@ -59,8 +59,12 @@ class Card extends PureComponent {
                 shouldFlip={this.shouldFlip}
               >
                 <div>
-                  <h3>{title}</h3>
-                  <p>{title}</p>
+                  <h3>
+                    {title}
+                  </h3>
+                  <p>
+                    {title}
+                  </p>
                 </div>
               </Flipped>
 
@@ -76,8 +80,8 @@ class Card extends PureComponent {
           </Flipped>
         </li>
       </Flipped>
-    )
+    );
   }
 }
 
-export default Card
+export default Card;

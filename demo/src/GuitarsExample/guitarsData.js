@@ -34,4 +34,4 @@ export default [
     description:
       "Single-origin coffee air plant kitsch paleo iPhone vegan cold-pressed slow-carb cornhole dreamcatcher palo santo salvia lo-fi."
   }
-]
+];

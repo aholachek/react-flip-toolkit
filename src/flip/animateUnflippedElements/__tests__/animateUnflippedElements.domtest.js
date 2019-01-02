@@ -38,8 +38,8 @@ describe("animateUnflippedElements", () => {
         "id-3": { onAppear: fakeOnAppear3 }
       },
       getElement: () => {},
-      newFlipChildrenPositions: { "id-1": {}, "id-3": {} },
-      cachedFlipChildrenPositions: {}
+      flippedElementPositionsAfterUpdate: { "id-1": {}, "id-3": {} },
+      flippedElementPositionsBeforeUpdate: {}
     })
     animateEnteringElements()
     expect(fakeOnAppear1.callCount).to.equal(1)
@@ -65,8 +65,8 @@ describe("animateUnflippedElements", () => {
         "id-2": { onAppear: fakeOnAppear2 }
       },
       getElement: getElement,
-      newFlipChildrenPositions: { "id-1": {}, "id-2": {} },
-      cachedFlipChildrenPositions: {}
+      flippedElementPositionsAfterUpdate: { "id-1": {}, "id-2": {} },
+      flippedElementPositionsBeforeUpdate: {}
     })
     hideEnteringElements()
     expect(getElement("id-1").style.opacity).to.equal("0")
@@ -92,11 +92,11 @@ describe("animateUnflippedElements", () => {
         "id-1": { onExit: fakeOnExit }
       },
       getElement: getElement,
-      newFlipChildrenPositions: {},
+      flippedElementPositionsAfterUpdate: {},
       inProgressAnimations: {},
-      cachedFlipChildrenPositions: {
+      flippedElementPositionsBeforeUpdate: {
         "id-1": {
-          domData: {
+          domDataForExitAnimations: {
             element: exitedElement,
             parent: parent,
             childPosition: { top: 100, left: 200, width: 50, height: 75 }
@@ -136,18 +136,18 @@ describe("animateUnflippedElements", () => {
         "id-2": { onExit: fakeOnExit }
       },
       getElement: getElement,
-      newFlipChildrenPositions: {},
+      flippedElementPositionsAfterUpdate: {},
       inProgressAnimations: {},
-      cachedFlipChildrenPositions: {
+      flippedElementPositionsBeforeUpdate: {
         "id-1": {
-          domData: {
+          domDataForExitAnimations: {
             element: exitedElement1,
             parent: parent1,
             childPosition: { top: 100, left: 200, width: 50, height: 75 }
           }
         },
         "id-2": {
-          domData: {
+          domDataForExitAnimations: {
             element: exitedElement2,
             parent: parent2,
             childPosition: { top: 100, left: 200, width: 50, height: 75 }
@@ -180,11 +180,11 @@ describe("animateUnflippedElements", () => {
         "id-1": { onExit: fakeOnExit }
       },
       getElement: getElement,
-      newFlipChildrenPositions: {},
+      flippedElementPositionsAfterUpdate: {},
       inProgressAnimations: {},
-      cachedFlipChildrenPositions: {
+      flippedElementPositionsBeforeUpdate: {
         "id-1": {
-          domData: {
+          domDataForExitAnimations: {
             element: exitedElement,
             parent: parent,
             childPosition: { top: 100, left: 200, width: 50, height: 75 }
@@ -202,11 +202,11 @@ describe("animateUnflippedElements", () => {
         "id-1": { onExit: fakeOnExit }
       },
       getElement: getElement,
-      newFlipChildrenPositions: {},
+      flippedElementPositionsAfterUpdate: {},
       inProgressAnimations: {},
-      cachedFlipChildrenPositions: {
+      flippedElementPositionsBeforeUpdate: {
         "id-1": {
-          domData: {
+          domDataForExitAnimations: {
             element: exitedElement,
             parent: parent,
             childPosition: { top: 100, left: 200, width: 50, height: 75 }
@@ -245,11 +245,11 @@ describe("animateUnflippedElements", () => {
         "id-1": { onExit: fakeOnExit }
       },
       getElement: getElement,
-      newFlipChildrenPositions: {},
+      flippedElementPositionsAfterUpdate: {},
       inProgressAnimations: {},
-      cachedFlipChildrenPositions: {
+      flippedElementPositionsBeforeUpdate: {
         "id-1": {
-          domData: {
+          domDataForExitAnimations: {
             element: exitedElement,
             parent: parent,
             childPosition: { top: 100, left: 200, width: 50, height: 75 }
@@ -282,18 +282,18 @@ describe("animateUnflippedElements", () => {
         "id-1": { onExit: fakeOnExit }
       },
       getElement: getElement,
-      newFlipChildrenPositions: {},
+      flippedElementPositionsAfterUpdate: {},
       inProgressAnimations: {},
-      cachedFlipChildrenPositions: {
+      flippedElementPositionsBeforeUpdate: {
         "id-0": {
-          domData: {
+          domDataForExitAnimations: {
             element: exitedElement,
             parent: parent,
             childPosition: { top: 100, left: 200, width: 50, height: 75 }
           }
         },
         "id-1": {
-          domData: {
+          domDataForExitAnimations: {
             element: exitedElement,
             parent: parent,
             childPosition: { top: 100, left: 200, width: 50, height: 75 }

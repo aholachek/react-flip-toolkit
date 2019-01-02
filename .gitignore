@@ -1,9 +1,9 @@
-/coverage
-/demo/dist
-/es
-/lib
-/node_modules
-/umd
+coverage
+demo/dist
+es
+lib
+node_modules
+umd
 npm-debug.log*
 yarn-error.log*
 TODO
@@ -11,3 +11,6 @@ TODO
 dist
 stats.json
 .idea
+.DS_STORE
+.vscode
+.rpt2_cache/

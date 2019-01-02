@@ -1,12 +1,12 @@
-import React, { Component } from "react"
-import { Flipped } from "../../../src"
-import anime from "animejs"
+import React, { Component } from "react";
+import { Flipped } from "../../../src";
+import anime from "animejs";
 
 class FocusedUser extends Component {
   hideElements = el => {
-    const elements = [].slice.apply(el.querySelectorAll("*[data-fade-in]"))
-    elements.forEach(el => (el.style.opacity = "0"))
-  }
+    const elements = [].slice.apply(el.querySelectorAll("*[data-fade-in]"));
+    elements.forEach(el => (el.style.opacity = "0"));
+  };
   animateIn = el => {
     anime({
       targets: el.querySelectorAll("*[data-fade-in]"),
@@ -15,14 +15,14 @@ class FocusedUser extends Component {
       duration: 250,
       easing: "easeOutSine",
       delay: (d, i) => i * 75
-    })
-  }
+    });
+  };
 
   render() {
-    const { data, index, close } = this.props
-    const parentFlipId = `card-${index}`
+    const { data, index, close } = this.props;
+    const parentFlipId = `card-${index}`;
 
-    if (typeof index !== "number") return null
+    if (typeof index !== "number") return null;
 
     return (
       <div className="focusedItemBackground" key={parentFlipId}>
@@ -75,8 +75,8 @@ class FocusedUser extends Component {
           </div>
         </Flipped>
       </div>
-    )
+    );
   }
 }
 
-export default FocusedUser
+export default FocusedUser;

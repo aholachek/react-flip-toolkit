@@ -1,14 +1,14 @@
-import React, { Component } from "react"
-import { Flipper } from "../../../src"
-import userData from "./userData.json"
-import UserGrid from "./UserGrid"
-import FocusedUser from "./FocusedUser"
-import "./styles.css"
+import React, { Component } from 'react'
+import { Flipper } from '../../../src'
+import userData from './userData.json'
+import UserGrid from './UserGrid'
+import FocusedUser from './FocusedUser'
+import './styles.css'
 
 export default class CardsExample extends Component {
   state = {
     focusedIndex: undefined,
-    speed: "normal",
+    speed: 'normal',
     userData: userData
   }
   setFocusedIndex = index => {
@@ -22,7 +22,7 @@ export default class CardsExample extends Component {
       <Flipper
         className="cardsExample"
         flipKey={this.state.focusedIndex}
-        spring={this.state.speed !== "normal" && { stiffness: 5, damping: 4 }}
+        spring={this.state.speed !== 'normal' && { stiffness: 5, damping: 4 }}
         decisionData={this.state.focusedIndex}
       >
         <div className="header" ref={el => (this.el = el)}>
@@ -49,10 +49,10 @@ export default class CardsExample extends Component {
               <input
                 type="radio"
                 name="speed"
-                checked={this.state.speed === "normal"}
+                checked={this.state.speed === 'normal'}
                 onClick={() =>
                   this.setState({
-                    speed: "normal"
+                    speed: 'normal'
                   })
                 }
               />
@@ -62,10 +62,10 @@ export default class CardsExample extends Component {
               <input
                 type="radio"
                 name="speed"
-                checked={this.state.speed === "slow"}
+                checked={this.state.speed === 'slow'}
                 onClick={() =>
                   this.setState({
-                    speed: "slow"
+                    speed: 'slow'
                   })
                 }
               />
@@ -84,7 +84,7 @@ export default class CardsExample extends Component {
             this.setState({ focusedIndex: null })
           }}
           data={
-            typeof this.state.focusedIndex === "number"
+            typeof this.state.focusedIndex === 'number'
               ? userData[this.state.focusedIndex]
               : null
           }

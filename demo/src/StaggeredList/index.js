@@ -1,10 +1,10 @@
 // inspired by this animated demo:
 // https://uxplanet.org/animation-in-ui-design-from-concept-to-reality-85c49907b19d
-import React, { Component } from "react"
-import { Flipper, Flipped } from "../../../src/index.js"
-import "./styles.css"
+import React, { Component } from 'react'
+import { Flipper, Flipped } from '../../../src/index'
+import './styles.css'
 const listData = [0, 1, 2, 3, 4, 5, 6, 7]
-const colors = ["#ff4f66", "#7971ea", "#5900d8"]
+const colors = ['#ff4f66', '#7971ea', '#5900d8']
 
 const shouldFlip = index => (prev, current) => {
   if (index === prev || index === current) return true
@@ -69,7 +69,7 @@ const ExpandedListItem = ({ index, color, onClick }) => {
       stagger="card"
       onStart={el => {
         setTimeout(() => {
-          el.classList.add("animated-in")
+          el.classList.add('animated-in')
         }, 400)
       }}
     >

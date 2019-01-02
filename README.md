@@ -417,7 +417,8 @@ That means any layout styles &mdash; padding, flexbox, etc&mdash;should be appli
 
 ## Library details
 - Requires React 16+
-- Tested in latest Chrome, Firefox, Safari, Edge, and IE 11
+- Tested in latest Chrome, Firefox, Safari, Edge, and IE 11.
+- For IE11 compatability, make sure you're polyfilling the `window.Promise` object.
 - Uses [Rematrix](https://github.com/jlmakes/rematrix) for matrix calculations and a simplified fork of  [Rebound](https://github.com/facebook/rebound-js) for spring animations
 
 ## Troubleshooting

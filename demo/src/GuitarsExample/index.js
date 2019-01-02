@@ -1,19 +1,19 @@
-import React, { Component } from "react"
-import { Flipper } from "../../../src"
-import GuitarItem from "./GuitarItem"
-import SelectedGuitar from "./SelectedGuitar"
-import guitarsData from "./guitarsData"
-import "./css/base.css"
-import "./pater/pater.css"
+import React, { Component } from "react";
+import { Flipper } from "../../../src";
+import GuitarItem from "./GuitarItem";
+import SelectedGuitar from "./SelectedGuitar";
+import guitarsData from "./guitarsData";
+import "./css/base.css";
+import "./pater/pater.css";
 
 class GuitarExample extends Component {
-  static defaultProps = {}
+  static defaultProps = {};
 
-  static propTypes = {}
+  static propTypes = {};
 
   state = {
     focusedGuitarIndex: null
-  }
+  };
   render() {
     return (
       <Flipper flipKey={this.state.focusedGuitarIndex}>
@@ -33,7 +33,7 @@ class GuitarExample extends Component {
           </div>
           <button className="dummy-menu" />
           <div className="content">
-            {typeof this.state.focusedGuitarIndex !== "number" && (
+            {typeof this.state.focusedGuitarIndex !== "number" &&
               <div className="grid">
                 {guitarsData.map((g, i) => {
                   return (
@@ -43,24 +43,20 @@ class GuitarExample extends Component {
                       onClick={() =>
                         this.setState({
                           focusedGuitarIndex: i
-                        })
-                      }
+                        })}
                     />
-                  )
+                  );
                 })}
-              </div>
-            )}
-            {typeof this.state.focusedGuitarIndex === "number" && (
+              </div>}
+            {typeof this.state.focusedGuitarIndex === "number" &&
               <SelectedGuitar
                 {...guitarsData[this.state.focusedGuitarIndex]}
                 index={this.state.focusedGuitarIndex}
                 closeSelected={() =>
                   this.setState({
                     focusedGuitarIndex: undefined
-                  })
-                }
-              />
-            )}
+                  })}
+              />}
           </div>
           <section className="content content--related">
             <p>
@@ -73,8 +69,8 @@ class GuitarExample extends Component {
           </section>
         </main>
       </Flipper>
-    )
+    );
   }
 }
 
-export default GuitarExample
+export default GuitarExample;
