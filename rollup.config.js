@@ -6,12 +6,7 @@ import typescript from 'rollup-plugin-typescript2'
 
 import pkg from './package.json'
 
-const basePluginsArr = [
-  external(),
-  resolve(),
-  typescript(),
-  commonjs(),
-]
+const basePluginsArr = [external(), resolve(), typescript(), commonjs()]
 
 const globals = {
   react: 'React',
@@ -40,6 +35,26 @@ export default [
     plugins: basePluginsArr
   },
   {
+    input: 'src/core.ts',
+    output: [
+      {
+        file: pkg.main.replace('index', 'core'),
+        format: 'cjs',
+        exports: 'named',
+        sourcemap: true,
+        globals: globals
+      },
+      {
+        file: pkg.module.replace('index', 'core'),
+        format: 'es',
+        exports: 'named',
+        sourcemap: true,
+        globals: globals
+      }
+    ],
+    plugins: basePluginsArr
+  },
+  {
     input: 'src/index.ts',
     output: {
       file: pkg.browser,
@@ -49,5 +64,16 @@ export default [
       globals: globals
     },
     plugins: basePluginsArr.concat([terser()])
+  },
+  {
+    input: 'src/index.ts',
+    output: {
+      file: pkg.browser.replace('.min', ''),
+      name: 'ReactFlipToolkit',
+      format: 'umd',
+      sourcemap: true,
+      globals: globals
+    },
+    plugins: basePluginsArr
   }
 ]

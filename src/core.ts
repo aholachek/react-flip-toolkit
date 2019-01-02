@@ -15,7 +15,7 @@ import { FlippedIds } from './flip/types'
 class Flipper {
   private element: HTMLElement
   private staggerConfig: StaggerConfig
-  private applyTransformOrigin: boolean
+  private applyTransformOrigin: boolean = true
   private handleEnterUpdateDelete: HandleEnterUpdateDelete
   private debug: boolean
   private spring: SpringOption
