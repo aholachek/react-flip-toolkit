@@ -237,14 +237,19 @@ export default ({
         }
       }
 
-      // don't animate elements that didn't change
-      // but we might want to animate children
+      // don't animate elements that didn't visbly change
+      // but possibly animate their children
+      const transformDifference =
+        Math.abs(prevRect.left - currentRect.left) +
+        Math.abs(prevRect.top - currentRect.top)
+      const sizeDifference =
+        Math.abs(prevRect.width - currentRect.width) +
+        Math.abs(prevRect.height - currentRect.height)
+      const opacityDifference = Math.abs(currentOpacity - prevOpacity)
       if (
-        prevRect.left === currentRect.left &&
-        prevRect.top === currentRect.top &&
-        prevRect.width === currentRect.width &&
-        prevRect.height === currentRect.height &&
-        prevOpacity === currentOpacity
+        transformDifference < 0.5 &&
+        sizeDifference < 0.5 &&
+        opacityDifference < 0.01
       ) {
         // this element wont be animated, but its children might be
         return toReturn

@@ -1,34 +1,34 @@
-import React, { Component } from "react";
-import { Flipped } from "../../../src";
-import anime from "animejs";
+import React, { Component } from 'react'
+import { Flipped } from '../../../src'
+import anime from 'animejs'
 
 class SelectedGuitar extends Component {
   animateIn = () => {
     anime({
-      targets: this.el.querySelectorAll("[data-fade-in]"),
+      targets: this.el.querySelectorAll('[data-fade-in]'),
       translateY: [-15, 0],
       opacity: [0, 1],
       duration: 200,
-      easing: "easeOutSine",
+      easing: 'easeOutSine',
       delay: (d, i) => i * 75
-    });
-  };
+    })
+  }
 
   animateOut = () => {
     anime({
-      targets: this.el.querySelectorAll("[data-fade-in]"),
+      targets: this.el.querySelectorAll('[data-fade-in]'),
       translateY: [0, -15],
       opacity: 0,
       duration: 150,
-      easing: "easeOutSine",
+      easing: 'easeOutSine',
       complete: this.props.closeSelected,
       delay: (d, i) => i * 50
-    });
-  };
+    })
+  }
 
   render() {
-    const { title, subtitle, description, price, index } = this.props;
-    const parentId = `guitar-${index}`;
+    const { title, subtitle, description, price, index, image } = this.props
+    const parentId = `guitar-${index}`
     return (
       <div className="details details--open" ref={el => (this.el = el)}>
         <div className="details__bg details__bg--up" />
@@ -39,10 +39,7 @@ class SelectedGuitar extends Component {
           <div className="details__bg details__bg--down" />
         </Flipped>
         <Flipped flipId={`${parentId}-guitarImg`} spring="wobbly">
-          <img
-            className="details__img"
-            src={require(`./img/${index + 1}.png`)}
-          />
+          <img className="details__img" src={image} />
         </Flipped>
         <h2 className="details__title" data-fade-in>
           {title}
@@ -76,8 +73,8 @@ class SelectedGuitar extends Component {
           </div>
         </button>
       </div>
-    );
+    )
   }
 }
 
-export default SelectedGuitar;
+export default SelectedGuitar
