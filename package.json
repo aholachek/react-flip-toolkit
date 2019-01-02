@@ -3,9 +3,10 @@
   "version": "6.3.4-0",
   "description": "Configurable FLIP animation helpers for React",
   "license": "MIT",
-  "main": "dist/index.js",
-  "module": "dist/index.es.js",
-  "browser": "dist/index.umd.js",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "types": "lib/index.d.ts",
+  "browser": "umd/react-flip-toolkit.min.js",
   "jsnext:main": "dist/index.es.js",
   "repository": {
     "type": "git",
