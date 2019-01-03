@@ -31,7 +31,7 @@
     "dist",
     "example",
     "rollup.config.js",
+    "src/**/*.test.ts",
     "__tests__",
-    "*.test.js"
   ]
 }
