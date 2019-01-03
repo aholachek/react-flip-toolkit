@@ -25,7 +25,7 @@
   },
   "scripts": {
     "demo": "parcel --no-cache demo/src/index.html",
-    "deploy-demo": "yarn run build; cp demo/dist/index.html demo/dist/200.html; surge demo/dist --domain react-flip-toolkit-demos.surge.sh",
+    "deploy-demo": "parcel build demo/src/index.html --out-dir demo/dist; cp demo/dist/index.html demo/dist/200.html; surge demo/dist --domain react-flip-toolkit-demos.surge.sh",
     "test": "jest",
     "test:watch": "react-scripts-ts test --env=jsdom",
     "build": "rollup -c; yarn run generate-types",

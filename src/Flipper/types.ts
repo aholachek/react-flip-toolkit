@@ -22,7 +22,7 @@ export type HandleEnterUpdateDelete = (
 ) => void
 
 export interface FlipperProps {
-  flipKey: string | number
+  flipKey: any
   children: React.ReactNode
   spring?: SpringOption
   applyTransformOrigin?: boolean

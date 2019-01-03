@@ -4,7 +4,6 @@ demo/dist
 es
 lib
 umd
-types
 npm-debug.log*
 yarn-error.log*
 TODO
