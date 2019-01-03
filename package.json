@@ -1,6 +1,6 @@
 {
   "name": "react-flip-toolkit",
-  "version": "6.3.4-7",
+  "version": "6.3.4-9",
   "description": "Configurable FLIP animation helpers for React",
   "license": "MIT",
   "main": "lib/index.js",
@@ -28,7 +28,7 @@
     "deploy-demo": "yarn run build; cp demo/dist/index.html demo/dist/200.html; surge demo/dist --domain react-flip-toolkit-demos.surge.sh",
     "test": "jest",
     "test:watch": "react-scripts-ts test --env=jsdom",
-    "build": "rollup -c; yarn run generate types",
+    "build": "rollup -c; yarn run generate-types",
     "generate-types": "npx tsc -p tsconfig.types.json",
     "start": "rollup -c -w",
     "check-types": "tsc",
@@ -95,6 +95,7 @@
   "files": [
     "es",
     "lib",
-    "umd"
+    "umd",
+    "types"
   ]
 }
