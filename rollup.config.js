@@ -32,6 +32,12 @@ export default [
         format: 'es',
         exports: 'named',
         sourcemap: true
+      },
+      {
+        file: pkg.browser.replace('.min', ''),
+        name: 'ReactFlipToolkit',
+        format: 'umd',
+        sourcemap: true
       }
     ],
     plugins: basePluginsArr
@@ -52,7 +58,7 @@ export default [
         sourcemap: true
       },
       {
-        file: pkg.browser.replace('.min', ''),
+        file: pkg.browser.replace('index', 'core'),
         name: 'ReactFlipToolkit',
         format: 'umd',
         sourcemap: true
