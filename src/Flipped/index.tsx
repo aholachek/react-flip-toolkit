@@ -124,7 +124,10 @@ export const FlippedWithContext: FunctionComponent<FlippedProps> = ({
     </PortalContext.Consumer>
   )
 }
-// @ts-ignore
-FlippedWithContext.propTypes = propTypes
+
+if (process.env.NODE_ENV !== 'production') {
+  // @ts-ignore
+  FlippedWithContext.propTypes = propTypes
+}
 
 export default FlippedWithContext

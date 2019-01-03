@@ -8,20 +8,6 @@ export const FlipContext = createContext({} as FlipCallbacks)
 export const PortalContext = createContext('portal')
 
 class Flipper extends Component<FlipperProps> {
-  static propTypes = {
-    flipKey: PropTypes.any,
-    children: PropTypes.node.isRequired,
-    spring: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    applyTransformOrigin: PropTypes.bool,
-    debug: PropTypes.bool,
-    element: PropTypes.string,
-    className: PropTypes.string,
-    portalKey: PropTypes.string,
-    staggerConfig: PropTypes.object,
-    decisionData: PropTypes.any,
-    handleEnterUpdateDelete: PropTypes.func
-  }
-
   static defaultProps = {
     applyTransformOrigin: true,
     element: 'div'
@@ -92,6 +78,23 @@ class Flipper extends Component<FlipperProps> {
     } else {
       return FlipperBase
     }
+  }
+}
+
+if (process.env.NODE_ENV !== 'production') {
+  // @ts-ignore
+  Flipper.propTypes = {
+    flipKey: PropTypes.any,
+    children: PropTypes.node.isRequired,
+    spring: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    applyTransformOrigin: PropTypes.bool,
+    debug: PropTypes.bool,
+    element: PropTypes.string,
+    className: PropTypes.string,
+    portalKey: PropTypes.string,
+    staggerConfig: PropTypes.object,
+    decisionData: PropTypes.any,
+    handleEnterUpdateDelete: PropTypes.func
   }
 }
 

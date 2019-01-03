@@ -3,10 +3,19 @@ import external from 'rollup-plugin-peer-deps-external'
 import resolve from 'rollup-plugin-node-resolve'
 import { terser } from 'rollup-plugin-terser'
 import typescript from 'rollup-plugin-typescript2'
+import replace from 'rollup-plugin-replace'
 
 import pkg from './package.json'
 
-const basePluginsArr = [external(), resolve(), typescript(), commonjs()]
+const basePluginsArr = [
+  replace({
+    'process.env.NODE_ENV': JSON.stringify('production')
+  }),
+  external(),
+  resolve(),
+  typescript(),
+  commonjs()
+]
 
 export default [
   {
@@ -41,6 +50,12 @@ export default [
         format: 'es',
         exports: 'named',
         sourcemap: true
+      },
+      {
+        file: pkg.browser.replace('.min', ''),
+        name: 'ReactFlipToolkit',
+        format: 'umd',
+        sourcemap: true
       }
     ],
     plugins: basePluginsArr
@@ -54,15 +69,5 @@ export default [
       sourcemap: true
     },
     plugins: basePluginsArr.concat([terser()])
-  },
-  {
-    input: 'src/index.ts',
-    output: {
-      file: pkg.browser.replace('.min', ''),
-      name: 'ReactFlipToolkit',
-      format: 'umd',
-      sourcemap: true
-    },
-    plugins: basePluginsArr
   }
 ]
