@@ -8,11 +8,6 @@ import pkg from './package.json'
 
 const basePluginsArr = [external(), resolve(), typescript(), commonjs()]
 
-const globals = {
-  react: 'React',
-  'prop-types': 'PropTypes'
-}
-
 export default [
   {
     input: 'src/index.ts',
@@ -21,15 +16,13 @@ export default [
         file: pkg.main,
         format: 'cjs',
         exports: 'named',
-        sourcemap: true,
-        globals: globals
+        sourcemap: true
       },
       {
         file: pkg.module,
         format: 'es',
         exports: 'named',
-        sourcemap: true,
-        globals: globals
+        sourcemap: true
       }
     ],
     plugins: basePluginsArr
@@ -41,15 +34,13 @@ export default [
         file: pkg.main.replace('index', 'core'),
         format: 'cjs',
         exports: 'named',
-        sourcemap: true,
-        globals: globals
+        sourcemap: true
       },
       {
         file: pkg.module.replace('index', 'core'),
         format: 'es',
         exports: 'named',
-        sourcemap: true,
-        globals: globals
+        sourcemap: true
       }
     ],
     plugins: basePluginsArr
@@ -60,8 +51,7 @@ export default [
       file: pkg.browser,
       name: 'ReactFlipToolkit',
       format: 'umd',
-      sourcemap: true,
-      globals: globals
+      sourcemap: true
     },
     plugins: basePluginsArr.concat([terser()])
   },
@@ -71,8 +61,7 @@ export default [
       file: pkg.browser.replace('.min', ''),
       name: 'ReactFlipToolkit',
       format: 'umd',
-      sourcemap: true,
-      globals: globals
+      sourcemap: true
     },
     plugins: basePluginsArr
   }
