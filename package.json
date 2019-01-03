@@ -29,7 +29,6 @@
     "test": "jest",
     "test:watch": "react-scripts-ts test --env=jsdom",
     "build": "rollup -c; yarn run generate-types",
-    "generate-types": "npx tsc -p tsconfig.types.json",
     "start": "rollup -c -w",
     "check-types": "tsc",
     "prepare": "yarn run build",
