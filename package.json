@@ -1,6 +1,6 @@
 {
   "name": "react-flip-toolkit",
-  "version": "6.3.4-7",
+  "version": "6.3.4-8",
   "description": "Configurable FLIP animation helpers for React",
   "license": "MIT",
   "main": "lib/index.js",
