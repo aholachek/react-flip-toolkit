@@ -1,9 +1,10 @@
+node_modules
 coverage
 demo/dist
 es
 lib
-node_modules
 umd
+types
 npm-debug.log*
 yarn-error.log*
 TODO

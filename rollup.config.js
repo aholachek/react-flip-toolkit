@@ -58,8 +58,8 @@ export default [
         sourcemap: true
       },
       {
-        file: pkg.browser.replace('index', 'core'),
-        name: 'ReactFlipToolkit',
+        file: pkg.browser.replace('react-flip-toolkit', 'core').replace('.min', ''),
+        name: 'ReactFlipToolkitCore',
         format: 'umd',
         sourcemap: true
       }
@@ -71,6 +71,16 @@ export default [
     output: {
       file: pkg.browser,
       name: 'ReactFlipToolkit',
+      format: 'umd',
+      sourcemap: true
+    },
+    plugins: basePluginsArr.concat([terser()])
+  },
+  {
+    input: 'src/core.ts',
+    output: {
+      file: pkg.browser.replace('react-flip-toolkit', 'core'),
+      name: 'ReactFlipToolkitCore',
       format: 'umd',
       sourcemap: true
     },
