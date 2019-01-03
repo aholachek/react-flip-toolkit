@@ -1,7 +1,7 @@
 import sinon from 'sinon'
-import getFlippedElementPositionsBeforeUpdate from '../getFlippedElementPositionsBeforeUpdate'
-import getFlippedElementPositionsAfterUpdate from '../getFlippedElementPositionsAfterUpdate'
-import { getAllElements } from '../utilities'
+import getFlippedElementPositionsBeforeUpdate from './getFlippedElementPositionsBeforeUpdate'
+import getFlippedElementPositionsAfterUpdate from './getFlippedElementPositionsAfterUpdate'
+import { getAllElements } from './utilities'
 
 const testEl = document.querySelector('#test')
 

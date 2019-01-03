@@ -1,4 +1,4 @@
-import { getSpringConfig, springPresets } from '../index'
+import { getSpringConfig, springPresets } from './index'
 
 describe('getSpringConfig', () => {
   it('should default to noWobble settings if nothing is provided', () => {
