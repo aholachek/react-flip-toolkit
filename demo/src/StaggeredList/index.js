@@ -68,6 +68,10 @@ const ExpandedListItem = ({ index, color, onClick }) => {
       flipId={`listItem-${index}`}
       stagger="card"
       onStart={el => {
+        console.log('regular')
+      }}
+      onStartImmediate={el => {
+        console.log('immediate')
         setTimeout(() => {
           el.classList.add('animated-in')
         }, 400)

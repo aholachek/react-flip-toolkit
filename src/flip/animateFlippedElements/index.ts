@@ -402,6 +402,13 @@ export default ({
           opacity: animateOpacity && fromVals.opacity,
           forceMinVals: needsForcedMinVals
         })
+        if (flipCallbacks[id].onStartImmediate) {
+          flipCallbacks[id].onStartImmediate!(
+            element,
+            decisionData.prev,
+            decisionData.current
+          )
+        }
         // and batch any other style updates if necessary
         if (flipConfig.transformOrigin) {
           element.style.transformOrigin = flipConfig.transformOrigin

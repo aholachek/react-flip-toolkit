@@ -24,6 +24,11 @@ export interface CallbackFlippedProps {
     prevDecisionData: any,
     currentDecisionData: any
   ) => void
+  onStartImmediate?: (
+    element: HTMLElement,
+    prevDecisionData: any,
+    currentDecisionData: any
+  ) => void
   onComplete?: (
     element: HTMLElement,
     prevDecisionData: any,

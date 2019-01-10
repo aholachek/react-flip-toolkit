@@ -84,6 +84,7 @@ export const FlippedWithContext: FunctionComponent<FlippedProps> = ({
   shouldInvert,
   onAppear,
   onStart,
+  onStartImmediate,
   onComplete,
   onExit,
   ...rest
@@ -109,6 +110,7 @@ export const FlippedWithContext: FunctionComponent<FlippedProps> = ({
                 shouldInvert,
                 onAppear,
                 onStart,
+                onStartImmediate,
                 onComplete,
                 onExit
               }
