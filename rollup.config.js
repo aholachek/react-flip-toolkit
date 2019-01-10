@@ -7,6 +7,8 @@ import replace from 'rollup-plugin-replace'
 
 import pkg from './package.json'
 
+const umdPath = 'umd/react-flip-toolkit.min.js'
+
 const basePluginsArr = [
   replace({
     'process.env.NODE_ENV': JSON.stringify('production')
@@ -34,7 +36,7 @@ export default [
         sourcemap: true
       },
       {
-        file: pkg.browser.replace('.min', ''),
+        file: umdPath.replace('.min', ''),
         name: 'ReactFlipToolkit',
         format: 'umd',
         sourcemap: true
@@ -58,7 +60,7 @@ export default [
         sourcemap: true
       },
       {
-        file: pkg.browser.replace('react-flip-toolkit', 'core').replace('.min', ''),
+        file: umdPath.replace('react-flip-toolkit', 'core').replace('.min', ''),
         name: 'ReactFlipToolkitCore',
         format: 'umd',
         sourcemap: true
@@ -69,7 +71,7 @@ export default [
   {
     input: 'src/index.ts',
     output: {
-      file: pkg.browser,
+      file: umdPath,
       name: 'ReactFlipToolkit',
       format: 'umd',
       sourcemap: true
@@ -79,7 +81,7 @@ export default [
   {
     input: 'src/core.ts',
     output: {
-      file: pkg.browser.replace('react-flip-toolkit', 'core'),
+      file: umdPath.replace('react-flip-toolkit', 'core'),
       name: 'ReactFlipToolkitCore',
       format: 'umd',
       sourcemap: true
