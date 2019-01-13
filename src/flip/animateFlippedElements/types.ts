@@ -74,3 +74,8 @@ export interface LevelToChildren {
 export type TopLevelChildren = FlipId[]
 
 export type InitiateStaggeredAnimations = (staggered: StaggeredChildren) => void
+
+export interface TreeNode {
+  staggeredChildren: StaggeredChildren,
+  immediateChildren: FlipDataArray
+}

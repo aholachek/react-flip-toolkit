@@ -10,7 +10,9 @@ const selectFlipChildIds = (
   selector: string,
   flippedIds: FlippedIds
 ): string[] => {
-  const childIds = scopedSelector(selector).map(el => el.dataset.flipId)
+  const childIds = scopedSelector(selector).map(
+    (el: HTMLElement) => el.dataset.flipId
+  )
   // now return an array ordered by the original order in the DOM
   return flippedIds.filter(id => childIds.indexOf(id) > -1)
 }

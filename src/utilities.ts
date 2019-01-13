@@ -5,7 +5,8 @@ export const isFunction = (x: any) => typeof x === 'function'
 export const isObject = (x: any) =>
   Object.prototype.toString.call(x) === '[object Object]'
 
-export const toArray = arrayLike => Array.prototype.slice.apply(arrayLike)
+export const toArray = (arrayLike: ArrayLike<any>) =>
+  Array.prototype.slice.apply(arrayLike)
 
 export const getDuplicateValsAsStrings = (
   arr: number[] | string[]

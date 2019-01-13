@@ -13,15 +13,15 @@ import { FlippedElementPositionsBeforeUpdate } from './flip/getFlippedElementPos
 import { FlippedIds } from './flip/types'
 
 class Flipper {
-  private element: HTMLElement
-  private staggerConfig: StaggerConfig
+  private element!: HTMLElement
+  private staggerConfig!: StaggerConfig
   private applyTransformOrigin: boolean = true
-  private handleEnterUpdateDelete: HandleEnterUpdateDelete
-  private debug: boolean
-  private spring: SpringOption
+  private handleEnterUpdateDelete!: HandleEnterUpdateDelete
+  private debug!: boolean
+  private spring!: SpringOption
   private inProgressAnimations: InProgressAnimations
   private flipCallbacks: FlipCallbacks
-  private snapshot: {
+  private snapshot!: {
     flippedElementPositions: FlippedElementPositionsBeforeUpdate
     cachedOrderedFlipIds: FlippedIds
   }

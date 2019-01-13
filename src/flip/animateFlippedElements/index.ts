@@ -399,7 +399,7 @@ export default ({
         // before animating, immediately apply FLIP styles to prevent flicker
         applyStyles({
           matrix: fromVals.matrix,
-          opacity: animateOpacity && fromVals.opacity,
+          opacity: animateOpacity ? fromVals.opacity : undefined,
           forceMinVals: needsForcedMinVals
         })
         if (flipCallbacks[id].onStartImmediate) {

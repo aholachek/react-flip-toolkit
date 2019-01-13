@@ -29,3 +29,5 @@ export interface GetFlippedElementPositionsBeforeUpdateArgs {
   inProgressAnimations: InProgressAnimations
   portalKey?: string
 }
+
+export type ParentBCRs = Array<[HTMLElement, BoundingClientRect]>

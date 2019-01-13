@@ -9,10 +9,6 @@
     "jsx": "react",
     "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noImplicitAny": false,
-    "strictNullChecks": false,
     "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -32,6 +28,7 @@
     "example",
     "rollup.config.js",
     "src/**/*.test.ts",
+    "src/**/*.test.tsx",
     "__tests__",
   ]
 }

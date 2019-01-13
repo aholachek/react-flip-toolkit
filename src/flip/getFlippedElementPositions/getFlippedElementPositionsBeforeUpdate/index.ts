@@ -4,7 +4,8 @@ import { toArray, assign } from '../../../utilities'
 import {
   FlippedElementPositionsBeforeUpdateReturnVals,
   FlippedElementPositionsBeforeUpdate,
-  GetFlippedElementPositionsBeforeUpdateArgs
+  GetFlippedElementPositionsBeforeUpdateArgs,
+  ParentBCRs
 } from './types'
 import { InProgressAnimations } from '../../../Flipper/types'
 
@@ -32,7 +33,7 @@ const getFlippedElementPositionsBeforeUpdate = ({
   )
 
   const childIdsToParentBCRs = {}
-  const parentBCRs = []
+  const parentBCRs: ParentBCRs = []
   const childIdsToParents = {}
   // this is for exit animations so we can re-insert exiting elements in the
   // DOM later

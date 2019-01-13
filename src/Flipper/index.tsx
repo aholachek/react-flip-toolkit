@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import onFlipKeyUpdate from '../flip'
 import getFlippedElementPositionsBeforeUpdate from '../flip/getFlippedElementPositions/getFlippedElementPositionsBeforeUpdate'
 import { FlipperProps, InProgressAnimations, FlipCallbacks } from './types'
+import { FlippedElementPositionsBeforeUpdateReturnVals } from '../flip/getFlippedElementPositions/getFlippedElementPositionsBeforeUpdate/types'
 
 export const FlipContext = createContext({} as FlipCallbacks)
 export const PortalContext = createContext('portal')
@@ -17,7 +18,7 @@ class Flipper extends Component<FlipperProps> {
   private flipCallbacks: FlipCallbacks = {}
   private el?: HTMLElement = undefined
 
-  getSnapshotBeforeUpdate(prevProps) {
+  getSnapshotBeforeUpdate(prevProps: FlipperProps) {
     if (prevProps.flipKey !== this.props.flipKey && this.el) {
       return getFlippedElementPositionsBeforeUpdate({
         element: this.el,
@@ -30,8 +31,12 @@ class Flipper extends Component<FlipperProps> {
     return null
   }
 
-  componentDidUpdate(prevProps, _prevState, cachedData) {
-    if (this.props.flipKey !== prevProps.flipKey) {
+  componentDidUpdate(
+    prevProps: FlipperProps,
+    _prevState: any,
+    cachedData: FlippedElementPositionsBeforeUpdateReturnVals
+  ) {
+    if (this.props.flipKey !== prevProps.flipKey && this.el) {
       onFlipKeyUpdate({
         flippedElementPositionsBeforeUpdate: cachedData.flippedElementPositions,
         cachedOrderedFlipIds: cachedData.cachedOrderedFlipIds,

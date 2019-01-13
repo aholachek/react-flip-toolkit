@@ -4,7 +4,8 @@ import {
   TopLevelChildren,
   InitiateStaggeredAnimations,
   FlipDataArray,
-  StaggeredChildren
+  StaggeredChildren,
+  TreeNode
 } from './types'
 import { StaggerConfig } from '../../Flipper/types'
 import { FlipId } from '../../Flipped/types'
@@ -37,7 +38,7 @@ export const createCallTree = ({
   }
 
   // helper function to build the nested structure
-  const appendChild = (parent, childId: FlipId) => {
+  const appendChild = (parent: TreeNode, childId: FlipId) => {
     const flipData = flipDataDict[childId]
     // might have been filtered (e.g. because it was off screen)
     if (!flipData) {

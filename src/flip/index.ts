@@ -29,7 +29,7 @@ const createScopedSelector = (
   } else if (element) {
     return (selector: string) => toArray(element.querySelectorAll(selector))
   } else {
-    return null
+    return () => []
   }
 }
 
