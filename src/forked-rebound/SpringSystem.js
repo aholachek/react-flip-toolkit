@@ -94,11 +94,12 @@ class SpringSystem {
     for (let i = 0, len = this._activeSprings.length; i < len; i++) {
       const spring = this._activeSprings[i]
       // note from alex: had to add this otherwise deleting springs caused errors
-      if (!spring) return
-      if (spring.systemShouldAdvance()) {
-        spring.advance(time / 1000.0, deltaTime / 1000.0)
-      } else {
-        this._idleSpringIndices.push(this._activeSprings.indexOf(spring))
+      if (spring) {
+        if (spring.systemShouldAdvance()) {
+          spring.advance(time / 1000.0, deltaTime / 1000.0)
+        } else {
+          this._idleSpringIndices.push(this._activeSprings.indexOf(spring))
+        }
       }
     }
     while (this._idleSpringIndices.length > 0) {
