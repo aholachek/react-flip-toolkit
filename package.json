@@ -27,7 +27,7 @@
     "deploy-demo": "parcel build demo/src/index.html --out-dir demo/dist; cp demo/dist/index.html demo/dist/200.html; surge demo/dist --domain react-flip-toolkit-demos.surge.sh",
     "test:watch": "react-scripts-ts test --env=jsdom",
     "build": "rollup -c",
-    "start": "rollup -c -w",
+    "start": "yarn run demo",
     "check-types": "tsc",
     "prepare": "yarn run build",
     "predeploy": "cd example && yarn install && yarn run build",

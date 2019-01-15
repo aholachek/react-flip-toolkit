@@ -9,9 +9,9 @@
  *
  */
 
-import { AnimationLooper } from "./Loopers"
-import Spring from "./Spring"
-import { removeFirst } from "./util"
+import { AnimationLooper } from './Loopers'
+import Spring from './Spring'
+import { removeFirst } from './util'
 
 /**
  * A set of Springs that all run on the same physics
@@ -91,17 +91,14 @@ class SpringSystem {
     while (this._idleSpringIndices.length > 0) {
       this._idleSpringIndices.pop()
     }
-    for (let i = 0, len = this._activeSprings.length; i < len; i++) {
-      const spring = this._activeSprings[i]
-      // note from alex: had to add this otherwise deleting springs caused errors
-      if (spring) {
-        if (spring.systemShouldAdvance()) {
-          spring.advance(time / 1000.0, deltaTime / 1000.0)
-        } else {
-          this._idleSpringIndices.push(this._activeSprings.indexOf(spring))
-        }
+    this._activeSprings.filter(Boolean).forEach(spring => {
+      if (spring.systemShouldAdvance()) {
+        spring.advance(time / 1000.0, deltaTime / 1000.0)
+      } else {
+        this._idleSpringIndices.push(this._activeSprings.indexOf(spring))
       }
-    }
+    })
+
     while (this._idleSpringIndices.length > 0) {
       const idx = this._idleSpringIndices.pop()
       idx >= 0 && this._activeSprings.splice(idx, 1)
