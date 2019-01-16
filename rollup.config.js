@@ -4,6 +4,7 @@ import resolve from 'rollup-plugin-node-resolve'
 import { terser } from 'rollup-plugin-terser'
 import typescript from 'rollup-plugin-typescript2'
 import replace from 'rollup-plugin-replace'
+import babel from 'rollup-plugin-babel'
 
 import pkg from './package.json'
 
@@ -16,6 +17,11 @@ const basePluginsArr = [
   external(),
   resolve(),
   typescript(),
+  // babel is for forked-rebound
+  babel({
+    include: 'src/forked-rebound/**/*.js',
+    presets: ['@babel/preset-env']
+  }),
   commonjs()
 ]
 
