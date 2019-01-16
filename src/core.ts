@@ -25,6 +25,7 @@ class Flipper {
     flippedElementPositions: FlippedElementPositionsBeforeUpdate
     cachedOrderedFlipIds: FlippedIds
   }
+  private retainTransform: boolean = false
 
   constructor(options: {
     element: HTMLElement
@@ -32,7 +33,8 @@ class Flipper {
     spring: SpringOption
     applyTransformOrigin: boolean
     handleEnterUpdateDelete: HandleEnterUpdateDelete
-    debug: boolean
+    debug: boolean,
+    retainTransform: boolean
   }) {
     assign(this, options)
 
@@ -65,7 +67,8 @@ class Flipper {
         spring: this.spring,
         debug: this.debug,
         staggerConfig: this.staggerConfig,
-        handleEnterUpdateDelete: this.handleEnterUpdateDelete
+        handleEnterUpdateDelete: this.handleEnterUpdateDelete,
+        retainTransform: this.retainTransform
       })
       delete this.snapshot
     }

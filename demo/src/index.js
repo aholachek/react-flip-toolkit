@@ -1,4 +1,4 @@
-import 'react-app-polyfill/ie11';
+import 'babel-polyfill';
 
 import React, { Component } from 'react'
 import { render } from 'react-dom'

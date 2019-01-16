@@ -74,6 +74,7 @@
     decisionData?: any
     handleEnterUpdateDelete?: (args: HandleEnterUpdateDeleteArgs) => void
     staggerConfig?: StaggerConfig
+    retainTransform?: boolean
   }
 
   export const Flipper: React.ComponentType<FlipperProps>

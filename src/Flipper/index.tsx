@@ -11,7 +11,8 @@ export const PortalContext = createContext('portal')
 class Flipper extends Component<FlipperProps> {
   static defaultProps = {
     applyTransformOrigin: true,
-    element: 'div'
+    element: 'div',
+    retainTransform: false
   }
 
   private inProgressAnimations: InProgressAnimations = {}
@@ -49,6 +50,8 @@ class Flipper extends Component<FlipperProps> {
         portalKey: this.props.portalKey,
         staggerConfig: this.props.staggerConfig,
         handleEnterUpdateDelete: this.props.handleEnterUpdateDelete,
+        // typescript doesn't recognize defaultProps (?)
+        retainTransform: this.props.retainTransform!,
         decisionData: {
           prev: prevProps.decisionData,
           current: this.props.decisionData
@@ -99,7 +102,8 @@ if (process.env.NODE_ENV !== 'production') {
     portalKey: PropTypes.string,
     staggerConfig: PropTypes.object,
     decisionData: PropTypes.any,
-    handleEnterUpdateDelete: PropTypes.func
+    handleEnterUpdateDelete: PropTypes.func,
+    retainTransform: PropTypes.bool
   }
 }
 

@@ -70,11 +70,17 @@ export const invertTransformsForChildren = ({
   })
 }
 
-export const createApplyStylesFunc = (
-  element: HTMLElement,
-  invertedChildren: InvertedChildren,
+export const createApplyStylesFunc = ({
+  element,
+  invertedChildren,
+  body,
+  retainTransform
+}: {
+  element: HTMLElement
+  invertedChildren: InvertedChildren
   body: HTMLBodyElement
-) => ({
+  retainTransform: boolean
+}) => ({
   matrix,
   opacity,
   forceMinVals
@@ -100,10 +106,12 @@ export const createApplyStylesFunc = (
   // keep a tiny, (hopefully) invisible rotateZ transform on the element to try to
   // prevent Chrome from pixel-snapping when scale transforms
   // are removed
-  stringTransform =
-    stringTransform === 'matrix(1, 0, 0, 1, 0, 0)'
-      ? 'matrix(1, 0.00001, -0.00001, 1, 0, 0)'
-      : stringTransform
+  if (retainTransform) {
+    stringTransform =
+      stringTransform === 'matrix(1, 0, 0, 1, 0, 0)'
+        ? 'matrix(1, 0.00001, -0.00001, 1, 0, 0)'
+        : stringTransform
+  }
   element.style.transform = stringTransform
 
   if (invertedChildren) {
@@ -149,7 +157,8 @@ export default ({
   debug,
   staggerConfig,
   decisionData,
-  scopedSelector
+  scopedSelector,
+  retainTransform
 }: AnimateFlippedElementsArgs) => {
   const body = document.querySelector('body')!
 
@@ -314,7 +323,12 @@ export default ({
 
       toVals.matrix = convertMatrix3dArrayTo2dArray(toVals.matrix)
 
-      const applyStyles = createApplyStylesFunc(element, invertedChildren, body)
+      const applyStyles = createApplyStylesFunc({
+        element,
+        invertedChildren,
+        body,
+        retainTransform
+      })
 
       let onComplete: () => void
       if (flipCallbacks[id] && flipCallbacks[id].onComplete) {

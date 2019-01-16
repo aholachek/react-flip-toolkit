@@ -32,7 +32,8 @@ export interface FlipperProps {
   portalKey?: string
   staggerConfig?: StaggerConfig
   decisionData?: any
-  handleEnterUpdateDelete?: HandleEnterUpdateDelete
+  handleEnterUpdateDelete?: HandleEnterUpdateDelete,
+  retainTransform?: boolean
 }
 
 export interface InProgressAnimations {

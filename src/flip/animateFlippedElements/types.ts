@@ -13,7 +13,8 @@ export interface AnimateFlippedElementsArgs extends BaseFlipArgs {
   debug: boolean
   staggerConfig: StaggerConfig
   decisionData: any
-  scopedSelector: ScopedSelector
+  scopedSelector: ScopedSelector,
+  retainTransform: boolean
 }
 
 export type OnUpdate = (spring: Spring) => void

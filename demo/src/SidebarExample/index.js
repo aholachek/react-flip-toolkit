@@ -1,10 +1,10 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable no-return-assign */
 
-import React, { Component } from "react";
-import { Flipper, Flipped } from "../../../src";
-import backgroundImg from "./assets/nighttime.jpg";
-import "./styles.css";
+import React, { Component } from 'react';
+import { Flipper, Flipped } from '../../../src';
+import backgroundImg from './assets/nighttime.jpg';
+import './styles.css';
 
 class PaymentSidebar extends Component {
   state = { collapsed: false };
@@ -13,7 +13,7 @@ class PaymentSidebar extends Component {
   };
   render() {
     const { collapsed } = this.state;
-    const sidebarClassName = `sidebar ${collapsed ? "sidebarCollapsed" : ""}`;
+    const sidebarClassName = `sidebar ${collapsed ? 'sidebarCollapsed' : ''}`;
 
     return (
       <Flipper flipKey={collapsed} element="nav" className="foo">

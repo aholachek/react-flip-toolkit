@@ -59,7 +59,8 @@ const onFlipKeyUpdate = ({
   portalKey,
   staggerConfig = {},
   decisionData = {},
-  handleEnterUpdateDelete
+  handleEnterUpdateDelete,
+  retainTransform
 }: OnFlipKeyUpdateArgs) => {
   const flippedElementPositionsAfterUpdate = getFlippedElementPositionsAfterUpdate(
     {
@@ -114,7 +115,8 @@ const onFlipKeyUpdate = ({
       debug,
       staggerConfig,
       decisionData,
-      scopedSelector
+      scopedSelector,
+      retainTransform
     }
   )
 
