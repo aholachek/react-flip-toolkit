@@ -416,7 +416,7 @@ export default ({
           opacity: animateOpacity ? fromVals.opacity : undefined,
           forceMinVals: needsForcedMinVals
         })
-        if (flipCallbacks[id].onStartImmediate) {
+        if (flipCallbacks[id] && flipCallbacks[id].onStartImmediate) {
           flipCallbacks[id].onStartImmediate!(
             element,
             decisionData.prev,

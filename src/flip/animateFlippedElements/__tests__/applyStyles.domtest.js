@@ -95,7 +95,11 @@ describe('createApplyStylesFunc', () => {
     const element = document.querySelector('[data-flip-id="id-1"]')
     const invertedChildren = []
 
-    const applyStyles = createApplyStylesFunc(element, invertedChildren, body)
+    const applyStyles = createApplyStylesFunc({
+      element,
+      invertedChildren,
+      body
+    })
 
     applyStyles({
       matrix: [0.2, 0, 0, 0.5, -300, 250]
@@ -114,7 +118,11 @@ describe('createApplyStylesFunc', () => {
     const element = document.querySelector('[data-flip-id="id-1"]')
     const invertedChildren = []
 
-    const applyStyles = createApplyStylesFunc(element, invertedChildren, body)
+    const applyStyles = createApplyStylesFunc({
+      element,
+      invertedChildren,
+      body
+    })
     applyStyles({
       matrix: [0.2, 0, 0, 0.5, -300, 250],
       opacity: 'invalid opacity value here'
@@ -138,7 +146,11 @@ describe('createApplyStylesFunc', () => {
     const element = document.querySelector('[data-flip-id="id-1"]')
     const invertedChildren = []
 
-    const applyStyles = createApplyStylesFunc(element, invertedChildren, body)
+    const applyStyles = createApplyStylesFunc({
+      element,
+      invertedChildren,
+      body
+    })
 
     expect(element.style.minWidth).to.equal('')
     expect(element.style.minHeight).to.equal('')

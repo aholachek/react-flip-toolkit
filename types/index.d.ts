@@ -32,6 +32,7 @@
     stagger?: string | boolean
     spring?: SpringConfig
     onStart?: (element: HTMLElement) => void
+    onStartImmediate?: (element: HTMLElement) => void
     onComplete?: (element: HTMLElement) => void
     onAppear?: (element: HTMLElement, index: number) => void
     onExit?: (
