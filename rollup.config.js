@@ -17,7 +17,6 @@ const basePluginsArr = [
   external(),
   resolve(),
   typescript(),
-  // babel is for forked-rebound
   babel({
     include: 'src/forked-rebound/**/*.js',
     presets: ['@babel/preset-env']
