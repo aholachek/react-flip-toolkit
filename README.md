@@ -25,17 +25,19 @@
 
 
 ## Table of Contents
-- [Demos](#demos)
 - [Quick start](#quick-start)
-  - [Expanding Div (Fork on Code Sandbox)](#expanding-div-fork-on-code-sandbox)
-  - [List Shuffle (Fork on Code Sandbox)](#list-shuffle-fork-on-code-sandbox)
+  - [Example 1: Expanding Div (Fork on Code Sandbox)](#example-1-expanding-div-fork-on-code-sandbox)
+  - [Example 2: Two Divs (Fork on Code Sandbox)](#example-2-two-divs-fork-on-code-sandbox)
+  - [Example 3: List Shuffle (Fork on Code Sandbox)](#example-3-list-shuffle-fork-on-code-sandbox)
+- [Demos](#demos)
 - [Usage with Vanilla JS or Other Frameworks Like Vue.js](#usage-with-vanilla-js-or-other-frameworks-like-vuejs)
-  - [Expanding Div (Fork on Code Sandbox)](#expanding-div-fork-on-code-sandbox-1)
+  - [Expanding Div (Fork on Code Sandbox)](#expanding-div-fork-on-code-sandbox)
 - [The Components](#the-components)
   - [1. `Flipper`](#1-flipper)
     - [Basic Props](#basic-props)
     - [Advanced Props](#advanced-props)
   - [2. `Flipped`](#2-flipped)
+    - [Wrapping a React Component](#wrapping-a-react-component)
     - [Basic props](#basic-props)
     - [Callback props](#callback-props)
     - [Transform props](#transform-props)
@@ -50,6 +52,116 @@
 - [Performance](#performance)
   - [1. `PureComponent`](#1-purecomponent)
   - [2. `will-change:transform`](#2-will-changetransform)
+
+## Quick start
+
+`npm install react-flip-toolkit` or `yarn add react-flip-toolkit`
+
+1. Wrap your animations with a single `Flipper` component that has a `flipKey` prop that changes every time animations should happen.
+
+2. Wrap elements that should be animated with `Flipped` components that have a `flipId` prop matching them across renders.
+
+### Example 1: Expanding Div ([Fork on Code Sandbox](https://codesandbox.io/s/j7klm66885))
+
+```jsx
+import React, { Component } from 'react';
+import { Flipper, Flipped } from 'react-flip-toolkit';
+
+class AnimatedSquare extends Component {
+  state = { fullScreen: false };
+
+  toggleFullScreen = () => {
+    this.setState(prevState => ({
+      fullScreen: !prevState.fullScreen
+    }));
+  };
+
+  render() {
+    return (
+      <Flipper flipKey={this.state.fullScreen}>
+        <Flipped flipId="square">
+          <div
+            className={this.state.fullScreen ? "full-screen-square" : "square"}
+            onClick={this.toggleFullScreen}
+          />
+        </Flipped>
+      </Flipper>
+    );
+  }
+}
+```
+
+### Example 2: Two Divs ([Fork on Code Sandbox](https://codesandbox.io/s/74q85nq1qq))
+
+```jsx
+import React, { Component } from "react";
+import { Flipper, Flipped } from "react-flip-toolkit";
+
+const Square = ({ toggleFullScreen }) => (
+  <Flipped flipId="square">
+    <div className="square" onClick={toggleFullScreen} />
+  </Flipped>
+);
+
+const FullScreenSquare = ({ toggleFullScreen }) => (
+  <Flipped flipId="square">
+    <div className="full-screen-square" onClick={toggleFullScreen} />
+  </Flipped>
+);
+
+class AnimatedSquare extends Component {
+  state = { fullScreen: false };
+
+  toggleFullScreen = () => {
+    this.setState(prevState => ({
+      fullScreen: !prevState.fullScreen
+    }));
+  };
+
+  render() {
+    return (
+      <Flipper flipKey={this.state.fullScreen}>
+        {this.state.fullScreen ? (
+          <FullScreenSquare toggleFullScreen={this.toggleFullScreen} />
+        ) : (
+          <Square toggleFullScreen={this.toggleFullScreen} />
+        )}
+      </Flipper>
+    );
+  }
+}
+```
+
+### Example 3: List Shuffle ([Fork on Code Sandbox](https://codesandbox.io/s/14v8o5xy44))
+
+```jsx
+import React, { Component } from 'react';
+import { Flipper, Flipped } from 'react-flip-toolkit';
+
+class ListShuffler extends Component {
+  state = { data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] };
+
+  shuffle = () =>
+    this.setState(({ data }) => ({
+      data: shuffle(data)
+    }));
+
+  render() {
+    return (
+      <Flipper flipKey={this.state.data.join("")}>
+        <button onClick={this.shuffle}> shuffle</button>
+        <ul className="list">
+          {this.state.data.map(d => (
+            <Flipped key={d} flipId={d}>
+              <li>{d}</li>
+            </Flipped>
+          ))}
+        </ul>
+      </Flipper>
+    );
+  }
+}
+```
 
 ## Demos
 
@@ -106,75 +218,6 @@
 - [React-flip-toolkit logo](https://codepen.io/aholachek/pen/ERRpEj)
 - [Using Portals](https://react-flip-toolkit-demos.surge.sh/portal)
 
-
-## Quick start
-
-`npm install react-flip-toolkit` or `yarn add react-flip-toolkit`
-
-1. Wrap your animations with a single `Flipper` component that has a `flipKey` prop that changes every time animations should happen.
-
-2. Wrap elements that should be animated with `Flipped` components that have a `flipId` prop matching them across renders.
-
-### Expanding Div ([Fork on Code Sandbox](https://codesandbox.io/s/j7klm66885))
-
-```jsx
-import React, { Component } from 'react';
-import { Flipper, Flipped } from 'react-flip-toolkit';
-
-class AnimatedSquare extends Component {
-  state = { fullScreen: false };
-
-  toggleFullScreen = () => {
-    this.setState(prevState => ({
-      fullScreen: !prevState.fullScreen
-    }));
-  };
-
-  render() {
-    return (
-      <Flipper flipKey={this.state.fullScreen}>
-        <Flipped flipId="square">
-          <div
-            className={this.state.fullScreen ? "full-screen-square" : "square"}
-            onClick={this.toggleFullScreen}
-          />
-        </Flipped>
-      </Flipper>
-    );
-  }
-}
-```
-
-### List Shuffle ([Fork on Code Sandbox](https://codesandbox.io/s/14v8o5xy44))
-
-```jsx
-import React, { Component } from 'react';
-import { Flipper, Flipped } from 'react-flip-toolkit';
-
-class ListShuffler extends Component {
-  state = { data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] };
-
-  shuffle = () =>
-    this.setState(({ data }) => ({
-      data: shuffle(data)
-    }));
-
-  render() {
-    return (
-      <Flipper flipKey={this.state.data.join("")}>
-        <button onClick={this.shuffle}> shuffle</button>
-        <ul className="list">
-          {this.state.data.map(d => (
-            <Flipped key={d} flipId={d}>
-              <li>{d}</li>
-            </Flipped>
-          ))}
-        </ul>
-      </Flipper>
-    );
-  }
-}
-```
 
 ## Usage with Vanilla JS or Other Frameworks Like Vue.js
 

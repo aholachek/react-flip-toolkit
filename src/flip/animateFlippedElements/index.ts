@@ -101,17 +101,20 @@ export const createApplyStylesFunc = ({
   if (!matrix) {
     return
   }
+
+  const identityTransform = 'matrix(1, 0, 0, 1, 0, 0)'
+  const transformWithInvisibleSkew = 'matrix(1, 0.00001, -0.00001, 1, 0, 0)'
+
   let stringTransform = convertMatrix2dArrayToString(matrix)
 
-  // keep a tiny, (hopefully) invisible rotateZ transform on the element to try to
-  // prevent Chrome from pixel-snapping when scale transforms
-  // are removed
-  if (retainTransform) {
-    stringTransform =
-      stringTransform === 'matrix(1, 0, 0, 1, 0, 0)'
-        ? 'matrix(1, 0.00001, -0.00001, 1, 0, 0)'
-        : stringTransform
+  if (stringTransform === identityTransform) {
+    if (retainTransform) {
+      stringTransform = transformWithInvisibleSkew
+    } else {
+      stringTransform = ''
+    }
   }
+
   element.style.transform = stringTransform
 
   if (invertedChildren) {
