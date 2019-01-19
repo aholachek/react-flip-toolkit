@@ -90,10 +90,6 @@ describe('Flipped Component', () => {
     expect(flipConfig).toEqual({ translate: true })
   })
 
-  describe('spring props', () => {
-    it('if it detects the ', () => {})
-  })
-
   it('passes props if it receives a function as a child', () => {
     const testRenderer = TestRenderer.create(
       <Flipped flipId="foo" inverseFlipId="bar">

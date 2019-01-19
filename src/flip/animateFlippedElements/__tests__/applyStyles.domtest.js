@@ -163,4 +163,41 @@ describe('createApplyStylesFunc', () => {
     expect(element.style.minWidth).to.equal('1px')
     expect(element.style.minHeight).to.equal('1px')
   })
+
+  it('should remove the transform on the last tick of the animation', () => {
+    const body = document.querySelector('body')
+    const element = document.querySelector('[data-flip-id="id-1"]')
+    const invertedChildren = []
+
+    const applyStyles = createApplyStylesFunc({
+      element,
+      invertedChildren,
+      body
+    })
+    applyStyles({
+      matrix: [1, 0, 0, 1, 0, 0]
+    })
+
+    expect(element.style.transform).to.equal('')
+  })
+
+  it('should keep a tiny transform on the last tick of the animation if retainTransform = true', () => {
+    const body = document.querySelector('body')
+    const element = document.querySelector('[data-flip-id="id-1"]')
+    const invertedChildren = []
+
+    const applyStyles = createApplyStylesFunc({
+      element,
+      invertedChildren,
+      body,
+      retainTransform: true
+    })
+    applyStyles({
+      matrix: [1, 0, 0, 1, 0, 0]
+    })
+
+    expect(element.style.transform).to.equal(
+      'matrix(1, 1e-05, -1e-05, 1, 0, 0)'
+    )
+  })
 })
