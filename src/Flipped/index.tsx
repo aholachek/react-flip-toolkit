@@ -92,6 +92,9 @@ export const FlippedWithContext: FunctionComponent<FlippedProps> = ({
   if (!children) {
     return null
   }
+  if (rest.inverseFlipId) {
+    return <Flipped {...rest}>{children}</Flipped>
+  }
   return (
     <PortalContext.Consumer>
       {portalKey => (

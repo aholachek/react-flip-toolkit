@@ -1,6 +1,6 @@
-import React, { PureComponent } from "react";
-import { Flipped } from "../../../src";
-import anime from "animejs";
+import React, { PureComponent } from 'react'
+import { Flipped } from '../../../src'
+import anime from 'animejs'
 
 const onElementAppear = (el, index) => {
   anime({
@@ -8,50 +8,51 @@ const onElementAppear = (el, index) => {
     opacity: [0, 1],
     duration: 400,
     delay: index * 50,
-    easing: "easeOutSine"
-  });
-};
+    easing: 'easeOutSine'
+  })
+}
 
 const onExit = type => (el, index, removeElement) => {
   anime({
     targets: el,
-    scaleY: type === "list" ? 0 : 1,
-    scaleX: type === "grid" ? 0 : 1,
+    scaleY: type === 'list' ? 0 : 1,
+    scaleX: type === 'grid' ? 0 : 1,
     duration: 200,
     complete: removeElement,
-    easing: "easeOutSine"
-  }).pause;
+    easing: 'easeOutSine'
+  }).pause
 
   return () => {
-    el.style.opacity = "";
-    removeElement();
-  };
-};
+    el.style.opacity = ''
+    removeElement()
+  }
+}
 
-const onGridExit = onExit("grid");
-const onListExit = onExit("list");
+const onGridExit = onExit('grid')
+const onListExit = onExit('list')
 
 class Card extends PureComponent {
   shouldFlip = (prev, current) => {
+    debugger // eslint-disable-line
     if (prev.type !== current.type) {
-      return true;
+      return true
     }
-    return false;
-  };
+    return false
+  }
   render() {
-    const { id, title, type, stagger, addToFilteredIds } = this.props;
-    const flipId = `item-${id}`;
+    const { id, title, type, stagger, addToFilteredIds } = this.props
+    const flipId = `item-${id}`
     return (
       <Flipped
         flipId={flipId}
         onAppear={onElementAppear}
-        onExit={type === "grid" ? onGridExit : onListExit}
+        onExit={type === 'grid' ? onGridExit : onListExit}
         key={flipId}
         stagger={stagger}
         shouldInvert={this.shouldFlip}
       >
         <li className="fm-item">
-          <Flipped inverseFlipId={flipId} shouldFlip={this.shouldFlip}>
+          <Flipped inverseFlipId={flipId}>
             <div>
               <Flipped
                 flipId={`${flipId}-content`}
@@ -59,12 +60,8 @@ class Card extends PureComponent {
                 shouldFlip={this.shouldFlip}
               >
                 <div>
-                  <h3>
-                    {title}
-                  </h3>
-                  <p>
-                    {title}
-                  </p>
+                  <h3>{title}</h3>
+                  <p>{title}</p>
                 </div>
               </Flipped>
 
@@ -80,8 +77,8 @@ class Card extends PureComponent {
           </Flipped>
         </li>
       </Flipped>
-    );
+    )
   }
 }
 
-export default Card;
+export default Card

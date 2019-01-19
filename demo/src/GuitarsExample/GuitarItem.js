@@ -6,26 +6,28 @@ class GuitarItem extends Component {
 
   static propTypes = {}
 
-  onStart = el => (el.style.zIndex = 10)
+  onStartImmediate = el => {
+    el.style.zIndex = 10
+  }
 
   onComplete = el => (el.style.zIndex = '')
 
   render() {
-    const { index, title, subtitle, onClick,image } = this.props
+    const { index, title, subtitle, onClick, image } = this.props
     const parentId = `guitar-${index}`
     return (
       <div className="grid__item" onClick={onClick}>
         <div className="product">
           <Flipped
             flipId={`${parentId}-productBackground`}
-            onStart={this.onStart}
+            onStartImmediate={this.onStartImmediate}
             onComplete={this.onComplete}
           >
             <div className="product__bg" />
           </Flipped>
           <Flipped
             flipId={`${parentId}-guitarImg`}
-            onStart={this.onStart}
+            onStartImmediate={this.onStartImmediate}
             onComplete={this.onComplete}
           >
             <img className="product__img" src={image} />
