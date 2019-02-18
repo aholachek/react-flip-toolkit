@@ -32,8 +32,6 @@
   - [Example 2: Two Divs (Fork on Code Sandbox)](#example-2-two-divs-fork-on-code-sandbox)
   - [Example 3: List Shuffle (Fork on Code Sandbox)](#example-3-list-shuffle-fork-on-code-sandbox)
 - [Demos](#demos)
-- [Usage with Vanilla JS or Other Frameworks Like Vue.js](#usage-with-vanilla-js-or-other-frameworks-like-vuejs)
-  - [Expanding Div (Fork on Code Sandbox)](#expanding-div-fork-on-code-sandbox)
 - [The Components](#the-components)
   - [1. `Flipper`](#1-flipper)
     - [Basic Props](#basic-props)
@@ -46,6 +44,8 @@
     - [Advanced props](#advanced-props)
 - [Intermediate Tutorial](#intermediate-tutorial)
 - [Practical scale transitions](#practical-scale-transitions)
+- [Usage with Vanilla JS or Other Frameworks Like Vue.js](#usage-with-vanilla-js-or-other-frameworks-like-vuejs)
+  - [Expanding Div (Fork on Code Sandbox)](#expanding-div-fork-on-code-sandbox)
 - [Library details](#library-details)
 - [Troubleshooting](#troubleshooting)
   - [Problem #1: Nothing is happening](#problem-1-nothing-is-happening)
@@ -219,53 +219,6 @@ class ListShuffler extends Component {
 - [Overly complex, nested cards example](https://react-flip-toolkit-demos.surge.sh/cards)
 - [React-flip-toolkit logo](https://codepen.io/aholachek/pen/ERRpEj)
 - [Using Portals](https://react-flip-toolkit-demos.surge.sh/portal)
-
-
-## Usage with Vanilla JS or Other Frameworks Like Vue.js
-
-`React-Flip-Toolkit` exports a special file, `core`, that allows you to use the methods from the library imperatively, without requiring React. You could use this with vanilla JavaScript, or hook into the lifecycle events of a Vue.js component.
-
-You can refer to the React documentation below to see what options can be passed to the `Flipper` class constructor as well as the `addFlipped` function exposed by the `Flipper` instance (which takes options corresponding to the `Flipped` component's props).
-
-
-### Expanding Div ([Fork on Code Sandbox](https://codesandbox.io/s/5v1k1nwz8l))
-```js
-import Flipper from "react-flip-toolkit/es/core";
-// or if you're using commonjs imports: import Flipper from "react-flip-toolkit/lib/core
-const container = document.querySelector(".container");
-const square = document.querySelector(".square");
-const innerSquare = document.querySelector(".inner-square");
-
-// the config options for the Flipper class are the same
-// as the allowed props for the Flipper component
-const flipper = new Flipper({ element: container });
-
-// add flipped children to the parent
-// options are the same as the props
-// for the Flipped component
-flipper.addFlipped({
-  element: square,
-  flipId: "square",
-  onStart: () => console.log("animation started!"),
-  onComplete: () => console.log("animation completed!")
-});
-
-// to add an inverted child, use this method with
-// a reference to the parent element
-flipper.addInverted({
-  element: innerSquare,
-  parent: square
-});
-
-square.addEventListener("click", () => {
-  // record positions before they change
-  flipper.recordBeforeUpdate();
-  square.classList.toggle("big-square");
-  // record new positions and begin animations
-  flipper.onUpdate();
-});
-
-```
 
 ## The Components
 
@@ -461,6 +414,53 @@ But for many use cases, you'll want to additionally specify the `scale` prop to 
 **The DOM element with the inverse transform should lie flush against its parent container for the most seamless animation.**
 
 That means any layout styles &mdash; padding, flexbox, etc&mdash;should be applied to the inverted container (the element wrapped with a `Flipped` component with an `inverseFlipId`) rather than the parent `Flipped` container.
+
+
+## Usage with Vanilla JS or Other Frameworks Like Vue.js
+
+`React-Flip-Toolkit` exports a special file, `core`, that allows you to use the methods from the library imperatively, without requiring React. You could use this with vanilla JavaScript, or hook into the lifecycle events of a Vue.js component.
+
+You can refer to the React documentation below to see what options can be passed to the `Flipper` class constructor as well as the `addFlipped` function exposed by the `Flipper` instance (which takes options corresponding to the `Flipped` component's props).
+
+
+### Expanding Div ([Fork on Code Sandbox](https://codesandbox.io/s/5v1k1nwz8l))
+```js
+import Flipper from "react-flip-toolkit/es/core";
+// or if you're using commonjs imports: import Flipper from "react-flip-toolkit/lib/core
+const container = document.querySelector(".container");
+const square = document.querySelector(".square");
+const innerSquare = document.querySelector(".inner-square");
+
+// the config options for the Flipper class are the same
+// as the allowed props for the Flipper component
+const flipper = new Flipper({ element: container });
+
+// add flipped children to the parent
+// options are the same as the props
+// for the Flipped component
+flipper.addFlipped({
+  element: square,
+  flipId: "square",
+  onStart: () => console.log("animation started!"),
+  onComplete: () => console.log("animation completed!")
+});
+
+// to add an inverted child, use this method with
+// a reference to the parent element
+flipper.addInverted({
+  element: innerSquare,
+  parent: square
+});
+
+square.addEventListener("click", () => {
+  // record positions before they change
+  flipper.recordBeforeUpdate();
+  square.classList.toggle("big-square");
+  // record new positions and begin animations
+  flipper.onUpdate();
+});
+
+```
 
 ## Library details
 
