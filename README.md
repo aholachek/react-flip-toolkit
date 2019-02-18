@@ -63,7 +63,7 @@
 
 2. Wrap elements that should be animated with `Flipped` components that have a `flipId` prop matching them across renders.
 
-### Example 1: Expanding Div ([Fork on Code Sandbox](https://codesandbox.io/s/j7klm66885))
+### Example 1: Expanding Div ([Fork on Code Sandbox](https://codesandbox.io/s/8130rn9q2))
 
 ```jsx
 import React, { Component } from 'react';
