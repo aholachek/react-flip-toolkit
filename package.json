@@ -44,11 +44,11 @@
     "version": "npm run build"
   },
   "dependencies": {
-    "prop-types": "^15.6.2",
     "rematrix": "0.2.2"
   },
   "peerDependencies": {
-    "react": "16.x"
+    "react": "16.x",
+    "prop-types": "^15.x.x"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",
