@@ -79,13 +79,13 @@ const animateUnflippedElements = ({
     const stop = () => {
       try {
         parent.removeChild(element)
+      } catch (DOMException) {
+        // the element is already gone
+      } finally {
         exitingElementCount -= 1
         if (exitingElementCount === 0) {
           closureResolve()
         }
-      } catch (DOMException) {
-        // the element is already gone
-        closureResolve()
       }
     }
     inProgressAnimations[id] = { stop }
