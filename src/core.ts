@@ -87,7 +87,8 @@ class Flipper {
     onStart,
     onComplete,
     onExit,
-    shouldFlip
+    shouldFlip,
+    shouldInvert
   }: FlippedProps & { element: HTMLElement }) {
     if (!element) {
       throw new Error('no element provided')
@@ -117,6 +118,7 @@ class Flipper {
     // finally, add callbacks
     this.flipCallbacks[flipId] = {
       shouldFlip,
+      shouldInvert,
       onAppear,
       onStart,
       onComplete,
