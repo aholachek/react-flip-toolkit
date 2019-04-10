@@ -15,7 +15,15 @@ box.addEventListener('click', () => {
 flipper.addFlipped({
   element: box,
   flipId: 'box',
-  inverted: innerBox
+  inverted: innerBox,
+  shouldFlip: () => {
+    console.log('shouldFlip called')
+    return true
+  },
+  shouldInvert: () => {
+    console.log('shouldInvert called')
+    return true
+  }
 })
 
 flipper.addInverted({
