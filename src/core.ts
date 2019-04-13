@@ -54,7 +54,7 @@ class Flipper {
       inProgressAnimations: this.inProgressAnimations
     })
   }
-  onUpdate() {
+  onUpdate(prevDecisionData, currentDecisionData) {
     if (this.snapshot) {
       onFlipKeyUpdate({
         flippedElementPositionsBeforeUpdate: this.snapshot
@@ -68,7 +68,11 @@ class Flipper {
         debug: this.debug,
         staggerConfig: this.staggerConfig,
         handleEnterUpdateDelete: this.handleEnterUpdateDelete,
-        retainTransform: this.retainTransform
+        retainTransform: this.retainTransform,
+        decisionData: {
+          prev: prevDecisionData,
+          current: currentDecisionData
+        }
       })
       delete this.snapshot
     }
