@@ -33,7 +33,7 @@ class Flipper {
     spring: SpringOption
     applyTransformOrigin: boolean
     handleEnterUpdateDelete: HandleEnterUpdateDelete
-    debug: boolean,
+    debug: boolean
     retainTransform: boolean
   }) {
     assign(this, options)
@@ -54,7 +54,7 @@ class Flipper {
       inProgressAnimations: this.inProgressAnimations
     })
   }
-  onUpdate(prevDecisionData, currentDecisionData) {
+  onUpdate(prevDecisionData: any, currentDecisionData: any) {
     if (this.snapshot) {
       onFlipKeyUpdate({
         flippedElementPositionsBeforeUpdate: this.snapshot

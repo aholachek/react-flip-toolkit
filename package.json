@@ -28,7 +28,7 @@
     "test:watch": "react-scripts-ts test --env=jsdom",
     "build": "rollup -c",
     "start": "yarn run demo",
-    "check-types": "tsc",
+    "check-types": "tsc --noEmit",
     "prepare": "yarn run build",
     "predeploy": "cd example && yarn install && yarn run build",
     "inspect": "npx source-map-explorer dist/index.umd.js dist/index.umd.js.map",
