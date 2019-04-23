@@ -114,7 +114,6 @@ export const createApplyStylesFunc = ({
       stringTransform = ''
     }
   }
-
   element.style.transform = stringTransform
 
   if (invertedChildren) {
@@ -161,7 +160,8 @@ export default ({
   staggerConfig,
   decisionData,
   scopedSelector,
-  retainTransform
+  retainTransform,
+  isGestureControlled
 }: AnimateFlippedElementsArgs) => {
   const body = document.querySelector('body')!
 
@@ -190,6 +190,8 @@ export default ({
       }: ${duplicateFlipIds.join('\n')}`
     )
   }
+  // defining this up here to that it's accessible in onUpdate functions
+  const flipDataDict: FlipDataDict = {}
 
   const flipDataArray: FlipDataArray = flippedIds
     // take all the measurements we need
@@ -369,10 +371,18 @@ export default ({
 
       let onStartCalled = false
 
-      const getOnUpdateFunc: GetOnUpdateFunc = stop => {
+      const getOnUpdateFunc: GetOnUpdateFunc = ({
+        stop,
+        setEndValue,
+        setVelocity
+      }) => {
         inProgressAnimations[id] = {
           stop,
-          onComplete
+          setEndValue,
+          setVelocity,
+          onComplete,
+          // for gesture control
+          allChildIds: flipDataDict[id].allChildIds
         }
         const onUpdate: OnUpdate = spring => {
           // trigger the user provided onStart function
@@ -388,7 +398,6 @@ export default ({
           }
 
           const currentValue = spring.getCurrentValue()
-
           if (!body.contains(element)) {
             stop()
             return
@@ -413,6 +422,7 @@ export default ({
       }
 
       const initializeFlip: InitializeFlip = () => {
+
         // before animating, immediately apply FLIP styles to prevent flicker
         applyStyles({
           matrix: fromVals.matrix,
@@ -451,7 +461,7 @@ export default ({
       }) as FlipData
     })
     // filter out data for all non-animated elements first
-    .filter(x => x) as FlipDataArray
+    .filter(Boolean) as FlipDataArray
 
   // we use this array to compare with completed animations
   // to decide when all animations are completed
@@ -465,10 +475,13 @@ export default ({
     return () => {}
   }
 
-  const flipDataDict: FlipDataDict = flipDataArray.reduce((acc, curr) => {
-    acc[curr.id] = curr
-    return acc
-  }, {})
+  Object.assign(
+    flipDataDict,
+    flipDataArray.reduce((acc, curr) => {
+      acc[curr.id] = curr
+      return acc
+    }, {})
+  )
 
   // this function modifies flipDataDict in-place
   // by removing references to non-direct children
@@ -485,7 +498,12 @@ export default ({
     if (!withInitFuncs.length) {
       closureResolve()
     }
-    initiateAnimations({ topLevelChildren, flipDataDict, staggerConfig })
+    initiateAnimations({
+      topLevelChildren,
+      flipDataDict,
+      staggerConfig,
+      isGestureControlled
+    })
     return flipCompletedPromise
   }
 }

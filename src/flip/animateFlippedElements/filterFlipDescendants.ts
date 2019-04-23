@@ -72,13 +72,12 @@ export default ({
   Object.keys(flipDataDict).forEach(flipId => {
     const data = flipDataDict[flipId]
     // scope by parent element
-    data.childIds = selectFlipChildIds(
+    const allChildIds = selectFlipChildIds(
       selector => toArray(data.element.querySelectorAll(selector)),
       baseSelector,
       flippedIds
     )
-
-    data.childIds = data.childIds.filter(
+    data.childIds = allChildIds.filter(
       id =>
         levelToChildren[data.level + 1] &&
         levelToChildren[data.level + 1].indexOf(id) > -1

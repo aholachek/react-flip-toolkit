@@ -1,5 +1,6 @@
 .staggered-list-content {
-  width: 400px;
+  max-width: 400px;
+  width: 90%;
   margin: 2rem auto;
 }
 .list {

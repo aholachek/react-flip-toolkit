@@ -7,6 +7,7 @@ import { FlippedElementPositionsBeforeUpdateReturnVals } from '../flip/getFlippe
 
 export const FlipContext = createContext({} as FlipCallbacks)
 export const PortalContext = createContext('portal')
+export const GestureContext = createContext({})
 
 class Flipper extends Component<FlipperProps> {
   static defaultProps = {
@@ -39,6 +40,7 @@ class Flipper extends Component<FlipperProps> {
   ) {
     if (this.props.flipKey !== prevProps.flipKey && this.el) {
       onFlipKeyUpdate({
+        isGestureControlled: this.props.isGestureControlled,
         flippedElementPositionsBeforeUpdate: cachedData.flippedElementPositions,
         cachedOrderedFlipIds: cachedData.cachedOrderedFlipIds,
         containerEl: this.el,
@@ -64,7 +66,7 @@ class Flipper extends Component<FlipperProps> {
     const { element, className, portalKey } = this.props
     const Element = element
 
-    const FlipperBase = (
+    let flipperMarkup = (
       <FlipContext.Provider value={this.flipCallbacks}>
         {/*
         // @ts-ignore */}
@@ -78,14 +80,20 @@ class Flipper extends Component<FlipperProps> {
     )
 
     if (portalKey) {
-      return (
+      flipperMarkup = (
         <PortalContext.Provider value={portalKey}>
-          {FlipperBase}
+          {flipperMarkup}
         </PortalContext.Provider>
       )
-    } else {
-      return FlipperBase
     }
+    if (this.props.isGestureControlled) {
+      flipperMarkup = (
+        <GestureContext.Provider value={this.inProgressAnimations}>
+          {flipperMarkup}
+        </GestureContext.Provider>
+      )
+    }
+    return flipperMarkup
   }
 }
 

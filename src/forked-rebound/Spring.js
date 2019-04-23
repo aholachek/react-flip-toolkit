@@ -9,7 +9,7 @@
  *
  */
 
-import { removeFirst } from "./util"
+import { removeFirst } from './util'
 
 class PhysicsState {
   constructor() {
@@ -35,7 +35,7 @@ class PhysicsState {
  */
 class Spring {
   constructor(springSystem) {
-    this._id = "s" + Spring._ID++
+    this._id = 's' + Spring._ID++
     this._springSystem = springSystem
 
     this.listeners = []
@@ -51,6 +51,8 @@ class Spring {
     this._tempState = new PhysicsState()
     this._timeAccumulator = 0
     this._wasAtRest = true
+    // hack from alex -- only call 1x
+    this._onActivateCalled
   }
 
   getId() {
@@ -101,6 +103,7 @@ class Spring {
    * @public
    */
   setEndValue(endValue) {
+    this.prevEndValue = endValue
     if (this._endValue === endValue && this.isAtRest()) {
       return this
     }
@@ -286,8 +289,13 @@ class Spring {
     for (let i = 0, len = this.listeners.length; i < len; i++) {
       const listener = this.listeners[i]
 
-      if (notifyActivate && listener.onSpringActivate) {
+      if (
+        notifyActivate &&
+        listener.onSpringActivate &&
+        !this._onActivateCalled
+      ) {
         listener.onSpringActivate(this)
+        this._onActivateCalled = true
       }
 
       if (listener.onSpringUpdate) {

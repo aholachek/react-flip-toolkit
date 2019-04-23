@@ -5,10 +5,12 @@ import React, {
   ReactElement
 } from 'react'
 import PropTypes from 'prop-types'
-import { FlipContext, PortalContext } from '../Flipper'
+import { FlipContext, PortalContext, GestureContext } from '../Flipper'
 import * as constants from '../constants'
 import { assign, isObject } from '../utilities'
 import { FlippedProps, SerializableFlippedProps } from './types'
+import { gestureHandler } from './gestureHandler'
+import { useGesture } from 'react-with-gesture'
 
 const propTypes = {
   children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
@@ -32,12 +34,14 @@ const propTypes = {
 function isFunction(child: any): child is Function {
   return typeof child === 'function'
 }
+
 // This wrapper creates child components for the main Flipper component
 export const Flipped = ({
   children,
   flipId,
   inverseFlipId,
   portalKey,
+  gestureData,
   ...rest
 }: SerializableFlippedProps): ReactElement<any> => {
   let child = children
@@ -60,11 +64,18 @@ export const Flipped = ({
     })
   }
 
+  let bind = () => ({})
+
+  if (gestureData) {
+    bind = useGesture(gestureHandler(gestureData))
+  }
+
   const dataAttributes = {
     // these are both used as selectors so they have to be separate
     [constants.DATA_FLIP_ID]: flipId,
     [constants.DATA_INVERSE_FLIP_ID]: inverseFlipId,
-    [constants.DATA_FLIP_CONFIG]: JSON.stringify(rest)
+    [constants.DATA_FLIP_CONFIG]: JSON.stringify(rest),
+    ...bind()
   }
 
   if (portalKey) {
@@ -87,6 +98,7 @@ export const FlippedWithContext: FunctionComponent<FlippedProps> = ({
   onStartImmediate,
   onComplete,
   onExit,
+  respondToGesture
   ...rest
 }) => {
   if (!children) {
@@ -96,34 +108,43 @@ export const FlippedWithContext: FunctionComponent<FlippedProps> = ({
     return <Flipped {...rest}>{children}</Flipped>
   }
   return (
-    <PortalContext.Consumer>
-      {portalKey => (
-        <FlipContext.Consumer>
-          {data => {
-            // if there is no surrounding Flipper component,
-            // we don't want to throw an error, so check
-            // that data exists and is not the default string
-            if (isObject(data)) {
-              // @ts-ignore
-              data[flipId as string] = {
-                shouldFlip,
-                shouldInvert,
-                onAppear,
-                onStart,
-                onStartImmediate,
-                onComplete,
-                onExit
-              }
-            }
-            return (
-              <Flipped flipId={flipId} {...rest} portalKey={portalKey}>
-                {children}
-              </Flipped>
-            )
-          }}
-        </FlipContext.Consumer>
+    <GestureContext.Consumer>
+      {inProgressAnimations => (
+        <PortalContext.Consumer>
+          {portalKey => (
+            <FlipContext.Consumer>
+              {data => {
+                // if there is no surrounding Flipper component,
+                // we don't want to throw an error, so check
+                // that data exists and is not the default string
+                if (isObject(data)) {
+                  // @ts-ignore
+                  data[flipId as string] = {
+                    shouldFlip,
+                    shouldInvert,
+                    onAppear,
+                    onStart,
+                    onStartImmediate,
+                    onComplete,
+                    onExit
+                  }
+                }
+                return (
+                  <Flipped
+                    flipId={flipId}
+                    {...rest}
+                    gestureData={respondToGesture ? {inProgressAnimations, ...respondToGesture} : null}
+                    portalKey={portalKey}
+                  >
+                    {children}
+                  </Flipped>
+                )
+              }}
+            </FlipContext.Consumer>
+          )}
+        </PortalContext.Consumer>
       )}
-    </PortalContext.Consumer>
+    </GestureContext.Consumer>
   )
 }
 

@@ -10,20 +10,24 @@ import {
 import { StaggerConfig } from '../../Flipper/types'
 import { FlipId } from '../../Flipped/types'
 
-const initiateImmediateAnimations = (immediate: FlipDataArray) => {
+const initiateImmediateAnimations = (
+  immediate: FlipDataArray,
+  isGestureControlled: boolean
+) => {
   if (!immediate) {
     return
   }
   immediate.forEach(flipped => {
-    createSpring(flipped)
-    initiateImmediateAnimations(flipped.immediateChildren)
+    createSpring(flipped, isGestureControlled)
+    initiateImmediateAnimations(flipped.immediateChildren, isGestureControlled)
   })
 }
 
 export const createCallTree = ({
   flipDataDict,
   topLevelChildren,
-  initiateStaggeredAnimations
+  initiateStaggeredAnimations,
+  isGestureControlled
 }: {
   flipDataDict: FlipDataDict
   topLevelChildren: TopLevelChildren
@@ -56,8 +60,14 @@ export const createCallTree = ({
     // only when the spring is first activated, activate the child animations as well
     // this enables nested stagger
     flipData.onSpringActivate = () => {
-      initiateImmediateAnimations(flipData.immediateChildren)
-      initiateStaggeredAnimations(flipData.staggeredChildren)
+      initiateImmediateAnimations(
+        flipData.immediateChildren,
+        isGestureControlled
+      )
+      initiateStaggeredAnimations(
+        flipData.staggeredChildren,
+        isGestureControlled
+      )
     }
 
     flipData.staggeredChildren = {}
@@ -77,27 +87,36 @@ export const createCallTree = ({
 export default ({
   staggerConfig,
   flipDataDict,
-  topLevelChildren
+  topLevelChildren,
+  isGestureControlled
 }: {
   staggerConfig: StaggerConfig
   flipDataDict: FlipDataDict
   topLevelChildren: TopLevelChildren
 }) => {
-  const initiateStaggeredAnimations: InitiateStaggeredAnimations = staggered => {
+  const initiateStaggeredAnimations: InitiateStaggeredAnimations = (
+    staggered,
+    isGestureControlled: boolean
+  ) => {
     if (!staggered || !Object.keys(staggered).length) {
       return
     }
     Object.keys(staggered).forEach(staggerKey =>
-      staggeredSprings(staggered[staggerKey], staggerConfig[staggerKey])
+      staggeredSprings(
+        staggered[staggerKey],
+        staggerConfig[staggerKey],
+        isGestureControlled
+      )
     )
   }
 
   const tree = createCallTree({
     flipDataDict,
     topLevelChildren,
-    initiateStaggeredAnimations
+    initiateStaggeredAnimations,
+    isGestureControlled
   })
 
-  initiateImmediateAnimations(tree.root.immediateChildren)
-  initiateStaggeredAnimations(tree.root.staggeredChildren)
+  initiateImmediateAnimations(tree.root.immediateChildren, isGestureControlled)
+  initiateStaggeredAnimations(tree.root.staggeredChildren, isGestureControlled)
 }

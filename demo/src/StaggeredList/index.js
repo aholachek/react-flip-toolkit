@@ -17,12 +17,16 @@ const ListItem = ({ index, color, onClick }) => {
       flipId={`listItem-${index}`}
       stagger="card"
       shouldInvert={shouldFlip(index)}
+      respondToGesture={{
+        initFLIP: () => {
+          onClick(index)
+        },
+        cancelFLIP: () => {},
+        direction: 'down',
+        completeThreshold: 400
+      }}
     >
-      <div
-        className="listItem"
-        style={{ backgroundColor: color }}
-        onClick={() => onClick(index)}
-      >
+      <div className="listItem" style={{ backgroundColor: color }}>
         <Flipped inverseFlipId={`listItem-${index}`}>
           <div className="listItemContent">
             <Flipped
@@ -67,21 +71,13 @@ const ExpandedListItem = ({ index, color, onClick }) => {
     <Flipped
       flipId={`listItem-${index}`}
       stagger="card"
-      onStart={el => {
-        console.log('regular')
-      }}
       onStartImmediate={el => {
-        console.log('immediate')
         setTimeout(() => {
           el.classList.add('animated-in')
         }, 400)
       }}
     >
-      <div
-        className="expandedListItem"
-        style={{ backgroundColor: color }}
-        onClick={() => onClick(index)}
-      >
+      <div className="expandedListItem" style={{ backgroundColor: color }}>
         <Flipped inverseFlipId={`listItem-${index}`}>
           <div className="expandedListItemContent">
             <Flipped flipId={`avatar-${index}`} stagger="card-content">
@@ -110,14 +106,21 @@ const ExpandedListItem = ({ index, color, onClick }) => {
   )
 }
 export default class AnimatedList extends Component {
-  state = { focused: null }
-  onClick = index =>
-    this.setState({
-      focused: this.state.focused === index ? null : index
+  state = { focused: [] }
+  onClick = index => {
+    if (this.state.focused.includes(index)) {
+      return this.setState({
+        focused: this.state.focused.filter(n => n !== index)
+      })
+    }
+    return this.setState({
+      focused: this.state.focused.concat(index)
     })
+  }
   render() {
     return (
       <Flipper
+        isGestureControlled
         flipKey={this.state.focused}
         className="staggered-list-content"
         spring="gentle"
@@ -133,10 +136,10 @@ export default class AnimatedList extends Component {
           {listData.map(index => {
             return (
               <li>
-                {index === this.state.focused ? (
+                {this.state.focused.includes(index) ? (
                   <ExpandedListItem
                     index={this.state.focused}
-                    color={colors[this.state.focused % colors.length]}
+                    color={colors[index % colors.length]}
                     onClick={this.onClick}
                   />
                 ) : (

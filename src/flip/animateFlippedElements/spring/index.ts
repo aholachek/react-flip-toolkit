@@ -6,32 +6,49 @@ import { SpringSystemInterface } from '../../../forked-rebound/types'
 // this should get created only 1x
 const springSystem: SpringSystemInterface = new SpringSystem()
 
-export const createSuspendedSpring = ({
-  springConfig: { stiffness, damping, overshootClamping },
-  noOp,
-  onSpringActivate,
-  getOnUpdateFunc,
-  onAnimationEnd
-}: FlipData) => {
+export const createSuspendedSpring = (flipData: FlipData) => {
+  const {
+    springConfig: { stiffness, damping, overshootClamping },
+    noOp,
+    onSpringActivate,
+    getOnUpdateFunc,
+    onAnimationEnd,
+    isGestureControlled
+  } = flipData
+
   if (noOp) {
     return null
   }
   const spring = springSystem.createSpring(stiffness!, damping!)
   spring.setOvershootClampingEnabled(!!overshootClamping)
+  const onSpringAtRest = () => {
+    // prevent SpringSystem from caching unused springs
+    spring.destroy()
+    onAnimationEnd()
+  }
   spring.addListener({
     onSpringActivate,
-    onSpringUpdate: getOnUpdateFunc(spring.destroy.bind(spring)),
-    onSpringAtRest: () => {
-      // prevent SpringSystem from caching unused springs
-      spring.destroy()
-      onAnimationEnd()
-    }
+    onSpringUpdate: getOnUpdateFunc({
+      stop: spring.destroy.bind(spring),
+      setEndValue: spring.setEndValue.bind(spring),
+      setVelocity: spring.setVelocity.bind(spring)
+    }),
+    onSpringAtRest: isGestureControlled ? onSpringAtRest : () => {}
   })
+  // if (isGestureControlled) {
+  //   flipData.onSpringAtRest = onSpringAtRest
+  // }
   return spring
 }
 
-export const createSpring = (flipped: FlipData) => {
+export const createSpring = (
+  flipped: FlipData,
+  isGestureControlled: boolean
+) => {
   const spring = createSuspendedSpring(flipped)
+  if (isGestureControlled) {
+    return flipped.onSpringActivate()
+  }
   if (spring) {
     spring.setEndValue(1)
   } else {
@@ -44,7 +61,8 @@ export const createSpring = (flipped: FlipData) => {
 
 export const staggeredSprings = (
   flippedArray: FlipDataArray,
-  staggerConfig: StaggerConfigValue = {}
+  staggerConfig: StaggerConfigValue = {},
+  isGestureControlled: boolean
 ) => {
   if (!flippedArray || !flippedArray.length) {
     return
@@ -60,20 +78,20 @@ export const staggeredSprings = (
 
   const nextThreshold = 1 / Math.max(Math.min(flippedArray.length, 100), 10)
 
-  const springFuncs = flippedArray
+  const setEndValueFuncs = flippedArray
     .filter(flipped => !flipped.noOp)
     .map((flipped, i) => {
       const cachedGetOnUpdate = flipped.getOnUpdateFunc
 
       // modify the update function to adjust
       // the end value of the trailing Flipped component
-      flipped.getOnUpdateFunc = stop => {
-        const onUpdate = cachedGetOnUpdate(stop)
+      flipped.getOnUpdateFunc = ({ stop, setEndValue, setVelocity }) => {
+        const onUpdate = cachedGetOnUpdate({ stop, setEndValue, setVelocity })
         return spring => {
           const currentValue = spring.getCurrentValue()
           if (currentValue > nextThreshold) {
-            if (springFuncs[i + 1]) {
-              springFuncs[i + 1]!.setEndValue(
+            if (setEndValueFuncs[i + 1]) {
+              setEndValueFuncs[i + 1]!(
                 Math.min(currentValue * normalizedSpeed, 1)
               )
             }
@@ -84,9 +102,16 @@ export const staggeredSprings = (
       }
       return flipped
     })
-    .map(flipped => createSuspendedSpring(flipped))
+    .map(flipped => {
+      const spring = createSuspendedSpring(flipped)
+      if (!spring) {
+        return
+      }
+      return spring.setEndValue.bind(spring)
+    })
+    .filter(Boolean)
 
-  if (springFuncs[0]) {
-    springFuncs[0]!.setEndValue(1)
+  if (setEndValueFuncs[0] && !isGestureControlled) {
+    setEndValueFuncs[0]!(1)
   }
 }
