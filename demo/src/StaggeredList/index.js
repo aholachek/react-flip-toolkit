@@ -4,29 +4,29 @@ import React, { Component } from 'react'
 import { Flipper, Flipped } from '../../../src/index'
 import './styles.css'
 const listData = [0, 1, 2, 3, 4, 5, 6, 7]
-const colors = ['#ff4f66', '#7971ea', '#5900d8']
 
 const shouldFlip = index => (prev, current) => {
   if (index === prev || index === current) return true
   return false
 }
 
-const ListItem = ({ index, color, onClick }) => {
+const ListItem = ({ index, onClick }) => {
   return (
     <Flipped
       flipId={`listItem-${index}`}
-      stagger="card"
       shouldInvert={shouldFlip(index)}
       respondToGesture={{
         initFLIP: () => {
           onClick(index)
         },
-        cancelFLIP: () => {},
+        cancelFLIP: () => {
+          onClick(index)
+        },
         direction: 'down',
         completeThreshold: 400
       }}
     >
-      <div className="listItem" style={{ backgroundColor: color }}>
+      <div className="listItem">
         <Flipped inverseFlipId={`listItem-${index}`}>
           <div className="listItemContent">
             <Flipped
@@ -66,18 +66,27 @@ const ListItem = ({ index, color, onClick }) => {
   )
 }
 
-const ExpandedListItem = ({ index, color, onClick }) => {
+const ExpandedListItem = ({ index, onClick }) => {
   return (
     <Flipped
       flipId={`listItem-${index}`}
-      stagger="card"
       onStartImmediate={el => {
         setTimeout(() => {
           el.classList.add('animated-in')
         }, 400)
       }}
+      respondToGesture={{
+        initFLIP: () => {
+          onClick(index)
+        },
+        cancelFLIP: () => {
+          onClick(index)
+        },
+        direction: 'up',
+        completeThreshold: 400
+      }}
     >
-      <div className="expandedListItem" style={{ backgroundColor: color }}>
+      <div className="expandedListItem">
         <Flipped inverseFlipId={`listItem-${index}`}>
           <div className="expandedListItemContent">
             <Flipped flipId={`avatar-${index}`} stagger="card-content">
@@ -124,12 +133,6 @@ export default class AnimatedList extends Component {
         flipKey={this.state.focused}
         className="staggered-list-content"
         spring="gentle"
-        staggerConfig={{
-          card: {
-            reverse: this.state.focused !== null ? true : false,
-            speed: 0.5
-          }
-        }}
         decisionData={this.state.focused}
       >
         <ul className="list">
@@ -137,18 +140,9 @@ export default class AnimatedList extends Component {
             return (
               <li>
                 {this.state.focused.includes(index) ? (
-                  <ExpandedListItem
-                    index={this.state.focused}
-                    color={colors[index % colors.length]}
-                    onClick={this.onClick}
-                  />
+                  <ExpandedListItem index={index} onClick={this.onClick} />
                 ) : (
-                  <ListItem
-                    index={index}
-                    key={index}
-                    color={colors[index % colors.length]}
-                    onClick={this.onClick}
-                  />
+                  <ListItem index={index} key={index} onClick={this.onClick} />
                 )}
               </li>
             )

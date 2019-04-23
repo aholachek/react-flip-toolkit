@@ -102,6 +102,7 @@ class Spring {
    * immediately.
    * @public
    */
+
   setEndValue(endValue) {
     this.prevEndValue = endValue
     if (this._endValue === endValue && this.isAtRest()) {
@@ -333,12 +334,12 @@ class Spring {
    * @public
    */
   isAtRest() {
-    return (
+    const isAtRest =
       Math.abs(this._currentState.velocity) < this._restSpeedThreshold &&
       (this.getDisplacementDistanceForState(this._currentState) <=
         this._displacementFromRestThreshold ||
         this._springConfig.tension === 0)
-    )
+    return isAtRest
   }
 
   _interpolate(alpha) {

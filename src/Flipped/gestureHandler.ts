@@ -1,13 +1,30 @@
 import clamp from 'lodash-es/clamp'
 
-const seekSpringPosition = ({ percentage, velocity, inProgressAnimations }) => {
-  Object.keys(inProgressAnimations).forEach(flipId => {
+const seekSpringPosition = ({
+  percentage,
+  velocity,
+  inProgressAnimations,
+  onComplete
+}) => {
+  const onCompletePromises = Object.keys(inProgressAnimations).map(flipId => {
     const { setVelocity, setEndValue } = inProgressAnimations[flipId]
-    setEndValue(clamp(percentage, 0, 1))
+    const spring = setEndValue(clamp(percentage, 0, 1))
     if (velocity !== undefined) {
-      setVelocity(clamp(velocity, 0.05, 15))
+      setVelocity(clamp(velocity, 1, 15))
+    }
+    if (onComplete) {
+      return new Promise(resolve => {
+        spring.addListener({
+          onSpringAtRest: resolve
+        })
+      })
     }
   })
+  if (onComplete) {
+    Promise.all(onCompletePromises).then(() => {
+      onComplete()
+    })
+  }
 }
 
 const getDirection = (deltaX, deltaY) => {
@@ -25,42 +42,43 @@ export const gestureHandler = ({
   inProgressAnimations
 }) => {
   let finished = false
-  return ({
-    event: { type: eventType },
-    velocity,
-    delta: [deltaX, deltaY]
-  }) => {
+  return ({ first, down, velocity, delta: [deltaX, deltaY] }) => {
     if (finished) {
       return
     }
-    if (eventType === 'mousedown') {
+    if (first) {
       initFLIP()
     }
-    if (deltaY > completeThreshold) {
-      seekSpringPosition({
-        percentage: deltaY,
-        inProgressAnimations
-      })
-      finished = true
+
+    const currentDirection = getDirection(deltaX, deltaY)
+    if (currentDirection !== direction) {
       return
     }
-    if (eventType === 'mouseup') {
-      seekSpringPosition({
-        percentage: 0,
+
+    if (deltaY > completeThreshold) {
+      finished = true
+      return seekSpringPosition({
+        percentage: 1,
         velocity,
         inProgressAnimations
       })
-      cancelFLIP()
     }
-    const gestureDirection = getDirection(deltaX, deltaY)
-    if (gestureDirection !== direction) {
-      return
-    }
-    if (deltaY > Math.abs(deltaX)) {
-      seekSpringPosition({
-        percentage: deltaY / completeThreshold,
-        inProgressAnimations
+    if (!down) {
+      return seekSpringPosition({
+        percentage: 0,
+        velocity,
+        inProgressAnimations,
+        onComplete: cancelFLIP
       })
     }
+    const absoluteMovement =
+      ['up', 'down'].indexOf(direction) > -1
+        ? Math.abs(deltaY)
+        : Math.abs(deltaX)
+
+    return seekSpringPosition({
+      percentage: absoluteMovement / completeThreshold
+      inProgressAnimations
+    })
   }
 }
