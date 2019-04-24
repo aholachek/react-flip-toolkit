@@ -7,14 +7,15 @@ const listData = [0, 1, 2, 3, 4, 5, 6, 7]
 const colors = ['#ff4f66', '#7971ea', '#5900d8']
 
 const shouldFlip = index => (prev, current) => {
-  if (index === prev || index === current) return true
+  if (prev.includes(index) || current.includes(index)) return true
   return false
 }
 
-const ListItem = ({ index, onClick, color }) => {
+const ListItem = ({ index, color, onClick }) => {
   return (
     <Flipped
       flipId={`listItem-${index}`}
+      stagger="card"
       shouldInvert={shouldFlip(index)}
       respondToGesture={{
         initFLIP: () => {
@@ -67,31 +68,32 @@ const ListItem = ({ index, onClick, color }) => {
   )
 }
 
-const ExpandedListItem = ({ index, onClick, color }) => {
+const ExpandedListItem = ({ index, color, onClick }) => {
   return (
     <Flipped
       flipId={`listItem-${index}`}
+      stagger="card"
+      onStart={el => {
+        console.log('regular')
+      }}
       onStartImmediate={el => {
+        console.log('immediate')
         setTimeout(() => {
           el.classList.add('animated-in')
         }, 400)
       }}
-      // respondToGesture={{
-      //   initFLIP: () => {
-      //     onClick(index)
-      //   },
-      //   cancelFLIP: () => {
-      //     onClick(index)
-      //   },
-      //   direction: 'up',
-      //   completeThreshold: 400
-      // }}
+      respondToGesture={{
+        initFLIP: () => {
+          onClick(index)
+        },
+        cancelFLIP: () => {
+          onClick(index)
+        },
+        direction: 'up',
+        completeThreshold: 400
+      }}
     >
-      <div
-        className="expandedListItem"
-        style={{ backgroundColor: color }}
-        onClick={() => onClick(index)}
-      >
+      <div className="expandedListItem" style={{ backgroundColor: color }}>
         <Flipped inverseFlipId={`listItem-${index}`}>
           <div className="expandedListItemContent">
             <Flipped flipId={`avatar-${index}`} stagger="card-content">
@@ -122,7 +124,6 @@ const ExpandedListItem = ({ index, onClick, color }) => {
 export default class AnimatedList extends Component {
   state = { focused: [] }
   onClick = index => {
-    debugger // eslint-disable-line
     if (this.state.focused.includes(index)) {
       return this.setState({
         focused: this.state.focused.filter(n => n !== index)
@@ -133,10 +134,11 @@ export default class AnimatedList extends Component {
     })
   }
   render() {
+    console.log(this.state.focused)
     return (
       <Flipper
-        // isGestureControlled
-        flipKey={this.state.focused}
+        gestureControlled
+        flipKey={this.state.focused.join('')}
         className="staggered-list-content"
         spring="gentle"
         decisionData={this.state.focused}
@@ -144,21 +146,20 @@ export default class AnimatedList extends Component {
         <ul className="list">
           {listData.map(index => {
             const color = colors[index % colors.length]
-
             return (
               <li>
                 {this.state.focused.includes(index) ? (
                   <ExpandedListItem
                     index={index}
-                    onClick={this.onClick}
                     color={color}
+                    onClick={this.onClick}
                   />
                 ) : (
                   <ListItem
                     index={index}
                     key={index}
-                    onClick={this.onClick}
                     color={color}
+                    onClick={this.onClick}
                   />
                 )}
               </li>
