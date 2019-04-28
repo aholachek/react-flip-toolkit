@@ -1,21 +1,41 @@
+import { useGesture } from 'react-with-gesture'
 import clamp from 'lodash-es/clamp'
+import { InProgressAnimations } from '../Flipper/types'
 
 const seekSpringPosition = ({
   percentage,
   velocity,
   inProgressAnimations,
   onComplete
+}: {
+  percentage: number
+  velocity?: number
+  inProgressAnimations: InProgressAnimations
+  onComplete?: () => void
 }) => {
-  const onCompletePromises = Object.keys(inProgressAnimations).map(flipId => {
-    const { setVelocity, setEndValue } = inProgressAnimations[flipId]
-    const spring = setEndValue(clamp(percentage, 0, 1))
+  const onCompletePromises: Array<Promise<void>> | [] = Object.keys(
+    inProgressAnimations
+  ).map(flipId => {
+    const { setVelocity, setEndValue, onAnimationEnd } = inProgressAnimations[
+      flipId
+    ]
+    const clampedPercentage = clamp(percentage, 0, 1)
+    const spring = setEndValue(clampedPercentage)
     if (velocity !== undefined) {
-      setVelocity(clamp(velocity, 1, 15))
+      console.log(velocity)
+      setVelocity(clamp(velocity, 0.01, 15))
     }
-    if (onComplete) {
+    // either cancelled or completed -- we're done
+    if (onComplete || clampedPercentage === 1) {
       return new Promise(resolve => {
         spring.addListener({
-          onSpringAtRest: resolve
+          onSpringAtRest: () => {
+            resolve()
+            spring.destroy()
+            if (clampedPercentage === 1) {
+              onAnimationEnd()
+            }
+          }
         })
       })
     }
@@ -27,35 +47,76 @@ const seekSpringPosition = ({
   }
 }
 
-const getDirection = (deltaX, deltaY) => {
+const getDirection = (deltaX: number, deltaY: number) => {
   if (Math.abs(deltaX) > Math.abs(deltaY)) {
     return deltaX > 0 ? 'right' : 'left'
   }
   return deltaY > 0 ? 'down' : 'up'
 }
 
-export const gestureHandler = ({
+const onGesture = ({
   initFLIP,
   cancelFLIP,
   direction,
-  completeThreshold,
-  inProgressAnimations
+  inProgressAnimations,
+  flipId,
+  completeThreshold = 0.5
+}: {
+  initFLIP: () => void
+  cancelFLIP: () => void
+  direction: 'right' | 'left' | 'down' | 'up'
+  inProgressAnimations: InProgressAnimations
+  flipId: string
+  completeThreshold: number
 }) => {
   let finished = false
-  return ({ first, down, velocity, delta: [deltaX, deltaY] }) => {
+  let flipInitiated = false
+  // useGesture callback
+  return ({ velocity, delta: [deltaX, deltaY], down }) => {
+    // block weird things from happening while animation completes
     if (finished) {
+      console.log('is finished!')
       return
-    }
-    if (first) {
-      initFLIP()
     }
 
     const currentDirection = getDirection(deltaX, deltaY)
+
     if (currentDirection !== direction) {
       return
     }
 
-    if (deltaY > completeThreshold) {
+    if (!flipInitiated) {
+      flipInitiated = true
+      initFLIP()
+    }
+
+    const absoluteMovement =
+      ['up', 'down'].indexOf(direction) > -1
+        ? Math.abs(deltaY)
+        : Math.abs(deltaX)
+
+    const gestureData = inProgressAnimations[flipId]
+
+    // TODO: figure out why this happens
+    if (!gestureData) {
+      return
+    }
+
+    const {
+      translateXDifference,
+      translateYDifference,
+      scaleXDifference,
+      scaleYDifference
+    } = gestureData.difference
+
+    const difference =
+      ['up', 'down'].indexOf(direction) > -1
+        ? scaleYDifference + translateYDifference
+        : scaleXDifference + translateXDifference
+
+    const percentage = absoluteMovement / difference
+
+    if (percentage > completeThreshold) {
       finished = true
       return seekSpringPosition({
         percentage: 1,
@@ -71,14 +132,12 @@ export const gestureHandler = ({
         onComplete: cancelFLIP
       })
     }
-    const absoluteMovement =
-      ['up', 'down'].indexOf(direction) > -1
-        ? Math.abs(deltaY)
-        : Math.abs(deltaX)
 
     return seekSpringPosition({
-      percentage: absoluteMovement / completeThreshold
+      percentage,
       inProgressAnimations
     })
   }
 }
+
+export default (...args) => useGesture(onGesture(...args))()

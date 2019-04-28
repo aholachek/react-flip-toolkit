@@ -1,9 +1,10 @@
 // inspired by this animated demo:
 // https://uxplanet.org/animation-in-ui-design-from-concept-to-reality-85c49907b19d
 import React, { Component } from 'react'
-import { Flipper, Flipped } from '../../../src/index'
+import { Flipper, Flipped } from '../../../src/gesture'
 import './styles.css'
-const listData = [0, 1, 2, 3, 4, 5, 6, 7]
+const listData = [0]
+// const listData = [0, 1, 2, 3, 4, 5, 6, 7]
 const colors = ['#ff4f66', '#7971ea', '#5900d8']
 
 const shouldFlip = index => (prev, current) => {
@@ -15,7 +16,11 @@ const ListItem = ({ index, color, onClick }) => {
   return (
     <Flipped
       flipId={`listItem-${index}`}
-      stagger="card"
+      onStartImmediate={el => {
+        setTimeout(() => {
+          el.classList.add('animated-in')
+        })
+      }}
       shouldInvert={shouldFlip(index)}
       respondToGesture={{
         initFLIP: () => {
@@ -24,8 +29,7 @@ const ListItem = ({ index, color, onClick }) => {
         cancelFLIP: () => {
           onClick(index)
         },
-        direction: 'down',
-        completeThreshold: 400
+        direction: 'down'
       }}
     >
       <div className="listItem" style={{ backgroundColor: color }}>
@@ -72,15 +76,8 @@ const ExpandedListItem = ({ index, color, onClick }) => {
   return (
     <Flipped
       flipId={`listItem-${index}`}
-      stagger="card"
-      onStart={el => {
-        console.log('regular')
-      }}
-      onStartImmediate={el => {
-        console.log('immediate')
-        setTimeout(() => {
-          el.classList.add('animated-in')
-        }, 400)
+      onComplete={el => {
+        el.classList.add('animated-in')
       }}
       respondToGesture={{
         initFLIP: () => {
@@ -89,8 +86,7 @@ const ExpandedListItem = ({ index, color, onClick }) => {
         cancelFLIP: () => {
           onClick(index)
         },
-        direction: 'up',
-        completeThreshold: 400
+        direction: 'up'
       }}
     >
       <div className="expandedListItem" style={{ backgroundColor: color }}>
@@ -134,10 +130,8 @@ export default class AnimatedList extends Component {
     })
   }
   render() {
-    console.log(this.state.focused)
     return (
       <Flipper
-        gestureControlled
         flipKey={this.state.focused.join('')}
         className="staggered-list-content"
         spring="gentle"

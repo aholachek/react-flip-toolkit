@@ -202,7 +202,6 @@ export default ({
       const prevOpacity = flippedElementPositionsBeforeUpdate[id].opacity
       const currentOpacity = flippedElementPositionsAfterUpdate[id].opacity
       const needsForcedMinVals = currentRect.width < 1 || currentRect.height < 1
-
       // don't animate elements outside of the user's viewport
       if (!rectInViewport(prevRect) && !rectInViewport(currentRect)) {
         return false
@@ -253,16 +252,21 @@ export default ({
 
       // don't animate elements that didn't visbly change
       // but possibly animate their children
-      const transformDifference =
-        Math.abs(prevRect.left - currentRect.left) +
-        Math.abs(prevRect.top - currentRect.top)
-      const sizeDifference =
-        Math.abs(prevRect.width - currentRect.width) +
-        Math.abs(prevRect.height - currentRect.height)
+
+      const translateXDifference = Math.abs(prevRect.left - currentRect.left)
+      const translateYDifference = Math.abs(prevRect.top - currentRect.top)
+
+      const translateDifference = translateXDifference + translateYDifference
+
+      const scaleXDifference = Math.abs(prevRect.width - currentRect.width)
+      const scaleYDifference = Math.abs(prevRect.height - currentRect.height)
+
+      const scaleDifference = scaleXDifference + scaleYDifference
+
       const opacityDifference = Math.abs(currentOpacity - prevOpacity)
       if (
-        transformDifference < 0.5 &&
-        sizeDifference < 0.5 &&
+        translateDifference < 0.5 &&
+        scaleDifference < 0.5 &&
         opacityDifference < 0.01
       ) {
         // this element wont be animated, but its children might be
@@ -374,15 +378,22 @@ export default ({
       const getOnUpdateFunc: GetOnUpdateFunc = ({
         stop,
         setEndValue,
-        setVelocity
+        setVelocity,
+        onSpringAtRest
       }) => {
         inProgressAnimations[id] = {
           stop,
+          // for gesture control
           setEndValue,
           setVelocity,
-          onComplete,
-          // for gesture control
-          allChildIds: flipDataDict[id].allChildIds
+          onAnimationEnd,
+          allChildIds: flipDataDict[id].allChildIds,
+          difference: {
+            translateXDifference,
+            translateYDifference,
+            scaleXDifference,
+            scaleYDifference
+          }
         }
         const onUpdate: OnUpdate = spring => {
           // trigger the user provided onStart function
@@ -422,7 +433,6 @@ export default ({
       }
 
       const initializeFlip: InitializeFlip = () => {
-
         // before animating, immediately apply FLIP styles to prevent flicker
         applyStyles({
           matrix: fromVals.matrix,

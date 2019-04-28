@@ -12,6 +12,7 @@
 }
 .list li {
   width: 100%;
+  cursor: grab;
 }
 .list li + li {
   margin-top: 1rem;

@@ -9,8 +9,6 @@ import { FlipContext, PortalContext, GestureContext } from '../Flipper'
 import * as constants from '../constants'
 import { assign, isObject } from '../utilities'
 import { FlippedProps, SerializableFlippedProps } from './types'
-import { gestureHandler } from './gestureHandler'
-import { useGesture } from 'react-with-gesture'
 
 const propTypes = {
   children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
@@ -41,7 +39,7 @@ export const Flipped = ({
   flipId,
   inverseFlipId,
   portalKey,
-  gestureData,
+  gestureBind = () => ({}),
   ...rest
 }: SerializableFlippedProps): ReactElement<any> => {
   let child = children
@@ -64,18 +62,12 @@ export const Flipped = ({
     })
   }
 
-  let bind = () => ({})
-
-  if (gestureData) {
-    bind = useGesture(gestureHandler(gestureData))
-  }
-
   const dataAttributes = {
     // these are both used as selectors so they have to be separate
     [constants.DATA_FLIP_ID]: flipId,
     [constants.DATA_INVERSE_FLIP_ID]: inverseFlipId,
     [constants.DATA_FLIP_CONFIG]: JSON.stringify(rest),
-    ...bind()
+    ...gestureBind()
   }
 
   if (portalKey) {
@@ -88,6 +80,7 @@ export const Flipped = ({
 }
 
 // @ts-ignore
+
 export const FlippedWithContext: FunctionComponent<FlippedProps> = ({
   children,
   flipId,
@@ -98,7 +91,8 @@ export const FlippedWithContext: FunctionComponent<FlippedProps> = ({
   onStartImmediate,
   onComplete,
   onExit,
-  respondToGesture
+  respondToGesture,
+  gestureHandler,
   ...rest
 }) => {
   if (!children) {
@@ -133,7 +127,16 @@ export const FlippedWithContext: FunctionComponent<FlippedProps> = ({
                   <Flipped
                     flipId={flipId}
                     {...rest}
-                    gestureData={respondToGesture ? {inProgressAnimations, ...respondToGesture} : null}
+                    gestureBind={
+                      respondToGesture
+                        ? () =>
+                            gestureHandler({
+                              inProgressAnimations,
+                              ...respondToGesture,
+                              flipId
+                            })
+                        : undefined
+                    }
                     portalKey={portalKey}
                   >
                     {children}
