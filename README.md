@@ -478,7 +478,8 @@ square.addEventListener("click", () => {
 ### Problem #1: Nothing is happening
   - Make sure you're updating the `flipKey` attribute in the `Flipper` component whenever an animation should happen.
   - If one of your `Flipped` components is wrapping another React component rather than a DOM element,  [use a render prop to get the Flipped props](#wrapping-a-react-component) and pass down to the necessary DOM element.
-
+  - Is the element that's receiving props from `Flipped` visible in the DOM? `react-flip-toolkit` attempts to optimize performance by not animating elements that are off-screen or elements that have no width or height.
+  
 ### Problem #2: Things look weird
   - At any point, there can only be one element with a specified `flipId` on the page. If there are multiple `Flipped` elements on the page with the same id, the animation will break. Check to make sure all `flipId`s are unique.
   - Make sure you are animating the element you want to animate and not, for instance, a wrapper div. If you are animating an inline element like some text, but have wrapped it in a `div`, you're actually animating the div, which might have a much wider width that you'd expect at certain points, which will throw off the animation. Check to see if you need to add an  `inline-block` style to the animated element.
