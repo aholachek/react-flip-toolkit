@@ -164,6 +164,7 @@ export default ({
   retainTransform
 }: AnimateFlippedElementsArgs) => {
   const firstElement: HTMLElement = getElement(flippedIds[0])
+  // this acommodates iframes
   const body = firstElement.ownerDocument!.querySelector('body')!
 
   // the stuff below is used so we can return a promise that resolves when all FLIP animations have
