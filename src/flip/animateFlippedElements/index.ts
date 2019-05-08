@@ -163,7 +163,8 @@ export default ({
   scopedSelector,
   retainTransform
 }: AnimateFlippedElementsArgs) => {
-  const body = document.querySelector('body')!
+  const firstElement: HTMLElement = getElement(flippedIds[0])
+  const body = firstElement.ownerDocument!.querySelector('body')!
 
   // the stuff below is used so we can return a promise that resolves when all FLIP animations have
   // completed
