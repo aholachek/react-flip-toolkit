@@ -1,5 +1,6 @@
 import { SpringOption } from '../springSettings/types'
 import { CallbackFlippedProps } from '../Flipped/types'
+import Spring from '../forked-rebound/Spring'
 
 export interface StaggerConfigValue {
   reverse?: boolean
@@ -32,14 +33,20 @@ export interface FlipperProps {
   portalKey?: string
   staggerConfig?: StaggerConfig
   decisionData?: any
-  handleEnterUpdateDelete?: HandleEnterUpdateDelete,
+  handleEnterUpdateDelete?: HandleEnterUpdateDelete
   retainTransform?: boolean
+  isGestureControlled?: boolean
 }
 
 export interface InProgressAnimations {
   [key: string]: {
     stop: () => void
-    onComplete?: () => void
+    onAnimationEnd: () => void
+    // the following are somewhat hacky cached data
+    // for gesture-controlled animations
+    spring?: Spring
+    isFinishing?: boolean
+    direction?: string
   }
 }
 

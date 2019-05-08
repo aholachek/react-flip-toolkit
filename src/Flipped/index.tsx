@@ -34,14 +34,14 @@ function isFunction(child: any): child is Function {
 }
 
 // This wrapper creates child components for the main Flipper component
-export const Flipped = ({
+export const Flipped: FunctionComponent<SerializableFlippedProps> = ({
   children,
   flipId,
   inverseFlipId,
   portalKey,
   gestureBind = () => ({}),
   ...rest
-}: SerializableFlippedProps): ReactElement<any> => {
+}) => {
   let child = children
   const isFunctionAsChildren = isFunction(child)
 
@@ -80,7 +80,6 @@ export const Flipped = ({
 }
 
 // @ts-ignore
-
 export const FlippedWithContext: FunctionComponent<FlippedProps> = ({
   children,
   flipId,
@@ -101,6 +100,12 @@ export const FlippedWithContext: FunctionComponent<FlippedProps> = ({
   if (rest.inverseFlipId) {
     return <Flipped {...rest}>{children}</Flipped>
   }
+  // very stupid hack to make sure gesture handlers get added and removed
+  // bc I can't figure out a better way
+  if (respondToGesture) {
+    rest.key = `${flipId}-${respondToGesture.direction}`
+  }
+
   return (
     <GestureContext.Consumer>
       {inProgressAnimations => (
@@ -131,8 +136,8 @@ export const FlippedWithContext: FunctionComponent<FlippedProps> = ({
                       respondToGesture
                         ? () =>
                             gestureHandler({
-                              inProgressAnimations,
                               ...respondToGesture,
+                              inProgressAnimations,
                               flipId
                             })
                         : undefined

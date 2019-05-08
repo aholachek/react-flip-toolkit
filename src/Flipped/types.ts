@@ -6,6 +6,15 @@ export type ChildAsFunction = (props: object) => React.ReactNode
 
 export type FlippedChildren = React.ReactNode | ChildAsFunction
 
+type direction = 'right' | 'left' | 'down' | 'up'
+
+export interface RespondToGesture {
+  initFLIP: () => void
+  cancelFLIP: () => void
+  direction: direction
+  completeThreshold: number
+}
+
 export interface SerializableFlippedProps {
   children: FlippedChildren
   portalKey?: string
@@ -17,6 +26,9 @@ export interface SerializableFlippedProps {
   stagger?: string | boolean
   flipId?: FlipId
   inverseFlipId?: string
+  respondToGesture?: RespondToGesture
+  // only added for gesture-controlled Flipped components
+  key?: string
 }
 export interface CallbackFlippedProps {
   onStart?: (

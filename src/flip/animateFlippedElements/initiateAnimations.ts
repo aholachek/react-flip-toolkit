@@ -12,7 +12,7 @@ import { FlipId } from '../../Flipped/types'
 
 const initiateImmediateAnimations = (
   immediate: FlipDataArray,
-  isGestureControlled: boolean
+  isGestureControlled?: boolean
 ) => {
   if (!immediate) {
     return
@@ -32,6 +32,7 @@ export const createCallTree = ({
   flipDataDict: FlipDataDict
   topLevelChildren: TopLevelChildren
   initiateStaggeredAnimations: InitiateStaggeredAnimations
+  isGestureControlled?: boolean
 }) => {
   // build a data struct to run the springs
   const tree = {
@@ -93,6 +94,7 @@ export default ({
   staggerConfig: StaggerConfig
   flipDataDict: FlipDataDict
   topLevelChildren: TopLevelChildren
+  isGestureControlled: boolean
 }) => {
   const initiateStaggeredAnimations: InitiateStaggeredAnimations = (
     staggered,

@@ -375,17 +375,11 @@ export default ({
 
       let onStartCalled = false
 
-      const getOnUpdateFunc: GetOnUpdateFunc = ({
-        stop,
-        setEndValue,
-        setVelocity,
-        onSpringAtRest
-      }) => {
+      const getOnUpdateFunc: GetOnUpdateFunc = ({ spring, onAnimationEnd }) => {
         inProgressAnimations[id] = {
-          stop,
-          // for gesture control
-          setEndValue,
-          setVelocity,
+          stop: spring.destroy.bind(spring),
+          //  only for gesture control
+          spring,
           onAnimationEnd,
           allChildIds: flipDataDict[id].allChildIds,
           difference: {
@@ -410,7 +404,7 @@ export default ({
 
           const currentValue = spring.getCurrentValue()
           if (!body.contains(element)) {
-            stop()
+            spring.destroy()
             return
           }
 

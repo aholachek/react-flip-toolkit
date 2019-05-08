@@ -104,6 +104,7 @@ class Spring {
    */
 
   setEndValue(endValue) {
+    if (endValue === this._endValue) return this
     this.prevEndValue = endValue
     if (this._endValue === endValue && this.isAtRest()) {
       return this
@@ -287,9 +288,7 @@ class Spring {
   }
 
   notifyPositionUpdated(notifyActivate, notifyAtRest) {
-    for (let i = 0, len = this.listeners.length; i < len; i++) {
-      const listener = this.listeners[i]
-
+    this.listeners.filter(Boolean).forEach(listener => {
       if (
         notifyActivate &&
         listener.onSpringActivate &&
@@ -306,7 +305,7 @@ class Spring {
       if (notifyAtRest && listener.onSpringAtRest) {
         listener.onSpringAtRest(this)
       }
-    }
+    })
   }
 
   /**
@@ -352,6 +351,18 @@ class Spring {
   }
 
   addListener(newListener) {
+    this.listeners.push(newListener)
+    return this
+  }
+
+  addOneTimeListener(newListener) {
+    const oneTimeFunc = func => (...args) => {
+      func(...args)
+      this.removeListener(newListener)
+    }
+    Object.keys(newListener).forEach(key => {
+      newListener[key] = oneTimeFunc(newListener[key])
+    })
     this.listeners.push(newListener)
     return this
   }

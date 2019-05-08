@@ -1,13 +1,13 @@
 // inspired by this animated demo:
 // https://uxplanet.org/animation-in-ui-design-from-concept-to-reality-85c49907b19d
 import React, { Component } from 'react'
-import { Flipper, Flipped } from '../../../src/index'
+import { Flipper, Flipped } from '../../../src/gesture'
 import './styles.css'
 const listData = [0, 1, 2, 3, 4, 5, 6, 7]
 const colors = ['#ff4f66', '#7971ea', '#5900d8']
 
 const shouldFlip = index => (prev, current) => {
-  if (index === prev || index === current) return true
+  if (prev.includes(index) || current.includes(index)) return true
   return false
 }
 
@@ -15,14 +15,23 @@ const ListItem = ({ index, color, onClick }) => {
   return (
     <Flipped
       flipId={`listItem-${index}`}
-      stagger="card"
+      onStartImmediate={el => {
+        setTimeout(() => {
+          el.classList.add('animated-in')
+        })
+      }}
       shouldInvert={shouldFlip(index)}
+      respondToGesture={{
+        initFLIP: () => {
+          onClick(index)
+        },
+        cancelFLIP: () => {
+          onClick(index)
+        },
+        direction: 'down'
+      }}
     >
-      <div
-        className="listItem"
-        style={{ backgroundColor: color }}
-        onClick={() => onClick(index)}
-      >
+      <div className="listItem" style={{ backgroundColor: color }}>
         <Flipped inverseFlipId={`listItem-${index}`}>
           <div className="listItemContent">
             <Flipped
@@ -49,7 +58,6 @@ const ListItem = ({ index, color, onClick }) => {
               </Flipped>
               <Flipped
                 flipId={`description-${index}-3`}
-                stagger="card-content"
                 shouldFlip={shouldFlip(index)}
               >
                 <div />
@@ -66,26 +74,24 @@ const ExpandedListItem = ({ index, color, onClick }) => {
   return (
     <Flipped
       flipId={`listItem-${index}`}
-      stagger="card"
-      onStart={el => {
-        console.log('regular')
+      onComplete={el => {
+        el.classList.add('animated-in')
       }}
-      onStartImmediate={el => {
-        console.log('immediate')
-        setTimeout(() => {
-          el.classList.add('animated-in')
-        }, 400)
+      respondToGesture={{
+        initFLIP: () => {
+          onClick(index)
+        },
+        cancelFLIP: () => {
+          onClick(index)
+        },
+        direction: 'up'
       }}
     >
-      <div
-        className="expandedListItem"
-        style={{ backgroundColor: color }}
-        onClick={() => onClick(index)}
-      >
+      <div className="expandedListItem" style={{ backgroundColor: color }}>
         <Flipped inverseFlipId={`listItem-${index}`}>
           <div className="expandedListItemContent">
-            <Flipped flipId={`avatar-${index}`} stagger="card-content">
-              <div className="avatar avatarExpanded" />
+            <Flipped flipId={`avatar-${index}`}>
+              <div className="avatar avatarExpanded" stagger="card-content" />
             </Flipped>
             <div className="description">
               <Flipped flipId={`description-${index}-1`} stagger="card-content">
@@ -110,40 +116,41 @@ const ExpandedListItem = ({ index, color, onClick }) => {
   )
 }
 export default class AnimatedList extends Component {
-  state = { focused: null }
-  onClick = index =>
-    this.setState({
-      focused: this.state.focused === index ? null : index
+  state = { focused: [] }
+  onClick = index => {
+    if (this.state.focused.includes(index)) {
+      return this.setState({
+        focused: this.state.focused.filter(n => n !== index)
+      })
+    }
+    return this.setState({
+      focused: this.state.focused.concat(index)
     })
+  }
   render() {
     return (
       <Flipper
-        flipKey={this.state.focused}
+        flipKey={this.state.focused.join('')}
         className="staggered-list-content"
-        spring="stiff"
-        staggerConfig={{
-          card: {
-            reverse: this.state.focused !== null ? true : false,
-            speed: 0.5
-          }
-        }}
+        spring="gentle"
         decisionData={this.state.focused}
       >
         <ul className="list">
           {listData.map(index => {
+            const color = colors[index % colors.length]
             return (
               <li>
-                {index === this.state.focused ? (
+                {this.state.focused.includes(index) ? (
                   <ExpandedListItem
-                    index={this.state.focused}
-                    color={colors[this.state.focused % colors.length]}
+                    index={index}
+                    color={color}
                     onClick={this.onClick}
                   />
                 ) : (
                   <ListItem
                     index={index}
                     key={index}
-                    color={colors[index % colors.length]}
+                    color={color}
                     onClick={this.onClick}
                   />
                 )}

@@ -1,0 +1,141 @@
+:root {
+    --sidebar-primary: black;
+}
+
+.sidebar {
+    color: white;
+    position: relative;
+    z-index: 1;
+    height: 100vh;
+    width: 50rem;
+    overflow: hidden;
+    min-height: 50rem;
+    background-color: var(--sidebar-primary);
+    cursor: pointer;
+}
+
+.sidebar.sidebarCollapsed {
+    min-height: auto;
+}
+
+.sidebarHeader {
+    font-size: 2rem;
+    line-height: 1.5;
+    font-weight: bold;
+    color: #fff;
+    transform-origin: 0 0;
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 0.5rem;
+    user-select: none;
+}
+
+.sidebarCollapsedSubheader {
+    display: none;
+    opacity: 0;
+    position: absolute;
+    left: 34%;
+    top: 3rem;
+    font-size: 1.1rem;
+}
+
+.sidebarBody {
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+    padding-bottom: 1.75rem;
+    padding-top: 10vh;
+    z-index: 2;
+    position: relative;
+}
+
+.decorativeImg {
+    height: 18rem;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 50% 50%;
+    position: absolute;
+    z-index: 0;
+    transform-origin: 0 0;
+}
+
+.decorativeImg::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    background: linear-gradient( transparent, hsla(0, 0%, 0%, 1));
+}
+
+.sidebarBtn {
+    margin-top: 1rem;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.openButton {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    animation: fadeIn 0.5s forwards;
+    animation-delay: 400ms;
+    background: transparent;
+    border: 0;
+    opacity: 0;
+}
+
+.toggleOpenIcon {
+    color: #fff;
+    width: 1.2rem;
+    height: 1.2rem;
+}
+
+.sidebarCollapsed {
+    height: 5rem;
+}
+
+.sidebarCollapsed .decorativeImg {
+    width: 28%;
+    height: 100%;
+}
+
+.sidebarCollapsed::after {
+    opacity: 0;
+}
+
+.sidebarCollapsed .sidebarBody {
+    padding-top: 0;
+}
+
+.sidebarCollapsed .sidebarHeader {
+    position: relative;
+    top: 1.1rem;
+    left: 34%;
+    font-size: 1rem;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: calc(66% - 3rem);
+    text-overflow: ellipsis;
+}
+
+.sidebarCollapsed .sidebarContent {
+    display: none;
+}
+
+.sidebarCollapsedSubheader {
+    display: block;
+    animation: fadeIn 0.5s forwards;
+    animation-delay: 400ms;
+}
+

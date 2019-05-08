@@ -1,4 +1,4 @@
-import 'babel-polyfill';
+import 'babel-polyfill'
 
 import React, { Component } from 'react'
 import { render } from 'react-dom'
@@ -16,6 +16,9 @@ import RotateExample from './RotateExample'
 import StaggeredList from './StaggeredList'
 import RemountedFlipperExample from './RemountedFlipperExample'
 import HandleEnterUpdateDelete from './HandleEnterUpdateDelete'
+
+import GestureSidebarExample from './GestureSidebarExample'
+import GestureStaggeredList from './GestureStaggeredList'
 
 class Demo extends Component {
   render() {
@@ -37,6 +40,10 @@ class Demo extends Component {
       return <RemountedFlipperExample />
     else if (window.location.pathname === '/enter-update-delete')
       return <HandleEnterUpdateDelete />
+    else if (window.location.pathname === '/gesture-staggered-list')
+      return <GestureStaggeredList />
+    else if (window.location.pathname === '/gesture-sidebar')
+      return <GestureSidebarExample />
     else
       return (
         <nav>
@@ -73,6 +80,16 @@ class Demo extends Component {
             </li>
             <li>
               <a href="/enter-update-delete">Enter update delete</a>
+            </li>
+          </ul>
+
+          <h3>Gesture</h3>
+          <ul>
+            <li>
+              <a href="/gesture-sidebar">Sidebar</a>
+            </li>
+            <li>
+              <a href="/gesture-staggered-list">Staggered List</a>
             </li>
           </ul>
         </nav>

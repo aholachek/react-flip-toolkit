@@ -1,5 +1,6 @@
 .staggered-list-content {
-  width: 400px;
+  max-width: 400px;
+  width: 90%;
   margin: 2rem auto;
 }
 .list {
@@ -11,12 +12,13 @@
 }
 .list li {
   width: 100%;
+  cursor: grab;
 }
 .list li + li {
   margin-top: 1rem;
 }
 .listItem {
-  background-color: #7ab3ef;
+  background-color: #c4c4c4;
   width: 100%;
   cursor: pointer;
 }
@@ -30,7 +32,7 @@
   width: 4rem;
   height: 4rem;
   border-radius: 100px;
-  background-color: hsla(0, 0%, 100%, 0.3);
+  background-color: hsla(0, 0%, 100%, 0.5);
   margin-right: 2rem;
 }
 .avatarExpanded {
@@ -40,7 +42,7 @@
   margin-bottom: 1rem;
 }
 .description > div {
-  background-color: hsla(0, 0%, 100%, 0.3);
+  background-color: hsla(0, 0%, 100%, 0.5);
   width: 14rem;
   border-radius: 6px;
   height: 0.5rem;
@@ -61,6 +63,7 @@
 }
 .expandedListItem {
   cursor: pointer;
+  background-color: #c4c4c4 !important;
 }
 .expandedListItemContent {
   padding: 2rem;
@@ -85,7 +88,7 @@
 .additional-content > div {
   opacity: 0;
   border-radius: 3px;
-  background-color: hsla(0, 0%, 100%, 0.3);
+  background-color: hsla(0, 0%, 100%, 0.5);
   height: 5rem;
 }
 

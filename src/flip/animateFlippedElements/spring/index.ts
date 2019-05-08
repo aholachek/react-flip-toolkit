@@ -31,9 +31,7 @@ export const createSuspendedSpring = (flipData: FlipData) => {
     onSpringActivate,
     onSpringAtRest: !isGestureControlled ? onSpringAtRest : () => {},
     onSpringUpdate: getOnUpdateFunc({
-      stop: spring.destroy.bind(spring),
-      setEndValue: spring.setEndValue.bind(spring),
-      setVelocity: spring.setVelocity.bind(spring),
+      spring,
       onAnimationEnd
     })
   })
@@ -42,7 +40,7 @@ export const createSuspendedSpring = (flipData: FlipData) => {
 
 export const createSpring = (
   flipped: FlipData,
-  isGestureControlled: boolean
+  isGestureControlled?: boolean
 ) => {
   const spring = createSuspendedSpring({ ...flipped, isGestureControlled })
   if (isGestureControlled) {
@@ -77,18 +75,6 @@ export const staggeredSprings = (
 
   const nextThreshold = 1 / Math.max(Math.min(flippedArray.length, 100), 10)
 
-  let direction = 1
-
-  const setDirection = (endValue: number) => {
-    const currentDirection = endValue === 1 ? 1 : endValue === 0 ? 0 : undefined
-    if (currentDirection !== undefined) {
-      direction = currentDirection
-    }
-  }
-
-  // default is 1
-  setDirection(1)
-
   const setEndValueFuncs = flippedArray
     .filter(flipped => !flipped.noOp)
     .map((flipped, i) => {
@@ -97,25 +83,20 @@ export const staggeredSprings = (
       // modify the update function to adjust
       // the end value of the trailing Flipped component
       flipped.getOnUpdateFunc = ({ setEndValue, ...rest }) => {
-        if (isGestureControlled) {
-          const wrappedSetEndValue = setEndValue => endValue => {
-            setDirection(endValue)
-            return setEndValue(endValue)
-          }
-          setEndValue = wrappedSetEndValue(setEndValue)
-        }
-
         const onUpdate = cachedGetOnUpdate({ setEndValue, ...rest })
         return spring => {
-          const currentValue = spring.getCurrentValue()
-          const triggerTrailingAnimation =
-            direction === 1
-              ? currentValue > nextThreshold
-              : nextThreshold > currentValue
-          if (triggerTrailingAnimation) {
+          let currentValue = spring.getCurrentValue()
+          // make sure trailing animations complete
+          currentValue =
+            currentValue < 0.01 ? 0 : currentValue > 0.99 ? 1 : currentValue
+
+          // direction is 0 when animation is gesture controlled and user has released before the threshold
+          const updateTrailingAnimation =
+            currentValue > nextThreshold || isGestureControlled
+          if (updateTrailingAnimation) {
             if (setEndValueFuncs[i + 1]) {
               setEndValueFuncs[i + 1]!(
-                Math.min(currentValue * normalizedSpeed, 1)
+                Math.max(Math.min(currentValue * normalizedSpeed, 1), 0)
               )
             }
           }

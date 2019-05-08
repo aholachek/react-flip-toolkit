@@ -1,24 +1,31 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable no-return-assign */
 
-import React, { Component } from 'react';
-import { Flipper, Flipped } from '../../../src';
-import backgroundImg from './assets/nighttime.jpg';
-import './styles.css';
+import React, { Component } from 'react'
+import { Flipper, Flipped } from '../../../src/gesture'
+import backgroundImg from './assets/nighttime.jpg'
+import './styles.css'
 
 class PaymentSidebar extends Component {
-  state = { collapsed: false };
+  state = { collapsed: true }
   toggleCollapsed = () => {
-    this.setState({ collapsed: !this.state.collapsed });
-  };
+    this.setState({ collapsed: !this.state.collapsed })
+  }
   render() {
-    const { collapsed } = this.state;
-    const sidebarClassName = `sidebar ${collapsed ? 'sidebarCollapsed' : ''}`;
+    const { collapsed } = this.state
+    const sidebarClassName = `sidebar ${collapsed ? 'sidebarCollapsed' : ''}`
 
     return (
       <Flipper flipKey={collapsed} element="nav" className="foo">
-        <Flipped flipId="container">
-          <div className={sidebarClassName} onClick={this.toggleCollapsed}>
+        <Flipped
+          flipId="container"
+          respondToGesture={{
+            initFLIP: this.toggleCollapsed,
+            cancelFLIP: this.toggleCollapsed,
+            direction: collapsed ? 'down' : 'up'
+          }}
+        >
+          <div className={sidebarClassName}>
             <Flipped inverseFlipId="container">
               <div className="sidebarContentContainer">
                 <Flipped flipId="sidebarImg">
@@ -47,8 +54,8 @@ class PaymentSidebar extends Component {
           </div>
         </Flipped>
       </Flipper>
-    );
+    )
   }
 }
 
-export default PaymentSidebar;
+export default PaymentSidebar

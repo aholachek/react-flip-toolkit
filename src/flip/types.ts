@@ -33,6 +33,7 @@ export interface OnFlipKeyUpdateArgs {
   portalKey?: string
   staggerConfig?: StaggerConfig
   decisionData?: { prev?: any; current?: any }
-  handleEnterUpdateDelete?: HandleEnterUpdateDelete,
+  handleEnterUpdateDelete?: HandleEnterUpdateDelete
   retainTransform?: boolean
+  isGestureControlled?: boolean
 }
