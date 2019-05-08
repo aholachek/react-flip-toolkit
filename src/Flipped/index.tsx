@@ -136,7 +136,7 @@ export const FlippedWithContext: FunctionComponent<FlippedProps> = ({
                       respondToGesture
                         ? () =>
                             gestureHandler({
-                              ...respondToGesture,
+                              gestureConfig: respondToGesture,
                               inProgressAnimations,
                               flipId
                             })

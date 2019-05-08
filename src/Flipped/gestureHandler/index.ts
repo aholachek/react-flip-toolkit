@@ -104,13 +104,12 @@ const getDirection = (deltaX: number, deltaY: number) => {
   return deltaY > 0 ? 'down' : 'up'
 }
 
+const isArray = (x: any) => x && x.indexOf && typeof x.indexOf === 'function'
+
 const onGesture = ({
-  initFLIP,
-  cancelFLIP: onFlipCancelled,
-  direction: directionParam = 'right',
+  gestureConfig,
   inProgressAnimations,
-  flipId,
-  completeThreshold = 0.4
+  flipId
 }: GestureParams) => {
   return ({
     velocity,
@@ -123,6 +122,9 @@ const onGesture = ({
     down: boolean
     first: boolean
   }) => {
+    if (!isArray(gestureConfig)) {
+      gestureConfig = [gestureConfig]
+    }
     // prevent single clicks from doing anything
     if (first || (deltaX === 0 && deltaY === 0)) {
       return
@@ -130,13 +132,6 @@ const onGesture = ({
 
     const currentDirection = getDirection(deltaX, deltaY)
 
-    const returnToUnFlippedState = () => {
-      cancelFlip({
-        velocity,
-        inProgressAnimations,
-        onFlipCancelled
-      })
-    }
     const flipInProgress = Boolean(inProgressAnimations[flipId])
 
     // probably another gesture is happening right now, the user
@@ -150,11 +145,15 @@ const onGesture = ({
       return
     }
 
-    if (!flipInProgress && currentDirection === directionParam) {
-      initFLIP()
+    const matchingConfig = gestureConfig.filter(
+      config => config.direction === currentDirection
+    )[0]
+
+    if (!flipInProgress && matchingConfig) {
+      matchingConfig.initFLIP()
       setTimeout(() => {
         // cache this because it will change in the beginning of FLIP
-        inProgressAnimations[flipId].direction = directionParam
+        inProgressAnimations[flipId].direction = matchingConfig.direction
         Object.keys(inProgressAnimations).forEach(inProgressAnimationFlipId => {
           inProgressAnimations[inProgressAnimationFlipId].flipInitiator = flipId
         })
@@ -165,12 +164,19 @@ const onGesture = ({
     if (!inProgressAnimations[flipId]) {
       return
     }
-    // animations are not interruptible
-    // while an animation is completing
+    // animations are not interruptible while an animation is completing
     // this helps prevent some bugs that I couldn't otherwise solve
+    // maybe this can be revisited in the future
     if (inProgressAnimations[flipId].isFinishing) {
       return
     }
+
+    const returnToUnFlippedState = () =>
+      cancelFlip({
+        velocity,
+        inProgressAnimations,
+        onFlipCancelled: matchingConfig.cancelFlip
+      })
 
     const requiredDirection = inProgressAnimations[flipId].direction
 
@@ -206,12 +212,12 @@ const onGesture = ({
 
     // abort flip -- this is interruptible if user
     // tries to drag before animation is completed
-    if (!down && percentage < completeThreshold) {
+    if (!down && percentage < matchingConfig.completeThreshold) {
       return returnToUnFlippedState()
     }
 
     // gesture has gone far enough, animation can complete
-    if (percentage > completeThreshold) {
+    if (percentage > matchingConfig.completeThreshold) {
       inProgressAnimations[flipId].isFinishing = true
       return finishFlip({
         velocity,
@@ -225,5 +231,5 @@ const onGesture = ({
   }
 }
 
-export default (gestureparams: GestureParams) =>
-  useGesture(onGesture(gestureparams))()
+export default (gestureParams: GestureParams) =>
+  useGesture(onGesture(gestureParams))()

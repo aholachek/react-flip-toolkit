@@ -21,15 +21,26 @@ const ListItem = ({ index, color, onClick }) => {
         })
       }}
       shouldInvert={shouldFlip(index)}
-      respondToGesture={{
-        initFLIP: () => {
-          onClick(index)
+      respondToGesture={[
+        {
+          initFLIP: () => {
+            onClick(index)
+          },
+          cancelFLIP: () => {
+            onClick(index)
+          },
+          direction: 'down'
         },
-        cancelFLIP: () => {
-          onClick(index)
-        },
-        direction: 'down'
-      }}
+        {
+          initFLIP: () => {
+            onClick(index)
+          },
+          cancelFLIP: () => {
+            onClick(index)
+          },
+          direction: 'right'
+        }
+      ]}
     >
       <div className="listItem" style={{ backgroundColor: color }}>
         <Flipped inverseFlipId={`listItem-${index}`}>
