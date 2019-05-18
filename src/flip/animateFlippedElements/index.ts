@@ -383,7 +383,7 @@ export default ({
           onComplete
         }
         const onUpdate: OnUpdate = spring => {
-          if (flipCallbacks[id].onSpringUpdate) {
+          if (flipCallbacks[id] && flipCallbacks[id].onSpringUpdate) {
             flipCallbacks[id].onSpringUpdate!(spring.getCurrentValue())
           }
           // trigger the user provided onStart function
