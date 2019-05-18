@@ -60,7 +60,8 @@ const onFlipKeyUpdate = ({
   staggerConfig = {},
   decisionData = {},
   handleEnterUpdateDelete,
-  retainTransform
+  retainTransform,
+  onComplete
 }: OnFlipKeyUpdateArgs) => {
   const flippedElementPositionsAfterUpdate = getFlippedElementPositionsAfterUpdate(
     {
@@ -116,7 +117,8 @@ const onFlipKeyUpdate = ({
       staggerConfig,
       decisionData,
       scopedSelector,
-      retainTransform
+      retainTransform,
+      onComplete
     }
   )
 

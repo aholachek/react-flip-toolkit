@@ -1,6 +1,6 @@
 import { BaseFlipArgs, FlippedIds } from '../types'
 import { SpringOption, SpringConfig } from '../../springSettings/types'
-import { StaggerConfig } from '../../Flipper/types'
+import { StaggerConfig, OnFlipperComplete } from '../../Flipper/types'
 import { SerializableFlippedProps, FlipId } from '../../Flipped/types'
 import { Spring } from '../../forked-rebound/types'
 
@@ -13,8 +13,9 @@ export interface AnimateFlippedElementsArgs extends BaseFlipArgs {
   debug: boolean
   staggerConfig: StaggerConfig
   decisionData: any
-  scopedSelector: ScopedSelector,
+  scopedSelector: ScopedSelector
   retainTransform: boolean
+  onComplete: OnFlipperComplete
 }
 
 export type OnUpdate = (spring: Spring) => void
@@ -77,6 +78,6 @@ export type TopLevelChildren = FlipId[]
 export type InitiateStaggeredAnimations = (staggered: StaggeredChildren) => void
 
 export interface TreeNode {
-  staggeredChildren: StaggeredChildren,
+  staggeredChildren: StaggeredChildren
   immediateChildren: FlipDataArray
 }

@@ -5,7 +5,8 @@ import {
   StaggerConfig,
   HandleEnterUpdateDelete,
   InProgressAnimations,
-  FlipCallbacks
+  FlipCallbacks,
+  OnFlipperComplete
 } from './Flipper/types'
 import { FlippedProps } from './Flipped/types'
 import { SpringOption } from './springSettings/types'
@@ -26,6 +27,7 @@ class Flipper {
     cachedOrderedFlipIds: FlippedIds
   }
   private retainTransform: boolean = false
+  private onComplete!: OnFlipperComplete
 
   constructor(options: {
     element: HTMLElement
@@ -34,7 +36,8 @@ class Flipper {
     applyTransformOrigin: boolean
     handleEnterUpdateDelete: HandleEnterUpdateDelete
     debug: boolean
-    retainTransform: boolean
+    retainTransform: boolean,
+    onComplete: OnFlipperComplete
   }) {
     assign(this, options)
 
@@ -72,7 +75,8 @@ class Flipper {
         decisionData: {
           prev: prevDecisionData,
           current: currentDecisionData
-        }
+        },
+        onComplete: this.onComplete
       })
       delete this.snapshot
     }
@@ -89,6 +93,7 @@ class Flipper {
     stagger,
     onAppear,
     onStart,
+    onSpringUpdate,
     onComplete,
     onExit,
     shouldFlip,
@@ -125,6 +130,7 @@ class Flipper {
       shouldInvert,
       onAppear,
       onStart,
+      onSpringUpdate,
       onComplete,
       onExit
     }

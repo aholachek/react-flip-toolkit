@@ -1,5 +1,6 @@
 import { SpringOption } from '../springSettings/types'
 import { CallbackFlippedProps } from '../Flipped/types'
+import { FlippedIds } from '../flip/types'
 
 export interface StaggerConfigValue {
   reverse?: boolean
@@ -21,6 +22,8 @@ export type HandleEnterUpdateDelete = (
   args: HandleEnterUpdateDeleteArgs
 ) => void
 
+export type OnFlipperComplete = (flipIds: FlippedIds) => void
+
 export interface FlipperProps {
   flipKey: any
   children: React.ReactNode
@@ -32,8 +35,9 @@ export interface FlipperProps {
   portalKey?: string
   staggerConfig?: StaggerConfig
   decisionData?: any
-  handleEnterUpdateDelete?: HandleEnterUpdateDelete,
+  handleEnterUpdateDelete?: HandleEnterUpdateDelete
   retainTransform?: boolean
+  onComplete?: OnFlipperComplete
 }
 
 export interface InProgressAnimations {

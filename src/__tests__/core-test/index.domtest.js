@@ -4,7 +4,10 @@ const container = document.querySelector('.container')
 const box = document.querySelector('.box')
 const innerBox = document.querySelector('.innerBox')
 
-const flipper = new Flipper({ element: container })
+const flipper = new Flipper({
+  element: container,
+  onComplete: flipIds => console.log(`onComplete: ${flipIds}`)
+})
 
 box.addEventListener('click', () => {
   flipper.recordBeforeUpdate()
@@ -16,6 +19,7 @@ flipper.addFlipped({
   element: box,
   flipId: 'box',
   inverted: innerBox,
+  onSpringUpdate: springValue => console.log(`onUpdate:${springValue}`),
   shouldFlip: () => {
     console.log('shouldFlip called')
     return true

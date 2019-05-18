@@ -24,6 +24,7 @@ import {
   TopLevelChildren
 } from './types'
 import { BoundingClientRect } from '../getFlippedElementPositions/types'
+import { FlippedIds } from '../types'
 
 // 3d transforms were causing weird issues in chrome,
 // especially when opacity was also being tweened,
@@ -161,7 +162,8 @@ export default ({
   staggerConfig,
   decisionData,
   scopedSelector,
-  retainTransform
+  retainTransform,
+  onComplete
 }: AnimateFlippedElementsArgs) => {
   const firstElement: HTMLElement = getElement(flippedIds[0])
   // this acommodates iframes
@@ -169,12 +171,16 @@ export default ({
 
   // the stuff below is used so we can return a promise that resolves when all FLIP animations have
   // completed
-  let closureResolve: () => void
-  const flipCompletedPromise = new Promise(resolve => {
+  let closureResolve: (flipIds: FlippedIds) => void
+  const flipCompletedPromise: Promise<FlippedIds> = new Promise(resolve => {
     closureResolve = resolve
   })
+  // hook for users of lib to attach logic when all flip animations have completed
+  if (onComplete) {
+    flipCompletedPromise.then(onComplete)
+  }
   let withInitFuncs: FlipDataArray
-  const completedAnimationIds: string[] = []
+  const completedAnimationIds: FlippedIds = []
 
   if (debug) {
     // eslint-disable-next-line no-console
@@ -360,7 +366,7 @@ export default ({
         if (completedAnimationIds.length >= withInitFuncs.length) {
           // we can theoretically call multiple times since a promise only resolves 1x
           // but that shouldnt happen
-          closureResolve()
+          closureResolve(completedAnimationIds)
         }
       }
 
@@ -377,6 +383,9 @@ export default ({
           onComplete
         }
         const onUpdate: OnUpdate = spring => {
+          if (flipCallbacks[id].onSpringUpdate) {
+            flipCallbacks[id].onSpringUpdate!(spring.getCurrentValue())
+          }
           // trigger the user provided onStart function
           if (!onStartCalled) {
             onStartCalled = true
@@ -485,7 +494,7 @@ export default ({
     // there are no active FLIP animations, so immediately resolve the
     // returned promise
     if (!withInitFuncs.length) {
-      closureResolve()
+      closureResolve([])
     }
     initiateAnimations({ topLevelChildren, flipDataDict, staggerConfig })
     return flipCompletedPromise
