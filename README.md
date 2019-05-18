@@ -63,103 +63,85 @@
 ### Example 1: Expanding Div ([Fork on Code Sandbox](https://codesandbox.io/s/8130rn9q2))
 
 ```jsx
-import React, { Component } from 'react'
-import { Flipper, Flipped } from 'react-flip-toolkit'
+import React, { useState } from "react";
+import { Flipper, Flipped } from "react-flip-toolkit";
 
-class AnimatedSquare extends Component {
-  state = { fullScreen: false }
+const AnimatedSquare = () => {
+  const [fullScreen, setFullScreen] = useState(false);
+  const toggleFullScreen = () => setFullScreen(prevState => !prevState);
 
-  toggleFullScreen = () => {
-    this.setState(prevState => ({
-      fullScreen: !prevState.fullScreen
-    }))
-  }
+  return (
+    <Flipper flipKey={fullScreen}>
+      <Flipped flipId="square">
+        <div
+          className={fullScreen ? "full-screen-square" : "square"}
+          onClick={toggleFullScreen}
+        />
+      </Flipped>
+    </Flipper>
+  );
+};
 
-  render() {
-    return (
-      <Flipper flipKey={this.state.fullScreen}>
-        <Flipped flipId="square">
-          <div
-            className={this.state.fullScreen ? 'full-screen-square' : 'square'}
-            onClick={this.toggleFullScreen}
-          />
-        </Flipped>
-      </Flipper>
-    )
-  }
-}
 ```
 
 ### Example 2: Two Divs ([Fork on Code Sandbox](https://codesandbox.io/s/74q85nq1qq))
 
 ```jsx
-import React, { Component } from 'react'
-import { Flipper, Flipped } from 'react-flip-toolkit'
+import React, { useState } from "react";
+import { Flipper, Flipped } from "react-flip-toolkit";
 
 const Square = ({ toggleFullScreen }) => (
   <Flipped flipId="square">
     <div className="square" onClick={toggleFullScreen} />
   </Flipped>
-)
+);
 
 const FullScreenSquare = ({ toggleFullScreen }) => (
   <Flipped flipId="square">
     <div className="full-screen-square" onClick={toggleFullScreen} />
   </Flipped>
-)
+);
 
-class AnimatedSquare extends Component {
-  state = { fullScreen: false }
+const AnimatedSquare = () => {
+  const [fullScreen, setFullScreen] = useState(false);
+  const toggleFullScreen = () => setFullScreen(prevState => !prevState);
 
-  toggleFullScreen = () => {
-    this.setState(prevState => ({
-      fullScreen: !prevState.fullScreen
-    }))
-  }
-
-  render() {
-    return (
-      <Flipper flipKey={this.state.fullScreen}>
-        {this.state.fullScreen ? (
-          <FullScreenSquare toggleFullScreen={this.toggleFullScreen} />
-        ) : (
-          <Square toggleFullScreen={this.toggleFullScreen} />
-        )}
-      </Flipper>
-    )
-  }
-}
+  return (
+    <Flipper flipKey={fullScreen}>
+      {fullScreen ? (
+        <FullScreenSquare toggleFullScreen={toggleFullScreen} />
+      ) : (
+        <Square toggleFullScreen={toggleFullScreen} />
+      )}
+    </Flipper>
+  );
+};
 ```
 
 ### Example 3: List Shuffle ([Fork on Code Sandbox](https://codesandbox.io/s/14v8o5xy44))
 
 ```jsx
-import React, { Component } from 'react'
-import { Flipper, Flipped } from 'react-flip-toolkit'
+import React, { useState } from "react";
+import { Flipper, Flipped } from "react-flip-toolkit";
+import shuffle from "lodash.shuffle";
 
-class ListShuffler extends Component {
-  state = { data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] }
+const ListShuffler = () => {
+  const [data, setData] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  const shuffleList = () => setData(shuffle(data));
 
-  shuffle = () =>
-    this.setState(({ data }) => ({
-      data: shuffle(data)
-    }))
-
-  render() {
-    return (
-      <Flipper flipKey={this.state.data.join('')}>
-        <button onClick={this.shuffle}> shuffle</button>
-        <ul className="list">
-          {this.state.data.map(d => (
-            <Flipped key={d} flipId={d}>
-              <li>{d}</li>
-            </Flipped>
-          ))}
-        </ul>
-      </Flipper>
-    )
-  }
-}
+  return (
+    <Flipper flipKey={data.join("")}>
+      <button onClick={shuffleList}> shuffle</button>
+      <ul className="list">
+        {data.map(d => (
+          <Flipped key={d} flipId={d}>
+            <li>{d}</li>
+          </Flipped>
+        ))}
+      </ul>
+    </Flipper>
+  );
+};
 ```
 
 ## Demos
