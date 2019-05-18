@@ -433,10 +433,12 @@ const flipper = new Flipper({ element: container })
 // for the Flipped component
 flipper.addFlipped({
   element: square,
-  flipId: 'square',
-  onStart: () => console.log('animation started!'),
-  onComplete: () => console.log('animation completed!')
-})
+  flipId: "square",
+  onStart: () => console.log("animation started!"),
+  onSpringUpdate: springValue =>
+    console.log(`current spring value: ${springValue}`),
+  onComplete: () => console.log("animation completed!")
+});
 
 // to add an inverted child, use this method with
 // a reference to the parent element
