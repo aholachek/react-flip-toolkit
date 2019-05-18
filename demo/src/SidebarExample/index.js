@@ -16,7 +16,7 @@ class PaymentSidebar extends Component {
     const sidebarClassName = `sidebar ${collapsed ? 'sidebarCollapsed' : ''}`
 
     return (
-      <Flipper flipKey={collapsed} element="nav" className="foo">
+      <Flipper flipKey={collapsed} element="nav" className="foo" onComplete={(args)=> console.log('on complete', args)}>
         <Flipped
           flipId="container"
           onSpringUpdate={springValue => {

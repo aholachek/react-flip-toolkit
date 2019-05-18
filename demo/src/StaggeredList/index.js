@@ -67,6 +67,7 @@ const ExpandedListItem = ({ index, color, onClick }) => {
     <Flipped
       flipId={`listItem-${index}`}
       stagger="card"
+      onSpringUpdate={spring => console.log(spring)}
       onStart={el => {
         console.log('regular')
       }}
@@ -82,7 +83,9 @@ const ExpandedListItem = ({ index, color, onClick }) => {
         style={{ backgroundColor: color }}
         onClick={() => onClick(index)}
       >
-        <Flipped inverseFlipId={`listItem-${index}`}>
+        <Flipped
+          inverseFlipId={`listItem-${index}`}
+        >
           <div className="expandedListItemContent">
             <Flipped flipId={`avatar-${index}`} stagger="card-content">
               <div className="avatar avatarExpanded" />
@@ -121,6 +124,7 @@ export default class AnimatedList extends Component {
         flipKey={this.state.focused}
         className="staggered-list-content"
         spring="gentle"
+        onComplete={args => console.log('onComplete', args)}
         staggerConfig={{
           card: {
             reverse: this.state.focused !== null ? true : false,
