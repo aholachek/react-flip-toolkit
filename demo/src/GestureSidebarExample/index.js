@@ -22,7 +22,10 @@ class PaymentSidebar extends Component {
           respondToGesture={{
             initFLIP: this.toggleCollapsed,
             cancelFLIP: this.toggleCollapsed,
-            direction: collapsed ? 'down' : 'up'
+            direction: collapsed ? 'down' : 'up',
+            onChange: args => {
+              console.log(args)
+            }
           }}
         >
           <div className={sidebarClassName}>

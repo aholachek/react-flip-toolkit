@@ -19,6 +19,9 @@ import HandleEnterUpdateDelete from './HandleEnterUpdateDelete'
 
 import GestureSidebarExample from './GestureSidebarExample'
 import GestureStaggeredList from './GestureStaggeredList'
+import GestureEmailSwipe from './GestureEmailSwipe'
+import GestureMapSwipe from './GestureMapSwipe'
+import GestureArticleSwipe from './GestureArticleSwipe'
 
 class Demo extends Component {
   render() {
@@ -44,6 +47,12 @@ class Demo extends Component {
       return <GestureStaggeredList />
     else if (window.location.pathname === '/gesture-sidebar')
       return <GestureSidebarExample />
+    else if (window.location.pathname === '/gesture-email-swipe')
+      return <GestureEmailSwipe />
+    else if (window.location.pathname === '/gesture-map-swipe')
+      return <GestureMapSwipe />
+    else if (window.location.pathname === '/gesture-article-swipe')
+      return <GestureArticleSwipe />
     else
       return (
         <nav>
@@ -90,6 +99,15 @@ class Demo extends Component {
             </li>
             <li>
               <a href="/gesture-staggered-list">Staggered List</a>
+            </li>
+            <li>
+              <a href="/gesture-article-swipe">Gesture Article Swipe </a>
+            </li>
+            <li>
+              <a href="/gesture-email-swipe">Gesture Email Swipe</a>
+            </li>
+            <li>
+              <a href="/gesture-map-swipe">Gesture Map Swipe</a>
             </li>
           </ul>
         </nav>

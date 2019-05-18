@@ -5,7 +5,7 @@ import React, {
   ReactElement
 } from 'react'
 import PropTypes from 'prop-types'
-import { FlipContext, PortalContext, GestureContext } from '../Flipper'
+import { FlipContext, PortalContext } from '../Flipper'
 import * as constants from '../constants'
 import { assign, isObject } from '../utilities'
 import { FlippedProps, SerializableFlippedProps } from './types'
@@ -39,7 +39,6 @@ export const Flipped: FunctionComponent<SerializableFlippedProps> = ({
   flipId,
   inverseFlipId,
   portalKey,
-  gestureBind = () => ({}),
   ...rest
 }) => {
   let child = children
@@ -66,8 +65,7 @@ export const Flipped: FunctionComponent<SerializableFlippedProps> = ({
     // these are both used as selectors so they have to be separate
     [constants.DATA_FLIP_ID]: flipId,
     [constants.DATA_INVERSE_FLIP_ID]: inverseFlipId,
-    [constants.DATA_FLIP_CONFIG]: JSON.stringify(rest),
-    ...gestureBind()
+    [constants.DATA_FLIP_CONFIG]: JSON.stringify(rest)
   }
 
   if (portalKey) {
@@ -90,8 +88,7 @@ export const FlippedWithContext: FunctionComponent<FlippedProps> = ({
   onStartImmediate,
   onComplete,
   onExit,
-  respondToGesture,
-  gestureHandler,
+  gestureBind,
   ...rest
 }) => {
   if (!children) {
@@ -100,59 +97,36 @@ export const FlippedWithContext: FunctionComponent<FlippedProps> = ({
   if (rest.inverseFlipId) {
     return <Flipped {...rest}>{children}</Flipped>
   }
-  // very stupid hack to make sure gesture handlers get added and removed
-  // bc I can't figure out a better way
-  if (respondToGesture) {
-    rest.key = `${flipId}-${respondToGesture.direction}`
-  }
 
   return (
-    <GestureContext.Consumer>
-      {inProgressAnimations => (
-        <PortalContext.Consumer>
-          {portalKey => (
-            <FlipContext.Consumer>
-              {data => {
-                // if there is no surrounding Flipper component,
-                // we don't want to throw an error, so check
-                // that data exists and is not the default string
-                if (isObject(data)) {
-                  // @ts-ignore
-                  data[flipId as string] = {
-                    shouldFlip,
-                    shouldInvert,
-                    onAppear,
-                    onStart,
-                    onStartImmediate,
-                    onComplete,
-                    onExit
-                  }
-                }
-                return (
-                  <Flipped
-                    flipId={flipId}
-                    {...rest}
-                    gestureBind={
-                      respondToGesture
-                        ? () =>
-                            gestureHandler({
-                              gestureConfig: respondToGesture,
-                              inProgressAnimations,
-                              flipId
-                            })
-                        : undefined
-                    }
-                    portalKey={portalKey}
-                  >
-                    {children}
-                  </Flipped>
-                )
-              }}
-            </FlipContext.Consumer>
-          )}
-        </PortalContext.Consumer>
+    <PortalContext.Consumer>
+      {portalKey => (
+        <FlipContext.Consumer>
+          {data => {
+            // if there is no surrounding Flipper component,
+            // we don't want to throw an error, so check
+            // that data exists and is not the default string
+            if (isObject(data)) {
+              // @ts-ignore
+              data[flipId as string] = {
+                shouldFlip,
+                shouldInvert,
+                onAppear,
+                onStart,
+                onStartImmediate,
+                onComplete,
+                onExit
+              }
+            }
+            return (
+              <Flipped flipId={flipId} {...rest} portalKey={portalKey}>
+                {children}
+              </Flipped>
+            )
+          }}
+        </FlipContext.Consumer>
       )}
-    </GestureContext.Consumer>
+    </PortalContext.Consumer>
   )
 }
 

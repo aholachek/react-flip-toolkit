@@ -1,0 +1,329 @@
+import React, { Component } from 'react'
+import DefaultFlipper from '../Flipper'
+import DefaultFlipped from '../Flipped'
+import { FlippedProps } from '../Flipped/types'
+import { FlipperProps } from '../Flipper/types'
+import Gesture from './withGesture'
+import { GestureContext } from '../Flipper'
+import clamp from 'lodash-es/clamp'
+import { InProgressAnimations } from '../../Flipper/types'
+import { GestureParams } from './types'
+import Spring from '../../forked-rebound/Spring'
+
+export const Flipper = (props: FlipperProps) => (
+  <DefaultFlipper {...props} isGestureControlled={true} />
+)
+
+const defaultCompleteThreshhold = 0.5
+
+const isArray = (x: any): x is any[] =>
+  Object.prototype.toString.call(x) === '[object Array]'
+
+const finishFlip = ({
+  inProgressAnimations,
+  velocity
+}: {
+  inProgressAnimations: InProgressAnimations
+  velocity: number
+}) => {
+  const clampedVelocity = velocity !== undefined && clamp(velocity, 0.025, 15)
+  Object.keys(inProgressAnimations).map(flipId => {
+    const { spring, onAnimationEnd } = inProgressAnimations[flipId]
+    if (!spring) {
+      return
+    }
+    if (clampedVelocity) {
+      spring.setVelocity(clampedVelocity)
+    }
+    spring.setEndValue(1)
+    spring.addOneTimeListener({
+      onSpringAtRest: (spring: Spring) => {
+        // if not 1, assume this has been interrupted by subsequent gesture
+        if (spring.getCurrentValue() !== 1) {
+          return
+        }
+        onAnimationEnd()
+        spring.destroy()
+      }
+    })
+  })
+}
+
+const cancelFlip = ({
+  velocity,
+  inProgressAnimations,
+  onFlipCancelled
+}: {
+  velocity: number
+  inProgressAnimations: InProgressAnimations
+  onFlipCancelled: () => void
+}) => {
+  const clampedVelocity = velocity !== undefined && clamp(velocity, 0.025, 30)
+
+  const onCompletePromises: Array<Promise<void>> | [] = Object.keys(
+    inProgressAnimations
+  ).map(flipId => {
+    const { spring } = inProgressAnimations[flipId]
+    if (!spring) {
+      return
+    }
+    if (clampedVelocity) {
+      spring.setVelocity(clampedVelocity)
+    }
+
+    spring.setEndValue(0)
+    return new Promise(resolve => {
+      spring.addOneTimeListener({
+        onSpringAtRest: (spring: Spring) => {
+          // if not 0, assume this has been interrupted by subsequent gesture
+          if (spring.getCurrentValue() !== 0) {
+            return
+          }
+          resolve()
+        }
+      })
+    })
+  })
+  // wait until the end to destroy springs so you don't accidentally destroy some of them
+  // and keep others around
+  Promise.all(onCompletePromises).then(() => {
+    // might be some sort of race condition with multiple calls to this function
+    if (!Object.keys(inProgressAnimations).length) {
+      return
+    }
+    onFlipCancelled()
+
+    Object.keys(inProgressAnimations).map(flipId =>
+      inProgressAnimations[flipId].spring!.destroy()
+    )
+  })
+}
+
+const updateSprings = ({
+  inProgressAnimations,
+  percentage
+}: {
+  inProgressAnimations: InProgressAnimations
+  percentage: number
+}) => {
+  const clampedPercentage = clamp(percentage, 0, 1)
+  Object.keys(inProgressAnimations).forEach(flipId => {
+    inProgressAnimations[flipId].spring.setEndValue(clampedPercentage)
+  })
+}
+
+const getDirection = (deltaX: number, deltaY: number) => {
+  if (Math.abs(deltaX) > Math.abs(deltaY)) {
+    return deltaX > 0 ? 'right' : 'left'
+  }
+  return deltaY > 0 ? 'down' : 'up'
+}
+
+export class Flipped extends Component {
+  temporarilyInvalidFlipIds: string[] = []
+  componentDidMount() {
+    this.gestureHandler = this.gestureHandler.bind(this)
+  }
+
+  componentDidUpdate(prevProps) {
+    this.prevProps = prevProps
+  }
+
+  gestureHandler(inProgressAnimations) {
+    return ({
+      velocity,
+      delta: [deltaX, deltaY],
+      down,
+      first
+    }: {
+      velocity: number
+      delta: number[]
+      down: boolean
+      first: boolean
+    }) => {
+      if (
+        first &&
+        this.temporarilyInvalidFlipIds.indexOf(this.props.flipId) !== -1
+      ) {
+        this.temporarilyInvalidFlipIds.splice(
+          this.temporarilyInvalidFlipIds.indexOf(this.props.flipId),
+          1
+        )
+      } else if (
+        this.temporarilyInvalidFlipIds.indexOf(this.props.flipId) !== -1
+      ) {
+        // require user to mouseup before doing another action
+        return
+      }
+      // prevent single clicks from doing anything
+      if (first || (deltaX === 0 && deltaY === 0)) {
+        return
+      }
+
+      const currentDirection = getDirection(deltaX, deltaY)
+
+      const flipInProgress = Boolean(inProgressAnimations[this.props.flipId])
+
+      const isAnotherGestureInProgress = Object.keys(inProgressAnimations)
+        .map(flipId => inProgressAnimations[flipId].flipInitiator)
+        .filter(Boolean)
+        .some(flipInitiator => flipInitiator !== this.props.flipId)
+
+      if (isAnotherGestureInProgress) {
+        return
+      }
+
+      if (!flipInProgress) {
+        const normalizedRespondToGesture = isArray(this.props.respondToGesture)
+          ? this.props.respondToGesture
+          : [this.props.respondToGesture]
+
+        let configMatchingCurrentDirection = normalizedRespondToGesture.filter(
+          config => config.direction === currentDirection
+        )[0]
+
+        // user function didn't respond with an object when called
+        // with the currentDirection + props
+        // likely bc whatever happened shouldnt be animated
+        if (!configMatchingCurrentDirection) {
+          return
+        }
+
+        configMatchingCurrentDirection = {
+          // can be overridden
+          completeThreshold: defaultCompleteThreshhold,
+          ...configMatchingCurrentDirection,
+          direction: currentDirection
+        }
+        configMatchingCurrentDirection.initFLIP({
+          props: this.props,
+          prevProps: this.prevProps
+        })
+        setTimeout(() => {
+          // maybe gesture occurred but nothing changed position
+          if (!inProgressAnimations[this.props.flipId]) {
+            return
+          }
+          // cache this because it will likely change in the beginning of FLIP
+          // when react re-renders the component
+          inProgressAnimations[
+            this.props.flipId
+          ].cachedConfig = configMatchingCurrentDirection
+          Object.keys(inProgressAnimations).forEach(
+            inProgressAnimationFlipId => {
+              inProgressAnimations[
+                inProgressAnimationFlipId
+              ].flipInitiator = this.props.flipId
+            }
+          )
+        }, 0)
+        return
+      }
+      // maybe animation just got started (?)
+      if (
+        !inProgressAnimations[this.props.flipId] ||
+        !inProgressAnimations[this.props.flipId].cachedConfig
+      ) {
+        return
+      }
+      // animations are not interruptible while an animation is completing
+      // this helps prevent some bugs that I couldn't otherwise solve
+      // maybe this can be revisited in the future
+      if (inProgressAnimations[this.props.flipId].isFinishing) {
+        return
+      }
+
+      const cachedConfig = inProgressAnimations[this.props.flipId].cachedConfig
+
+      const returnToUnFlippedState = () =>
+        cancelFlip({
+          velocity,
+          inProgressAnimations,
+          onFlipCancelled: () =>
+            cachedConfig.cancelFLIP({
+              props: this.props,
+              prevProps: this.prevProps
+            })
+        })
+
+      if (cachedConfig.direction !== currentDirection) {
+        // user might have done a mouseup while moving in another direction
+        if (flipInProgress && !down) {
+          returnToUnFlippedState()
+        } else {
+          return
+        }
+      }
+
+      const absoluteMovement =
+        ['up', 'down'].indexOf(cachedConfig.direction) > -1
+          ? Math.abs(deltaY)
+          : Math.abs(deltaX)
+
+      const gestureData = inProgressAnimations[this.props.flipId]
+
+      const {
+        translateXDifference,
+        translateYDifference,
+        scaleXDifference,
+        scaleYDifference
+      } = gestureData.difference
+
+      const difference =
+        ['up', 'down'].indexOf(cachedConfig.direction) > -1
+          ? scaleYDifference + translateYDifference
+          : scaleXDifference + translateXDifference
+
+      const percentage = absoluteMovement / difference
+
+      if (this.props.respondToGesture.onChange) {
+        debugger
+        this.props.respondToGesture.onChange(percentage)
+      }
+
+      // abort flip -- this is interruptible if user
+      // tries to drag before animation is completed
+      if (!down && percentage < cachedConfig.completeThreshold) {
+        return returnToUnFlippedState()
+      }
+
+      // gesture has gone far enough, animation can complete
+      if (percentage > cachedConfig.completeThreshold) {
+        inProgressAnimations[this.props.flipId].isFinishing = true
+        this.temporarilyInvalidFlipIds.push(this.props.flipId)
+        return finishFlip({
+          velocity,
+          inProgressAnimations
+        })
+      }
+
+      return updateSprings({
+        percentage,
+        inProgressAnimations
+      })
+    }
+  }
+
+  render() {
+    if (this.props.respondToGesture) {
+      return (
+        <GestureContext.Consumer>
+          {inProgressAnimations => (
+            // this.gestureHandler only gets called once
+            // which is ok bc inProgressAnimations is an object and the reference doesn't change
+            <Gesture onAction={this.gestureHandler(inProgressAnimations)}>
+              <DefaultFlipped {...this.props} />
+            </Gesture>
+          )}
+        </GestureContext.Consumer>
+      )
+    }
+    return <DefaultFlipped {...this.props} />
+  }
+}
+
+// for umd build
+export default {
+  Flipper,
+  Flipped
+}
