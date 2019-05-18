@@ -310,7 +310,7 @@ The `Flipped` component produces no markup, it simply passes some props down to 
 If you want to wrap a React component rather than a JSX element like a `div`, you can provide a render prop and then apply the `flippedProps` directly to the wrapped element in your component:
 
 ```jsx
-;<Flipped>
+<Flipped>
   {flippedProps => <MyCoolComponent flippedProps={flippedProps} />}
 </Flipped>
 
@@ -320,7 +320,7 @@ const MyCoolComponent = ({ flippedProps }) => <div {...flippedProps} />
 You can also simply provide a regular React component as long as that component spreads unrecognized props directly onto the wrapped element (this technique works well for wrapping styled components):
 
 ```jsx
-;<Flipped>
+<Flipped>
   <MyCoolComponent />
 </Flipped>
 
@@ -411,7 +411,7 @@ That means any layout styles &mdash; padding, flexbox, etc&mdash;should be appli
 
 ## Usage with Vanilla JS or Other Frameworks Like Vue.js
 
-`React-Flip-Toolkit` exports a special file, `core`, that allows you to use the methods from the library imperatively, without requiring React. You could use this with vanilla JavaScript, or hook into the lifecycle events of a Vue.js component.
+`React-Flip-Toolkit` exports a special file, `core`, that allows you to use the methods from the library imperatively, without requiring React. You could use this with vanilla JavaScript or any UI library. (For usage with Vue.js, try [Vue-Flip-Toolkit](https://github.com/mattrothenberg/vue-flip-toolkit)).
 
 You can refer to the React documentation below to see what options can be passed to the `Flipper` class constructor as well as the `addFlipped` function exposed by the `Flipper` instance (which takes options corresponding to the `Flipped` component's props).
 
