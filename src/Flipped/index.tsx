@@ -41,6 +41,7 @@ export const Flipped: FunctionComponent<SerializableFlippedProps> = ({
   flipId,
   inverseFlipId,
   portalKey,
+  isGestureControlled,
   ...rest
 }) => {
   let child = children
@@ -67,7 +68,8 @@ export const Flipped: FunctionComponent<SerializableFlippedProps> = ({
     // these are both used as selectors so they have to be separate
     [constants.DATA_FLIP_ID]: flipId,
     [constants.DATA_INVERSE_FLIP_ID]: inverseFlipId,
-    [constants.DATA_FLIP_CONFIG]: JSON.stringify(rest)
+    [constants.DATA_FLIP_CONFIG]: JSON.stringify(rest),
+    [constants.DATA_IS_GESTURE_CONTROLLED]: isGestureControlled
   }
 
   if (portalKey) {

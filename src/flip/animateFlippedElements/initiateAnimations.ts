@@ -96,7 +96,6 @@ export default ({
   topLevelChildren: TopLevelChildren
   isGestureControlled: boolean
 }) => {
-  debugger
   const initiateStaggeredAnimations: InitiateStaggeredAnimations = (
     staggered,
     isGestureControlled: boolean

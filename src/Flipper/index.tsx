@@ -42,6 +42,7 @@ class Flipper extends Component<FlipperProps> {
       onFlipKeyUpdate({
         flippedElementPositionsBeforeUpdate: cachedData.flippedElementPositions,
         cachedOrderedFlipIds: cachedData.cachedOrderedFlipIds,
+        isGestureControlled: cachedData.isGestureControlled,
         containerEl: this.el,
         inProgressAnimations: this.inProgressAnimations,
         flipCallbacks: this.flipCallbacks,

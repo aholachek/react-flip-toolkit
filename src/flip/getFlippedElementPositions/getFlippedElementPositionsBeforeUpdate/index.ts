@@ -48,7 +48,9 @@ const getFlippedElementPositionsBeforeUpdate = ({
       let parent = el.parentNode as HTMLElement
       // this won't work for IE11
       if (el.closest) {
-        const exitContainer = el.closest(`[${constants.DATA_EXIT_CONTAINER}]`) as HTMLElement
+        const exitContainer = el.closest(
+          `[${constants.DATA_EXIT_CONTAINER}]`
+        ) as HTMLElement
         if (exitContainer) {
           parent = exitContainer
         }
@@ -108,9 +110,14 @@ const getFlippedElementPositionsBeforeUpdate = ({
     el.style.transform = ''
     el.style.opacity = ''
   })
+
+  const isGestureControlled = flippedElements.filter(
+    element => element.dataset.isGestureControlled
+  ).length
   return {
     flippedElementPositions,
-    cachedOrderedFlipIds: flippedElements.map(el => el.dataset.flipId!)
+    cachedOrderedFlipIds: flippedElements.map(el => el.dataset.flipId!),
+    isGestureControlled
   }
 }
 

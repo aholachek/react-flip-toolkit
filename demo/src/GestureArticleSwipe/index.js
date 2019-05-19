@@ -1,15 +1,7 @@
 import React, { useState } from 'react'
-import { Flipper, Flipped } from '../../../src/gesture'
+import { Flipper } from '../../../src'
+import { Flipped } from '../../../src/gesture'
 import styled from 'styled-components'
-
-const StyledCollapsedArticle = styled.div`
-  border: 1px solid gray;
-  margin-bottom: 0.5rem;
-  padding: 1rem;
-  cursor: pointer;
-  width: 100%;
-  height: 100%;
-`
 
 const StyledLi = styled.li`
   position: relative;
@@ -21,9 +13,18 @@ const StyledLi = styled.li`
   min-height: 5rem;
 `
 
-const StyledArticleListItem = styled.a`
+const StyledCollapsedArticle = styled.a`
   width: 100%;
   height: 100%;
+  background-color: white;
+  border: 1px solid gray;
+  margin-bottom: 0.5rem;
+  padding: 1rem;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  display: block;
+  position: relative;
 `
 
 const StyledList = styled.ul`
@@ -51,7 +52,13 @@ const StyledExpandedArticle = styled.a`
   border: 1px solid gray;
 `
 
-const ExpandedListItem = ({ id, title, description, returnToListView }) => {
+const ExpandedListItem = ({
+  id,
+  title,
+  description,
+  returnToListView,
+  setCurrentlyViewed
+}) => {
   const cancelFLIP = ({ prevProps }) => {
     return updatePosition({
       position: prevProps.position,
@@ -61,18 +68,13 @@ const ExpandedListItem = ({ id, title, description, returnToListView }) => {
   return (
     <Flipped
       flipId={`article-${id}`}
-      // respondToGesture={{
-      //   direction: 'down',
-      //   initFLIP: ({ props }) => {
-      //     if (props.position === 'center')
-      //       return updatePosition({ position: 'right', id: article.id })
-      //     if (props.position === 'left')
-      //       return updatePosition({ position: 'center', id: article.id })
-      //   },
-      //   cancelFLIP
-      // }}
+      respondToGesture={{
+        direction: 'down',
+        initFLIP: returnToListView,
+        cancelFLIP: () => setCurrentlyViewed(id)
+      }}
     >
-      <StyledExpandedArticle onClick={returnToListView}>
+      <StyledExpandedArticle>
         <h1>{title}</h1>
         <p>{id}</p>
         <p>{description}</p>
@@ -83,20 +85,26 @@ const ExpandedListItem = ({ id, title, description, returnToListView }) => {
 
 const ArticleListItem = ({ setCurrentlyViewed, article }) => {
   return (
-    <StyledArticleListItem
-      href="#"
-      onClick={e => {
-        e.preventDefault()
-        setCurrentlyViewed(article.id)
+    <Flipped
+      flipId={`article-${article.id}`}
+      onStart={el => {
+        el.style.zIndex = 2
+      }}
+      onComplete={el => {
+        el.style.zIndex = null
       }}
     >
-      <Flipped flipId={`article-${article.id}`}>
-        <StyledCollapsedArticle>
-          <h3>{article.title}</h3>
-          <p>{article.id}</p>
-        </StyledCollapsedArticle>
-      </Flipped>
-    </StyledArticleListItem>
+      <StyledCollapsedArticle
+        href="#"
+        onClick={e => {
+          e.preventDefault()
+          setCurrentlyViewed(article.id)
+        }}
+      >
+        <h3>{article.title}</h3>
+        <p>{article.id}</p>
+      </StyledCollapsedArticle>
+    </Flipped>
   )
 }
 
@@ -130,6 +138,7 @@ const App = () => {
         </StyledList>
         {currentlyViewed !== null && (
           <ExpandedListItem
+            setCurrentlyViewed={setCurrentlyViewed}
             returnToListView={returnToListView}
             {...articles.find(({ id }) => id === currentlyViewed)}
           />

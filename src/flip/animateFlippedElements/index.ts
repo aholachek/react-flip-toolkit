@@ -162,7 +162,8 @@ export default ({
   decisionData,
   scopedSelector,
   retainTransform,
-  onComplete
+  onComplete,
+  isGestureControlled
 }: AnimateFlippedElementsArgs) => {
   const firstElement: HTMLElement = getElement(flippedIds[0])
   // this acommodates iframes
@@ -200,8 +201,6 @@ export default ({
   // defining this up here to that it's accessible in onUpdate functions
   const flipDataDict: FlipDataDict = {}
 
-  let isGestureControlled: boolean = false
-
   const flipDataArray: FlipDataArray = flippedIds
     // take all the measurements we need
     // and return an object with animation functions + necessary data
@@ -231,10 +230,6 @@ export default ({
       }
 
       const flipConfig = JSON.parse(element.dataset.flipConfig!)
-
-      if (flipConfig.isGestureControlled) {
-        isGestureControlled = true
-      }
 
       const springConfig = getSpringConfig({
         flipperSpring: spring,

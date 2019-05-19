@@ -21,6 +21,7 @@ export type CachedOrderedFlipIds = string[]
 export interface FlippedElementPositionsBeforeUpdateReturnVals {
   flippedElementPositions: FlippedElementPositionsBeforeUpdate
   cachedOrderedFlipIds: CachedOrderedFlipIds
+  isGestureControlled: boolean
 }
 
 export interface GetFlippedElementPositionsBeforeUpdateArgs {

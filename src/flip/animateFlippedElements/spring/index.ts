@@ -16,8 +16,6 @@ export const createSuspendedSpring = (flipData: FlipData) => {
     isGestureControlled
   } = flipData
 
-  debugger
-
   if (noOp) {
     return null
   }
