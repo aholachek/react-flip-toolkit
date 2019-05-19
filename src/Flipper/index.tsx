@@ -57,7 +57,8 @@ class Flipper extends Component<FlipperProps> {
         decisionData: {
           prev: prevProps.decisionData,
           current: this.props.decisionData
-        }
+        },
+        onComplete: this.props.onComplete
       })
     }
   }
@@ -111,7 +112,8 @@ if (process.env.NODE_ENV !== 'production') {
     staggerConfig: PropTypes.object,
     decisionData: PropTypes.any,
     handleEnterUpdateDelete: PropTypes.func,
-    retainTransform: PropTypes.bool
+    retainTransform: PropTypes.bool,
+    onComplete: PropTypes.func,
   }
 }
 

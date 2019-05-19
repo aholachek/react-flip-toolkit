@@ -5,28 +5,25 @@
 </p>
 
 [![Build Status](https://travis-ci.com/aholachek/react-flip-toolkit.svg?branch=master)](https://travis-ci.com/aholachek/react-flip-toolkit)
-[![Minified & Gzipped size](https://badgen.net/bundlephobia/minzip/react-flip-toolkit)](
-  https://bundlephobia.com/result?p=react-flip-toolkit
-)
+[![Minified & Gzipped size](https://badgen.net/bundlephobia/minzip/react-flip-toolkit)](https://bundlephobia.com/result?p=react-flip-toolkit)
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
-[![npm version](http://img.shields.io/npm/v/react-flip-toolkit.svg?style=flat)](https://npmjs.org/package/react-flip-toolkit "View this project on npm")
+[![npm version](http://img.shields.io/npm/v/react-flip-toolkit.svg?style=flat)](https://npmjs.org/package/react-flip-toolkit 'View this project on npm')
 
 **Comparison with other React FLIP libraries**
 
 | Feature                                                                                          | [`react-flip-move`](https://github.com/joshwcomeau/react-flip-move) | [`react-overdrive`](https://github.com/berzniz/react-overdrive) | `react-flip-toolkit` |
 | ------------------------------------------------------------------------------------------------ | :-----------------------------------------------------------------: | :-------------------------------------------------------------: | :------------------: |
-| Animate position                                                                                 |                                  ✅                                  |                                ✅                                |          ✅           |
-| Animate scale                                                                                    |                                  ❌                                  |                                ✅                                |          ✅           |
-| Animate opacity                                                                                  |                                  ❌                                  |                                ✅                                |          ✅           |
-| [Animate parent's size without warping children](#practical-scale-transitions)                   |                                  ❌                                  |                                ❌                                |          ✅           |
-| Use real FLIP instead of cloning & crossfading                                                   |                                  ✅                                  |                                ❌                                |          ✅           |
-| Use springs for animations                                                                       |                                  ❌                                  |                                ❌                                |          ✅           |
-| Support spring-based stagger effects                                                             |                                  ❌                                  |                                ❌                                |          ✅           |
-| [Usable with frameworks other than React](#usage-with-vanilla-js-or-other-frameworks-like-vuejs) |                                  ❌                                  |                                ❌                                |          ✅           |
-
-
+| Animate position                                                                                 |                                 ✅                                  |                               ✅                                |          ✅          |
+| Animate scale                                                                                    |                                 ❌                                  |                               ✅                                |          ✅          |
+| Animate opacity                                                                                  |                                 ❌                                  |                               ✅                                |          ✅          |
+| [Animate parent's size without warping children](#practical-scale-transitions)                   |                                 ❌                                  |                               ❌                                |          ✅          |
+| Use real FLIP instead of cloning & crossfading                                                   |                                 ✅                                  |                               ❌                                |          ✅          |
+| Use springs for animations                                                                       |                                 ❌                                  |                               ❌                                |          ✅          |
+| Support spring-based stagger effects                                                             |                                 ❌                                  |                               ❌                                |          ✅          |
+| [Usable with frameworks other than React](#usage-with-vanilla-js-or-other-frameworks-like-vuejs) |                                 ❌                                  |                               ❌                                |          ✅          |
 
 ## Table of Contents
+
 - [Quick start](#quick-start)
   - [Example 1: Expanding Div (Fork on Code Sandbox)](#example-1-expanding-div-fork-on-code-sandbox)
   - [Example 2: Two Divs (Fork on Code Sandbox)](#example-2-two-divs-fork-on-code-sandbox)
@@ -66,37 +63,31 @@
 ### Example 1: Expanding Div ([Fork on Code Sandbox](https://codesandbox.io/s/8130rn9q2))
 
 ```jsx
-import React, { Component } from 'react';
-import { Flipper, Flipped } from 'react-flip-toolkit';
+import React, { useState } from "react";
+import { Flipper, Flipped } from "react-flip-toolkit";
 
-class AnimatedSquare extends Component {
-  state = { fullScreen: false };
+const AnimatedSquare = () => {
+  const [fullScreen, setFullScreen] = useState(false);
+  const toggleFullScreen = () => setFullScreen(prevState => !prevState);
 
-  toggleFullScreen = () => {
-    this.setState(prevState => ({
-      fullScreen: !prevState.fullScreen
-    }));
-  };
+  return (
+    <Flipper flipKey={fullScreen}>
+      <Flipped flipId="square">
+        <div
+          className={fullScreen ? "full-screen-square" : "square"}
+          onClick={toggleFullScreen}
+        />
+      </Flipped>
+    </Flipper>
+  );
+};
 
-  render() {
-    return (
-      <Flipper flipKey={this.state.fullScreen}>
-        <Flipped flipId="square">
-          <div
-            className={this.state.fullScreen ? "full-screen-square" : "square"}
-            onClick={this.toggleFullScreen}
-          />
-        </Flipped>
-      </Flipper>
-    );
-  }
-}
 ```
 
 ### Example 2: Two Divs ([Fork on Code Sandbox](https://codesandbox.io/s/74q85nq1qq))
 
 ```jsx
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { Flipper, Flipped } from "react-flip-toolkit";
 
 const Square = ({ toggleFullScreen }) => (
@@ -111,58 +102,46 @@ const FullScreenSquare = ({ toggleFullScreen }) => (
   </Flipped>
 );
 
-class AnimatedSquare extends Component {
-  state = { fullScreen: false };
+const AnimatedSquare = () => {
+  const [fullScreen, setFullScreen] = useState(false);
+  const toggleFullScreen = () => setFullScreen(prevState => !prevState);
 
-  toggleFullScreen = () => {
-    this.setState(prevState => ({
-      fullScreen: !prevState.fullScreen
-    }));
-  };
-
-  render() {
-    return (
-      <Flipper flipKey={this.state.fullScreen}>
-        {this.state.fullScreen ? (
-          <FullScreenSquare toggleFullScreen={this.toggleFullScreen} />
-        ) : (
-          <Square toggleFullScreen={this.toggleFullScreen} />
-        )}
-      </Flipper>
-    );
-  }
-}
+  return (
+    <Flipper flipKey={fullScreen}>
+      {fullScreen ? (
+        <FullScreenSquare toggleFullScreen={toggleFullScreen} />
+      ) : (
+        <Square toggleFullScreen={toggleFullScreen} />
+      )}
+    </Flipper>
+  );
+};
 ```
 
 ### Example 3: List Shuffle ([Fork on Code Sandbox](https://codesandbox.io/s/14v8o5xy44))
 
 ```jsx
-import React, { Component } from 'react';
-import { Flipper, Flipped } from 'react-flip-toolkit';
+import React, { useState } from "react";
+import { Flipper, Flipped } from "react-flip-toolkit";
+import shuffle from "lodash.shuffle";
 
-class ListShuffler extends Component {
-  state = { data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] };
+const ListShuffler = () => {
+  const [data, setData] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  const shuffleList = () => setData(shuffle(data));
 
-  shuffle = () =>
-    this.setState(({ data }) => ({
-      data: shuffle(data)
-    }));
-
-  render() {
-    return (
-      <Flipper flipKey={this.state.data.join("")}>
-        <button onClick={this.shuffle}> shuffle</button>
-        <ul className="list">
-          {this.state.data.map(d => (
-            <Flipped key={d} flipId={d}>
-              <li>{d}</li>
-            </Flipped>
-          ))}
-        </ul>
-      </Flipper>
-    );
-  }
-}
+  return (
+    <Flipper flipKey={data.join("")}>
+      <button onClick={shuffleList}> shuffle</button>
+      <ul className="list">
+        {data.map(d => (
+          <Flipped key={d} flipId={d}>
+            <li>{d}</li>
+          </Flipped>
+        ))}
+      </ul>
+    </Flipper>
+  );
+};
 ```
 
 ## Demos
@@ -227,9 +206,7 @@ class ListShuffler extends Component {
 The parent wrapper component that contains all the elements to be animated. You'll most typically need only one of these per page.
 
 ```jsx
-<Flipper flipKey={someKeyThatChanges}>
-  {/* children */}
-</Flipper>
+<Flipper flipKey={someKeyThatChanges}>{/* children */}</Flipper>
 ```
 
 #### Basic Props
@@ -256,35 +233,35 @@ staggerConfig={{
   // this will apply to Flipped elements with the prop stagger='namedStagger'
     namedStagger : { speed: .2 }
   }}
- ```
-
+```
 
 #### Advanced Props
 
- | prop                    | default | type       | details                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
- | ----------------------- | :-----: | :--------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
- | decisionData            |    -    | `any`      | Sometimes, you'll want the animated children of `Flipper` to behave differently depending on the state transition &mdash; maybe only certain `Flipped` elements should animate in response to a particular change. By providing the `decisionData` prop to the `Flipper` component, you'll make that data available to the `shouldFlip` and `shouldInvert` methods of each child `Flipped` component, so they can decided for themselves whether to animate or not.                                                                                                                                                                                                                                    |
- | debug                   | `false` | `bool`     | This experimental prop will pause your animation right at the initial application of FLIP-ped styles. That will allow you to inspect the state of the animation at the very beginning, when it should look similar or identical to the UI before the animation began.                                                                                                                                                                                                                                                                                                                                                                                                                                  |
- | portalKey               |    -    | `string`   | In general, the `Flipper` component will only apply transitions to its descendents. This allows multiple `Flipper` elements to coexist on the same page, but it will prevent animations from working if you use [portals](https://reactjs.org/docs/portals.html). You can provide a unique `portalKey` prop to `Flipper` to tell it to scope element selections to the entire document, not just to its children, so that elements in portals can be transitioned.                                                                                                                                                                                                                                     |
- | retainTransform         |  false  | `boolean`  | This performance enhancement can be set to `true` to retain an imperceptible `rotateZ` transform on all `Flipped` elements after they animate. This persistent transform will prevent the "pixel-snapping" effect sometimes seem in Chrome when a scale transform is fully removed from an element.                                                                                                                                                                                                                                                                                                                                                                                                    |
- | handleEnterUpdateDelete |    -    | `function` | By default, `react-flip-toolkit` finishes animating out exiting elements before animating in new elements, with updating elements transforming immediately. You might want to have more control over the sequence of transitions &mdash; say, if you wanted to hide elements, pause, update elements, pause again, and finally animate in new elements. Or you might want transitions to happen simultaneously. If so, provide the function `handleEnterUpdateDelete` as a prop. [The best way to understand how this works is to check out this interactive example.](https://codesandbox.io/s/4q7qpkn8q0) `handleEnterUpdateDelete` receives the following arguments every time a transition occurs: |
- ```js
-    handleEnterUpdateDelete({
-      // this func applies an opacity of 0 to entering elements so
-      // they can be faded in - it should be called immediately
-      hideEnteringElements,
-      // calls `onAppear` for all entering elements
-      animateEnteringElements,
-      //calls `onExit` for all exiting elements
-      // returns a promise that resolves when all elements have exited
-      animateExitingElements,
-      // the main event: `FLIP` animations for updating elements
-      // this also returns a promise that resolves when
-      // animations have completed
-      animateFlippedElements
-    })
- ```
+| prop                    | default | type       | details                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| ----------------------- | :-----: | :--------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| decisionData            |    -    | `any`      | Sometimes, you'll want the animated children of `Flipper` to behave differently depending on the state transition &mdash; maybe only certain `Flipped` elements should animate in response to a particular change. By providing the `decisionData` prop to the `Flipper` component, you'll make that data available to the `shouldFlip` and `shouldInvert` methods of each child `Flipped` component, so they can decided for themselves whether to animate or not.                                                                                                                                                                                                                                    |
+| debug                   | `false` | `boolean`  | This experimental prop will pause your animation right at the initial application of FLIP-ped styles. That will allow you to inspect the state of the animation at the very beginning, when it should look similar or identical to the UI before the animation began.                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| portalKey               |    -    | `string`   | In general, the `Flipper` component will only apply transitions to its descendents. This allows multiple `Flipper` elements to coexist on the same page, but it will prevent animations from working if you use [portals](https://reactjs.org/docs/portals.html). You can provide a unique `portalKey` prop to `Flipper` to tell it to scope element selections to the entire document, not just to its children, so that elements in portals can be transitioned.                                                                                                                                                                                                                                     |
+| retainTransform         |  false  | `boolean`  | This performance enhancement can be set to `true` to retain an imperceptible `rotateZ` transform on all `Flipped` elements after they animate. This persistent transform will prevent the "pixel-snapping" effect sometimes seem in Chrome when a scale transform is fully removed from an element.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| onComplete              |    -    | `function` | This callback prop will be called when all individual FLIP animations have completed. Its single argument is a list of `flipId`s for the `Flipped` components that were activated during the animation. If an animation is interrupted, `onComplete` will be still called right before the in-progress animation is terminated.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| handleEnterUpdateDelete |    -    | `function` | By default, `react-flip-toolkit` finishes animating out exiting elements before animating in new elements, with updating elements transforming immediately. You might want to have more control over the sequence of transitions &mdash; say, if you wanted to hide elements, pause, update elements, pause again, and finally animate in new elements. Or you might want transitions to happen simultaneously. If so, provide the function `handleEnterUpdateDelete` as a prop. [The best way to understand how this works is to check out this interactive example.](https://codesandbox.io/s/4q7qpkn8q0) `handleEnterUpdateDelete` receives the following arguments every time a transition occurs: |
 
+```js
+handleEnterUpdateDelete({
+  // this func applies an opacity of 0 to entering elements so
+  // they can be faded in - it should be called immediately
+  hideEnteringElements,
+  // calls `onAppear` for all entering elements
+  animateEnteringElements,
+  //calls `onExit` for all exiting elements
+  // returns a promise that resolves when all elements have exited
+  animateExitingElements,
+  // the main event: `FLIP` animations for updating elements
+  // this also returns a promise that resolves when
+  // animations have completed
+  animateFlippedElements
+})
+```
 
 ### 2. `Flipped`
 
@@ -314,22 +291,22 @@ The `Flipped` component produces no markup, it simply passes some props down to 
 
 If you want to wrap a React component rather than a JSX element like a `div`, you can provide a render prop and then apply the `flippedProps` directly to the wrapped element in your component:
 
- ```jsx
+```jsx
 <Flipped>
   {flippedProps => <MyCoolComponent flippedProps={flippedProps} />}
 </Flipped>
 
-const MyCoolComponent = ({ flippedProps }) => (<div {...flippedProps}/>)
-  ```
+const MyCoolComponent = ({ flippedProps }) => <div {...flippedProps} />
+```
 
 You can also simply provide a regular React component as long as that component spreads unrecognized props directly onto the wrapped element (this technique works well for wrapping styled components):
 
 ```jsx
 <Flipped>
- <MyCoolComponent />
+  <MyCoolComponent />
 </Flipped>
 
-const MyCoolComponent = ({ knownProp, ...rest }) => (<div {...rest}/>)
+const MyCoolComponent = ({ knownProp, ...rest }) => <div {...rest} />
 ```
 
 #### Basic props
@@ -353,12 +330,12 @@ const MyCoolComponent = ({ knownProp, ...rest }) => (<div {...rest}/>)
 
 The above animation uses `onAppear` and `onExit` callbacks for fade-in and fade-out animations.
 
-
 | prop             | arguments                           | details                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | ---------------- | :---------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | onAppear         | `element`, `index`                  | Called when the element first appears in the DOM. It is provided a reference to the DOM element being transitioned as the first argument, and the index of the element relative to all appearing elements as the second. Note: If you provide an `onAppear` prop, the default opacity of the element will be set to 0 to allow you to animate it in without any initial flicker. If you don't want any opacity animation, just set the element's opacity to 1 immediately in your `onAppear` function. |
 | onStart          | `element`                           | Called when the FLIP animation for the element starts. It is provided a reference to the DOM element being transitioned as the first argument.                                                                                                                                                                                                                                                                                                                                                         |
 | onStartImmediate | `element`                           | Similar to `onStart`, but guaranteed to run for all FLIP-ped elements on the initial tick of the FLIP animation, before the next frame has rendered, even if the element in question has a stagger delay. It is provided a reference to the DOM element being transitioned as the first argument.                                                                                                                                                                                                      |
+| onSpringUpdate   | `springValue`                       | Called with the current spring value (normally between 0 - 1 but might briefly go over or under that range depending on the level of "bounciness" of the spring). Useful if you'd like to tween other, non-FLIP animations in concert with a FLIP transition.                                                                                                                                                                                                                                          |
 | onComplete       | `element`                           | Called when the FLIP animation completes. It is provided a reference to the DOM element being transitioned as the first argument. (If transitions are interruped by new ones, `onComplete` will still be called.)                                                                                                                                                                                                                                                                                      |
 | onExit           | `element`, `index`, `removeElement` | Called when the element is removed from the DOM. It must call the `removeElement` function when the exit transition has completed.                                                                                                                                                                                                                                                                                                                                                                     |
 
@@ -371,7 +348,6 @@ By default the FLIP-ped elements' translate, scale, and opacity properties are a
 | translate | `bool` | Tween `translateX` and `translateY` |
 | scale     | `bool` | Tween `scaleX` and `scaleY`         |
 | opacity   | `bool` |                                     |
-
 
 #### Advanced props
 
@@ -415,25 +391,24 @@ But for many use cases, you'll want to additionally specify the `scale` prop to 
 
 That means any layout styles &mdash; padding, flexbox, etc&mdash;should be applied to the inverted container (the element wrapped with a `Flipped` component with an `inverseFlipId`) rather than the parent `Flipped` container.
 
-
 ## Usage with Vanilla JS or Other Frameworks Like Vue.js
 
-`React-Flip-Toolkit` exports a special file, `core`, that allows you to use the methods from the library imperatively, without requiring React. You could use this with vanilla JavaScript, or hook into the lifecycle events of a Vue.js component.
+`React-Flip-Toolkit` exports a special file, `core`, that allows you to use the methods from the library imperatively, without requiring React. You could use this with vanilla JavaScript or any UI library. (For usage with Vue.js, try [Vue-Flip-Toolkit](https://github.com/mattrothenberg/vue-flip-toolkit)).
 
 You can refer to the React documentation below to see what options can be passed to the `Flipper` class constructor as well as the `addFlipped` function exposed by the `Flipper` instance (which takes options corresponding to the `Flipped` component's props).
 
-
 ### Expanding Div ([Fork on Code Sandbox](https://codesandbox.io/s/5v1k1nwz8l))
+
 ```js
-import Flipper from "react-flip-toolkit/es/core";
+import Flipper from 'react-flip-toolkit/es/core'
 // or if you're using commonjs imports: import Flipper from "react-flip-toolkit/lib/core
-const container = document.querySelector(".container");
-const square = document.querySelector(".square");
-const innerSquare = document.querySelector(".inner-square");
+const container = document.querySelector('.container')
+const square = document.querySelector('.square')
+const innerSquare = document.querySelector('.inner-square')
 
 // the config options for the Flipper class are the same
 // as the allowed props for the Flipper component
-const flipper = new Flipper({ element: container });
+const flipper = new Flipper({ element: container })
 
 // add flipped children to the parent
 // options are the same as the props
@@ -442,6 +417,8 @@ flipper.addFlipped({
   element: square,
   flipId: "square",
   onStart: () => console.log("animation started!"),
+  onSpringUpdate: springValue =>
+    console.log(`current spring value: ${springValue}`),
   onComplete: () => console.log("animation completed!")
 });
 
@@ -450,16 +427,15 @@ flipper.addFlipped({
 flipper.addInverted({
   element: innerSquare,
   parent: square
-});
+})
 
-square.addEventListener("click", () => {
+square.addEventListener('click', () => {
   // record positions before they change
-  flipper.recordBeforeUpdate();
-  square.classList.toggle("big-square");
+  flipper.recordBeforeUpdate()
+  square.classList.toggle('big-square')
   // record new positions and begin animations
-  flipper.onUpdate();
-});
-
+  flipper.onUpdate()
+})
 ```
 
 ## Library details
@@ -471,24 +447,26 @@ square.addEventListener("click", () => {
 - Tested in latest Chrome, Firefox, Safari, Edge, and IE 11 with [Browserstack](https://www.browserstack.com/).
 - For IE11 compatability, make sure you're polyfilling the `window.Promise` object.
 - Requires React 16+
-- Uses [Rematrix](https://github.com/jlmakes/rematrix) for matrix calculations and a simplified fork of  [Rebound](https://github.com/facebook/rebound-js) for spring animations
+- Uses [Rematrix](https://github.com/jlmakes/rematrix) for matrix calculations and a simplified fork of [Rebound](https://github.com/facebook/rebound-js) for spring animations
 
 ## Troubleshooting
 
 ### Problem #1: Nothing is happening
-  - Make sure you're updating the `flipKey` attribute in the `Flipper` component whenever an animation should happen.
-  - If one of your `Flipped` components is wrapping another React component rather than a DOM element,  [use a render prop to get the Flipped props](#wrapping-a-react-component) and pass down to the necessary DOM element.
+
+- Make sure you're updating the `flipKey` attribute in the `Flipper` component whenever an animation should happen.
+- If one of your `Flipped` components is wrapping another React component rather than a DOM element, [use a render prop to get the Flipped props](#wrapping-a-react-component) and pass down to the necessary DOM element.
+- Is the element that's receiving props from `Flipped` visible in the DOM? `react-flip-toolkit` attempts to optimize performance by not animating elements that are off-screen or elements that have no width or height.
 
 ### Problem #2: Things look weird
-  - At any point, there can only be one element with a specified `flipId` on the page. If there are multiple `Flipped` elements on the page with the same id, the animation will break. Check to make sure all `flipId`s are unique.
-  - Make sure you are animating the element you want to animate and not, for instance, a wrapper div. If you are animating an inline element like some text, but have wrapped it in a `div`, you're actually animating the div, which might have a much wider width that you'd expect at certain points, which will throw off the animation. Check to see if you need to add an  `inline-block` style to the animated element.
-  - Make sure you don't have any competing CSS transitions on the element in question.
+
+- At any point, there can only be one element with a specified `flipId` on the page. If there are multiple `Flipped` elements on the page with the same id, the animation will break. Check to make sure all `flipId`s are unique.
+- Make sure you are animating the element you want to animate and not, for instance, a wrapper div. If you are animating an inline element like some text, but have wrapped it in a `div`, you're actually animating the div, which might have a much wider width that you'd expect at certain points, which will throw off the animation. Check to see if you need to add an `inline-block` style to the animated element.
+- Make sure you don't have any competing CSS transitions on the element in question.
 
 ### Problem #3: It's still not working
 
-- Try out the `debug` prop. If you still can't figure out what's going wrong, you can add the [the `debug` prop](#props)  directly on your `Flipper` component to pause transitions at the beginning.
+- Try out the `debug` prop. If you still can't figure out what's going wrong, you can add the [the `debug` prop](#props) directly on your `Flipper` component to pause transitions at the beginning.
 - If you think something might actually be broken, or are completely stuck, feel free to make an issue.
-
 
 ## Performance
 
@@ -496,26 +474,23 @@ square.addEventListener("click", () => {
 However, if you are building particularly complex animations&mdash;ones that involve dozens of elements or large images&mdash; there are some additional strategies you can use to ensure performant animations.
 
 ### 1. `PureComponent`
+
 When you trigger a complex FLIP animation with `react-flip-toolkit`, React could be spending vital milliseconds doing unnecessary reconciliation work before allowing the animation to start. If you notice a slight delay between when the animation is triggered, and when it begins, this is probably the culprit. To short-circuit this possibly unnecessary work, try using [`PureComponent`](https://reactjs.org/docs/react-api.html#reactpurecomponent) for your animated elements, and seeing if you can refactor your code to minimize prop updates to animated children when an animation is about to occur.
 
 For example, in a hypothetical UI where you are animating the positions of several cards at once, you might want to update a `Card` component that looks like this:
 
 ```jsx
-
 import React, { Component } from 'react'
 
 class Card extends Component {
   render() {
     return (
-        <Flipped flipId={this.props.id}>
-          <div>
-          {/* card content goes here */ }
-          </div>
-        </Flipped>
+      <Flipped flipId={this.props.id}>
+        <div>{/* card content goes here */}</div>
+      </Flipped>
     )
   }
 }
-
 ```
 
 to this:
@@ -524,7 +499,7 @@ to this:
 import React, { PureComponent } from 'react'
 
 class Card extends PureComponent {
- // everything  else is the same
+  // everything  else is the same
 }
 ```
 
@@ -534,7 +509,7 @@ Remember [to always provide `key` props as appropriate to your elements](https:/
 
 ```css
 .image {
-  will-change:transform;
+  will-change: transform;
 }
 ```
 

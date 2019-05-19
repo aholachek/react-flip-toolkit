@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { Flipper, Flipped, ExitContainer } from "../../../src";
-import anime from "animejs";
-import getRandomList from "./getRandomList";
-import "./styles.css";
+import React, { Component } from 'react'
+import { Flipper, Flipped, ExitContainer } from '../../../src'
+import anime from 'animejs'
+import getRandomList from './getRandomList'
+import './styles.css'
 
 const simultaneousAnimations = ({
   hideEnteringElements,
@@ -10,11 +10,11 @@ const simultaneousAnimations = ({
   animateExitingElements,
   animateFlippedElements
 }) => {
-  hideEnteringElements();
-  animateExitingElements();
-  animateFlippedElements();
-  animateEnteringElements();
-};
+  hideEnteringElements()
+  animateExitingElements()
+  animateFlippedElements()
+  animateEnteringElements()
+}
 
 const exitThenFlipThenEnter = ({
   hideEnteringElements,
@@ -22,11 +22,11 @@ const exitThenFlipThenEnter = ({
   animateExitingElements,
   animateFlippedElements
 }) => {
-  hideEnteringElements();
+  hideEnteringElements()
   animateExitingElements()
     .then(animateFlippedElements)
-    .then(animateEnteringElements);
-};
+    .then(animateEnteringElements)
+}
 
 const exitAndFlipThenEnter = ({
   hideEnteringElements,
@@ -34,54 +34,54 @@ const exitAndFlipThenEnter = ({
   animateExitingElements,
   animateFlippedElements
 }) => {
-  hideEnteringElements();
+  hideEnteringElements()
   Promise.all([animateExitingElements(), animateFlippedElements()]).then(
     animateEnteringElements
-  );
-};
+  )
+}
 
 const transitions = {
   simultaneousAnimations,
   exitThenFlipThenEnter,
   exitAndFlipThenEnter
-};
+}
 
 class EnterUpdateDeleteDemo extends Component {
   state = {
     list: getRandomList(),
-    transitionType: "exitThenFlipThenEnter",
+    transitionType: 'exitThenFlipThenEnter',
     exitContainer: false
-  };
+  }
   updateList = () => {
-    this.setState({ list: getRandomList() });
-  };
-  currentAnimations = [];
+    this.setState({ list: getRandomList() })
+  }
+  currentAnimations = []
   onAppear = (el, i) => {
     this.currentAnimations.push(
       anime({
         targets: el,
         opacity: 1,
         delay: i * 20,
-        easing: "easeOutSine"
+        easing: 'easeOutSine'
       })
-    );
-  };
+    )
+  }
   onExit = (el, i, onComplete) => {
-    el.style.color = "red";
+    el.style.color = 'red'
     this.currentAnimations.push(
       anime({
         targets: el,
         opacity: 0,
         delay: i * 20,
-        easing: "easeOutSine",
+        easing: 'easeOutSine',
         complete: onComplete
       })
-    );
-  };
+    )
+  }
   render() {
     const flippedStuff = (
       <div>
-        {this.state.list.map(d =>
+        {this.state.list.map(d => (
           //break transitions by having a parent that is also removed
           // to demo ExitContainer use case
           <div key={d}>
@@ -89,15 +89,14 @@ class EnterUpdateDeleteDemo extends Component {
               flipId={d.toString()}
               onAppear={this.onAppear}
               onExit={this.onExit}
+              onSpringUpdate={springValue => console.log(springValue)}
             >
-              <li>
-                {d}
-              </li>
+              <li>{d}</li>
             </Flipped>
           </div>
-        )}
+        ))}
       </div>
-    );
+    )
 
     return (
       <div className="enter-update-delete-container">
@@ -109,7 +108,8 @@ class EnterUpdateDeleteDemo extends Component {
             onChange={ev =>
               this.setState({
                 exitContainer: ev.target.checked
-              })}
+              })
+            }
           />
           with exit container
         </label>
@@ -123,34 +123,37 @@ class EnterUpdateDeleteDemo extends Component {
                   value={transition}
                   checked={transition === this.state.transitionType}
                   onChange={ev => {
-                    this.setState({ transitionType: ev.currentTarget.value });
-                    this.updateList();
+                    this.setState({ transitionType: ev.currentTarget.value })
+                    this.updateList()
                   }}
                 />
                 {transition}
               </label>
-            );
+            )
           })}
         </div>
         <Flipper
-          flipKey={this.state.list.join("")}
+          onComplete={flipIds =>
+            console.log('complete', JSON.stringify(flipIds))
+          }
+          flipKey={this.state.list.join('')}
           element="ul"
           className="enter-update-delete-list"
           handleEnterUpdateDelete={callbacks => {
-            this.currentAnimations.forEach(animation => animation.pause());
-            this.currentAnimations = [];
-            transitions[this.state.transitionType](callbacks);
+            this.currentAnimations.forEach(animation => animation.pause())
+            this.currentAnimations = []
+            transitions[this.state.transitionType](callbacks)
           }}
         >
-          {this.state.exitContainer
-            ? <ExitContainer>
-                {flippedStuff}
-              </ExitContainer>
-            : flippedStuff}
+          {this.state.exitContainer ? (
+            <ExitContainer>{flippedStuff}</ExitContainer>
+          ) : (
+            flippedStuff
+          )}
         </Flipper>
       </div>
-    );
+    )
   }
 }
 
-export default EnterUpdateDeleteDemo;
+export default EnterUpdateDeleteDemo

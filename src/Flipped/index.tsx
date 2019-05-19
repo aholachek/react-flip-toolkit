@@ -22,6 +22,7 @@ const propTypes = {
   onStart: PropTypes.func,
   onComplete: PropTypes.func,
   onAppear: PropTypes.func,
+  onSpringUpdate: PropTypes.func,
   shouldFlip: PropTypes.func,
   shouldInvert: PropTypes.func,
   onExit: PropTypes.func,
@@ -89,6 +90,7 @@ export const FlippedWithContext: FunctionComponent<FlippedProps> = ({
   onComplete,
   onExit,
   gestureBind,
+  onSpringUpdate,
   ...rest
 }) => {
   if (!children) {
@@ -115,7 +117,8 @@ export const FlippedWithContext: FunctionComponent<FlippedProps> = ({
                 onStart,
                 onStartImmediate,
                 onComplete,
-                onExit
+                onExit,
+                onSpringUpdate
               }
             }
             return (

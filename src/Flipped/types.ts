@@ -37,6 +37,7 @@ export interface CallbackFlippedProps {
     prevDecisionData: any,
     currentDecisionData: any
   ) => void
+  onSpringUpdate?: (springValue: number) => void
   onAppear?: (element: HTMLElement, index: number) => void
   onExit?: (
     element: HTMLElement,

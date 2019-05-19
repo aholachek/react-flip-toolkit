@@ -48,7 +48,10 @@ class PhotoGrid extends Component {
     const { focused } = this.state
 
     return (
-      <Flipper flipKey={focused}>
+      <Flipper
+        flipKey={focused}
+        onComplete={flipIds => console.log('complete', JSON.stringify(flipIds))}
+      >
         <div className="photoGridExample" ref={el => (this.el = el)}>
           <div className="photoGrid">
             {data.map((d, i) => {

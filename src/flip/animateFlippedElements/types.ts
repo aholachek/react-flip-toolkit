@@ -1,6 +1,6 @@
 import { BaseFlipArgs, FlippedIds } from '../types'
 import { SpringOption, SpringConfig } from '../../springSettings/types'
-import { StaggerConfig } from '../../Flipper/types'
+import { StaggerConfig, OnFlipperComplete } from '../../Flipper/types'
 import { SerializableFlippedProps, FlipId } from '../../Flipped/types'
 import { Spring } from '../../forked-rebound/types'
 
@@ -15,6 +15,7 @@ export interface AnimateFlippedElementsArgs extends BaseFlipArgs {
   decisionData: any
   scopedSelector: ScopedSelector
   retainTransform: boolean
+  onComplete: OnFlipperComplete
 }
 
 export type OnUpdate = (spring: Spring) => void

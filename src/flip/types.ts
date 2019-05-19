@@ -36,4 +36,5 @@ export interface OnFlipKeyUpdateArgs {
   handleEnterUpdateDelete?: HandleEnterUpdateDelete
   retainTransform?: boolean
   isGestureControlled?: boolean
+  onComplete?: (flipIds: FlippedIds) => void
 }

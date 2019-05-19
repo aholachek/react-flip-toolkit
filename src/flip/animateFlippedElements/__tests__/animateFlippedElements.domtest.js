@@ -174,7 +174,7 @@ describe('animateFlippedElements', () => {
       scopedSelector
     })
 
-    expect(getElement('id-1').style.transformOrigin).to.equal('75% 75% 0px')
+    expect(getElement('id-1').style.transformOrigin).to.equal('75% 75%')
   })
 
   it('should otherwise apply a 0 0 transform origin', () => {
@@ -216,7 +216,7 @@ describe('animateFlippedElements', () => {
       scopedSelector
     })
 
-    expect(getElement('id-1').style.transformOrigin).to.equal('0px 0px 0px')
+    expect(getElement('id-1').style.transformOrigin).to.equal('0px 0px')
   })
 
   it('should cache stop and onComplete functions for the element in inProgressAnimations ', () => {
