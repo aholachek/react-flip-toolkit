@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import DefaultFlipper from '../Flipper'
+import Flipper from '../Flipper'
 import DefaultFlipped from '../Flipped'
 import { FlippedProps } from '../Flipped/types'
-import { FlipperProps } from '../Flipper/types'
 import Gesture from './withGesture'
 import { GestureContext } from '../Flipper'
 import clamp from 'lodash-es/clamp'
@@ -10,9 +9,7 @@ import { InProgressAnimations } from '../../Flipper/types'
 import { GestureParams } from './types'
 import Spring from '../../forked-rebound/Spring'
 
-export const Flipper = (props: FlipperProps) => (
-  <DefaultFlipper {...props} isGestureControlled={true} />
-)
+export { Flipper }
 
 const defaultCompleteThreshhold = 0.5
 
@@ -276,11 +273,6 @@ export class Flipped extends Component {
 
       const percentage = absoluteMovement / difference
 
-      if (this.props.respondToGesture.onChange) {
-        debugger
-        this.props.respondToGesture.onChange(percentage)
-      }
-
       // abort flip -- this is interruptible if user
       // tries to drag before animation is completed
       if (!down && percentage < cachedConfig.completeThreshold) {
@@ -305,20 +297,21 @@ export class Flipped extends Component {
   }
 
   render() {
-    if (this.props.respondToGesture) {
+    const { respondToGesture, ...rest } = this.props
+    if (respondToGesture) {
       return (
         <GestureContext.Consumer>
           {inProgressAnimations => (
             // this.gestureHandler only gets called once
             // which is ok bc inProgressAnimations is an object and the reference doesn't change
             <Gesture onAction={this.gestureHandler(inProgressAnimations)}>
-              <DefaultFlipped {...this.props} />
+              <DefaultFlipped {...rest} isGestureControlled={true} />
             </Gesture>
           )}
         </GestureContext.Consumer>
       )
     }
-    return <DefaultFlipped {...this.props} />
+    return <DefaultFlipped {...rest} />
   }
 }
 

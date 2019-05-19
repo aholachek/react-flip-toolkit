@@ -40,7 +40,6 @@ class Flipper extends Component<FlipperProps> {
   ) {
     if (this.props.flipKey !== prevProps.flipKey && this.el) {
       onFlipKeyUpdate({
-        isGestureControlled: this.props.isGestureControlled,
         flippedElementPositionsBeforeUpdate: cachedData.flippedElementPositions,
         cachedOrderedFlipIds: cachedData.cachedOrderedFlipIds,
         containerEl: this.el,
@@ -68,16 +67,18 @@ class Flipper extends Component<FlipperProps> {
     const Element = element
 
     let flipperMarkup = (
-      <FlipContext.Provider value={this.flipCallbacks}>
-        {/*
+      <GestureContext.Provider value={this.inProgressAnimations}>
+        <FlipContext.Provider value={this.flipCallbacks}>
+          {/*
         // @ts-ignore */}
-        <Element
-          className={className}
-          ref={(el: HTMLElement) => (this.el = el)}
-        >
-          {this.props.children}
-        </Element>
-      </FlipContext.Provider>
+          <Element
+            className={className}
+            ref={(el: HTMLElement) => (this.el = el)}
+          >
+            {this.props.children}
+          </Element>
+        </FlipContext.Provider>
+      </GestureContext.Provider>
     )
 
     if (portalKey) {
@@ -87,13 +88,7 @@ class Flipper extends Component<FlipperProps> {
         </PortalContext.Provider>
       )
     }
-    if (this.props.isGestureControlled) {
-      flipperMarkup = (
-        <GestureContext.Provider value={this.inProgressAnimations}>
-          {flipperMarkup}
-        </GestureContext.Provider>
-      )
-    }
+
     return flipperMarkup
   }
 }
@@ -114,6 +109,7 @@ if (process.env.NODE_ENV !== 'production') {
     handleEnterUpdateDelete: PropTypes.func,
     retainTransform: PropTypes.bool,
     onComplete: PropTypes.func,
+    isGestureControlled: PropTypes.bool
   }
 }
 

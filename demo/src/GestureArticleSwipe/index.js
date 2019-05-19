@@ -18,10 +18,12 @@ const StyledLi = styled.li`
   justify-content: space-between;
   height: 10rem;
   margin-bottom: 0.5rem;
-  > a {
-    width: 100%;
-    height: 100%;
-  }
+  min-height: 5rem;
+`
+
+const StyledArticleListItem = styled.a`
+  width: 100%;
+  height: 100%;
 `
 
 const StyledList = styled.ul`
@@ -38,7 +40,7 @@ const StyledContainer = styled.div`
   min-height: 100vh;
 `
 
-const StyledExpandedArticle = styled.div`
+const StyledExpandedArticle = styled.a`
   z-index: 1;
   position: absolute;
   top: 0;
@@ -49,7 +51,7 @@ const StyledExpandedArticle = styled.div`
   border: 1px solid gray;
 `
 
-const ExpandedListItem = ({ id, title, description }) => {
+const ExpandedListItem = ({ id, title, description, returnToListView }) => {
   const cancelFLIP = ({ prevProps }) => {
     return updatePosition({
       position: prevProps.position,
@@ -70,31 +72,31 @@ const ExpandedListItem = ({ id, title, description }) => {
       //   cancelFLIP
       // }}
     >
-      <StyledExpandedArticle>
+      <StyledExpandedArticle onClick={returnToListView}>
         <h1>{title}</h1>
+        <p>{id}</p>
         <p>{description}</p>
       </StyledExpandedArticle>
     </Flipped>
   )
 }
 
-const ListItem = ({ setCurrentlyViewed, article }) => {
+const ArticleListItem = ({ setCurrentlyViewed, article }) => {
   return (
-    <StyledLi>
-      <a
-        href="#"
-        onClick={e => {
-          e.preventDefault()
-          setCurrentlyViewed()
-        }}
-      >
-        <Flipped flipId={`article-${article.id}`}>
-          <StyledCollapsedArticle>
-            <h3>{article.title}</h3>
-          </StyledCollapsedArticle>
-        </Flipped>
-      </a>
-    </StyledLi>
+    <StyledArticleListItem
+      href="#"
+      onClick={e => {
+        e.preventDefault()
+        setCurrentlyViewed(article.id)
+      }}
+    >
+      <Flipped flipId={`article-${article.id}`}>
+        <StyledCollapsedArticle>
+          <h3>{article.title}</h3>
+          <p>{article.id}</p>
+        </StyledCollapsedArticle>
+      </Flipped>
+    </StyledArticleListItem>
   )
 }
 
@@ -115,20 +117,21 @@ const App = () => {
     <Flipper flipKey={currentlyViewed}>
       <StyledContainer>
         <StyledList>
-          {articles
-            .filter(({ id }) => id !== currentlyViewed)
-            .map(article => (
-              <ListItem
-                key={article.id}
-                article={article}
-                setCurrentlyViewed={() => setCurrentlyViewed(article.id)}
-              />
-            ))}
+          {articles.map(article => (
+            <StyledLi key={article.id}>
+              {article.id !== currentlyViewed && (
+                <ArticleListItem
+                  article={article}
+                  setCurrentlyViewed={setCurrentlyViewed}
+                />
+              )}
+            </StyledLi>
+          ))}
         </StyledList>
-        {currentlyViewed && (
+        {currentlyViewed !== null && (
           <ExpandedListItem
             returnToListView={returnToListView}
-            {...articles[currentlyViewed]}
+            {...articles.find(({ id }) => id === currentlyViewed)}
           />
         )}
       </StyledContainer>

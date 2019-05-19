@@ -27,7 +27,8 @@ const propTypes = {
   shouldInvert: PropTypes.func,
   onExit: PropTypes.func,
   portalKey: PropTypes.string,
-  stagger: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
+  stagger: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  isGestureControlled: PropTypes.bool,
 }
 
 function isFunction(child: any): child is Function {
@@ -89,8 +90,8 @@ export const FlippedWithContext: FunctionComponent<FlippedProps> = ({
   onStartImmediate,
   onComplete,
   onExit,
-  gestureBind,
   onSpringUpdate,
+  isGestureControlled
   ...rest
 }) => {
   if (!children) {
@@ -122,7 +123,7 @@ export const FlippedWithContext: FunctionComponent<FlippedProps> = ({
               }
             }
             return (
-              <Flipped flipId={flipId} {...rest} portalKey={portalKey}>
+              <Flipped flipId={flipId} {...rest} portalKey={portalKey} isGestureControlled={isGestureControlled}>
                 {children}
               </Flipped>
             )
