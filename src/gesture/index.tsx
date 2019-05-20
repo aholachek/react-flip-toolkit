@@ -18,13 +18,14 @@ const isArray = (x: any): x is any[] =>
 
 const finishFlip = ({
   inProgressAnimations,
-  velocity
+  velocity,
+  onFinished
 }: {
   inProgressAnimations: InProgressAnimations
   velocity: number
 }) => {
   const clampedVelocity = velocity !== undefined && clamp(velocity, 0.025, 15)
-  Object.keys(inProgressAnimations).map(flipId => {
+  const onFinishedPromises = Object.keys(inProgressAnimations).map(flipId => {
     const { spring, onAnimationEnd } = inProgressAnimations[flipId]
     if (!spring) {
       return
@@ -33,17 +34,21 @@ const finishFlip = ({
       spring.setVelocity(clampedVelocity)
     }
     spring.setEndValue(1)
-    spring.addOneTimeListener({
-      onSpringAtRest: (spring: Spring) => {
-        // if not 1, assume this has been interrupted by subsequent gesture
-        if (spring.getCurrentValue() !== 1) {
-          return
+    return new Promise(resolve => {
+      spring.addOneTimeListener({
+        onSpringAtRest: (spring: Spring) => {
+          // if not 1, assume this has been interrupted by subsequent gesture
+          if (spring.getCurrentValue() !== 1) {
+            return
+          }
+          resolve()
+          onAnimationEnd()
+          spring.destroy()
         }
-        onAnimationEnd()
-        spring.destroy()
-      }
+      })
     })
   })
+  return Promise.all(onFinishedPromises).then(onFinished)
 }
 
 const cancelFlip = ({
@@ -84,15 +89,18 @@ const cancelFlip = ({
   // wait until the end to destroy springs so you don't accidentally destroy some of them
   // and keep others around
   Promise.all(onCompletePromises).then(() => {
-    // might be some sort of race condition with multiple calls to this function
+    // this can be triggered multiple times so try to bail out if thats the case
+    // TODO: figure out a cleaner way to handle
     if (!Object.keys(inProgressAnimations).length) {
       return
     }
+    Object.keys(inProgressAnimations).map(flipId => {
+      if (inProgressAnimations[flipId]) {
+        inProgressAnimations[flipId].spring.destroy()
+        delete inProgressAnimations[flipId]
+      }
+    })
     onFlipCancelled()
-
-    Object.keys(inProgressAnimations).map(flipId =>
-      inProgressAnimations[flipId].spring!.destroy()
-    )
   })
 }
 
@@ -126,7 +134,7 @@ export class Flipped extends Component {
     this.prevProps = prevProps
   }
 
-  gestureHandler(inProgressAnimations) {
+  gestureHandler({ inProgressAnimations, setIsGestureControlled }) {
     return ({
       velocity,
       delta: [deltaX, deltaY],
@@ -175,8 +183,10 @@ export class Flipped extends Component {
           ? this.props.respondToGesture
           : [this.props.respondToGesture]
 
+        console.log(normalizedRespondToGesture)
+
         let configMatchingCurrentDirection = normalizedRespondToGesture.filter(
-          config => config.direction === currentDirection
+          config => config && config.direction === currentDirection
         )[0]
 
         // user function didn't respond with an object when called
@@ -192,6 +202,8 @@ export class Flipped extends Component {
           ...configMatchingCurrentDirection,
           direction: currentDirection
         }
+        setIsGestureControlled(true)
+
         configMatchingCurrentDirection.initFLIP({
           props: this.props,
           prevProps: this.prevProps
@@ -236,11 +248,13 @@ export class Flipped extends Component {
         cancelFlip({
           velocity,
           inProgressAnimations,
-          onFlipCancelled: () =>
+          onFlipCancelled: () => {
+            setIsGestureControlled(false)
             cachedConfig.cancelFLIP({
               props: this.props,
               prevProps: this.prevProps
             })
+          }
         })
 
       if (cachedConfig.direction !== currentDirection) {
@@ -285,7 +299,8 @@ export class Flipped extends Component {
         this.temporarilyInvalidFlipIds.push(this.props.flipId)
         return finishFlip({
           velocity,
-          inProgressAnimations
+          inProgressAnimations,
+          onFinished: () => setIsGestureControlled(false)
         })
       }
 
@@ -298,20 +313,35 @@ export class Flipped extends Component {
 
   render() {
     const { respondToGesture, ...rest } = this.props
+
+    const defaultFlipped = <DefaultFlipped {...rest} />
+
     if (respondToGesture) {
       return (
         <GestureContext.Consumer>
-          {inProgressAnimations => (
-            // this.gestureHandler only gets called once
-            // which is ok bc inProgressAnimations is an object and the reference doesn't change
-            <Gesture onAction={this.gestureHandler(inProgressAnimations)}>
-              <DefaultFlipped {...rest} isGestureControlled={true} />
-            </Gesture>
-          )}
+          {({
+            inProgressAnimations,
+            setIsGestureControlled,
+            isGestureControlled
+          }) => {
+            return (
+              <Gesture
+                onAction={this.gestureHandler({
+                  inProgressAnimations,
+                  setIsGestureControlled
+                })}
+              >
+                <DefaultFlipped
+                  {...rest}
+                  isGestureControlled={isGestureControlled}
+                />
+              </Gesture>
+            )
+          }}
         </GestureContext.Consumer>
       )
     }
-    return <DefaultFlipped {...rest} />
+    return defaultFlipped
   }
 }
 

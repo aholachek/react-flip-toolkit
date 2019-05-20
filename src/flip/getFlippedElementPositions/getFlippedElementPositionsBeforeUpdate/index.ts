@@ -66,6 +66,9 @@ const getFlippedElementPositionsBeforeUpdate = ({
 
   const flippedElementPositions: FlippedElementPositionsBeforeUpdate = flippedElements
     .map(child => {
+      if (child.dataset.flipId === 'drawer') {
+        console.log('bounding client rect',child.getBoundingClientRect().top, child.style.transform)
+      }
       const domDataForExitAnimations = {}
       const childBCR = child.getBoundingClientRect()
 
@@ -111,13 +114,9 @@ const getFlippedElementPositionsBeforeUpdate = ({
     el.style.opacity = ''
   })
 
-  const isGestureControlled = flippedElements.filter(
-    element => element.dataset.isGestureControlled
-  ).length
   return {
     flippedElementPositions,
-    cachedOrderedFlipIds: flippedElements.map(el => el.dataset.flipId!),
-    isGestureControlled
+    cachedOrderedFlipIds: flippedElements.map(el => el.dataset.flipId!)
   }
 }
 

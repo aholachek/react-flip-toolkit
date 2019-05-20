@@ -1,7 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Flipper } from '../../../src'
 import { Flipped } from '../../../src/gesture'
 import styled from 'styled-components'
+
+const StyledContainer = styled.div`
+  position: relative;
+  width: 100%;
+  max-width: 30rem;
+  margin: 0 auto;
+  overflow: hidden;
+`
 
 const StyledLi = styled.li`
   position: relative;
@@ -30,18 +38,10 @@ const StyledCollapsedArticle = styled.a`
 const StyledList = styled.ul`
   padding: 0;
   margin: 0;
+  transform: ${props => (props.article ? 'scale(.85)' : 'scale(1)')};
 `
 
-const StyledContainer = styled.div`
-  position: relative;
-  width: 100%;
-  max-width: 30rem;
-  margin: 0 auto;
-  overflow: hidden;
-  min-height: 100vh;
-`
-
-const StyledExpandedArticle = styled.a`
+const StyledDrawer = styled.div`
   z-index: 1;
   position: absolute;
   top: 0;
@@ -50,50 +50,58 @@ const StyledExpandedArticle = styled.a`
   height: 100%;
   background: white;
   border: 1px solid gray;
+   /* top: ${({ article }) => (article ? 0 : '100%')}; */
+   transform: ${({ article }) =>
+     article ? 'translateY(0)' : 'translateY(100%)'};
 `
 
-const ExpandedListItem = ({
-  id,
-  title,
-  description,
-  returnToListView,
-  setCurrentlyViewed
-}) => {
-  const cancelFLIP = ({ prevProps }) => {
-    return updatePosition({
-      position: prevProps.position,
-      id: article.id
-    })
-  }
+const StyledDrawerContent = styled.div`
+  opacity: ${({ article }) => (article ? 1 : 0)};
+`
+
+function usePrevious(value) {
+  const ref = useRef()
+  useEffect(
+    () => {
+      ref.current = value
+    },
+    [value]
+  )
+  return ref.current
+}
+
+const Drawer = ({ article, returnToListView, setCurrentlyViewed }) => {
+  const previousArticle = usePrevious(article)
+  const articleToRender = article || previousArticle
   return (
     <Flipped
-      flipId={`article-${id}`}
+      flipId="drawer"
       respondToGesture={{
         direction: 'down',
         initFLIP: returnToListView,
-        cancelFLIP: () => setCurrentlyViewed(id)
+        cancelFLIP: () => {
+          setCurrentlyViewed(article.id)
+        }
       }}
     >
-      <StyledExpandedArticle>
-        <h1>{title}</h1>
-        <p>{id}</p>
-        <p>{description}</p>
-      </StyledExpandedArticle>
+      <StyledDrawer article={article} onClick={returnToListView}>
+        {articleToRender && (
+          <Flipped flipId="article-text" opacity>
+            <StyledDrawerContent article={article}>
+              <h1>{articleToRender.title}</h1>
+              <p>{articleToRender.id}</p>
+              <p>{articleToRender.description}</p>
+            </StyledDrawerContent>
+          </Flipped>
+        )}
+      </StyledDrawer>
     </Flipped>
   )
 }
 
 const ArticleListItem = ({ setCurrentlyViewed, article }) => {
   return (
-    <Flipped
-      flipId={`article-${article.id}`}
-      onStart={el => {
-        el.style.zIndex = 2
-      }}
-      onComplete={el => {
-        el.style.zIndex = null
-      }}
-    >
+    <Flipped flipId={`article-${article.id}`}>
       <StyledCollapsedArticle
         href="#"
         onClick={e => {
@@ -109,13 +117,30 @@ const ArticleListItem = ({ setCurrentlyViewed, article }) => {
 }
 
 const articles = [
-  { title: 'Foo', id: 1 },
-  { title: 'Foo', id: 2 },
-  { title: 'Foo', id: 3 }
+  {
+    title: 'Foo',
+    id: 1,
+    description:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+  },
+  {
+    title: 'Foo',
+    id: 2,
+    description:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+  },
+  {
+    title: 'Foo',
+    id: 3,
+    description:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+  }
 ]
 
 const App = () => {
   const [currentlyViewed, setCurrentlyViewed] = useState(null)
+
+  const article = articles.find(article => article.id === currentlyViewed)
 
   const returnToListView = () => {
     setCurrentlyViewed(null)
@@ -124,25 +149,23 @@ const App = () => {
   return (
     <Flipper flipKey={currentlyViewed}>
       <StyledContainer>
-        <StyledList>
+        <StyledList article={article}>
           {articles.map(article => (
             <StyledLi key={article.id}>
-              {article.id !== currentlyViewed && (
+              {
                 <ArticleListItem
                   article={article}
                   setCurrentlyViewed={setCurrentlyViewed}
                 />
-              )}
+              }
             </StyledLi>
           ))}
         </StyledList>
-        {currentlyViewed !== null && (
-          <ExpandedListItem
-            setCurrentlyViewed={setCurrentlyViewed}
-            returnToListView={returnToListView}
-            {...articles.find(({ id }) => id === currentlyViewed)}
-          />
-        )}
+        <Drawer
+          article={article}
+          returnToListView={returnToListView}
+          setCurrentlyViewed={setCurrentlyViewed}
+        />
       </StyledContainer>
     </Flipper>
   )

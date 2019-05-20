@@ -61,7 +61,6 @@ const ListItem = ({ updatePosition, position, email }) => {
       id: email.id
     })
   }
-  console.log(position)
   return (
     <StyledLi>
       <Flipped flipId={`${email.id}-favorite`}>

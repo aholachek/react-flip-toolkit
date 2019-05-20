@@ -111,10 +111,11 @@ export const createApplyStylesFunc = ({
   if (stringTransform === identityTransform) {
     if (retainTransform) {
       stringTransform = transformWithInvisibleSkew
-    } else {
-      stringTransform = ''
     }
   }
+  // always apply transform, even if identity,
+  // because identity might be the starting state in a FLIP
+  // transition, if the element's position is controlled by transforms
   element.style.transform = stringTransform
 
   if (invertedChildren) {
@@ -166,7 +167,7 @@ export default ({
   isGestureControlled
 }: AnimateFlippedElementsArgs) => {
   const firstElement: HTMLElement = getElement(flippedIds[0])
-  // this acommodates iframes
+  // this accomodates iframes
   const body = firstElement.ownerDocument!.querySelector('body')!
 
   // the stuff below is used so we can return a promise that resolves when all FLIP animations have
@@ -363,6 +364,7 @@ export default ({
         if (isFunction(onComplete)) {
           onComplete()
         }
+        element.style.transform = ''
         if (needsForcedMinVals && element) {
           element.style.minHeight = ''
           element.style.minWidth = ''
@@ -444,6 +446,9 @@ export default ({
           opacity: animateOpacity ? fromVals.opacity : undefined,
           forceMinVals: needsForcedMinVals
         })
+        if (id === 'drawer') {
+          console.log('fromvals', fromVals, 'toVals', toVals)
+        }
         if (flipCallbacks[id] && flipCallbacks[id].onStartImmediate) {
           flipCallbacks[id].onStartImmediate!(
             element,

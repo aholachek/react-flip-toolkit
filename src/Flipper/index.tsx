@@ -16,9 +16,15 @@ class Flipper extends Component<FlipperProps> {
     retainTransform: false
   }
 
+  private isGestureControlled: boolean = false
+
   private inProgressAnimations: InProgressAnimations = {}
   private flipCallbacks: FlipCallbacks = {}
   private el?: HTMLElement = undefined
+
+  setIsGestureControlled = (val: boolean) => {
+    this.isGestureControlled = val
+  }
 
   getSnapshotBeforeUpdate(prevProps: FlipperProps) {
     if (prevProps.flipKey !== this.props.flipKey && this.el) {
@@ -42,7 +48,7 @@ class Flipper extends Component<FlipperProps> {
       onFlipKeyUpdate({
         flippedElementPositionsBeforeUpdate: cachedData.flippedElementPositions,
         cachedOrderedFlipIds: cachedData.cachedOrderedFlipIds,
-        isGestureControlled: cachedData.isGestureControlled,
+        isGestureControlled: this.isGestureControlled,
         containerEl: this.el,
         inProgressAnimations: this.inProgressAnimations,
         flipCallbacks: this.flipCallbacks,
@@ -68,7 +74,13 @@ class Flipper extends Component<FlipperProps> {
     const Element = element
 
     let flipperMarkup = (
-      <GestureContext.Provider value={this.inProgressAnimations}>
+      <GestureContext.Provider
+        value={{
+          inProgressAnimations: this.inProgressAnimations,
+          setIsGestureControlled: this.setIsGestureControlled,
+          isGestureControlled: this.isGestureControlled
+        }}
+      >
         <FlipContext.Provider value={this.flipCallbacks}>
           {/*
         // @ts-ignore */}
