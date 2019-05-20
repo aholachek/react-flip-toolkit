@@ -66,9 +66,6 @@ const getFlippedElementPositionsBeforeUpdate = ({
 
   const flippedElementPositions: FlippedElementPositionsBeforeUpdate = flippedElements
     .map(child => {
-      if (child.dataset.flipId === 'drawer') {
-        console.log('bounding client rect',child.getBoundingClientRect().top, child.style.transform)
-      }
       const domDataForExitAnimations = {}
       const childBCR = child.getBoundingClientRect()
 

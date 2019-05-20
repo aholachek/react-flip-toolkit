@@ -183,8 +183,6 @@ export class Flipped extends Component {
           ? this.props.respondToGesture
           : [this.props.respondToGesture]
 
-        console.log(normalizedRespondToGesture)
-
         let configMatchingCurrentDirection = normalizedRespondToGesture.filter(
           config => config && config.direction === currentDirection
         )[0]

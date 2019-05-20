@@ -21,6 +21,26 @@ const StyledLi = styled.li`
   min-height: 5rem;
 `
 
+const actionMixin = props => `
+display: flex;
+justify-content: center;
+align-items: center;
+width: 40%;
+`
+
+const Favorite = styled.div`
+  background-color: blue;
+  ${actionMixin};
+`
+const Trash = styled.div`
+  background-color: red;
+  ${actionMixin};
+`
+
+const StyledCollapsedArticleContainer = styled.div`
+  position: relative;
+`
+
 const StyledCollapsedArticle = styled.a`
   width: 100%;
   height: 100%;
@@ -29,10 +49,18 @@ const StyledCollapsedArticle = styled.a`
   margin-bottom: 0.5rem;
   padding: 1rem;
   cursor: pointer;
+  display: block;
+  position: absolute;
+  top: 0;
+  bottom: 0;
   width: 100%;
   height: 100%;
-  display: block;
-  position: relative;
+  left: ${props =>
+    props.position === 'left'
+      ? `-10rem`
+      : props.position === 'right'
+      ? '10rem'
+      : 0};
 `
 
 const StyledList = styled.ul`
@@ -100,19 +128,52 @@ const Drawer = ({ article, returnToListView, setCurrentlyViewed }) => {
 }
 
 const ArticleListItem = ({ setCurrentlyViewed, article }) => {
+  const [position, setPosition] = useState('center')
+  const cancelFLIP = ({ prevProps }) => {
+    return updatePosition(prevProps.position)
+  }
   return (
-    <Flipped flipId={`article-${article.id}`}>
-      <StyledCollapsedArticle
-        href="#"
-        onClick={e => {
-          e.preventDefault()
-          setCurrentlyViewed(article.id)
-        }}
+    <StyledCollapsedArticleContainer>
+      <Flipped flipId={`${article.id}-favorite`}>
+        <Favorite position={position}> favorite </Favorite>
+      </Flipped>
+      <Flipped
+        position
+        flipId={`article-${article.id}`}
+        respondToGesture={[
+          {
+            direction: 'left',
+            initFLIP: ({ props }) => {
+              if (props.position === 'center') return setPosition('left')
+              if (props.position === 'right') return setPosition('center')
+            },
+            cancelFLIP
+          },
+          {
+            direction: 'right',
+            initFLIP: ({ props }) => {
+              if (props.position === 'center') return setPosition('right')
+              if (props.position === 'left') return setPosition('center')
+            },
+            cancelFLIP
+          }
+        ]}
       >
-        <h3>{article.title}</h3>
-        <p>{article.id}</p>
-      </StyledCollapsedArticle>
-    </Flipped>
+        <StyledCollapsedArticle
+          href="#"
+          onClick={e => {
+            e.preventDefault()
+            setCurrentlyViewed(article.id)
+          }}
+        >
+          <h3>{article.title}</h3>
+          <p>{article.id}</p>
+        </StyledCollapsedArticle>
+      </Flipped>
+      <Flipped flipId={`${article.id}-trash`}>
+        <Trash position={position}> trash </Trash>
+      </Flipped>
+    </StyledCollapsedArticleContainer>
   )
 }
 

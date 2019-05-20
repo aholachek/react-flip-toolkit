@@ -446,9 +446,7 @@ export default ({
           opacity: animateOpacity ? fromVals.opacity : undefined,
           forceMinVals: needsForcedMinVals
         })
-        if (id === 'drawer') {
-          console.log('fromvals', fromVals, 'toVals', toVals)
-        }
+
         if (flipCallbacks[id] && flipCallbacks[id].onStartImmediate) {
           flipCallbacks[id].onStartImmediate!(
             element,
