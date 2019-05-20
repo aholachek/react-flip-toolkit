@@ -108,10 +108,8 @@ export const createApplyStylesFunc = ({
 
   let stringTransform = convertMatrix2dArrayToString(matrix)
 
-  if (stringTransform === identityTransform) {
-    if (retainTransform) {
-      stringTransform = transformWithInvisibleSkew
-    }
+  if (retainTransform && stringTransform === identityTransform) {
+    stringTransform = transformWithInvisibleSkew
   }
   // always apply transform, even if identity,
   // because identity might be the starting state in a FLIP
@@ -364,6 +362,7 @@ export default ({
         if (isFunction(onComplete)) {
           onComplete()
         }
+        // remove identity transform -- this should have no effect on layout
         element.style.transform = ''
         if (needsForcedMinVals && element) {
           element.style.minHeight = ''
