@@ -164,7 +164,7 @@ describe('createApplyStylesFunc', () => {
     expect(element.style.minHeight).to.equal('1px')
   })
 
-  it('should remove the transform on the last tick of the animation', () => {
+  it('should apply the identity transform if requested to do so', () => {
     const body = document.querySelector('body')
     const element = document.querySelector('[data-flip-id="id-1"]')
     const invertedChildren = []
@@ -178,7 +178,7 @@ describe('createApplyStylesFunc', () => {
       matrix: [1, 0, 0, 1, 0, 0]
     })
 
-    expect(element.style.transform).to.equal('')
+    expect(element.style.transform).to.equal('matrix(1, 0, 0, 1, 0, 0)')
   })
 
   it('should keep a tiny transform on the last tick of the animation if retainTransform = true', () => {

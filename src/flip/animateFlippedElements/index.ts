@@ -108,12 +108,8 @@ export const createApplyStylesFunc = ({
 
   let stringTransform = convertMatrix2dArrayToString(matrix)
 
-  if (stringTransform === identityTransform) {
-    if (retainTransform) {
-      stringTransform = transformWithInvisibleSkew
-    } else {
-      stringTransform = ''
-    }
+  if (retainTransform && stringTransform === identityTransform) {
+    stringTransform = transformWithInvisibleSkew
   }
 
   element.style.transform = stringTransform
@@ -357,6 +353,8 @@ export default ({
         if (isFunction(onComplete)) {
           onComplete()
         }
+        // remove identity transform -- this should have no effect on layout
+        element.style.transform = ''
         if (needsForcedMinVals && element) {
           element.style.minHeight = ''
           element.style.minWidth = ''
