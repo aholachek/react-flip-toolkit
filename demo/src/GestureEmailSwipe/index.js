@@ -69,7 +69,7 @@ const ListItem = ({ updatePosition, position, email }) => {
       <Flipped
         flipId={`${email.id}-message`}
         position={position}
-        respondToGesture={[
+        flipOnSwipe={[
           {
             direction: 'left',
             initFLIP: ({ props }) => {

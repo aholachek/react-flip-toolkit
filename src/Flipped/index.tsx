@@ -28,7 +28,7 @@ const propTypes = {
   onExit: PropTypes.func,
   portalKey: PropTypes.string,
   stagger: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-  isGestureControlled: PropTypes.bool,
+  isGestureControlled: PropTypes.bool
 }
 
 function isFunction(child: any): child is Function {
@@ -42,6 +42,7 @@ export const Flipped: FunctionComponent<SerializableFlippedProps> = ({
   inverseFlipId,
   portalKey,
   isGestureControlled,
+  gestureHandlers
   ...rest
 }) => {
   let child = children
@@ -72,6 +73,10 @@ export const Flipped: FunctionComponent<SerializableFlippedProps> = ({
     [constants.DATA_IS_GESTURE_CONTROLLED]: isGestureControlled
   }
 
+  if (gestureHandlers){
+    Object.assign(dataAttributes, ...gestureHandlers)
+  }
+
   if (portalKey) {
     dataAttributes[constants.DATA_PORTAL_KEY] = portalKey
   }
@@ -93,7 +98,8 @@ export const FlippedWithContext: FunctionComponent<FlippedProps> = ({
   onComplete,
   onExit,
   onSpringUpdate,
-  isGestureControlled
+  isGestureControlled,
+  gestureHandlers,
   ...rest
 }) => {
   if (!children) {
@@ -125,7 +131,13 @@ export const FlippedWithContext: FunctionComponent<FlippedProps> = ({
               }
             }
             return (
-              <Flipped flipId={flipId} {...rest} portalKey={portalKey} isGestureControlled={isGestureControlled}>
+              <Flipped
+                flipId={flipId}
+                {...rest}
+                portalKey={portalKey}
+                isGestureControlled={isGestureControlled}
+                gestureHandlers={gestureHandlers}
+              >
                 {children}
               </Flipped>
             )

@@ -134,18 +134,27 @@ export class Flipped extends Component {
     this.prevProps = prevProps
   }
 
-  gestureHandler({ inProgressAnimations, setIsGestureControlled }) {
+  gestureHandler({
+    inProgressAnimations,
+    setIsGestureControlled,
+    onNonSwipeClick
+  }) {
     return ({
       velocity,
       delta: [deltaX, deltaY],
       down,
-      first
+      first,
+      event
     }: {
       velocity: number
       delta: number[]
       down: boolean
       first: boolean
     }) => {
+      if (down === false && deltaX < 2 && deltaY < 2) {
+        onNonSwipeClick(event)
+        return
+      }
       if (
         first &&
         this.temporarilyInvalidFlipIds.indexOf(this.props.flipId) !== -1
@@ -179,9 +188,9 @@ export class Flipped extends Component {
       }
 
       if (!flipInProgress) {
-        const normalizedRespondToGesture = isArray(this.props.respondToGesture)
-          ? this.props.respondToGesture
-          : [this.props.respondToGesture]
+        const normalizedRespondToGesture = isArray(this.props.flipOnSwipe)
+          ? this.props.flipOnSwipe
+          : [this.props.flipOnSwipe]
 
         let configMatchingCurrentDirection = normalizedRespondToGesture.filter(
           config => config && config.direction === currentDirection
@@ -310,11 +319,11 @@ export class Flipped extends Component {
   }
 
   render() {
-    const { respondToGesture, ...rest } = this.props
+    const { flipOnSwipe, onNonSwipeClick, ...rest } = this.props
 
     const defaultFlipped = <DefaultFlipped {...rest} />
 
-    if (respondToGesture) {
+    if (flipOnSwipe) {
       return (
         <GestureContext.Consumer>
           {({
@@ -326,13 +335,19 @@ export class Flipped extends Component {
               <Gesture
                 onAction={this.gestureHandler({
                   inProgressAnimations,
-                  setIsGestureControlled
+                  setIsGestureControlled,
+                  onNonSwipeClick
                 })}
               >
-                <DefaultFlipped
-                  {...rest}
-                  isGestureControlled={isGestureControlled}
-                />
+                {gestureHandlers => {
+                  return (
+                    <DefaultFlipped
+                      {...rest}
+                      isGestureControlled={isGestureControlled}
+                      gestureHandlers={gestureHandlers}
+                    />
+                  )
+                }}
               </Gesture>
             )
           }}

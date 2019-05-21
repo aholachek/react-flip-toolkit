@@ -21,7 +21,7 @@ const ListItem = ({ index, color, onClick }) => {
         })
       }}
       shouldInvert={shouldFlip(index)}
-      respondToGesture={[
+      flipOnSwipe={[
         {
           initFLIP: () => {
             onClick(index)
@@ -88,7 +88,7 @@ const ExpandedListItem = ({ index, color, onClick }) => {
       onComplete={el => {
         el.classList.add('animated-in')
       }}
-      respondToGesture={{
+      flipOnSwipe={{
         initFLIP: () => {
           onClick(index)
         },

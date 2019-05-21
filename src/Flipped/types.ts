@@ -17,7 +17,7 @@ export interface SerializableFlippedProps {
   stagger?: string | boolean
   flipId?: FlipId
   inverseFlipId?: string
-  respondToGesture?: RespondToGesture
+  flipOnSwipe?: RespondToGesture
   // only added for gesture-controlled Flipped components
   key?: string
 }

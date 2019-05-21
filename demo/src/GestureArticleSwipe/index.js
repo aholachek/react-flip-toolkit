@@ -14,8 +14,6 @@ const StyledContainer = styled.div`
 const StyledLi = styled.li`
   position: relative;
   list-style-type: none;
-  display: flex;
-  justify-content: space-between;
   height: 10rem;
   margin-bottom: 0.5rem;
   min-height: 5rem;
@@ -37,11 +35,15 @@ const Trash = styled.div`
   ${actionMixin};
 `
 
-const StyledCollapsedArticleContainer = styled.div`
+const StyledCollapsedArticleContainer = styled(Flipper)`
   position: relative;
+  width: 100%;
+  display: flex;
+  height: 100%;
+  justify-content: space-between;
 `
 
-const StyledCollapsedArticle = styled.a`
+const StyledCollapsedArticle = styled.div`
   width: 100%;
   height: 100%;
   background-color: white;
@@ -78,12 +80,12 @@ const StyledDrawer = styled.div`
   height: 100%;
   background: white;
   border: 1px solid gray;
-   /* top: ${({ article }) => (article ? 0 : '100%')}; */
-   transform: ${({ article }) =>
-     article ? 'translateY(0)' : 'translateY(100%)'};
+  transform: ${({ article }) =>
+    article ? 'translateY(0)' : 'translateY(100%)'};
 `
 
 const StyledDrawerContent = styled.div`
+  user-select: none;
   opacity: ${({ article }) => (article ? 1 : 0)};
 `
 
@@ -104,7 +106,7 @@ const Drawer = ({ article, returnToListView, setCurrentlyViewed }) => {
   return (
     <Flipped
       flipId="drawer"
-      respondToGesture={{
+      flipOnSwipe={{
         direction: 'down',
         initFLIP: returnToListView,
         cancelFLIP: () => {
@@ -112,7 +114,7 @@ const Drawer = ({ article, returnToListView, setCurrentlyViewed }) => {
         }
       }}
     >
-      <StyledDrawer article={article} onClick={returnToListView}>
+      <StyledDrawer article={article}>
         {articleToRender && (
           <Flipped flipId="article-text" opacity>
             <StyledDrawerContent article={article}>
@@ -130,17 +132,17 @@ const Drawer = ({ article, returnToListView, setCurrentlyViewed }) => {
 const ArticleListItem = ({ setCurrentlyViewed, article }) => {
   const [position, setPosition] = useState('center')
   const cancelFLIP = ({ prevProps }) => {
-    return updatePosition(prevProps.position)
+    return setPosition(prevProps.position)
   }
   return (
-    <StyledCollapsedArticleContainer>
+    <StyledCollapsedArticleContainer flipKey={position}>
       <Flipped flipId={`${article.id}-favorite`}>
         <Favorite position={position}> favorite </Favorite>
       </Flipped>
       <Flipped
-        position
+        position={position}
         flipId={`article-${article.id}`}
-        respondToGesture={[
+        flipOnSwipe={[
           {
             direction: 'left',
             initFLIP: ({ props }) => {
@@ -158,14 +160,12 @@ const ArticleListItem = ({ setCurrentlyViewed, article }) => {
             cancelFLIP
           }
         ]}
+        onNonSwipeClick={e => {
+          e.preventDefault()
+          setCurrentlyViewed(article.id)
+        }}
       >
-        <StyledCollapsedArticle
-          href="#"
-          onClick={e => {
-            e.preventDefault()
-            setCurrentlyViewed(article.id)
-          }}
-        >
+        <StyledCollapsedArticle position={position} href="#">
           <h3>{article.title}</h3>
           <p>{article.id}</p>
         </StyledCollapsedArticle>

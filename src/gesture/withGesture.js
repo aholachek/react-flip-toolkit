@@ -1,4 +1,4 @@
-// from https://github.com/react-spring/react-use-gesture/blob/v4.0.7/index.js
+// edited from https://github.com/react-spring/react-use-gesture/blob/v4.0.7/index.js
 
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
@@ -7,15 +7,6 @@ const touchMove = 'touchmove'
 const touchEnd = 'touchend'
 const mouseMove = 'mousemove'
 const mouseUp = 'mouseup'
-const defaultProps = {
-  window,
-  touch: true,
-  mouse: true,
-  passive: { passive: true },
-  onAction: undefined,
-  onDown: undefined,
-  onUp: undefined
-}
 const initialState = {
   event: undefined,
   args: undefined,
@@ -161,24 +152,15 @@ function handlers(set, props = {}, args) {
 }
 
 class Gesture extends React.Component {
-  static propTypes = {
-    /** Optional. Accept mouse input, true by default */
-    mouse: PropTypes.bool,
-    /** Optional. Accept touch input, true by default */
-    touch: PropTypes.bool,
-    /** Optional. Calls back on mouse or touch down/up/move. When this is given it will manage state outside of React,
-     * in this case it will never cause a new render, clients have to rely on callbacks to get notified. */
-    onAction: PropTypes.func,
-    /** Optional. Provides a callback on mouseup and touchend events. */
-    onUp: PropTypes.func,
-    /** Optional. Provides a callback on touchstart and mousedown events. */
-    onDown: PropTypes.func,
-    /** Optional. addEventListener 3rd arg config, { passive: true } by default, should be false if you plan to call event.preventDefault() or event.stopPropagation() */
-    passive: PropTypes.any
+  static defaultProps = {
+    window,
+    touch: true,
+    mouse: true,
+    passive: { passive: true },
+    onAction: undefined,
+    onDown: undefined,
+    onUp: undefined
   }
-
-  static defaultProps = defaultProps
-
   constructor(props) {
     super(props)
     this.state = initialState
@@ -191,16 +173,7 @@ class Gesture extends React.Component {
   }
 
   render() {
-    const { style, children, className } = this.props
-    return (
-      <div
-        {...this.handlers}
-        style={{ display: 'contents', ...style }}
-        className={className}
-      >
-        {this.props.children}
-      </div>
-    )
+    return this.props.children(this.handlers)
   }
 }
 

@@ -19,7 +19,7 @@ class PaymentSidebar extends Component {
       <Flipper flipKey={collapsed} element="nav" className="foo">
         <Flipped
           flipId="container"
-          respondToGesture={{
+          flipOnSwipe={{
             initFLIP: this.toggleCollapsed,
             cancelFLIP: this.toggleCollapsed,
             direction: collapsed ? 'down' : 'up',

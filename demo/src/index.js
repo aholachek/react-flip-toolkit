@@ -22,6 +22,7 @@ import GestureStaggeredList from './GestureStaggeredList'
 import GestureEmailSwipe from './GestureEmailSwipe'
 import GestureMapSwipe from './GestureMapSwipe'
 import GestureArticleSwipe from './GestureArticleSwipe'
+// import GestureSidebarRight from './GestureSidebarRightExample'
 
 class Demo extends Component {
   render() {
@@ -52,6 +53,9 @@ class Demo extends Component {
     else if (window.location.pathname === '/gesture-map-swipe')
       return <GestureMapSwipe />
     else if (window.location.pathname === '/gesture-article-swipe')
+      return <GestureArticleSwipe />
+    else if (window.location.pathname === '/gesture-sidebar-right')
+      // return <GestureSidebarRight />
       return <GestureArticleSwipe />
     else
       return (
@@ -108,6 +112,9 @@ class Demo extends Component {
             </li>
             <li>
               <a href="/gesture-map-swipe">Gesture Map Swipe</a>
+            </li>
+            <li>
+              <a href="/gesture-sidebar-right">Gesture Sidebar Right</a>
             </li>
           </ul>
         </nav>
