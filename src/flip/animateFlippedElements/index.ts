@@ -156,18 +156,15 @@ export default ({
   getElement,
   debug,
   staggerConfig,
-  decisionData,
+  decisionData = {},
   scopedSelector,
   retainTransform,
   onComplete
 }: AnimateFlippedElementsArgs) => {
-  const firstElement: HTMLElement = getElement(flippedIds[0])
-  // this acommodates iframes
-  const body = firstElement.ownerDocument!.querySelector('body')!
-
   // the stuff below is used so we can return a promise that resolves when all FLIP animations have
   // completed
   let closureResolve: (flipIds: FlippedIds) => void
+
   const flipCompletedPromise: Promise<FlippedIds> = new Promise(resolve => {
     closureResolve = resolve
   })
@@ -175,8 +172,21 @@ export default ({
   if (onComplete) {
     flipCompletedPromise.then(onComplete)
   }
+  if (!flippedIds.length) {
+    return () => {
+      closureResolve!([])
+      return flipCompletedPromise
+    }
+  }
+
   let withInitFuncs: FlipDataArray
   const completedAnimationIds: FlippedIds = []
+
+  const firstElement: HTMLElement = getElement(flippedIds[0])
+  // special handling for iframes
+  const body = firstElement
+    ? firstElement.ownerDocument!.querySelector('body')!
+    : document.querySelector('body')!
 
   if (debug) {
     // eslint-disable-next-line no-console

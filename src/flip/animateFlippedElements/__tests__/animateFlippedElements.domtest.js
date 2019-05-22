@@ -147,7 +147,6 @@ describe('animateFlippedElements', () => {
       flipCallbacks: {},
       inProgressAnimations: {},
       duration: 1,
-      ease: 'easeOutSine',
       flippedElementPositionsBeforeUpdate: {
         'id-1': {
           rect: {
@@ -189,7 +188,6 @@ describe('animateFlippedElements', () => {
       flipCallbacks: {},
       inProgressAnimations: {},
       duration: 1,
-      ease: 'easeOutSine',
       flippedElementPositionsBeforeUpdate: {
         'id-1': {
           rect: {
@@ -236,8 +234,6 @@ describe('animateFlippedElements', () => {
         }
       },
       inProgressAnimations,
-      duration: 1000,
-      ease: 'easeOutSine',
       flippedElementPositionsBeforeUpdate: {
         'id-1': {
           rect: {
@@ -268,5 +264,85 @@ describe('animateFlippedElements', () => {
 
     expect(typeof inProgressAnimations['id-1'].stop).to.equal('function')
     expect(typeof inProgressAnimations['id-1'].onComplete).to.equal('function')
+  })
+
+  it('should return a function that, when called, returns a promise resolved with all flip ids', done => {
+    testEl.innerHTML = ` <div>
+    <div data-flip-id="id-1" data-flip-config='{}'></div>
+    </div>
+  `
+    const inProgressAnimations = {}
+
+    const flip = animateFlippedElements({
+      applyTransformOrigin: true,
+      flippedIds: ['id-1'],
+      flipCallbacks: {
+        'id-1': {
+          onComplete: () => {}
+        }
+      },
+      inProgressAnimations,
+      flippedElementPositionsBeforeUpdate: {
+        'id-1': {
+          rect: {
+            top: 10,
+            left: 10,
+            width: 100,
+            height: 100
+          }
+        }
+      },
+      flippedElementPositionsAfterUpdate: {
+        'id-1': {
+          rect: {
+            top: 100,
+            left: 100,
+            width: 100,
+            height: 100,
+            bottom: 200,
+            right: 200
+          }
+        }
+      },
+      getElement,
+      scopedSelector
+    })
+
+    flip().then(flipIds => {
+      expect(flipIds).to.deep.equal(['id-1'])
+      done()
+    })
+  })
+
+  it('should handle the case when there are no flipIds ', done => {
+    testEl.innerHTML = ` <div>
+    </div>
+  `
+
+    const flip = animateFlippedElements({
+      applyTransformOrigin: true,
+      flippedIds: [],
+      flipCallbacks: {},
+      inProgressAnimations: {},
+      duration: 1,
+      flippedElementPositionsBeforeUpdate: {
+        'id-1': {
+          rect: {
+            top: 10,
+            left: 10,
+            width: 100,
+            height: 100
+          }
+        }
+      },
+      flippedElementPositionsAfterUpdate: {},
+      getElement,
+      scopedSelector
+    })
+
+    flip().then(flipIds => {
+      expect(flipIds).to.deep.equal([])
+      done()
+    })
   })
 })
