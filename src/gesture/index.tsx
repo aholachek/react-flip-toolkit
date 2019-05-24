@@ -16,6 +16,26 @@ const defaultCompleteThreshhold = 0.5
 const isArray = (x: any): x is any[] =>
   Object.prototype.toString.call(x) === '[object Array]'
 
+const getMovementScalar = ({
+  deltaX,
+  deltaY,
+  direction
+}: {
+  deltaX: number
+  deltaY: number
+  direction: 'up' | 'down' | 'left' | 'right'
+}) => {
+  if (direction === 'up') {
+    return -deltaY
+  } else if (direction === 'down') {
+    return deltaY
+  } else if (direction === 'left') {
+    return -deltaX
+  } else if (direction === 'right') {
+    return deltaX
+  }
+}
+
 const finishFlip = ({
   inProgressAnimations,
   velocity,
@@ -125,6 +145,7 @@ const getDirection = (deltaX: number, deltaY: number) => {
 }
 
 export class Flipped extends Component {
+  // maintain a list of flip ids that have a mousedown but not a mouseup event
   temporarilyInvalidFlipIds: string[] = []
   componentDidMount() {
     this.gestureHandler = this.gestureHandler.bind(this)
@@ -151,8 +172,10 @@ export class Flipped extends Component {
       down: boolean
       first: boolean
     }) => {
-      if (down === false && deltaX < 2 && deltaY < 2) {
-        onNonSwipeClick(event)
+      if (down === false && Math.abs(deltaX) < 2 && Math.abs(deltaY) < 2) {
+        if (onNonSwipeClick) {
+          onNonSwipeClick(event)
+        }
         return
       }
       if (
@@ -169,12 +192,14 @@ export class Flipped extends Component {
         // require user to mouseup before doing another action
         return
       }
-      // prevent single clicks from doing anything
-      if (first || (deltaX === 0 && deltaY === 0)) {
+      // prevent single clicks or tiny gestures from doing anything
+      if (first || Math.abs(deltaX) + Math.abs(deltaY) < 3) {
         return
       }
 
       const currentDirection = getDirection(deltaX, deltaY)
+
+      console.log(currentDirection, deltaX, deltaY)
 
       const flipInProgress = Boolean(inProgressAnimations[this.props.flipId])
 
@@ -209,6 +234,8 @@ export class Flipped extends Component {
           ...configMatchingCurrentDirection,
           direction: currentDirection
         }
+
+        console.log({ configMatchingCurrentDirection })
         setIsGestureControlled(true)
 
         configMatchingCurrentDirection.initFLIP({
@@ -273,10 +300,13 @@ export class Flipped extends Component {
         }
       }
 
-      const absoluteMovement =
-        ['up', 'down'].indexOf(cachedConfig.direction) > -1
-          ? Math.abs(deltaY)
-          : Math.abs(deltaX)
+      const absoluteMovement = getMovementScalar({
+        deltaX,
+        deltaY,
+        direction: cachedConfig.direction
+      })
+
+      console.log({ absoluteMovement })
 
       const gestureData = inProgressAnimations[this.props.flipId]
 

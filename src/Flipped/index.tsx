@@ -42,7 +42,7 @@ export const Flipped: FunctionComponent<SerializableFlippedProps> = ({
   inverseFlipId,
   portalKey,
   isGestureControlled,
-  gestureHandlers
+  gestureHandlers,
   ...rest
 }) => {
   let child = children

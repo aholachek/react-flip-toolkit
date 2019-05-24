@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Flipper } from '../../../src'
 import { Flipped } from '../../../src/gesture'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
-const StyledContainer = styled.div`
+const StyledFlipper = styled(Flipper)`
   position: relative;
   width: 100%;
   max-width: 30rem;
@@ -11,27 +11,32 @@ const StyledContainer = styled.div`
   overflow: hidden;
 `
 
+const StyledContainer = styled.div`
+  background-color: #ececec;
+  padding: 0.4rem;
+  overflow: auto;
+  height: 600px;
+`
+
 const StyledLi = styled.li`
   position: relative;
   list-style-type: none;
   height: 10rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
   min-height: 5rem;
 `
 
-const actionMixin = props => `
-display: flex;
-justify-content: center;
-align-items: center;
-width: 40%;
+const actionMixin = props => css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40%;
 `
 
 const Favorite = styled.div`
-  background-color: blue;
   ${actionMixin};
 `
 const Trash = styled.div`
-  background-color: red;
   ${actionMixin};
 `
 
@@ -44,11 +49,13 @@ const StyledCollapsedArticleContainer = styled(Flipper)`
 `
 
 const StyledCollapsedArticle = styled.div`
+  z-index: 1;
   width: 100%;
   height: 100%;
   background-color: white;
-  border: 1px solid gray;
-  margin-bottom: 0.5rem;
+  &:not(:last-of-type) {
+    margin-bottom: 0.5rem;
+  }
   padding: 1rem;
   cursor: pointer;
   display: block;
@@ -69,17 +76,18 @@ const StyledList = styled.ul`
   padding: 0;
   margin: 0;
   transform: ${props => (props.article ? 'scale(.85)' : 'scale(1)')};
+  overflow: hidden;
 `
 
 const StyledDrawer = styled.div`
-  z-index: 1;
+  z-index: 2;
   position: absolute;
   top: 0;
   right: 0;
   left: 0;
   height: 100%;
   background: white;
-  border: 1px solid gray;
+  cursor: ${({ article }) => (article ? 'grab' : 'pointer')};
   transform: ${({ article }) =>
     article ? 'translateY(0)' : 'translateY(100%)'};
 `
@@ -161,7 +169,6 @@ const ArticleListItem = ({ setCurrentlyViewed, article }) => {
           }
         ]}
         onNonSwipeClick={e => {
-          e.preventDefault()
           setCurrentlyViewed(article.id)
         }}
       >
@@ -195,6 +202,12 @@ const articles = [
     id: 3,
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+  },
+  {
+    title: 'Foo',
+    id: 4,
+    description:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
   }
 ]
 
@@ -208,7 +221,7 @@ const App = () => {
   }
 
   return (
-    <Flipper flipKey={currentlyViewed}>
+    <StyledFlipper flipKey={currentlyViewed}>
       <StyledContainer>
         <StyledList article={article}>
           {articles.map(article => (
@@ -222,13 +235,13 @@ const App = () => {
             </StyledLi>
           ))}
         </StyledList>
-        <Drawer
-          article={article}
-          returnToListView={returnToListView}
-          setCurrentlyViewed={setCurrentlyViewed}
-        />
       </StyledContainer>
-    </Flipper>
+      <Drawer
+        article={article}
+        returnToListView={returnToListView}
+        setCurrentlyViewed={setCurrentlyViewed}
+      />
+    </StyledFlipper>
   )
 }
 
