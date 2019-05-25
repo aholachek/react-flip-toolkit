@@ -8,14 +8,14 @@ const animateUnflippedElements = ({
   flippedElementPositionsAfterUpdate,
   inProgressAnimations
 }: AnimateUnflippedElementsArgs) => {
-  const animatedEnteringElementIds = unflippedIds.filter(
-    id =>
-      flippedElementPositionsAfterUpdate[id] &&
-      flipCallbacks[id] &&
-      flipCallbacks[id].onAppear
+  const enteringElementIds = unflippedIds.filter(
+    id => flippedElementPositionsAfterUpdate[id]
+  )
+  const animatedEnteringElementIds = enteringElementIds.filter(
+    id => flipCallbacks[id] && flipCallbacks[id].onAppear
   )
 
-  const exitingElementIds = unflippedIds.filter(
+  const animatedExitingElementIds = unflippedIds.filter(
     id =>
       flippedElementPositionsBeforeUpdate[id] &&
       flipCallbacks[id] &&
@@ -23,26 +23,28 @@ const animateUnflippedElements = ({
   )
 
   // make sure appearing elements aren't taken into account by the filterFlipDescendants function
-  unflippedIds
-    .filter(id => flippedElementPositionsAfterUpdate[id])
-    .forEach(id => {
-      const element = getElement(id)
-      if (element) {
-        element.dataset.isAppearing = 'true'
-      }
-    })
+  enteringElementIds.forEach(id => {
+    const element = getElement(id)
+    if (element) {
+      element.dataset.isAppearing = 'true'
+    }
+  })
 
   const hideEnteringElements = () => {
     animatedEnteringElementIds.forEach(id => {
       const element = getElement(id)
-      element.style.opacity = '0'
+      if (element) {
+        element.style.opacity = '0'
+      }
     })
   }
 
   const animateEnteringElements = () => {
     animatedEnteringElementIds.forEach((id, i) => {
       const element = getElement(id)
-      flipCallbacks[id].onAppear!(element, i)
+      if (element) {
+        flipCallbacks[id].onAppear!(element, i)
+      }
     })
   }
 
@@ -55,7 +57,7 @@ const animateUnflippedElements = ({
   const fragmentTuples: FragmentTuple[] = []
   let exitingElementCount = 0
 
-  const onExitCallbacks = exitingElementIds.map((id, i) => {
+  const onExitCallbacks = animatedExitingElementIds.map((id, i) => {
     const {
       domDataForExitAnimations: {
         element,

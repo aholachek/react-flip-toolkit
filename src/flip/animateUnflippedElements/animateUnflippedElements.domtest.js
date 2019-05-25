@@ -74,7 +74,7 @@ describe('animateUnflippedElements', () => {
         'id-2': { onAppear: fakeOnAppear2 },
         'id-3': { onAppear: fakeOnAppear3 }
       },
-      getElement: () => {},
+      getElement,
       flippedElementPositionsAfterUpdate: { 'id-1': {}, 'id-3': {} },
       flippedElementPositionsBeforeUpdate: {}
     })
