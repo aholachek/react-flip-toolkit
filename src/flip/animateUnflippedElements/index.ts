@@ -8,8 +8,11 @@ const animateUnflippedElements = ({
   flippedElementPositionsAfterUpdate,
   inProgressAnimations
 }: AnimateUnflippedElementsArgs) => {
-  const enteringElements = unflippedIds.filter(
-    id => flippedElementPositionsAfterUpdate[id] && flipCallbacks[id]
+  const animatedEnteringElementIds = unflippedIds.filter(
+    id =>
+      flippedElementPositionsAfterUpdate[id] &&
+      flipCallbacks[id] &&
+      flipCallbacks[id].onAppear
   )
 
   const exitingElementIds = unflippedIds.filter(
@@ -19,21 +22,27 @@ const animateUnflippedElements = ({
       flipCallbacks[id].onExit
   )
 
-  const hideEnteringElements = () => {
-    enteringElements.forEach(id => {
-      if (flipCallbacks[id] && flipCallbacks[id].onAppear) {
-        const element = getElement(id)
-        element.style.opacity = '0'
+  // make sure appearing elements aren't taken into account by the filterFlipDescendants function
+  unflippedIds
+    .filter(id => flippedElementPositionsAfterUpdate[id])
+    .forEach(id => {
+      const element = getElement(id)
+      if (element) {
+        element.dataset.isAppearing = 'true'
       }
+    })
+
+  const hideEnteringElements = () => {
+    animatedEnteringElementIds.forEach(id => {
+      const element = getElement(id)
+      element.style.opacity = '0'
     })
   }
 
   const animateEnteringElements = () => {
-    enteringElements.forEach((id, i) => {
+    animatedEnteringElementIds.forEach((id, i) => {
       const element = getElement(id)
-      if (flipCallbacks[id] && flipCallbacks[id].onAppear) {
-        flipCallbacks[id].onAppear!(element, i)
-      }
+      flipCallbacks[id].onAppear!(element, i)
     })
   }
 

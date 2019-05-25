@@ -1,4 +1,4 @@
-import 'babel-polyfill';
+import 'babel-polyfill'
 
 import React, { Component } from 'react'
 import { render } from 'react-dom'
@@ -10,6 +10,8 @@ import PhotosExample from './PhotoGridExample'
 import ListExample from './ListExample'
 import FlipMove from './FlipMove'
 import TransformExample from './TransformExample'
+import TransformExampleExitingParent from './TransformExampleExitingParent'
+
 import PortalExample from './PortalExample'
 import TransformFromZeroExample from './TransformFromZeroExample'
 import RotateExample from './RotateExample'
@@ -27,6 +29,8 @@ class Demo extends Component {
     else if (window.location.pathname === '/flip-move') return <FlipMove />
     else if (window.location.pathname === '/transform')
       return <TransformExample />
+    else if (window.location.pathname === '/transform-exiting-parent')
+      return <TransformExampleExitingParent />
     else if (window.location.pathname === '/portal') return <PortalExample />
     else if (window.location.pathname === '/transform-from-zero')
       return <TransformFromZeroExample />
@@ -70,6 +74,11 @@ class Demo extends Component {
             </li>
             <li>
               <a href="/transform-from-zero">Transform from Zero</a>
+            </li>
+            <li>
+              <a href="/transform-exiting-parent">
+                Transform with exiting parent
+              </a>
             </li>
             <li>
               <a href="/enter-update-delete">Enter update delete</a>

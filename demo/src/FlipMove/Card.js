@@ -33,7 +33,6 @@ const onListExit = onExit('list')
 
 class Card extends PureComponent {
   shouldFlip = (prev, current) => {
-    debugger // eslint-disable-line
     if (prev.type !== current.type) {
       return true
     }
