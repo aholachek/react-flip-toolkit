@@ -17,7 +17,9 @@ const selectFlipChildIds = (
   return flippedIds.filter(id => childIds.indexOf(id) > -1)
 }
 
-const baseSelector = `[${constants.DATA_FLIP_ID}]`
+const baseSelector = `[${constants.DATA_FLIP_ID}]:not([${
+  constants.DATA_IS_APPEARING
+}])`
 
 export default ({
   flipDataDict,

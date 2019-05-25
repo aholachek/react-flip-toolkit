@@ -18,6 +18,43 @@ function getBoundingClientRect(element) {
 }
 
 describe('animateUnflippedElements', () => {
+  it('should add a temporary dataset flag to appearing elements in order not to mess up flip animations in the filterFlipDescendants function', () => {
+    testEl.innerHTML = ` <div>
+    <div data-flip-id="id-1"></div>
+    <div data-flip-id="id-2"></div>
+    <div data-flip-id="id-3"></div>
+    </div>
+  `
+    const fakeOnExit1 = animateUnflippedElements({
+      unflippedIds: ['id-1', 'id-3'],
+      flipCallbacks: {},
+      getElement,
+      flippedElementPositionsAfterUpdate: { 'id-1': {}, 'id-3': {} },
+      flippedElementPositionsBeforeUpdate: {}
+    })
+
+    expect(getElement('id-1').dataset.isAppearing).to.equal('true')
+    expect(getElement('id-3').dataset.isAppearing).to.equal('true')
+    expect(getElement('id-2').dataset.isAppearing).to.equal(undefined)
+  })
+
+  it('should not add a temporary dataset flag to exiting or flipped elements', () => {
+    testEl.innerHTML = ` <div>
+    <div data-flip-id="id-1"></div>
+    <div data-flip-id="id-3"></div>
+    </div>
+  `
+    const fakeOnExit1 = animateUnflippedElements({
+      unflippedIds: ['id-1'],
+      flipCallbacks: {},
+      getElement,
+      flippedElementPositionsAfterUpdate: { 'id-3': {} },
+      flippedElementPositionsBeforeUpdate: { 'id-3': {}, 'id-1': {} }
+    })
+
+    expect(getElement('id-1').dataset.isAppearing).to.equal(undefined)
+    expect(getElement('id-3').dataset.isAppearing).to.equal(undefined)
+  })
   it('should return a function to call onAppear callbacks and pass in the correct element reference', () => {
     testEl.innerHTML = ` <div>
     <div data-flip-id="id-1"></div>
@@ -37,7 +74,7 @@ describe('animateUnflippedElements', () => {
         'id-2': { onAppear: fakeOnAppear2 },
         'id-3': { onAppear: fakeOnAppear3 }
       },
-      getElement: () => {},
+      getElement,
       flippedElementPositionsAfterUpdate: { 'id-1': {}, 'id-3': {} },
       flippedElementPositionsBeforeUpdate: {}
     })
