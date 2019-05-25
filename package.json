@@ -41,6 +41,7 @@
     "test:all": "npm-run-all test test:dom",
     "test:core": "parcel 'src/__tests__/core-test/index.html'",
     "preversion": "npm test",
+    "postpublish": "git push origin --all; git push origin --tags",
     "version": "npm run build"
   },
   "dependencies": {
