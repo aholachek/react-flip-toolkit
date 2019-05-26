@@ -31,21 +31,22 @@ const actionMixin = props => css`
   justify-content: center;
   align-items: center;
   width: 40%;
+  position: absolute;
 `
 
 const Favorite = styled.div`
   ${actionMixin};
+  left: 0;
 `
 const Trash = styled.div`
   ${actionMixin};
+  right: 0;
 `
 
 const StyledCollapsedArticleContainer = styled(Flipper)`
   position: relative;
   width: 100%;
-  display: flex;
   height: 100%;
-  justify-content: space-between;
 `
 
 const StyledCollapsedArticle = styled.div`
@@ -59,7 +60,7 @@ const StyledCollapsedArticle = styled.div`
   padding: 1rem;
   cursor: pointer;
   display: block;
-  position: absolute;
+  position: relative;
   top: 0;
   bottom: 0;
   width: 100%;
@@ -75,8 +76,7 @@ const StyledCollapsedArticle = styled.div`
 const StyledList = styled.ul`
   padding: 0;
   margin: 0;
-  transform: ${props => (props.article ? 'scale(.85)' : 'scale(1)')};
-  overflow: hidden;
+  transform: ${props => (props.currentlyViewed ? 'scale(.85)' : 'scale(1)')};
 `
 
 const StyledDrawer = styled.div`
@@ -137,18 +137,19 @@ const Drawer = ({ article, returnToListView, setCurrentlyViewed }) => {
   )
 }
 
-const ArticleListItem = ({ setCurrentlyViewed, article }) => {
+const ArticleListItem = ({ setCurrentlyViewed, article, currentlyViewed }) => {
   const [position, setPosition] = useState('center')
   const cancelFLIP = ({ prevProps }) => {
     return setPosition(prevProps.position)
   }
   return (
     <StyledCollapsedArticleContainer flipKey={position}>
-      <Flipped flipId={`${article.id}-favorite`}>
-        <Favorite position={position}> favorite </Favorite>
-      </Flipped>
+      {/* <Flipped flipId={`${article.id}-favorite`}>
+            <Favorite position={position}> favorite </Favorite>
+          </Flipped> */}
       <Flipped
         position={position}
+        stagger
         flipId={`article-${article.id}`}
         flipOnSwipe={[
           {
@@ -172,14 +173,18 @@ const ArticleListItem = ({ setCurrentlyViewed, article }) => {
           setCurrentlyViewed(article.id)
         }}
       >
-        <StyledCollapsedArticle position={position} href="#">
+        <StyledCollapsedArticle
+          currentlyViewed={currentlyViewed}
+          position={position}
+          href="#"
+        >
           <h3>{article.title}</h3>
           <p>{article.id}</p>
         </StyledCollapsedArticle>
       </Flipped>
-      <Flipped flipId={`${article.id}-trash`}>
-        <Trash position={position}> trash </Trash>
-      </Flipped>
+      {/* <Flipped flipId={`${article.id}-trash`}>
+            <Trash position={position}> trash </Trash>
+          </Flipped> */}
     </StyledCollapsedArticleContainer>
   )
 }
@@ -223,12 +228,13 @@ const App = () => {
   return (
     <StyledFlipper flipKey={currentlyViewed}>
       <StyledContainer>
-        <StyledList article={article}>
+        <StyledList currentlyViewed={currentlyViewed}>
           {articles.map(article => (
             <StyledLi key={article.id}>
               {
                 <ArticleListItem
                   article={article}
+                  currentlyViewed={currentlyViewed}
                   setCurrentlyViewed={setCurrentlyViewed}
                 />
               }

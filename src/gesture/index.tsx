@@ -165,13 +165,15 @@ export class Flipped extends Component {
       delta: [deltaX, deltaY],
       down,
       first,
-      event
+      event,
+      ...rest
     }: {
       velocity: number
       delta: number[]
       down: boolean
       first: boolean
     }) => {
+      console.log(rest)
       if (down === false && Math.abs(deltaX) < 2 && Math.abs(deltaY) < 2) {
         if (onNonSwipeClick) {
           onNonSwipeClick(event)
@@ -192,16 +194,17 @@ export class Flipped extends Component {
         // require user to mouseup before doing another action
         return
       }
+      const flipInProgress = Boolean(inProgressAnimations[this.props.flipId])
+
       // prevent single clicks or tiny gestures from doing anything
-      if (first || Math.abs(deltaX) + Math.abs(deltaY) < 3) {
+      if (
+        first ||
+        (!flipInProgress && Math.abs(deltaX) + Math.abs(deltaY) < 4)
+      ) {
         return
       }
 
       const currentDirection = getDirection(deltaX, deltaY)
-
-      console.log(currentDirection, deltaX, deltaY)
-
-      const flipInProgress = Boolean(inProgressAnimations[this.props.flipId])
 
       const isAnotherGestureInProgress = Object.keys(inProgressAnimations)
         .map(flipId => inProgressAnimations[flipId].flipInitiator)
@@ -235,7 +238,6 @@ export class Flipped extends Component {
           direction: currentDirection
         }
 
-        console.log({ configMatchingCurrentDirection })
         setIsGestureControlled(true)
 
         configMatchingCurrentDirection.initFLIP({
@@ -262,6 +264,7 @@ export class Flipped extends Component {
         }, 0)
         return
       }
+
       // maybe animation just got started (?)
       if (
         !inProgressAnimations[this.props.flipId] ||
@@ -295,8 +298,6 @@ export class Flipped extends Component {
         // user might have done a mouseup while moving in another direction
         if (flipInProgress && !down) {
           returnToUnFlippedState()
-        } else {
-          return
         }
       }
 
@@ -305,8 +306,6 @@ export class Flipped extends Component {
         deltaY,
         direction: cachedConfig.direction
       })
-
-      console.log({ absoluteMovement })
 
       const gestureData = inProgressAnimations[this.props.flipId]
 

@@ -1,141 +1,144 @@
-import React, { useReducer } from 'react'
+// inspired by this animated demo:
+// https://uxplanet.org/animation-in-ui-design-from-concept-to-reality-85c49907b19d
+import React, { useState } from 'react'
 import { Flipper, Flipped } from '../../../src/gesture'
 import styled from 'styled-components'
 
-const actionMixin = props => `
-display: flex;
-justify-content: center;
-align-items: center;
-width: 40%;
+const StyledBackground = styled.div`
+  height: 100vh;
+  background: gray;
+  position: relative;
+  width: 620px;
+  margin: 0 auto;
 `
+const colors = ['#ff4f66', '#7971ea', '#5900d8']
 
-const Favorite = styled.div`
-  background-color: blue;
-  ${actionMixin};
-`
-const Trash = styled.div`
-  background-color: red;
-  ${actionMixin};
-`
-
-const MessageContainer = styled.div`
+const sharedStyles = `
+  background-color: white;
   position: absolute;
+  left:0;
+  right:0;
+  > div {
+    padding: 1rem;
+  }
+`
+
+const StyledExpandedDrawer = styled.div`
+  ${sharedStyles}
   top: 0;
   bottom: 0;
-  width: 100%;
-  height: 100%;
-  left: ${props =>
-    props.position === 'left'
-      ? `-10rem`
-      : props.position === 'right'
-      ? '10rem'
-      : 0};
-  box-shadow: 0 2px 4px hsla(0, 0%, 0%, 0.3);
-  background-color: white;
-  padding: 1rem;
-  cursor: grab;
-  z-index: 1;
 `
 
-const StyledLi = styled.li`
-  position: relative;
-  list-style-type: none;
-  display: flex;
-  justify-content: space-between;
+const StyledCollapsedDrawer = styled.div`
+  ${sharedStyles}
+  bottom: -2rem;
+  padding-bottom: 2rem;
+`
+
+const StyledDot = styled.div`
+  height: 1rem;
+  width: 1rem;
+  background-color: #ff4f66;
+  border-radius: 100px;
+`
+
+const StyledDotContainer = styled.div`
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
+  width: 10rem;
+`
+
+const ExpandedStyledDot = styled.div`
   height: 10rem;
-  margin-bottom: 0.5rem;
+  width: 10rem;
+  background-color: #ff4f66;
+  border-radius: 100px;
+  margin-bottom: 1rem;
 `
 
-const StyledList = styled.ul`
-  width: 100%;
-  max-width: 30rem;
-  margin: 0 auto;
-  overflow: hidden;
-  padding: 0;
-`
-
-const ListItem = ({ updatePosition, position, email }) => {
-  const cancelFLIP = ({ prevProps }) => {
-    return updatePosition({
-      position: prevProps.position,
-      id: email.id
-    })
-  }
+const ClosedDrawer = ({ index, color, setDrawerIsOpen }) => {
   return (
-    <StyledLi>
-      <Flipped flipId={`${email.id}-favorite`}>
-        <Favorite position={position}> favorite </Favorite>
-      </Flipped>
-      <Flipped
-        flipId={`${email.id}-message`}
-        position={position}
-        flipOnSwipe={[
-          {
-            direction: 'left',
-            initFLIP: ({ props }) => {
-              if (props.position === 'center')
-                return updatePosition({ position: 'left', id: email.id })
-              if (props.position === 'right')
-                return updatePosition({ position: 'center', id: email.id })
-            },
-            cancelFLIP
+    <Flipped
+      flipId="drawer"
+      flipOnSwipe={[
+        {
+          initFLIP: () => {
+            setDrawerIsOpen(true)
           },
-          {
-            direction: 'right',
-            initFLIP: ({ props }) => {
-              if (props.position === 'center')
-                return updatePosition({ position: 'right', id: email.id })
-              if (props.position === 'left')
-                return updatePosition({ position: 'center', id: email.id })
-            },
-            cancelFLIP
-          }
-        ]}
-      >
-        <MessageContainer position={position}>
-          <h3>{email.title}</h3>
-        </MessageContainer>
-      </Flipped>
-      <Flipped flipId={`${email.id}-trash`}>
-        <Trash position={position}> trash </Trash>
-      </Flipped>
-    </StyledLi>
+          cancelFLIP: () => {
+            setDrawerIsOpen(false)
+          },
+          direction: 'up'
+        }
+      ]}
+    >
+      <StyledCollapsedDrawer>
+        <Flipped inverseFlipId="drawer">
+          <StyledDotContainer>
+            <Flipped flipId={`dot-1`} stagger>
+              <StyledDot />
+            </Flipped>
+            <Flipped flipId={`dot-2`} stagger>
+              <StyledDot />
+            </Flipped>
+            <Flipped flipId={`dot-3`} stagger>
+              <StyledDot />
+            </Flipped>
+          </StyledDotContainer>
+        </Flipped>
+      </StyledCollapsedDrawer>
+    </Flipped>
   )
 }
 
-const reducer = (state, { position, id }) => {
-  return { ...state, [id]: position }
-}
-
-const emails = [
-  { title: 'Foo', id: 1 },
-  { title: 'Foo', id: 2 },
-  { title: 'Foo', id: 3 }
-]
-
-const App = () => {
-  const initialState = emails
-    .map(({ id }) => id)
-    .reduce((acc, curr) => {
-      return { ...acc, [curr]: 'center' }
-    }, {})
-
-  const [state, updatePosition] = useReducer(reducer, initialState)
-
+const OpenDrawer = ({ index, color, setDrawerIsOpen }) => {
   return (
-    <Flipper flipKey={JSON.stringify(state)}>
-      <StyledList>
-        {emails.map(email => (
-          <ListItem
-            key={email.id}
-            email={email}
-            position={state[email.id]}
-            updatePosition={updatePosition}
-          />
-        ))}
-      </StyledList>
+    <Flipped
+      flipId="drawer"
+      onComplete={el => {
+        el.classList.add('animated-in')
+      }}
+      flipOnSwipe={{
+        initFLIP: () => {
+          setDrawerIsOpen(false)
+        },
+        cancelFLIP: () => {
+          setDrawerIsOpen(true)
+        },
+        direction: 'down'
+      }}
+    >
+      <StyledExpandedDrawer>
+        <Flipped inverseFlipId="drawer">
+          <div>
+            <Flipped flipId={`dot-1`} stagger>
+              <ExpandedStyledDot />
+            </Flipped>
+            <Flipped flipId={`dot-2`} stagger>
+              <ExpandedStyledDot />
+            </Flipped>
+            <Flipped flipId={`dot-3`} stagger>
+              <ExpandedStyledDot />
+            </Flipped>
+          </div>
+        </Flipped>
+      </StyledExpandedDrawer>
+    </Flipped>
+  )
+}
+export default function Drawer() {
+  const [drawerIsOpen, setDrawerIsOpen] = useState(false)
+  return (
+    <Flipper flipKey={drawerIsOpen} spring="gentle">
+      <StyledBackground>
+        {drawerIsOpen ? (
+          <OpenDrawer setDrawerIsOpen={setDrawerIsOpen} />
+        ) : (
+          <ClosedDrawer setDrawerIsOpen={setDrawerIsOpen} />
+        )}
+      </StyledBackground>
     </Flipper>
   )
 }
-
-export default App
