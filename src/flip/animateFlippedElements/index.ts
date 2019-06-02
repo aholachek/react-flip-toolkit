@@ -164,10 +164,6 @@ export default ({
   onComplete,
   isGestureControlled
 }: AnimateFlippedElementsArgs) => {
-  const firstElement: HTMLElement = getElement(flippedIds[0])
-  // this accomodates iframes
-  const body = firstElement.ownerDocument!.querySelector('body')!
-
   // the stuff below is used so we can return a promise that resolves when all FLIP animations have
   // completed
   let closureResolve: (flipIds: FlippedIds) => void
@@ -271,7 +267,7 @@ export default ({
         }
       }
 
-      // don't animate elements that didn't visbly change
+      // don't animate elements that didn't visibly change
       // but possibly animate their children
 
       const translateXDifference = Math.abs(prevRect.left - currentRect.left)
@@ -404,12 +400,11 @@ export default ({
           //  only for gesture control
           spring,
           onAnimationEnd,
-          allChildIds: flipDataDict[id].allChildIds,
           difference: {
             translateXDifference,
             translateYDifference,
-            scaleXDifference,
-            scaleYDifference
+            scaleXDifference: scaleXDifference / prevRect.width,
+            scaleYDifference: scaleYDifference / prevRect.height
           }
         }
         const onUpdate: OnUpdate = spring => {

@@ -8,6 +8,7 @@ import clamp from 'lodash-es/clamp'
 import { InProgressAnimations } from '../../Flipper/types'
 import { GestureParams } from './types'
 import Spring from '../../forked-rebound/Spring'
+import { InProgressAnimations } from '../Flipper/types'
 
 export { Flipper }
 
@@ -165,15 +166,13 @@ export class Flipped extends Component {
       delta: [deltaX, deltaY],
       down,
       first,
-      event,
-      ...rest
+      event
     }: {
       velocity: number
       delta: number[]
       down: boolean
       first: boolean
     }) => {
-      console.log(rest)
       if (down === false && Math.abs(deltaX) < 2 && Math.abs(deltaY) < 2) {
         if (onNonSwipeClick) {
           onNonSwipeClick(event)
@@ -359,6 +358,10 @@ export class Flipped extends Component {
             inProgressAnimations,
             setIsGestureControlled,
             isGestureControlled
+          }: {
+            inProgressAnimations: InProgressAnimations
+            setIsGestureControlled: (isGestureControlled: boolean) => void
+            isGestureControlled: boolean
           }) => {
             return (
               <Gesture
