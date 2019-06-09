@@ -1,5 +1,6 @@
 import { BoundingClientRect, BaseFlippedElementPositions } from '../types'
 import { InProgressAnimations, FlipCallbacks } from '../../../Flipper/types'
+import { IndexableObject } from '../../../utilities/types'
 
 export interface DomDataForExitAnimations {
   element: HTMLElement
@@ -32,3 +33,11 @@ export interface GetFlippedElementPositionsBeforeUpdateArgs {
 }
 
 export type ParentBCRs = Array<[HTMLElement, BoundingClientRect]>
+
+export interface ChildIdsToParentBCRS extends IndexableObject {
+  [flipId: string]: BoundingClientRect
+}
+
+export interface ChildIdsToParents extends IndexableObject {
+  [flipId: string]: HTMLElement
+}

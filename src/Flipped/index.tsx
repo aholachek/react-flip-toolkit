@@ -9,6 +9,7 @@ import { FlipContext, PortalContext } from '../Flipper'
 import * as constants from '../constants'
 import { assign, isObject } from '../utilities'
 import { FlippedProps, SerializableFlippedProps } from './types'
+import { IndexableObject } from '../utilities/types'
 
 const propTypes = {
   children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
@@ -65,7 +66,7 @@ export const Flipped: FunctionComponent<SerializableFlippedProps> = ({
     })
   }
 
-  const dataAttributes = {
+  const dataAttributes: IndexableObject = {
     // these are both used as selectors so they have to be separate
     [constants.DATA_FLIP_ID]: flipId,
     [constants.DATA_INVERSE_FLIP_ID]: inverseFlipId,

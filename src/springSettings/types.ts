@@ -1,10 +1,12 @@
+import { IndexableObject } from '../utilities/types'
+
 export interface SpringConfig {
   stiffness?: number
   damping?: number
   overshootClamping?: boolean
 }
 
-export interface SpringPresets {
+export interface SpringPresets extends IndexableObject {
   noWobble: SpringConfig
   gentle: SpringConfig
   veryGentle: SpringConfig

@@ -5,7 +5,9 @@ import {
   FlippedElementPositionsBeforeUpdateReturnVals,
   FlippedElementPositionsBeforeUpdate,
   GetFlippedElementPositionsBeforeUpdateArgs,
-  ParentBCRs
+  ParentBCRs,
+  ChildIdsToParentBCRS,
+  ChildIdsToParents
 } from './types'
 import { InProgressAnimations } from '../../../Flipper/types'
 
@@ -32,9 +34,9 @@ const getFlippedElementPositionsBeforeUpdate = ({
     element.querySelectorAll(`[${constants.DATA_INVERSE_FLIP_ID}]`)
   )
 
-  const childIdsToParentBCRs = {}
+  const childIdsToParentBCRs: ChildIdsToParentBCRS = {}
   const parentBCRs: ParentBCRs = []
-  const childIdsToParents = {}
+  const childIdsToParents: ChildIdsToParents = {}
   // this is for exit animations so we can re-insert exiting elements in the
   // DOM later
   flippedElements

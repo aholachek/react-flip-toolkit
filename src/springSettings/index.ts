@@ -11,15 +11,23 @@ export const springPresets: SpringPresets = {
   stiff: { stiffness: 260, damping: 26 }
 }
 
+function argIsSpringConfig(
+  arg: SpringConfig | keyof SpringPresets | undefined
+): arg is SpringConfig {
+  return isObject(arg)
+}
+
 export const getSpringConfig = ({
   flipperSpring,
   flippedSpring
 }: { flipperSpring?: SpringOption; flippedSpring?: SpringOption } = {}) => {
-  const normalizeSpring = (spring?: SpringConfig | keyof SpringPresets) => {
-    if (isObject(spring)) {
+  const normalizeSpring = (
+    spring?: SpringConfig | keyof SpringPresets | any
+  ) => {
+    if (argIsSpringConfig(spring)) {
       return spring
-    } else if (springPresets[spring as string]) {
-      return springPresets[spring as string]
+    } else if (Object.keys(springPresets).indexOf(spring) > -1) {
+      return springPresets[spring]
     } else {
       return {}
     }

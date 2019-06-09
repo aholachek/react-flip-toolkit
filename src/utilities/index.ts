@@ -1,3 +1,5 @@
+import { IndexableObject } from "./types";
+
 export const isNumber = (x: any) => typeof x === 'number'
 
 export const isFunction = (x: any) => typeof x === 'function'
@@ -11,15 +13,22 @@ export const toArray = (arrayLike: ArrayLike<any>) =>
 export const getDuplicateValsAsStrings = (
   arr: number[] | string[]
 ): string[] => {
-  const obj = (arr as string[]).reduce((acc, curr) => {
-    acc[curr] = (acc[curr] || 0) + 1
-    return acc
-  }, {})
+  const obj = (arr as string[]).reduce(
+    (acc, curr) => {
+      acc[curr] = (acc[curr] || 0) + 1
+      return acc
+    },
+    {} as { [key: string]: any }
+  )
   return Object.keys(obj).filter(val => obj[val] > 1)
 }
 
+
 // tslint only likes this with a regular function, not an arrow function
-export function assign(target: object, ...args: object[]): object {
+export function assign(
+  target: IndexableObject,
+  ...args: IndexableObject[]
+): object {
   args.forEach(arg => {
     if (!arg) {
       return
