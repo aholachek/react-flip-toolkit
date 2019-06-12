@@ -83,12 +83,12 @@ const cancelFlip = ({
 }) => {
   const clampedVelocity = velocity !== undefined && clamp(velocity, 0.025, 30)
 
-  const onCompletePromises: Array<Promise<void>> | [] = Object.keys(
+  const onCompletePromises: Array<Promise<unknown>> | [] = Object.keys(
     inProgressAnimations
   ).map(flipId => {
     const { spring } = inProgressAnimations[flipId]
     if (!spring) {
-      return
+      return Promise.resolve()
     }
     if (clampedVelocity) {
       spring.setVelocity(clampedVelocity)

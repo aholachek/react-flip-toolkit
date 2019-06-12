@@ -1,3 +1,1 @@
-export interface IndexableObject {
-  [key: string]: any
-}
+export type IndexableObject = Record<string, any>

@@ -22,7 +22,7 @@ import HandleEnterUpdateDelete from './HandleEnterUpdateDelete'
 import GestureSidebarExample from './GestureSidebarExample'
 import GestureStaggeredList from './GestureStaggeredList'
 import FancyDrawerSwipe from './FancyDrawerSwipe'
-import GestureMapSwipe from './GestureMapSwipe'
+import GestureCardSwipe from './GestureCardSwipe'
 import GestureArticleSwipe from './GestureArticleSwipe'
 // import GestureSidebarRight from './GestureSidebarRightExample'
 
@@ -54,8 +54,8 @@ class Demo extends Component {
       return <GestureSidebarExample />
     else if (window.location.pathname === '/gesture-email-swipe')
       return <FancyDrawerSwipe />
-    else if (window.location.pathname === '/gesture-map-swipe')
-      return <GestureMapSwipe />
+    else if (window.location.pathname === '/gesture-card-swipe')
+      return <GestureCardSwipe />
     else if (window.location.pathname === '/gesture-article-swipe')
       return <GestureArticleSwipe />
     else if (window.location.pathname === '/gesture-sidebar-right')
@@ -120,7 +120,7 @@ class Demo extends Component {
               <a href="/gesture-email-swipe">Gesture Email Swipe</a>
             </li>
             <li>
-              <a href="/gesture-map-swipe">Gesture Map Swipe</a>
+              <a href="/gesture-card-swipe">Gesture Card Swipe</a>
             </li>
             <li>
               <a href="/gesture-sidebar-right">Gesture Sidebar Right</a>

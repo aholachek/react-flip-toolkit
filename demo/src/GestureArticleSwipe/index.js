@@ -65,12 +65,7 @@ const StyledCollapsedArticle = styled.div`
   bottom: 0;
   width: 100%;
   height: 100%;
-  left: ${props =>
-    props.position === 'left'
-      ? `-10rem`
-      : props.position === 'right'
-      ? '10rem'
-      : 0};
+  left: ${props => (props.isGettingDeleted ? `110%` : 0)};
 `
 
 const StyledList = styled.ul`
@@ -137,54 +132,48 @@ const Drawer = ({ article, returnToListView, setCurrentlyViewed }) => {
   )
 }
 
-const ArticleListItem = ({ setCurrentlyViewed, article, currentlyViewed }) => {
-  const [position, setPosition] = useState('center')
+const ArticleListItem = ({
+  setCurrentlyViewed,
+  article,
+  currentlyViewed,
+  deleteArticle
+}) => {
+  const [isGettingDeleted, setIsGettingDeleted] = useState(false)
   const cancelFLIP = ({ prevProps }) => {
     return setPosition(prevProps.position)
   }
   return (
-    <StyledCollapsedArticleContainer flipKey={position}>
-      {/* <Flipped flipId={`${article.id}-favorite`}>
-            <Favorite position={position}> favorite </Favorite>
-          </Flipped> */}
+    <StyledCollapsedArticleContainer flipKey={isGettingDeleted}>
       <Flipped
-        position={position}
         stagger
         flipId={`article-${article.id}`}
         flipOnSwipe={[
           {
-            direction: 'left',
-            initFLIP: ({ props }) => {
-              if (props.position === 'center') return setPosition('left')
-              if (props.position === 'right') return setPosition('center')
-            },
-            cancelFLIP
-          },
-          {
             direction: 'right',
-            initFLIP: ({ props }) => {
-              if (props.position === 'center') return setPosition('right')
-              if (props.position === 'left') return setPosition('center')
+            initFLIP: () => {
+              return setIsGettingDeleted(true)
             },
-            cancelFLIP
+            cancelFLIP: () => {
+              return setIsGettingDeleted(false)
+            }
           }
         ]}
+        onComplete={() => {
+          deleteArticle(article.id)
+        }}
         onNonSwipeClick={e => {
           setCurrentlyViewed(article.id)
         }}
       >
         <StyledCollapsedArticle
           currentlyViewed={currentlyViewed}
-          position={position}
+          isGettingDeleted={isGettingDeleted}
           href="#"
         >
           <h3>{article.title}</h3>
           <p>{article.id}</p>
         </StyledCollapsedArticle>
       </Flipped>
-      {/* <Flipped flipId={`${article.id}-trash`}>
-            <Trash position={position}> trash </Trash>
-          </Flipped> */}
     </StyledCollapsedArticleContainer>
   )
 }
@@ -218,6 +207,7 @@ const articles = [
 
 const App = () => {
   const [currentlyViewed, setCurrentlyViewed] = useState(null)
+  const [visibleArticles, setVisibleArticles] = useState(articles)
 
   const article = articles.find(article => article.id === currentlyViewed)
 
@@ -225,17 +215,26 @@ const App = () => {
     setCurrentlyViewed(null)
   }
 
+  const deleteArticle = id => {
+    setVisibleArticles(prevState => {
+      return prevState.filter(({ id: articleId }) => id !== articleId)
+    })
+  }
+
   return (
-    <StyledFlipper flipKey={currentlyViewed}>
+    <StyledFlipper
+      flipKey={`${currentlyViewed}-${visibleArticles.map(a => a.id)}`}
+    >
       <StyledContainer>
         <StyledList currentlyViewed={currentlyViewed}>
-          {articles.map(article => (
+          {visibleArticles.map(article => (
             <StyledLi key={article.id}>
               {
                 <ArticleListItem
                   article={article}
                   currentlyViewed={currentlyViewed}
                   setCurrentlyViewed={setCurrentlyViewed}
+                  deleteArticle={deleteArticle}
                 />
               }
             </StyledLi>

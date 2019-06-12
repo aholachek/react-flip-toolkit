@@ -1,4 +1,4 @@
-import { IndexableObject } from "./types";
+import { IndexableObject } from './types'
 
 export const isNumber = (x: any) => typeof x === 'number'
 
@@ -18,11 +18,10 @@ export const getDuplicateValsAsStrings = (
       acc[curr] = (acc[curr] || 0) + 1
       return acc
     },
-    {} as { [key: string]: any }
+    {} as IndexableObject
   )
   return Object.keys(obj).filter(val => obj[val] > 1)
 }
-
 
 // tslint only likes this with a regular function, not an arrow function
 export function assign(

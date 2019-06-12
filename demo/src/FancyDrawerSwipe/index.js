@@ -18,15 +18,21 @@ const sections = [
   { icon: <FaBookDead />, title: 'Watch ur back', color: '#FB4987', id: 3 },
   { icon: <FaGem />, title: 'Sparkle', color: '#FF8E36', id: 4 },
   { icon: <FaGhost />, title: 'Spooky', color: '#C0DD42', id: 5 },
-  { icon: <FaRegPaperPlane />, title: 'Take a ride', color: '#29A1DC', id: 6 }
+  { icon: <FaRegPaperPlane />, title: 'Take a ride', color: '#29A1DC', id: 6 },
+  { icon: <FaEgg />, title: 'A good egg', color: '#733FAB', id: 7 },
+  { icon: <FaCookieBite />, title: 'Take a bite', color: '#CB3DAA', id: 8 },
+  { icon: <FaBookDead />, title: 'Watch ur back', color: '#FB4987', id: 9 },
+  { icon: <FaGem />, title: 'Sparkle', color: '#FF8E36', id: 10 },
+  { icon: <FaGhost />, title: 'Spooky', color: '#C0DD42', id: 11 },
+  { icon: <FaRegPaperPlane />, title: 'Take a ride', color: '#29A1DC', id: 12 }
 ]
 
 const StyledContainer = styled.div`
-  height: 100vh;
+  height: 80vh;
   background: gray;
   position: relative;
   width: 450px;
-  margin: 0 auto;
+  margin: 1rem auto;
 `
 
 const sharedStyles = `
@@ -62,13 +68,13 @@ align-items: center;
 `
 
 const StyledDot = styled.div`
-  height: 1.25rem;
-  width: 1.25rem;
+  height: 0.75rem;
+  width: 0.75rem;
   background-color: ${props => props.color};
   border-radius: 100px;
   svg {
-    width: 0.75rem;
-    height: 0.75rem;
+    width: 0.1rem;
+    height: 0.1rem;
   }
   ${sharedDotStyles}
 `
@@ -76,17 +82,16 @@ const StyledDot = styled.div`
 const StyledDotContainer = styled.div`
   display: grid;
   grid-gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(1rem, 1fr));
-  width: 50%;
+  grid-template-columns: repeat(auto-fit, 0.8rem);
   margin: 0 auto;
 `
 
 const ExpandedStyledDot = styled.div`
-  height: 5rem;
-  width: 5rem;
+  height: 4rem;
+  width: 4rem;
   svg {
-    width: 3rem;
-    height: 3rem;
+    width: 2rem;
+    height: 2rem;
   }
   background-color: ${props => props.color};
   border-radius: 100px;
@@ -105,11 +110,20 @@ const SectionTitle = styled.h3`
 `
 
 const StyledPage = styled.div`
-  background-color: ${props => props.color};
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  padding: 2rem;
 `
 
-const Page = ({ icon, title, color }) => {
-  return <StyledPage color={color}>{icon}</StyledPage>
+const Page = ({ icon, title, color, id }) => {
+  return (
+    <StyledPage color={color}>
+      <Flipped flipId={id} key={id}>
+        {icon}
+      </Flipped>
+    </StyledPage>
+  )
 }
 
 const ClosedDrawer = ({ index, color, setDrawerIsOpen, sections }) => {
@@ -181,12 +195,12 @@ const OpenDrawer = ({
                   href="#"
                   onClick={e => {
                     e.preventDefault()
-                    setCurrentPage(i)
+                    setCurrentPage(id)
                     setDrawerIsOpen(false)
                   }}
                 >
                   <Flex>
-                    <Flipped flipId={title} stagger>
+                    <Flipped flipId={id}>
                       <ExpandedStyledDot color={color}>
                         {icon}
                       </ExpandedStyledDot>
@@ -206,8 +220,8 @@ const OpenDrawer = ({
 }
 export default function Drawer() {
   const [drawerIsOpen, setDrawerIsOpen] = useState(false)
-  const [currentPage, setCurrentPage] = useState(0)
-  const currentPageData = sections[currentPage]
+  const [currentPage, setCurrentPage] = useState(sections[0].id)
+  const currentPageData = sections.find(s => s.id === currentPage)
   return (
     <Flipper flipKey={drawerIsOpen} spring="gentle">
       <StyledContainer>
@@ -216,12 +230,12 @@ export default function Drawer() {
           <OpenDrawer
             setDrawerIsOpen={setDrawerIsOpen}
             setCurrentPage={setCurrentPage}
-            sections={sections.filter((s, i) => i !== currentPage)}
+            sections={sections.filter(s => s.id !== currentPage)}
           />
         ) : (
           <ClosedDrawer
             setDrawerIsOpen={setDrawerIsOpen}
-            sections={sections.filter((s, i) => i !== currentPage)}
+            sections={sections.filter(s => s.id !== currentPage)}
           />
         )}
       </StyledContainer>

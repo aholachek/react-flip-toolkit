@@ -404,8 +404,8 @@ export default ({
           difference: {
             translateXDifference,
             translateYDifference,
-            scaleXDifference: scaleXDifference / prevRect.width,
-            scaleYDifference: scaleYDifference / prevRect.height
+            scaleXDifference,
+            scaleYDifference
           }
         }
         const onUpdate: OnUpdate = spring => {
