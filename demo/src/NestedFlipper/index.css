@@ -1,14 +1,3 @@
-* {
-  box-sizing: border-box;
-}
-
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-}
-
 .open-message {
   width: 400px;
   min-height: 50px;

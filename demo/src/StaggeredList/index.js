@@ -67,7 +67,7 @@ const ExpandedListItem = ({ index, color, onClick }) => {
     <Flipped
       flipId={`listItem-${index}`}
       stagger="card"
-      // onSpringUpdate={spring => console.log(spring)}
+      onSpringUpdate={spring => console.log(spring)}
       onStart={el => {
         console.log('regular')
       }}
