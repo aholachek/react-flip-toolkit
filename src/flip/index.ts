@@ -18,8 +18,6 @@ import {
 const createPortalScopedSelector = (portalKey: string) => (
   selector: string
 ) => {
-  console.log(`[${constants.DATA_PORTAL_KEY}="${portalKey}"]${selector}`)
-  console.log(`[${constants.DATA_PORTAL_KEY}=${portalKey}]${selector}`)
   return toArray(
     document.querySelectorAll(
       `[${constants.DATA_PORTAL_KEY}="${portalKey}"]${selector}`
@@ -105,14 +103,13 @@ const onFlipKeyUpdate = ({
     inProgressAnimations
   }
 
-  // @ts-ignore
-  const animateUnFlippedElementsArgs: AnimateUnflippedElementsArgs = assign(
+  const animateUnFlippedElementsArgs = assign(
     {},
     baseArgs,
     {
       unflippedIds
     }
-  )
+  ) as AnimateUnflippedElementsArgs
 
   const {
     hideEnteringElements,
@@ -153,8 +150,6 @@ const onFlipKeyUpdate = ({
           element.removeAttribute(constants.DATA_IS_APPEARING)
         }
       })
-
-    containerEl.removeAttribute('data-flipper-id')
   }
 
   cleanupTempDataAttributes()
