@@ -1,6 +1,5 @@
 import { BoundingClientRect, BaseFlippedElementPositions } from '../types'
 import { InProgressAnimations, FlipCallbacks } from '../../../Flipper/types'
-import { IndexableObject } from '../../../utilities/types'
 import { FlipId } from '../../../Flipped/types'
 
 export interface DomDataForExitAnimations {
