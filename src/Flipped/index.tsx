@@ -14,7 +14,7 @@ import { IndexableObject } from '../utilities/types'
 const propTypes = {
   children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
   inverseFlipId: PropTypes.string,
-  flipId: PropTypes.string,
+  flipId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   opacity: PropTypes.bool,
   translate: PropTypes.bool,
   scale: PropTypes.bool,
@@ -74,7 +74,7 @@ export const Flipped: FunctionComponent<SerializableFlippedProps> = ({
     [constants.DATA_IS_GESTURE_CONTROLLED]: isGestureControlled
   }
 
-  if (gestureHandlers){
+  if (gestureHandlers) {
     Object.assign(dataAttributes, ...gestureHandlers)
   }
 

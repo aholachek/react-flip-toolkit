@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
-
+import { Flipper, Flipped } from '../../../src/gesture'
 import Aussie from '../assets/dogs/australian-shepard.jpg'
 import Corgi from '../assets/dogs/corgi.jpg'
 import Golden from '../assets/dogs/golden-with-flower.jpg'
@@ -20,64 +20,125 @@ const StyledContainer = styled.div`
 `
 
 const StyledCard = styled.div`
-  height: 14rem;
+  height: 20rem;
   width: 15rem;
 `
 
 const StyledImg = styled.img`
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
 `
 
 const StyledList = styled.ul`
   position: relative;
-  padding:0;
-  margin:0;
-  list-style:none;
+  padding: 0;
+  margin: 0;
+  list-style: none;
 
-  ${StyledCard} {
+  > li {
     position: absolute;
     top: 4rem;
   }
 
-  >li:nth-of-type(1) {
-    left: -90%
-  }
-  >li:nth-of-type(2) {
-    transform: translateX(-50%);
-    left: 50%:
-  }
-  >li:nth-of-type(3) {
+  > li:nth-of-type(1) {
     right: 90%;
+  }
+  > li:nth-of-type(2) {
+    transform: translateX(-50%);
+    left: 50%;
+    > ${StyledCard} {
+      height: 25rem;
+      width: 20rem;
+    }
+  }
+  > li:nth-of-type(3) {
+    left: 90%;
   }
 `
 
-const Card = ({ src, title, alt, id }) => {
+const Card = ({
+  src,
+  title,
+  alt,
+  id,
+  setNextCardId,
+  prevCardId,
+  nextCardId
+}) => {
+  const isSwipeable = Boolean(setNextCardId)
   return (
-    <StyledCard>
-      <StyledImg src={src} alt={alt} />
-      {id}
-    </StyledCard>
+    <li>
+      <Flipped
+        flipId={id}
+        flipOnSwipe={
+          isSwipeable && [
+            {
+              direction: 'right',
+              initFLIP: () => {
+                return setNextCardId(prevCardId)
+              },
+              cancelFLIP: () => {
+                return setNextCardId(id)
+              }
+            },
+            {
+              direction: 'left',
+              initFLIP: () => {
+                return setNextCardId(nextCardId)
+              },
+              cancelFLIP: () => {
+                return setNextCardId(id)
+              }
+            }
+          ]
+        }
+        // onNonSwipeClick={e => {
+        //   setCurrentlyViewed(article.id)
+        // }}
+      >
+        <StyledCard>
+          <StyledImg src={src} alt={alt} />
+          {id} {title}
+        </StyledCard>
+      </Flipped>
+    </li>
   )
 }
 
 const GestureCardSwipe = ({}) => {
-  const [currentCardId, setCurrentCardId] = useState(cards[0])
-  const currentCardIndex = cards.filter(c => c.id === currentCardId)
+  const [currentCardId, setCurrentCardId] = useState(cards[0].id)
+  const currentCardIndex = cards.findIndex(c => c.id === currentCardId)
   const currentCard = cards[currentCardIndex]
-  const prevCard =
-    currentCardIndex - 1 === -1 ? cards.length - 1 : currentCardIndex - 1
-  const nextCard = cards[(currentCardIndex + 1) % cards.length]
+  const prevCardIndex =
+    currentCardIndex - 1 < 0 ? cards.length - 1 : currentCardIndex - 1
+  const nextCardIndex = (currentCardIndex + 1) % cards.length
+  const cardsToRender = [
+    cards[prevCardIndex],
+    currentCard,
+    cards[nextCardIndex]
+  ]
   return (
-    <StyledContainer>
-      <StyledList>
-        {[prevCard, currentCard, nextCard].map(card => (
-          <li>
-            <Card {...card} />
-          </li>
-        ))}
-      </StyledList>
-    </StyledContainer>
+    <Flipper flipKey={currentCardId}>
+      <StyledContainer>
+        <StyledList>
+          {cardsToRender.map(card => {
+            if (card.id === currentCardId) {
+              return (
+                <Card
+                  {...card}
+                  setNextCardId={setCurrentCardId}
+                  prevCardId={cardsToRender[0].id}
+                  nextCardId={cardsToRender[2].id}
+                />
+              )
+            } else {
+              return <Card {...card} />
+            }
+          })}
+        </StyledList>
+      </StyledContainer>
+    </Flipper>
   )
 }
 

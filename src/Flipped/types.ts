@@ -1,6 +1,6 @@
 import { SpringOption } from '../springSettings/types'
 
-export type FlipId = string
+export type FlipId = string | number
 
 export type ChildAsFunction = (props: object) => React.ReactNode
 
