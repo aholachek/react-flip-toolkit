@@ -32,10 +32,10 @@
     "prepare": "yarn run build",
     "predeploy": "cd example && yarn install && yarn run build",
     "inspect": "npx source-map-explorer dist/index.umd.js dist/index.umd.js.map",
-    "lint": "tslint src",
-    "tslint-fix": "tslint --fix 'src/**/*.{ts,tsx}'",
+    "lint": "eslint src",
     "format": "prettier --write 'src/**/*.{ts,tsx}",
-    "format-and-fix": "npm-run-all format tslint-fix",
+    "format-and-fix": "npm-run-all format eslint-fix",
+    "fix": "eslint src --fix",
     "test:dom": "parcel mocha/testrunner.html",
     "test": "jest",
     "test:all": "npm-run-all test test:dom",
@@ -48,8 +48,8 @@
     "rematrix": "0.2.2"
   },
   "peerDependencies": {
-    "react": "16.x",
-    "prop-types": "^15.x.x"
+    "prop-types": "^15.x.x",
+    "react": "16.x"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",
@@ -63,11 +63,15 @@
     "@types/react": "^16.7.18",
     "@types/react-dom": "^16.0.11",
     "@types/react-test-renderer": "^16.0.3",
+    "@typescript-eslint/eslint-plugin": "^1.10.2",
+    "@typescript-eslint/parser": "^1.10.2",
     "animejs": "^2.2.0",
     "babel-jest": "^23.6.0",
     "babel-polyfill": "^6.26.0",
     "babel-preset-react-app": "^7.0.0",
     "chai": "^4.2.0",
+    "eslint": "^5.16.0",
+    "eslint-plugin-react": "^7.13.0",
     "jest": "^23.6.0",
     "mocha": "^5.2.0",
     "normalize.css": "^8.0.1",
@@ -89,8 +93,6 @@
     "rollup-plugin-typescript2": "^0.18.1",
     "sinon": "^7.2.2",
     "ts-jest": "^23.10.5",
-    "tslint": "^5.12.0",
-    "tslint-react": "^3.6.0",
     "typescript": "^3.2.2"
   },
   "files": [
