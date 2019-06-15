@@ -7,8 +7,7 @@ import {
   GetElement,
   BaseFlipArgs,
   OnFlipKeyUpdateArgs,
-  FlippedIds,
-  ScopedSelectorArgs
+  FlippedIds
 } from './types'
 import { AnimateUnflippedElementsArgs } from './animateUnflippedElements/types'
 import {
@@ -16,13 +15,17 @@ import {
   ScopedSelector
 } from './animateFlippedElements/types'
 
-const createPortalScopedSelector = (portalKey: string) => (selector: string) =>
-  toArray(
+const createPortalScopedSelector = (portalKey: string) => (
+  selector: string
+) => {
+  console.log(`[${constants.DATA_PORTAL_KEY}="${portalKey}"]${selector}`)
+  console.log(`[${constants.DATA_PORTAL_KEY}=${portalKey}]${selector}`)
+  return toArray(
     document.querySelectorAll(
       `[${constants.DATA_PORTAL_KEY}="${portalKey}"]${selector}`
     )
   )
-
+}
 const createFlipperScopedSelector = (containerEl: HTMLElement) => {
   const tempFlipperId = Math.random().toFixed(5)
   containerEl.dataset.flipperId = tempFlipperId
@@ -38,7 +41,10 @@ const createFlipperScopedSelector = (containerEl: HTMLElement) => {
 const createScopedSelector = ({
   containerEl,
   portalKey
-}: ScopedSelectorArgs): ScopedSelector => {
+}: {
+  containerEl?: HTMLElement
+  portalKey?: string
+}): ScopedSelector => {
   if (portalKey) {
     return createPortalScopedSelector(portalKey)
   } else if (containerEl) {
