@@ -7,7 +7,8 @@ import {
   GetElement,
   BaseFlipArgs,
   OnFlipKeyUpdateArgs,
-  FlippedIds
+  FlippedIds,
+  ScopedSelectorArgs
 } from './types'
 import { AnimateUnflippedElementsArgs } from './animateUnflippedElements/types'
 import {
@@ -15,36 +16,42 @@ import {
   ScopedSelector
 } from './animateFlippedElements/types'
 
-const createScopedSelector = (
-  element?: HTMLElement,
-  portalKey?: string
-): ScopedSelector => {
-  if (portalKey) {
-    return (selector: string) =>
-      toArray(
-        document.querySelectorAll(
-          `[${constants.DATA_PORTAL_KEY}=${portalKey}]${selector}`
-        )
+const createPortalScopedSelector = (portalKey: string) => (selector: string) =>
+  toArray(
+    document.querySelectorAll(
+      `[${constants.DATA_PORTAL_KEY}="${portalKey}"]${selector}`
+    )
+  )
+
+const createFlipperScopedSelector = (containerEl: HTMLElement) => {
+  const tempFlipperId = Math.random().toFixed(5)
+  containerEl.dataset.flipperId = tempFlipperId
+
+  return (selector: string) => {
+    return toArray(
+      containerEl.querySelectorAll(
+        `[data-flipper-id="${tempFlipperId}"] ${selector}`
       )
-  } else if (element) {
-    return (selector: string) => toArray(element.querySelectorAll(selector))
+    )
+  }
+}
+const createScopedSelector = ({
+  containerEl,
+  portalKey
+}: ScopedSelectorArgs): ScopedSelector => {
+  if (portalKey) {
+    return createPortalScopedSelector(portalKey)
+  } else if (containerEl) {
+    return createFlipperScopedSelector(containerEl)
   } else {
     return () => []
   }
 }
 
-const createGetElementFunc = (
-  element?: HTMLElement,
-  portalKey?: string
-): GetElement => {
-  // this should only ever return 1 element
-  if (!element && !portalKey) {
-    throw new Error('either portalKey or element must be provided')
+const createGetElementFunc = (scopedSelector: ScopedSelector): GetElement => {
+  return (id: string) => {
+    return scopedSelector(`[${constants.DATA_FLIP_ID}="${id}"]`)[0]
   }
-  return (id: string) =>
-    createScopedSelector(element, portalKey)(
-      `[${constants.DATA_FLIP_ID}="${id}"]`
-    )[0]
 }
 
 const onFlipKeyUpdate = ({
@@ -70,8 +77,11 @@ const onFlipKeyUpdate = ({
     }
   )
 
-  const scopedSelector = createScopedSelector(containerEl, portalKey)
-  const getElement = createGetElementFunc(containerEl, portalKey)
+  const scopedSelector = createScopedSelector({
+    containerEl,
+    portalKey
+  })
+  const getElement = createGetElementFunc(scopedSelector)
 
   const isFlipped = (id: string) =>
     flippedElementPositionsBeforeUpdate[id] &&
@@ -128,14 +138,20 @@ const onFlipKeyUpdate = ({
 
   // clear temp markup that was added to facilitate FLIP
   // namely, in the filterFlipDescendants function
-  unflippedIds
-    .filter(id => flippedElementPositionsAfterUpdate[id])
-    .forEach(id => {
-      const element = getElement(id)
-      if (element) {
-        element.removeAttribute(constants.DATA_IS_APPEARING)
-      }
-    })
+  const cleanupTempDataAttributes = () => {
+    unflippedIds
+      .filter(id => flippedElementPositionsAfterUpdate[id])
+      .forEach(id => {
+        const element = getElement(id)
+        if (element) {
+          element.removeAttribute(constants.DATA_IS_APPEARING)
+        }
+      })
+
+    containerEl.removeAttribute('data-flipper-id')
+  }
+
+  cleanupTempDataAttributes()
 
   if (handleEnterUpdateDelete) {
     handleEnterUpdateDelete({

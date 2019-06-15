@@ -18,6 +18,7 @@ import RotateExample from './RotateExample'
 import StaggeredList from './StaggeredList'
 import RemountedFlipperExample from './RemountedFlipperExample'
 import HandleEnterUpdateDelete from './HandleEnterUpdateDelete'
+import NestedFlipper from './NestedFlipper'
 
 class Demo extends Component {
   render() {
@@ -41,6 +42,8 @@ class Demo extends Component {
       return <RemountedFlipperExample />
     else if (window.location.pathname === '/enter-update-delete')
       return <HandleEnterUpdateDelete />
+    else if (window.location.pathname === '/nested-flipper')
+      return <NestedFlipper />
     else
       return (
         <nav>
@@ -82,6 +85,9 @@ class Demo extends Component {
             </li>
             <li>
               <a href="/enter-update-delete">Enter update delete</a>
+            </li>
+            <li>
+              <a href="/nested-flipper">Nested Flipper</a>
             </li>
           </ul>
         </nav>

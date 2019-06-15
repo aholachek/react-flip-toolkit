@@ -25,7 +25,7 @@ import {
 } from './types'
 import { BoundingClientRect } from '../getFlippedElementPositions/types'
 import { FlippedIds } from '../types'
-import { IndexableObject } from '../../utilities/types';
+import { IndexableObject } from '../../utilities/types'
 
 // 3d transforms were causing weird issues in chrome,
 // especially when opacity was also being tweened,
@@ -485,10 +485,13 @@ export default ({
     return () => {}
   }
 
-  const flipDataDict: FlipDataDict = flipDataArray.reduce((acc:IndexableObject, curr) => {
-    acc[curr.id] = curr
-    return acc
-  }, {})
+  const flipDataDict: FlipDataDict = flipDataArray.reduce(
+    (acc: IndexableObject, curr) => {
+      acc[curr.id] = curr
+      return acc
+    },
+    {}
+  )
 
   // this function modifies flipDataDict in-place
   // by removing references to non-direct children

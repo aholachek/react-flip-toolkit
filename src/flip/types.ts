@@ -37,3 +37,9 @@ export interface OnFlipKeyUpdateArgs {
   retainTransform?: boolean
   onComplete?: (flipIds: FlippedIds) => void
 }
+
+export interface ScopedSelectorArgs {
+  containerEl?: HTMLElement
+  portalKey?: string
+  tempFlipperId?: string
+}
