@@ -25,7 +25,7 @@ describe('animateUnflippedElements', () => {
     <div data-flip-id="id-3"></div>
     </div>
   `
-    const fakeOnExit1 = animateUnflippedElements({
+    animateUnflippedElements({
       unflippedIds: ['id-1', 'id-3'],
       flipCallbacks: {},
       getElement,
@@ -44,7 +44,7 @@ describe('animateUnflippedElements', () => {
     <div data-flip-id="id-3"></div>
     </div>
   `
-    const fakeOnExit1 = animateUnflippedElements({
+    animateUnflippedElements({
       unflippedIds: ['id-1'],
       flipCallbacks: {},
       getElement,

@@ -10,16 +10,12 @@ export const isObject = (x: any) =>
 export const toArray = (arrayLike: ArrayLike<any>) =>
   Array.prototype.slice.apply(arrayLike)
 
-export const getDuplicateValsAsStrings = (
-  arr: number[] | string[]
-): string[] => {
-  const obj = (arr as string[]).reduce(
-    (acc, curr) => {
-      acc[curr] = (acc[curr] || 0) + 1
-      return acc
-    },
-    {} as IndexableObject
-  )
+export const getDuplicateValsAsStrings = (arr: string[]): string[] => {
+  const baseObj: IndexableObject = {}
+  const obj = arr.reduce((acc, curr) => {
+    acc[curr] = (acc[curr] || 0) + 1
+    return acc
+  }, baseObj)
   return Object.keys(obj).filter(val => obj[val] > 1)
 }
 

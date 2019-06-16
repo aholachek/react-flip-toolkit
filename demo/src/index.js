@@ -18,6 +18,7 @@ import RotateExample from './RotateExample'
 import StaggeredList from './StaggeredList'
 import RemountedFlipperExample from './RemountedFlipperExample'
 import HandleEnterUpdateDelete from './HandleEnterUpdateDelete'
+import NestedFlipper from './NestedFlipper'
 
 import GestureSidebarExample from './GestureSidebarExample'
 import GestureStaggeredList from './GestureStaggeredList'
@@ -59,8 +60,9 @@ class Demo extends Component {
     else if (window.location.pathname === '/gesture-article-swipe')
       return <GestureArticleSwipe />
     else if (window.location.pathname === '/gesture-sidebar-right')
-      // return <GestureSidebarRight />
-      return <GestureArticleSwipe />
+      return <GestureSidebarRight />
+    else if (window.location.pathname === '/nested-flipper')
+      return <NestedFlipper />
     else
       return (
         <nav>
@@ -102,6 +104,9 @@ class Demo extends Component {
             </li>
             <li>
               <a href="/enter-update-delete">Enter update delete</a>
+            </li>
+            <li>
+              <a href="/nested-flipper">Nested Flipper</a>
             </li>
           </ul>
 

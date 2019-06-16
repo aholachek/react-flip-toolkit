@@ -83,9 +83,7 @@ const ExpandedListItem = ({ index, color, onClick }) => {
         style={{ backgroundColor: color }}
         onClick={() => onClick(index)}
       >
-        <Flipped
-          inverseFlipId={`listItem-${index}`}
-        >
+        <Flipped inverseFlipId={`listItem-${index}`}>
           <div className="expandedListItemContent">
             <Flipped flipId={`avatar-${index}`} stagger="card-content">
               <div className="avatar avatarExpanded" />

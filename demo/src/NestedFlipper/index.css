@@ -1,0 +1,40 @@
+.open-message {
+  width: 400px;
+  min-height: 50px;
+}
+
+.closed-message {
+  width: 50px;
+  min-height: 50px;
+}
+
+.message {
+  background: rgb(150, 80, 45);
+  padding: 8px;
+}
+
+.message-flipper {
+  display: flex;
+}
+
+.message-item {
+  margin: 8px 0;
+}
+
+.message-item-content {
+  display: inline-flex;
+}
+
+.message-item-open {
+  width: 300px;
+  height: 10px;
+  padding: 8px;
+  background: rgb(45, 80, 150);
+}
+
+.message-item-closed {
+  width: 40px;
+  height: 10px;
+  padding: 8px;
+  background: rgb(45, 80, 150);
+}
