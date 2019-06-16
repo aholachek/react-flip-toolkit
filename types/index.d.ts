@@ -25,8 +25,11 @@ export interface FlippedProps {
   children: FlippedChildren
   inverseFlipId?: string
   flipId?: string
+  /** Tween opacity (applying this prop will remove the default transitions on the scale and transform values) */
   opacity?: boolean
+  /** Tween translateX and translateY (applying this prop will remove the default transitions on the scale and opacity values) */
   translate?: boolean
+  /** Tween Tween scaleX and scaleY (applying this prop will remove the default transitions on the transform and opacity values) */
   scale?: boolean
   transformOrigin?: string
   stagger?: string | boolean
