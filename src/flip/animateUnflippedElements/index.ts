@@ -22,14 +22,6 @@ const animateUnflippedElements = ({
       flipCallbacks[id].onExit
   )
 
-  // make sure appearing elements aren't taken into account by the filterFlipDescendants function
-  enteringElementIds.forEach(id => {
-    const element = getElement(id)
-    if (element) {
-      element.dataset.isAppearing = 'true'
-    }
-  })
-
   const hideEnteringElements = () => {
     animatedEnteringElementIds.forEach(id => {
       const element = getElement(id)

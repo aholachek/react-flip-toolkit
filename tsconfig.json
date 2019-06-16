@@ -15,7 +15,7 @@
     "esModuleInterop": true,
     "strict": true,
     "resolveJsonModule": true,
-    "isolatedModules": true,
+    "isolatedModules": true
   },
   "include": ["src"],
   "exclude": [
@@ -26,6 +26,6 @@
     "rollup.config.js",
     "src/**/*.test.ts",
     "src/**/*.test.tsx",
-    "__tests__",
+    "__tests__"
   ]
 }
