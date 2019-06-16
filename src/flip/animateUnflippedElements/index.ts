@@ -106,9 +106,7 @@ const animateUnflippedElements = ({
   // now append all the fragments from the onExit callbacks
   // (we use fragments for performance)
   fragmentTuples.forEach(t => {
-    const parent = t[0]
-    const fragment = t[1]
-    parent.appendChild(fragment)
+    t[0].appendChild(t[1])
   })
 
   if (!onExitCallbacks.length) {

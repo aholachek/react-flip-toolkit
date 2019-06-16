@@ -13,6 +13,10 @@
   width: 100%;
 }
 
+.enter-update-delete-list {
+  width: 100%;
+}
+
 .enter-update-delete-list li {
   width: 2rem;
   display: inline-block;
