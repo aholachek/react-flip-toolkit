@@ -31,7 +31,7 @@
     "check-types": "tsc --noEmit",
     "prepare": "yarn run build",
     "predeploy": "cd example && yarn install && yarn run build",
-    "inspect": "npx source-map-explorer dist/index.umd.js dist/index.umd.js.map",
+    "inspect": "npx source-map-explorer umd/react-flip-toolkit.min.*",
     "lint": "eslint src/**/*.ts",
     "format": "prettier --write 'src/**/*.{ts,tsx}",
     "format-and-fix": "npm-run-all format eslint-fix",
