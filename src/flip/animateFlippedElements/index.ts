@@ -8,8 +8,6 @@ import {
   assign
 } from '../../utilities'
 import * as constants from '../../constants'
-import filterFlipDescendants from './filterFlipDescendants'
-import initiateAnimations from './initiateAnimations'
 import {
   GetOnUpdateFunc,
   OnUpdate,
@@ -19,13 +17,11 @@ import {
   AnimatedVals,
   FlipDataArray,
   FlipData,
-  FlipDataDict,
-  InitializeFlip,
-  TopLevelChildren
+  InitializeFlip
 } from './types'
 import { BoundingClientRect } from '../getFlippedElementPositions/types'
 import { FlippedIds } from '../types'
-import { IndexableObject } from '../../utilities/types';
+import { createSpring, staggeredSprings } from './spring'
 
 // 3d transforms were causing weird issues in chrome,
 // especially when opacity was also being tweened,
@@ -158,7 +154,6 @@ export default ({
   debug,
   staggerConfig,
   decisionData = {},
-  scopedSelector,
   retainTransform,
   onComplete
 }: AnimateFlippedElementsArgs) => {
@@ -180,7 +175,6 @@ export default ({
     }
   }
 
-  let withInitFuncs: FlipDataArray
   const completedAnimationIds: FlippedIds = []
 
   const firstElement: HTMLElement = getElement(flippedIds[0])
@@ -249,8 +243,7 @@ export default ({
         element,
         id,
         stagger,
-        springConfig,
-        noOp: true
+        springConfig
       }
 
       if (flipCallbacks[id] && flipCallbacks[id].shouldFlip) {
@@ -258,9 +251,8 @@ export default ({
           decisionData.prev,
           decisionData.current
         )
-        // this element wont be animated, but its children might be
         if (!elementShouldFlip) {
-          return toReturn
+          return false
         }
       }
 
@@ -278,11 +270,8 @@ export default ({
         sizeDifference < 0.5 &&
         opacityDifference < 0.01
       ) {
-        // this element wont be animated, but its children might be
-        return toReturn
+        return false
       }
-
-      toReturn.noOp = false
 
       const currentTransform = Rematrix.parse(
         flippedElementPositionsAfterUpdate[id].transform
@@ -372,7 +361,7 @@ export default ({
         }
         completedAnimationIds.push(id)
 
-        if (completedAnimationIds.length >= withInitFuncs.length) {
+        if (completedAnimationIds.length >= flipDataArray.length) {
           // we can theoretically call multiple times since a promise only resolves 1x
           // but that shouldnt happen
           closureResolve(completedAnimationIds)
@@ -471,33 +460,24 @@ export default ({
       }) as FlipData
     })
     // filter out data for all non-animated elements first
-    .filter(x => x) as FlipDataArray
+    .filter(Boolean) as FlipDataArray
 
-  // we use this array to compare with completed animations
-  // to decide when all animations are completed
-  withInitFuncs = flipDataArray.filter(({ initializeFlip }) =>
-    Boolean(initializeFlip)
-  )
+  console.log(staggeredSprings, staggerConfig)
+
   //  put items back in place
-  withInitFuncs.forEach(({ initializeFlip }) => initializeFlip())
+  flipDataArray.forEach(({ initializeFlip }) => initializeFlip())
 
   if (debug) {
     return () => {}
   }
 
-  const flipDataDict: FlipDataDict = flipDataArray.reduce((acc:IndexableObject, curr) => {
-    acc[curr.id] = curr
-    return acc
-  }, {})
-
-
   return () => {
     // there are no active FLIP animations, so immediately resolve the
     // returned promise
-    if (!withInitFuncs.length) {
+    if (!flipDataArray.length) {
       closureResolve([])
     }
-    initiateAnimations({ flipDataDict, staggerConfig })
+    flipDataArray.forEach(createSpring)
     return flipCompletedPromise
   }
 }
