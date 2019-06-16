@@ -490,14 +490,6 @@ export default ({
     return acc
   }, {})
 
-  // this function modifies flipDataDict in-place
-  // by removing references to non-direct children
-  // to enable recursive stagger
-  const topLevelChildren: TopLevelChildren = filterFlipDescendants({
-    flipDataDict,
-    flippedIds,
-    scopedSelector
-  })
 
   return () => {
     // there are no active FLIP animations, so immediately resolve the
@@ -505,7 +497,7 @@ export default ({
     if (!withInitFuncs.length) {
       closureResolve([])
     }
-    initiateAnimations({ topLevelChildren, flipDataDict, staggerConfig })
+    initiateAnimations({ flipDataDict, staggerConfig })
     return flipCompletedPromise
   }
 }
