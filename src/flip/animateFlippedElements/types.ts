@@ -23,8 +23,6 @@ export type GetOnUpdateFunc = (stop: () => void) => OnUpdate
 
 export type Matrix = number[]
 
-type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
-
 export type InvertedChild = [
   HTMLElement,
   Omit<SerializableFlippedProps, 'flipId'>
