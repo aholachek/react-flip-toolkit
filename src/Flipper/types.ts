@@ -57,3 +57,11 @@ export interface InProgressAnimations {
 export interface FlipCallbacks {
   [key: string]: CallbackFlippedProps
 }
+
+export type SetIsGestureControlled = (isGestureControlled: boolean) => void
+
+export interface GestureParams {
+  setIsGestureControlled: SetIsGestureControlled
+  inProgressAnimations: InProgressAnimations
+  isGestureControlled: boolean
+}

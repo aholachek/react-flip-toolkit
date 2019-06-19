@@ -104,13 +104,9 @@ const onFlipKeyUpdate = ({
     inProgressAnimations
   }
 
-  const animateUnFlippedElementsArgs = assign(
-    {},
-    baseArgs,
-    {
-      unflippedIds
-    }
-  ) as AnimateUnflippedElementsArgs
+  const animateUnFlippedElementsArgs = assign({}, baseArgs, {
+    unflippedIds
+  }) as AnimateUnflippedElementsArgs
 
   const {
     hideEnteringElements,

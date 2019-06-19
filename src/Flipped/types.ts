@@ -1,4 +1,5 @@
 import { SpringOption } from '../springSettings/types'
+import { GestureEventHandlers } from '../gesture/types';
 
 export type FlipId = string | number
 
@@ -17,9 +18,10 @@ export interface SerializableFlippedProps {
   stagger?: string | boolean
   flipId?: FlipId
   inverseFlipId?: string
-  flipOnSwipe?: RespondToGesture
+  isGestureControlled?: boolean
   // only added for gesture-controlled Flipped components
   key?: string
+  gestureHandlers?: GestureEventHandlers
 }
 export interface CallbackFlippedProps {
   onStart?: (

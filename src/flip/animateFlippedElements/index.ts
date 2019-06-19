@@ -399,6 +399,7 @@ export default ({
         inProgressAnimations[id] = {
           stop: spring.destroy.bind(spring),
           //  only for gesture control
+          // @ts-ignore
           spring,
           onAnimationEnd,
           difference: {

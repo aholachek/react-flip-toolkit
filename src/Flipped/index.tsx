@@ -75,7 +75,7 @@ export const Flipped: FunctionComponent<SerializableFlippedProps> = ({
   }
 
   if (gestureHandlers) {
-    Object.assign(dataAttributes, ...gestureHandlers)
+    Object.assign(dataAttributes, gestureHandlers)
   }
 
   if (portalKey) {

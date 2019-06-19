@@ -2,12 +2,17 @@ import React, { Component, createContext } from 'react'
 import PropTypes from 'prop-types'
 import onFlipKeyUpdate from '../flip'
 import getFlippedElementPositionsBeforeUpdate from '../flip/getFlippedElementPositions/getFlippedElementPositionsBeforeUpdate'
-import { FlipperProps, InProgressAnimations, FlipCallbacks } from './types'
+import {
+  FlipperProps,
+  InProgressAnimations,
+  FlipCallbacks,
+  GestureParams
+} from './types'
 import { FlippedElementPositionsBeforeUpdateReturnVals } from '../flip/getFlippedElementPositions/getFlippedElementPositionsBeforeUpdate/types'
 
 export const FlipContext = createContext({} as FlipCallbacks)
 export const PortalContext = createContext('portal')
-export const GestureContext = createContext({})
+export const GestureContext = createContext({} as GestureParams)
 
 class Flipper extends Component<FlipperProps> {
   static defaultProps = {

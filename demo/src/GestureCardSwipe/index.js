@@ -1,60 +1,81 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import PropTypes from 'prop-types'
 import { Flipper, Flipped } from '../../../src/gesture'
 import Aussie from '../assets/dogs/australian-shepard.jpg'
 import Corgi from '../assets/dogs/corgi.jpg'
 import Golden from '../assets/dogs/golden-with-flower.jpg'
+import BlackDoodle from '../assets/dogs/black-doodle.jpg'
+import Pug from '../assets/dogs/pug.jpg'
+import Friends from '../assets/dogs/friends.jpg'
+import Samoyed from '../assets/dogs/samoyed.jpg'
 
 const cards = [
-  { src: Aussie, title: 'lorem', id: 1 },
-  { src: Corgi, title: 'lorem', id: 2 },
-  { src: Golden, title: 'lorem', id: 3 }
+  { src: Aussie, title: 'Happy Afternoon', id: 1 },
+  { src: Golden, title: 'Summertime Love', id: 2 },
+  { src: BlackDoodle, title: 'Fitness Beats', id: 3 },
+  { src: Friends, title: 'Out with the boys', id: 4 },
+  { src: Samoyed, title: 'Meditative beats', id: 5 },
+  { src: Pug, title: 'Life is pain', id: 6 },
+  { src: Corgi, title: 'Party Time', id: 7 }
 ]
 
 const StyledContainer = styled.div`
-  height: 800px;
-  width: 500px;
+  padding-top: 2rem;
+  height: 100vh;
+  width: 100%;
+  max-width: 375px;
   margin: 0 auto;
   border: 1px solid gray;
+  position: relative;
+  overflow: hidden;
 `
 
 const StyledCard = styled.div`
-  height: 20rem;
-  width: 15rem;
+  position: relative;
+  overflow: hidden;
+  cursor: grab;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  box-shadow: 0 8px 16px hsla(0, 0%, 0%, 0.3);
+  cursor: grab;
+  ${props =>
+    props.isCurrentCard
+      ? css`
+          height: 34rem;
+        `
+      : css`
+          height: 24rem;
+        `};
+`
+
+const StyledCardContent = styled.div`
+  /* background-color: white;
+  padding: 1rem;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0; */
 `
 
 const StyledImg = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+visibility: hidden;
+  object-fit: contain;
+  height: 30rem;
+  user-select: none;
 `
 
 const StyledList = styled.ul`
-  position: relative;
   padding: 0;
   margin: 0;
   list-style: none;
-
-  > li {
-    position: absolute;
-    top: 4rem;
-  }
-
-  > li:nth-of-type(1) {
-    right: 90%;
-  }
-  > li:nth-of-type(2) {
-    transform: translateX(-50%);
-    left: 50%;
-    > ${StyledCard} {
-      height: 25rem;
-      width: 20rem;
-    }
-  }
-  > li:nth-of-type(3) {
-    left: 90%;
-  }
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: 10rem 10rem 18rem 10rem 10rem;
+  align-items: center;
+  transform: translateX(-50%);
+  position: absolute;
+  left: 50%;
 `
 
 const Card = ({
@@ -64,15 +85,29 @@ const Card = ({
   id,
   setNextCardId,
   prevCardId,
-  nextCardId
+  nextCardId,
+  currentCardId
 }) => {
-  const isSwipeable = Boolean(setNextCardId)
+  const isCurrentCard = Boolean(setNextCardId)
+  const isEndCard = (id, cardsToRender) => {
+    return cardsToRender[0].id === id || cardsToRender.slice(-1)[0].id === id
+  }
   return (
     <li>
       <Flipped
+        currentCardId={currentCardId}
+        shouldFlip={(prevCardsToRender, currentCardsToRender) => {
+          if (
+            isEndCard(id, prevCardsToRender) &&
+            isEndCard(id, currentCardsToRender)
+          ) {
+            return false
+          }
+          return true
+        }}
         flipId={id}
         flipOnSwipe={
-          isSwipeable && [
+          isCurrentCard && [
             {
               direction: 'right',
               initFLIP: () => {
@@ -93,13 +128,22 @@ const Card = ({
             }
           ]
         }
-        // onNonSwipeClick={e => {
-        //   setCurrentlyViewed(article.id)
-        // }}
       >
-        <StyledCard>
-          <StyledImg src={src} alt={alt} />
-          {id} {title}
+        <StyledCard isCurrentCard={isCurrentCard}>
+          <Flipped inverseFlipId={id} scale>
+            <div>
+              {id}
+              <StyledImg
+                src={src}
+                alt={alt}
+                isCurrentCard={isCurrentCard}
+                draggable="false"
+              />
+            </div>
+          </Flipped>
+          <StyledCardContent>
+            <h3>{title}</h3>
+          </StyledCardContent>
         </StyledCard>
       </Flipped>
     </li>
@@ -110,30 +154,45 @@ const GestureCardSwipe = ({}) => {
   const [currentCardId, setCurrentCardId] = useState(cards[0].id)
   const currentCardIndex = cards.findIndex(c => c.id === currentCardId)
   const currentCard = cards[currentCardIndex]
+  const prevPrevCardIndex =
+    currentCardIndex - 2 >= 0
+      ? currentCardIndex - 2
+      : cards.length + (currentCardIndex - 2)
   const prevCardIndex =
-    currentCardIndex - 1 < 0 ? cards.length - 1 : currentCardIndex - 1
+    currentCardIndex - 1 >= 0
+      ? currentCardIndex - 1
+      : cards.length + (currentCardIndex - 1)
   const nextCardIndex = (currentCardIndex + 1) % cards.length
+  const nextNextCardIndex = (currentCardIndex + 2) % cards.length
   const cardsToRender = [
+    cards[prevPrevCardIndex],
     cards[prevCardIndex],
     currentCard,
-    cards[nextCardIndex]
+    cards[nextCardIndex],
+    cards[nextNextCardIndex]
   ]
   return (
-    <Flipper flipKey={currentCardId}>
+    <Flipper
+      flipKey={currentCardId}
+      decisionData={cardsToRender}
+      spring="gentle"
+    >
       <StyledContainer>
         <StyledList>
-          {cardsToRender.map(card => {
+          {cardsToRender.map((card, i) => {
             if (card.id === currentCardId) {
               return (
                 <Card
+                  key={card.id}
                   {...card}
+                  currentCardId={currentCardId}
                   setNextCardId={setCurrentCardId}
-                  prevCardId={cardsToRender[0].id}
-                  nextCardId={cardsToRender[2].id}
+                  prevCardId={cardsToRender[i - 1].id}
+                  nextCardId={cardsToRender[i + 1].id}
                 />
               )
             } else {
-              return <Card {...card} />
+              return <Card {...card} key={card.id} />
             }
           })}
         </StyledList>

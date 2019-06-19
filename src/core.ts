@@ -121,7 +121,7 @@ class Flipper {
       })
     }
     if (flipId) {
-      element.dataset.flipId = flipId
+      element.dataset.flipId = String(flipId)
     }
     element.dataset.flipConfig = JSON.stringify(flipConfig)
     // finally, add callbacks
