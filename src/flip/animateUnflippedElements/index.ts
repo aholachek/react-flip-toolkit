@@ -99,6 +99,7 @@ const animateUnflippedElements = ({
         }
       }
     }
+    // @ts-ignore
     inProgressAnimations[id] = { stop }
     return () => flipCallbacks[id].onExit!(element, i, stop)
   })

@@ -16,20 +16,18 @@ export interface AnimateFlippedElementsArgs extends BaseFlipArgs {
   scopedSelector: ScopedSelector
   retainTransform: boolean
   onComplete: OnFlipperComplete
-  isGestureControlled: boolean
+  isGestureControlled?: boolean
 }
 
 export type OnUpdate = (spring: Spring) => void
 
-export type GetOnUpdateFunc = (
-  {
-    spring,
-    onAnimationEnd
-  }: {
-    spring: Spring
-    onAnimationEnd: () => void
-  }
-) => OnUpdate
+export type GetOnUpdateFunc = ({
+  spring,
+  onAnimationEnd
+}: {
+  spring: Spring
+  onAnimationEnd: () => void
+}) => OnUpdate
 
 export type Matrix = number[]
 

@@ -42,15 +42,24 @@ export interface FlipperProps {
   onComplete?: OnFlipperComplete
 }
 
+interface GestureDifference {
+  translateXDifference: number
+  translateYDifference: number
+  scaleXDifference: number
+  scaleYDifference: number
+}
+
 export interface InProgressAnimations {
   [key: string]: {
     stop: () => void
-    onAnimationEnd: () => void
     // the following are somewhat hacky cached data
     // for gesture-controlled animations
+    onAnimationEnd?: () => void
     spring?: Spring
     isFinishing?: boolean
     direction?: string
+    difference: GestureDifference
+    flipInitiator?: string
   }
 }
 

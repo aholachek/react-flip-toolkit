@@ -94,11 +94,11 @@ export default ({
   staggerConfig: StaggerConfig
   flipDataDict: FlipDataDict
   topLevelChildren: TopLevelChildren
-  isGestureControlled: boolean
+  isGestureControlled?: boolean
 }) => {
   const initiateStaggeredAnimations: InitiateStaggeredAnimations = (
     staggered,
-    isGestureControlled: boolean
+    isGestureControlled
   ) => {
     if (!staggered || !Object.keys(staggered).length) {
       return

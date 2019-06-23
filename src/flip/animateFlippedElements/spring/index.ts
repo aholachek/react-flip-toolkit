@@ -59,7 +59,7 @@ export const createSpring = (
 export const staggeredSprings = (
   flippedArray: FlipDataArray,
   staggerConfig: StaggerConfigValue = {},
-  isGestureControlled: boolean
+  isGestureControlled?: boolean
 ) => {
   if (!flippedArray || !flippedArray.length) {
     return
@@ -82,8 +82,8 @@ export const staggeredSprings = (
 
       // modify the update function to adjust
       // the end value of the trailing Flipped component
-      flipped.getOnUpdateFunc = ({ setEndValue, ...rest }) => {
-        const onUpdate = cachedGetOnUpdate({ setEndValue, ...rest })
+      flipped.getOnUpdateFunc = args => {
+        const onUpdate = cachedGetOnUpdate(args)
         return spring => {
           let currentValue = spring.getCurrentValue()
           // make sure trailing animations complete
