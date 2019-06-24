@@ -227,7 +227,7 @@ staggerConfig={{
       default: {
         // default direction is forwards
         reverse: true,
-        // default is .1, 0 < n < 1
+        // default is .1, 0 < n < 5
         speed: .5
       },
   // this will apply to Flipped elements with the prop stagger='namedStagger'

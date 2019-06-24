@@ -126,7 +126,7 @@ export default class AnimatedList extends Component {
         staggerConfig={{
           card: {
             reverse: this.state.focused !== null ? true : false,
-            speed: 0.5
+            speed: 0
           }
         }}
         decisionData={this.state.focused}
