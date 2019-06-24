@@ -156,7 +156,7 @@ class Gesture extends React.Component {
     window,
     touch: true,
     mouse: true,
-    passive: { passive: true },
+    passive: { passive: false },
     onAction: undefined,
     onDown: undefined,
     onUp: undefined

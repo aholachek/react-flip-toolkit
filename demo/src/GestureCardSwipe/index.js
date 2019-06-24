@@ -20,18 +20,23 @@ const cards = [
   { src: Corgi, title: 'Party Time', id: 7 }
 ]
 
+const StyledFlipper = styled(Flipper)`
+  overflow: hidden;
+`
+
 const StyledContainer = styled.div`
-  padding-top: 2rem;
-  height: 100vh;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  height: 40vh;
   width: 100%;
   max-width: 375px;
   margin: 0 auto;
-  border: 1px solid gray;
   position: relative;
   overflow: hidden;
 `
 
 const StyledCard = styled.div`
+  touch-action: manipulation;
   position: relative;
   overflow: hidden;
   cursor: grab;
@@ -42,27 +47,26 @@ const StyledCard = styled.div`
   ${props =>
     props.isCurrentCard
       ? css`
-          height: 34rem;
+          height: 30rem;
         `
       : css`
-          height: 24rem;
+          height: 20rem;
         `};
 `
 
 const StyledCardContent = styled.div`
-  /* background-color: white;
+  background-color: white;
   padding: 1rem;
   position: absolute;
   bottom: 0;
   left: 0;
-  right: 0; */
+  right: 0;
 `
 
 const StyledImg = styled.img`
-visibility: hidden;
-  object-fit: contain;
   height: 30rem;
   user-select: none;
+  touch-action: manipulation;
 `
 
 const StyledList = styled.ul`
@@ -92,6 +96,7 @@ const Card = ({
   const isEndCard = (id, cardsToRender) => {
     return cardsToRender[0].id === id || cardsToRender.slice(-1)[0].id === id
   }
+  console.log(src, id)
   return (
     <li>
       <Flipped
@@ -129,10 +134,9 @@ const Card = ({
           ]
         }
       >
-        <StyledCard isCurrentCard={isCurrentCard}>
+        <StyledCard isCurrentCard={isCurrentCard} draggable="false">
           <Flipped inverseFlipId={id} scale>
             <div>
-              {id}
               <StyledImg
                 src={src}
                 alt={alt}
@@ -141,9 +145,9 @@ const Card = ({
               />
             </div>
           </Flipped>
-          <StyledCardContent>
+          {/* <StyledCardContent>
             <h3>{title}</h3>
-          </StyledCardContent>
+          </StyledCardContent> */}
         </StyledCard>
       </Flipped>
     </li>
@@ -172,7 +176,7 @@ const GestureCardSwipe = ({}) => {
     cards[nextNextCardIndex]
   ]
   return (
-    <Flipper
+    <StyledFlipper
       flipKey={currentCardId}
       decisionData={cardsToRender}
       spring="gentle"
@@ -183,8 +187,8 @@ const GestureCardSwipe = ({}) => {
             if (card.id === currentCardId) {
               return (
                 <Card
-                  key={card.id}
                   {...card}
+                  key={card.id}
                   currentCardId={currentCardId}
                   setNextCardId={setCurrentCardId}
                   prevCardId={cardsToRender[i - 1].id}
@@ -197,7 +201,7 @@ const GestureCardSwipe = ({}) => {
           })}
         </StyledList>
       </StyledContainer>
-    </Flipper>
+    </StyledFlipper>
   )
 }
 

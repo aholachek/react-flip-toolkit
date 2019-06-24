@@ -18,7 +18,7 @@ import {
 } from './types'
 export { Flipper }
 
-const defaultCompleteThreshhold = 0.33
+const defaultCompleteThreshhold = 0.2
 
 const isArray = (x: any): x is any[] =>
   Object.prototype.toString.call(x) === '[object Array]'
@@ -90,7 +90,7 @@ const cancelFlip = ({
 }) => {
   const clampedVelocity = velocity !== undefined && clamp(velocity, 0.025, 30)
 
-  const onCompletePromises: Array<Promise<void>>= Object.keys(
+  const onCompletePromises: Array<Promise<void>> = Object.keys(
     inProgressAnimations
   ).map(flipId => {
     const { spring } = inProgressAnimations[flipId]
@@ -183,18 +183,22 @@ export class Flipped extends Component<GestureFlippedProps> {
       velocity,
       delta: [deltaX, deltaY],
       down,
-      first
+      first,
+      event
     }: {
       velocity: number
       delta: number[]
       down: boolean
       first: boolean
+      event: Event
     }) => {
       const gestureIsSimpleClick =
         down === false && Math.abs(deltaX) < 2 && Math.abs(deltaY) < 2
       if (gestureIsSimpleClick) {
         onNonSwipeClick()
       }
+      event.preventDefault()
+      event.stopImmediatePropagation()
 
       if (first) {
         this.temporarilyInvalidFlipIds = []
@@ -279,6 +283,13 @@ export class Flipped extends Component<GestureFlippedProps> {
         return initiateGestureControlledFLIP()
       }
 
+      const gestureData = inProgressAnimations[this.props.flipId]
+
+      if (!gestureData) {
+        console.warn('no gesture data found')
+        return
+      }
+
       if (!this.flipInitiatorData) {
         console.warn('flip initiator data missing')
         return
@@ -320,8 +331,6 @@ export class Flipped extends Component<GestureFlippedProps> {
       if (absoluteMovement < 0) {
         return onFlipCancelled()
       }
-
-      const gestureData = inProgressAnimations[this.props.flipId]
 
       const {
         translateXDifference,
