@@ -1,6 +1,6 @@
 // edited from https://github.com/react-spring/react-use-gesture/blob/v4.0.7/index.js
 
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 
 const touchMove = 'touchmove'

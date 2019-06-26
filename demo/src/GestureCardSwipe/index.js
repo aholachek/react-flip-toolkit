@@ -22,6 +22,7 @@ const cards = [
 
 const StyledFlipper = styled(Flipper)`
   overflow: hidden;
+  height: 100vh;
 `
 
 const StyledContainer = styled.div`
@@ -40,17 +41,18 @@ const StyledCard = styled.div`
   position: relative;
   overflow: hidden;
   cursor: grab;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-  box-shadow: 0 8px 16px hsla(0, 0%, 0%, 0.3);
+  border-top-left-radius: 5%;
+  border-top-right-radius: 5%;
   cursor: grab;
   ${props =>
     props.isCurrentCard
       ? css`
-          height: 30rem;
+          height: 28rem;
+          width: 18rem;
         `
       : css`
-          height: 20rem;
+          height: 16rem;
+          width: 9rem;
         `};
 `
 
@@ -137,12 +139,7 @@ const Card = ({
         <StyledCard isCurrentCard={isCurrentCard} draggable="false">
           <Flipped inverseFlipId={id} scale>
             <div>
-              <StyledImg
-                src={src}
-                alt={alt}
-                isCurrentCard={isCurrentCard}
-                draggable="false"
-              />
+              <StyledImg src={src} alt={alt} draggable="false" />
             </div>
           </Flipped>
           {/* <StyledCardContent>

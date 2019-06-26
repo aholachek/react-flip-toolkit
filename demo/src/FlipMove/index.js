@@ -50,7 +50,7 @@ class ListExample extends Component {
           staggerConfig={{
             default: {
               reverse: this.state.stagger !== 'forward',
-              speed: 0
+              speed: 1
             }
           }}
           decisionData={this.state}

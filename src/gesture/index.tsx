@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, SyntheticEvent } from 'react'
 import Flipper from '../Flipper'
 import DefaultFlipped from '../Flipped'
 import Gesture from './withGesture'
@@ -173,7 +173,7 @@ export class Flipped extends Component<GestureFlippedProps> {
   gestureHandler({
     inProgressAnimations,
     setIsGestureControlled,
-    onNonSwipeClick = () => {}
+    onNonSwipeClick
   }: {
     inProgressAnimations: InProgressAnimations
     setIsGestureControlled: SetIsGestureControlled
@@ -190,15 +190,16 @@ export class Flipped extends Component<GestureFlippedProps> {
       delta: number[]
       down: boolean
       first: boolean
-      event: Event
+      event: SyntheticEvent
     }) => {
       const gestureIsSimpleClick =
         down === false && Math.abs(deltaX) < 2 && Math.abs(deltaY) < 2
       if (gestureIsSimpleClick) {
-        onNonSwipeClick()
+        if (onNonSwipeClick) onNonSwipeClick(event)
+        return
       }
       event.preventDefault()
-      event.stopImmediatePropagation()
+      event.stopPropagation()
 
       if (first) {
         this.temporarilyInvalidFlipIds = []
@@ -212,7 +213,8 @@ export class Flipped extends Component<GestureFlippedProps> {
         inProgressAnimations[this.props.flipId]
       )
 
-      const gestureFlipOnThisElementInProgress = Boolean(this.flipInitiatorData)
+      const gestureFlipOnThisElementInProgress =
+        Boolean(this.flipInitiatorData) && generalFlipInProgress
 
       const gestureIsTooSmallToTriggerFLIP =
         Math.abs(deltaX) + Math.abs(deltaY) < 3
@@ -286,6 +288,7 @@ export class Flipped extends Component<GestureFlippedProps> {
       const gestureData = inProgressAnimations[this.props.flipId]
 
       if (!gestureData) {
+        debugger // eslint-disable-line
         console.warn('no gesture data found')
         return
       }
@@ -376,42 +379,38 @@ export class Flipped extends Component<GestureFlippedProps> {
   }
 
   render() {
-    const { flipOnSwipe, onNonSwipeClick, ...rest } = this.props
+    // taking out flipOnSwipe so we don't spread it into a data attribute
+    const { onNonSwipeClick, flipOnSwipe, ...rest } = this.props
 
-    const defaultFlipped = <DefaultFlipped {...rest} />
-
-    if (flipOnSwipe || this.flipInitiatorData) {
-      return (
-        <GestureContext.Consumer>
-          {({
-            inProgressAnimations,
-            setIsGestureControlled,
-            isGestureControlled
-          }: GestureParams) => {
-            return (
-              <Gesture
-                onAction={this.gestureHandler({
-                  inProgressAnimations,
-                  setIsGestureControlled,
-                  onNonSwipeClick
-                })}
-              >
-                {(gestureHandlers: GestureEventHandlers) => {
-                  return (
-                    <DefaultFlipped
-                      {...rest}
-                      isGestureControlled={isGestureControlled}
-                      gestureHandlers={gestureHandlers}
-                    />
-                  )
-                }}
-              </Gesture>
-            )
-          }}
-        </GestureContext.Consumer>
-      )
-    }
-    return defaultFlipped
+    return (
+      <GestureContext.Consumer>
+        {({
+          inProgressAnimations,
+          setIsGestureControlled,
+          isGestureControlled
+        }: GestureParams) => {
+          return (
+            <Gesture
+              onAction={this.gestureHandler({
+                inProgressAnimations,
+                setIsGestureControlled,
+                onNonSwipeClick
+              })}
+            >
+              {(gestureHandlers: GestureEventHandlers) => {
+                return (
+                  <DefaultFlipped
+                    {...rest}
+                    isGestureControlled={isGestureControlled}
+                    gestureHandlers={gestureHandlers}
+                  />
+                )
+              }}
+            </Gesture>
+          )
+        }}
+      </GestureContext.Consumer>
+    )
   }
 }
 

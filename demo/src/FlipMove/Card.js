@@ -1,3 +1,4 @@
+
 import React, { PureComponent } from 'react'
 import { Flipped } from '../../../src'
 import anime from 'animejs'

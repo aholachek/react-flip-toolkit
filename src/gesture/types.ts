@@ -1,4 +1,5 @@
 import { FlipId, FlippedProps } from '../Flipped/types'
+import { SyntheticEvent } from 'react'
 
 type Direction = 'right' | 'left' | 'down' | 'up'
 
@@ -23,7 +24,7 @@ interface FlipOnSwipeConfigObject {
 
 export type FlipOnSwipe = FlipOnSwipeConfigObject | FlipOnSwipeConfigObject[]
 
-export type OnNonSwipeClick = () => void
+export type OnNonSwipeClick = (event: SyntheticEvent) => void
 
 interface GestureSpecificFlippedProps {
   flipOnSwipe: FlipOnSwipe
