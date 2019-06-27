@@ -457,11 +457,12 @@ square.addEventListener('click', () => {
 - If one of your `Flipped` components is wrapping another React component rather than a DOM element, [use a render prop to get the Flipped props](#wrapping-a-react-component) and pass down to the necessary DOM element.
 - Is the element that's receiving props from `Flipped` visible in the DOM? `react-flip-toolkit` attempts to optimize performance by not animating elements that are off-screen or elements that have no width or height.
 
-### Problem #2: Things look weird
+### Problem #2: Things look weird / animations aren't behaving
 
-- At any point, there can only be one element with a specified `flipId` on the page. If there are multiple `Flipped` elements on the page with the same id, the animation will break. Check to make sure all `flipId`s are unique.
-- Make sure you are animating the element you want to animate and not, for instance, a wrapper div. If you are animating an inline element like some text, but have wrapped it in a `div`, you're actually animating the div, which might have a much wider width that you'd expect at certain points, which will throw off the animation. Check to see if you need to add an `inline-block` style to the animated element.
-- Make sure you don't have any competing CSS transitions on the element in question.
+- **Check to make sure all `flipId`s are unique.** At any point, there can only be one element with a specified `flipId` on the page. If there are multiple `Flipped` elements on the page with the same id, the animation will break.
+- **Make sure you are animating the element you want to animate and not, for instance, a wrapper div**. If you are animating an inline element like some text, but have wrapped it in a `div`, you're actually animating the div, which might have a much wider width that you'd expect at certain points, which will throw off the animation. Check to see if you need to add an `inline-block` style to the animated element.
+- Make sure you don't have any **competing CSS transitions** on the element in question.
+- **If you are animating an image**, try giving the image hard-coded dimensions and seeing if that fixes the problem. (If you are relying on the innate dimensions of the image, it might not have been fully rendered by the browser in time for the new image dimensions to be measured.)
 
 ### Problem #3: It's still not working
 
