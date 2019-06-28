@@ -56,6 +56,11 @@ export const createSpring = (
   }
 }
 
+export const normalizeSpeed = (speedConfig: number | undefined) => {
+  if (typeof speedConfig !== 'number') return 1.1
+  return 1 + Math.min(Math.max(speedConfig * 5, 0), 5)
+}
+
 export const staggeredSprings = (
   flippedArray: FlipDataArray,
   staggerConfig: StaggerConfigValue = {},
@@ -69,9 +74,7 @@ export const staggeredSprings = (
     flippedArray.reverse()
   }
 
-  const normalizedSpeed = staggerConfig.speed
-    ? 1 + Math.max(Math.min(staggerConfig.speed, 0), 1)
-    : 1.1
+  const normalizedSpeed = normalizeSpeed(staggerConfig.speed)
 
   const nextThreshold = 1 / Math.max(Math.min(flippedArray.length, 100), 10)
 

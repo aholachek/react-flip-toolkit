@@ -61,6 +61,7 @@ export const Flipped: React.SFC<FlippedProps>
 
 export interface StaggerConfigValue {
   reverse?: boolean
+  /** A number between 0 (for a slower stagger) and 1 (for a faster stagger) */
   speed: number
 }
 
