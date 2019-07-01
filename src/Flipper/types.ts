@@ -51,7 +51,7 @@ interface GestureDifference {
 
 export interface InProgressAnimations {
   [key: string]: {
-    stop: () => void
+    destroy: () => void
     // the following are somewhat hacky cached data
     // for gesture-controlled animations
     onAnimationEnd?: () => void
@@ -67,10 +67,9 @@ export interface FlipCallbacks {
   [key: string]: CallbackFlippedProps
 }
 
-export type SetIsGestureControlled = (isGestureControlled: boolean) => void
+export type setIsGestureInitiated = () => void
 
 export interface GestureParams {
-  setIsGestureControlled: SetIsGestureControlled
+  setIsGestureInitiated: setIsGestureInitiated
   inProgressAnimations: InProgressAnimations
-  isGestureControlled: boolean
 }

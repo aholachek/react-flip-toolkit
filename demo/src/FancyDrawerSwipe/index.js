@@ -1,7 +1,7 @@
 // inspired by this animated demo:
 // https://uxplanet.org/animation-in-ui-design-from-concept-to-reality-85c49907b19d
 import React, { useState } from 'react'
-import { Flipper, Flipped } from '../../../src/gesture'
+import { Flipper, Flipped } from '../../../src/Swipeable'
 import styled from 'styled-components'
 import {
   FaEgg,
@@ -130,12 +130,12 @@ const ClosedDrawer = ({ index, color, setDrawerIsOpen, sections }) => {
   return (
     <Flipped
       flipId="drawer"
-      flipOnSwipe={[
+      onSwipe={[
         {
-          initFLIP: () => {
+          initFlip: () => {
             setDrawerIsOpen(true)
           },
-          cancelFLIP: () => {
+          cancelFlip: () => {
             setDrawerIsOpen(false)
           },
           direction: 'up'
@@ -174,11 +174,11 @@ const OpenDrawer = ({
       onComplete={el => {
         setHeadingsVisible(true)
       }}
-      flipOnSwipe={{
-        initFLIP: () => {
+      onSwipe={{
+        initFlip: () => {
           setDrawerIsOpen(false)
         },
-        cancelFLIP: () => {
+        cancelFlip: () => {
           setDrawerIsOpen(true)
           setHeadingsVisible(true)
         },

@@ -9,10 +9,12 @@ import {
   GestureParams
 } from './types'
 import { FlippedElementPositionsBeforeUpdateReturnVals } from '../flip/getFlippedElementPositions/getFlippedElementPositionsBeforeUpdate/types'
-
+import { DATA_NO_TOUCH } from '../constants'
 export const FlipContext = createContext({} as FlipCallbacks)
 export const PortalContext = createContext('portal')
 export const GestureContext = createContext({} as GestureParams)
+
+const styleId = `react-flip-toolkit-${DATA_NO_TOUCH}`
 
 class Flipper extends Component<FlipperProps> {
   static defaultProps = {
@@ -22,16 +24,38 @@ class Flipper extends Component<FlipperProps> {
   }
 
   private isGestureControlled: boolean = false
+  private isGestureInitiated: boolean = false
 
   private inProgressAnimations: InProgressAnimations = {}
   private flipCallbacks: FlipCallbacks = {}
   private el?: HTMLElement = undefined
 
-  setIsGestureControlled = (val: boolean) => {
-    this.isGestureControlled = val
+  setIsGestureInitiated = () => {
+    this.isGestureInitiated = true
+  }
+
+  componentDidMount() {
+    try {
+      if (document.getElementById(styleId)) return
+      const css = `[${DATA_NO_TOUCH}] { touch-action: none; }`
+      const style = document.createElement('style')
+      style.appendChild(document.createTextNode(css))
+      style.type = 'text/css'
+      style.id = styleId
+      document.head.appendChild(style)
+    } catch (e) {
+      // if this errors, gestures aren't gonna work great on mobile
+    }
   }
 
   getSnapshotBeforeUpdate(prevProps: FlipperProps) {
+    // a roundabout method to fix issues with gesture ==> nongesture cancellations
+    if (this.isGestureInitiated) {
+      this.isGestureControlled = true
+      this.isGestureInitiated = false
+    } else {
+      this.isGestureControlled = false
+    }
     if (prevProps.flipKey !== this.props.flipKey && this.el) {
       return getFlippedElementPositionsBeforeUpdate({
         element: this.el,
@@ -82,8 +106,7 @@ class Flipper extends Component<FlipperProps> {
       <GestureContext.Provider
         value={{
           inProgressAnimations: this.inProgressAnimations,
-          setIsGestureControlled: this.setIsGestureControlled,
-          isGestureControlled: this.isGestureControlled
+          setIsGestureInitiated: this.setIsGestureInitiated
         }}
       >
         <FlipContext.Provider value={this.flipCallbacks}>

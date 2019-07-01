@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { Flipper } from '../../../src'
-import { Flipped } from '../../../src/gesture'
+import { Flipper, Flipped } from '../../../src'
+import Swipeable from '../../../src/Swipeable'
 import styled, { css } from 'styled-components'
 
 const StyledFlipper = styled(Flipper)`
@@ -94,12 +94,9 @@ const StyledDrawerContent = styled.div`
 
 function usePrevious(value) {
   const ref = useRef()
-  useEffect(
-    () => {
-      ref.current = value
-    },
-    [value]
-  )
+  useEffect(() => {
+    ref.current = value
+  }, [value])
   return ref.current
 }
 
@@ -107,28 +104,36 @@ const Drawer = ({ article, returnToListView, setCurrentlyViewed }) => {
   const previousArticle = usePrevious(article)
   const articleToRender = article || previousArticle
   return (
-    <Flipped
-      flipId="drawer"
-      flipOnSwipe={{
+    <Swipeable
+      onSwipe={{
         direction: 'down',
-        initFLIP: returnToListView,
+        initFLIP: () => {
+          returnToListView()
+        },
         cancelFLIP: () => {
           setCurrentlyViewed(article.id)
         }
       }}
     >
-      <StyledDrawer article={article}>
-        {articleToRender && (
-          <Flipped flipId="article-text" opacity>
-            <StyledDrawerContent article={article}>
-              <h1>{articleToRender.title}</h1>
-              <p>{articleToRender.id}</p>
-              <p>{articleToRender.description}</p>
-            </StyledDrawerContent>
-          </Flipped>
-        )}
-      </StyledDrawer>
-    </Flipped>
+      <Flipped flipId="drawer">
+        <StyledDrawer
+          article={article}
+          onClick={e => {
+            setCurrentlyViewed(null)
+          }}
+        >
+          {articleToRender && (
+            <Flipped flipId="article-text" opacity>
+              <StyledDrawerContent article={article}>
+                <h1>{articleToRender.title}</h1>
+                <p>{articleToRender.id}</p>
+                <p>{articleToRender.description}</p>
+              </StyledDrawerContent>
+            </Flipped>
+          )}
+        </StyledDrawer>
+      </Flipped>
+    </Swipeable>
   )
 }
 
@@ -144,10 +149,8 @@ const ArticleListItem = ({
   }
   return (
     <StyledCollapsedArticleContainer flipKey={isGettingDeleted}>
-      <Flipped
-        stagger
-        flipId={`article-${article.id}`}
-        flipOnSwipe={[
+      <Swipeable
+        onSwipe={[
           {
             direction: 'right',
             initFLIP: () => {
@@ -158,22 +161,28 @@ const ArticleListItem = ({
             }
           }
         ]}
-        onComplete={() => {
-          deleteArticle(article.id)
-        }}
-        onNonSwipeClick={e => {
+        onClick={e => {
+          console.log('on click!', currentlyViewed)
           setCurrentlyViewed(article.id)
         }}
       >
-        <StyledCollapsedArticle
-          currentlyViewed={currentlyViewed}
-          isGettingDeleted={isGettingDeleted}
-          href="#"
+        <Flipped
+          stagger
+          flipId={`article-${article.id}`}
+          onComplete={() => {
+            deleteArticle(article.id)
+          }}
         >
-          <h3>{article.title}</h3>
-          <p>{article.id}</p>
-        </StyledCollapsedArticle>
-      </Flipped>
+          <StyledCollapsedArticle
+            currentlyViewed={currentlyViewed}
+            isGettingDeleted={isGettingDeleted}
+            href="#"
+          >
+            <h3>{article.title}</h3>
+            <p>{article.id}</p>
+          </StyledCollapsedArticle>
+        </Flipped>
+      </Swipeable>
     </StyledCollapsedArticleContainer>
   )
 }

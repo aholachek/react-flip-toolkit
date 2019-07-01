@@ -2,7 +2,7 @@
 /* eslint-disable no-return-assign */
 
 import React, { Component } from 'react'
-import { Flipper, Flipped } from '../../../src/gesture'
+import { Flipper, Flipped, Swipeable } from '../../../src'
 import backgroundImg from './assets/nighttime.jpg'
 import './styles.css'
 
@@ -17,45 +17,43 @@ class PaymentSidebar extends Component {
 
     return (
       <Flipper flipKey={collapsed} element="nav" className="foo">
-        <Flipped
-          flipId="container"
-          flipOnSwipe={{
-            initFLIP: this.toggleCollapsed,
-            cancelFLIP: this.toggleCollapsed,
-            direction: collapsed ? 'down' : 'up',
-            onChange: args => {
-              console.log(args)
-            }
+        <Swipeable
+          onSwipe={{
+            initFlip: this.toggleCollapsed,
+            cancelFlip: this.toggleCollapsed,
+            direction: collapsed ? 'down' : 'up'
           }}
         >
-          <div className={sidebarClassName}>
-            <Flipped inverseFlipId="container">
-              <div className="sidebarContentContainer">
-                <Flipped flipId="sidebarImg">
-                  <div
-                    className="decorativeImg"
-                    style={{ backgroundImage: `url(${backgroundImg})` }}
-                  />
-                </Flipped>
-
-                <div className="sidebarBody">
-                  <Flipped flipId="sidebarHeader">
-                    <h1 className="sidebarHeader">
-                      Lorem ipsum dolor sit amet consectetur
-                    </h1>
+          <Flipped flipId="container">
+            <div className={sidebarClassName}>
+              <Flipped inverseFlipId="container">
+                <div className="sidebarContentContainer">
+                  <Flipped flipId="sidebarImg">
+                    <div
+                      className="decorativeImg"
+                      style={{ backgroundImage: `url(${backgroundImg})` }}
+                    />
                   </Flipped>
-                  <div className="sidebarContent">
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                    Molestiae deleniti reprehenderit est necessitatibus qui iste
-                    maiores enim amet atque nostrum? Facere ad eveniet
-                    cupiditate molestiae, repellendus nisi consectetur quasi
-                    adipisci.
+
+                  <div className="sidebarBody">
+                    <Flipped flipId="sidebarHeader">
+                      <h1 className="sidebarHeader">
+                        Lorem ipsum dolor sit amet consectetur
+                      </h1>
+                    </Flipped>
+                    <div className="sidebarContent">
+                      Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                      Molestiae deleniti reprehenderit est necessitatibus qui
+                      iste maiores enim amet atque nostrum? Facere ad eveniet
+                      cupiditate molestiae, repellendus nisi consectetur quasi
+                      adipisci.
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Flipped>
-          </div>
-        </Flipped>
+              </Flipped>
+            </div>
+          </Flipped>
+        </Swipeable>
       </Flipper>
     )
   }

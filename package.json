@@ -45,16 +45,15 @@
     "version": "npm run build"
   },
   "dependencies": {
-    "lodash-es": "^4.17.11",
-    "react-icons": "^3.7.0",
-    "rematrix": "0.2.2",
-    "styled-components": "^4.3.2"
+    "rematrix": "0.2.2"
   },
   "peerDependencies": {
     "prop-types": "^15.x.x",
     "react": "^16.8.x"
   },
   "devDependencies": {
+    "react-icons": "^3.7.0",
+    "styled-components": "^4.3.2",
     "@babel/core": "^7.4.5",
     "@babel/plugin-proposal-class-properties": "^7.4.4",
     "@babel/plugin-transform-typescript": "^7.4.5",

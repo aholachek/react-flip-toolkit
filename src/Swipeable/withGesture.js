@@ -1,7 +1,5 @@
 // edited from https://github.com/react-spring/react-use-gesture/blob/v4.0.7/index.js
-
 import React from 'react'
-import PropTypes from 'prop-types'
 
 const touchMove = 'touchmove'
 const touchEnd = 'touchend'
@@ -107,12 +105,12 @@ function handlers(set, props = {}, args) {
 
   const onDown = e => {
     if (props.mouse) {
-      props.window.addEventListener(mouseMove, handleMove, props.passive)
-      props.window.addEventListener(mouseUp, onUp, props.passive)
+      props.window.addEventListener(mouseMove, handleMove, { passive: false })
+      props.window.addEventListener(mouseUp, onUp, { passive: false })
     }
     if (props.touch) {
-      props.window.addEventListener(touchMove, handleMove, props.passive)
-      props.window.addEventListener(touchEnd, onUp, props.passive)
+      props.window.addEventListener(touchMove, handleMove, { passive: false })
+      props.window.addEventListener(touchEnd, onUp, { passive: false })
     }
 
     handleDown(e)
@@ -120,12 +118,16 @@ function handlers(set, props = {}, args) {
 
   const stop = () => {
     if (props.mouse) {
-      props.window.removeEventListener(mouseMove, handleMove, props.passive)
-      props.window.removeEventListener(mouseUp, onUp, props.passive)
+      props.window.removeEventListener(mouseMove, handleMove, {
+        passive: false
+      })
+      props.window.removeEventListener(mouseUp, onUp, { passive: false })
     }
     if (props.touch) {
-      props.window.removeEventListener(touchMove, handleMove, props.passive)
-      props.window.removeEventListener(touchEnd, onUp, props.passive)
+      props.window.removeEventListener(touchMove, handleMove, {
+        passive: false
+      })
+      props.window.removeEventListener(touchEnd, onUp, { passive: false })
     }
   }
 
@@ -138,7 +140,7 @@ function handlers(set, props = {}, args) {
   }
 
   const output = {}
-  const capture = props.passive.capture ? 'Capture' : ''
+  const capture = { passive: false }.capture ? 'Capture' : ''
 
   if (props.mouse) {
     output[`onMouseDown${capture}`] = onDown

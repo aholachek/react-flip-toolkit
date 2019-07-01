@@ -4,10 +4,10 @@ import { SyntheticEvent } from 'react'
 type Direction = 'right' | 'left' | 'down' | 'up'
 
 export interface RespondToGesture {
-  initFLIP: () => void
-  cancelFLIP: () => void
+  initFlip: () => void
+  cancelFlip: () => void
   direction: Direction
-  completeThreshold: number
+  theshold: number
 }
 
 export interface GestureFlipDecisionData {
@@ -15,19 +15,19 @@ export interface GestureFlipDecisionData {
   prevProps: Record<string, any>
 }
 
-interface FlipOnSwipeConfigObject {
+interface OnSwipeConfigObject {
   direction: Direction
-  initFLIP: (data: GestureFlipDecisionData) => void
-  cancelFLIP: (data: GestureFlipDecisionData) => void
-  completeThreshold: number
+  initFlip: (data: GestureFlipDecisionData) => void
+  cancelFlip: (data: GestureFlipDecisionData) => void
+  theshold: number
 }
 
-export type FlipOnSwipe = FlipOnSwipeConfigObject | FlipOnSwipeConfigObject[]
+export type onSwipe = OnSwipeConfigObject | OnSwipeConfigObject[]
 
 export type OnNonSwipeClick = (event: SyntheticEvent) => void
 
 interface GestureSpecificFlippedProps {
-  flipOnSwipe: FlipOnSwipe
+  onSwipe: onSwipe
   onNonSwipeClick?: OnNonSwipeClick
   flipId: FlipId
 }
@@ -40,5 +40,5 @@ export interface GestureEventHandlers {
 }
 
 export interface FlipInitiatorData {
-  cachedConfig: FlipOnSwipeConfigObject
+  cachedConfig: OnSwipeConfigObject
 }

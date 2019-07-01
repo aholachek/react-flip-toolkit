@@ -2,7 +2,7 @@
 // /* eslint-disable no-return-assign */
 
 // import React, { Component } from 'react'
-// import { Flipper, Flipped } from '../../../src/gesture'
+// import { Flipper, Flipped } from '../../../src/Swipeable'
 // import backgroundImg from './assets/nighttime.jpg'
 // import './styles.css'
 
@@ -19,9 +19,9 @@
 //       <Flipper flipKey={collapsed} element="nav" className="foo">
 //         <Flipped
 //           flipId="container"
-//           flipOnSwipe={{
-//             initFLIP: this.toggleCollapsed,
-//             cancelFLIP: this.toggleCollapsed,
+//           onSwipe={{
+//             initFlip: this.toggleCollapsed,
+//             cancelFlip: this.toggleCollapsed,
 //             direction: collapsed ? 'down' : 'up',
 //             onChange: args => {
 //               console.log(args)

@@ -1,7 +1,7 @@
 // inspired by this animated demo:
 // https://uxplanet.org/animation-in-ui-design-from-concept-to-reality-85c49907b19d
 import React, { Component } from 'react'
-import { Flipper, Flipped } from '../../../src/gesture'
+import { Flipper, Flipped, Swipeable } from '../../../src'
 import './styles.css'
 const listData = [0, 1, 2, 3, 4, 5, 6, 7]
 const colors = ['#ff4f66', '#7971ea', '#5900d8']
@@ -13,117 +13,132 @@ const shouldFlip = index => (prev, current) => {
 
 const ListItem = ({ index, color, onClick }) => {
   return (
-    <Flipped
-      flipId={`listItem-${index}`}
-      onStartImmediate={el => {
-        setTimeout(() => {
-          el.classList.add('animated-in')
-        })
-      }}
-      shouldInvert={shouldFlip(index)}
-      flipOnSwipe={[
+    <Swipeable
+      onSwipe={[
         {
-          initFLIP: () => {
+          initFlip: () => {
             onClick(index)
           },
-          cancelFLIP: () => {
+          cancelFlip: () => {
             onClick(index)
           },
           direction: 'down'
         },
         {
-          initFLIP: () => {
+          initFlip: () => {
             onClick(index)
           },
-          cancelFLIP: () => {
+          cancelFlip: () => {
             onClick(index)
           },
           direction: 'right'
         }
       ]}
     >
-      <div className="listItem" style={{ backgroundColor: color }}>
-        <Flipped inverseFlipId={`listItem-${index}`}>
-          <div className="listItemContent">
-            <Flipped
-              flipId={`avatar-${index}`}
-              stagger="card-content"
-              shouldFlip={shouldFlip(index)}
-            >
-              <div className="avatar" />
-            </Flipped>
-            <div className="description">
+      <Flipped
+        flipId={`listItem-${index}`}
+        onStartImmediate={el => {
+          setTimeout(() => {
+            el.classList.add('animated-in')
+          })
+        }}
+        shouldInvert={shouldFlip(index)}
+      >
+        <div className="listItem" style={{ backgroundColor: color }}>
+          <Flipped inverseFlipId={`listItem-${index}`}>
+            <div className="listItemContent">
               <Flipped
-                flipId={`description-${index}-1`}
+                flipId={`avatar-${index}`}
                 stagger="card-content"
                 shouldFlip={shouldFlip(index)}
               >
-                <div />
+                <div className="avatar" />
               </Flipped>
-              <Flipped
-                flipId={`description-${index}-2`}
-                stagger="card-content"
-                shouldFlip={shouldFlip(index)}
-              >
-                <div />
-              </Flipped>
-              <Flipped
-                flipId={`description-${index}-3`}
-                shouldFlip={shouldFlip(index)}
-              >
-                <div />
-              </Flipped>
+              <div className="description">
+                <Flipped
+                  flipId={`description-${index}-1`}
+                  stagger="card-content"
+                  shouldFlip={shouldFlip(index)}
+                >
+                  <div />
+                </Flipped>
+                <Flipped
+                  flipId={`description-${index}-2`}
+                  stagger="card-content"
+                  shouldFlip={shouldFlip(index)}
+                >
+                  <div />
+                </Flipped>
+                <Flipped
+                  flipId={`description-${index}-3`}
+                  shouldFlip={shouldFlip(index)}
+                >
+                  <div />
+                </Flipped>
+              </div>
             </div>
-          </div>
-        </Flipped>
-      </div>
-    </Flipped>
+          </Flipped>
+        </div>
+      </Flipped>
+    </Swipeable>
   )
 }
 
 const ExpandedListItem = ({ index, color, onClick }) => {
   return (
-    <Flipped
-      flipId={`listItem-${index}`}
-      onComplete={el => {
-        el.classList.add('animated-in')
-      }}
-      flipOnSwipe={{
-        initFLIP: () => {
+    <Swipeable
+      onSwipe={{
+        initFlip: () => {
           onClick(index)
         },
-        cancelFLIP: () => {
+        cancelFlip: () => {
           onClick(index)
         },
         direction: 'up'
       }}
     >
-      <div className="expandedListItem" style={{ backgroundColor: color }}>
-        <Flipped inverseFlipId={`listItem-${index}`}>
-          <div className="expandedListItemContent">
-            <Flipped flipId={`avatar-${index}`}>
-              <div className="avatar avatarExpanded" stagger="card-content" />
-            </Flipped>
-            <div className="description">
-              <Flipped flipId={`description-${index}-1`} stagger="card-content">
-                <div />
+      <Flipped
+        flipId={`listItem-${index}`}
+        onComplete={el => {
+          el.classList.add('animated-in')
+        }}
+      >
+        <div className="expandedListItem" style={{ backgroundColor: color }}>
+          <Flipped inverseFlipId={`listItem-${index}`}>
+            <div className="expandedListItemContent">
+              <Flipped flipId={`avatar-${index}`}>
+                <div className="avatar avatarExpanded" stagger="card-content" />
               </Flipped>
-              <Flipped flipId={`description-${index}-2`} stagger="card-content">
+              <div className="description">
+                <Flipped
+                  flipId={`description-${index}-1`}
+                  stagger="card-content"
+                >
+                  <div />
+                </Flipped>
+                <Flipped
+                  flipId={`description-${index}-2`}
+                  stagger="card-content"
+                >
+                  <div />
+                </Flipped>
+                <Flipped
+                  flipId={`description-${index}-3`}
+                  stagger="card-content"
+                >
+                  <div />
+                </Flipped>
+              </div>
+              <div className="additional-content">
                 <div />
-              </Flipped>
-              <Flipped flipId={`description-${index}-3`} stagger="card-content">
                 <div />
-              </Flipped>
+                <div />
+              </div>
             </div>
-            <div className="additional-content">
-              <div />
-              <div />
-              <div />
-            </div>
-          </div>
-        </Flipped>
-      </div>
-    </Flipped>
+          </Flipped>
+        </div>
+      </Flipped>
+    </Swipeable>
   )
 }
 export default class AnimatedList extends Component {

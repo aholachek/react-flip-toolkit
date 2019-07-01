@@ -1,24 +1,29 @@
-import React, { Component, SyntheticEvent } from 'react'
-import Flipper from '../Flipper'
-import DefaultFlipped from '../Flipped'
+import React, { Component, SyntheticEvent, Children, cloneElement } from 'react'
+import PropTypes from 'prop-types'
 import Gesture from './withGesture'
 import { GestureContext } from '../Flipper'
-import clamp from 'lodash-es/clamp'
 import Spring from '../forked-rebound/Spring'
-import {
-  InProgressAnimations,
-  GestureParams,
-  SetIsGestureControlled
-} from '../Flipper/types'
+import { InProgressAnimations, GestureParams } from '../Flipper/types'
 import {
   OnNonSwipeClick,
   GestureFlippedProps,
   GestureEventHandlers,
   FlipInitiatorData
 } from './types'
-export { Flipper }
+import { FlipId } from '../Flipped/types'
 
-const defaultCompleteThreshhold = 0.2
+const defaultCompleteThreshhold = 0.15
+
+const createConfigFromProps = props => {
+  return {
+    direction: props.direction,
+    initFlip: props.initFlip,
+    cancelFlip: props.cancelFlip,
+    threshold: props.threshold,
+    mouseEvents: props.mouseEvents,
+    onClick: props.onClick
+  }
+}
 
 const isArray = (x: any): x is any[] =>
   Object.prototype.toString.call(x) === '[object Array]'
@@ -41,14 +46,30 @@ const getMovementScalar = ({
   return normalized[direction]
 }
 
+// https://github.com/lodash/lodash/blob/master/clamp.js
+function clamp(num: number, lower: number, upper: number) {
+  num = +num
+  lower = +lower
+  upper = +upper
+  lower = lower === lower ? lower : 0
+  upper = upper === upper ? upper : 0
+  if (num === num) {
+    num = num <= upper ? num : upper
+    num = num >= lower ? num : lower
+  }
+  return num
+}
+
 const finishFlip = ({
   inProgressAnimations,
   velocity,
-  onFinished
+  deleteFlipInitiatorData,
+  flipInitiator
 }: {
   inProgressAnimations: InProgressAnimations
   velocity: number
-  onFinished?: () => void
+  deleteFlipInitiatorData: () => void
+  flipInitiator: FlipId
 }) => {
   const clampedVelocity = velocity !== undefined && clamp(velocity, 0.025, 15)
   const onFinishedPromises = Object.keys(inProgressAnimations)
@@ -64,9 +85,16 @@ const finishFlip = ({
       return new Promise(resolve => {
         spring.addOneTimeListener({
           onSpringAtRest: (spring: Spring) => {
-            // if not 1, assume this has been interrupted by subsequent gesture
+            // it was interrupted by another animation
+            if (
+              inProgressAnimations[flipId] &&
+              inProgressAnimations[flipId].flipInitiator !== flipInitiator
+            ) {
+              return deleteFlipInitiatorData()
+            }
+            // if not 1, assume this has been interrupted by subsequent gesture animation
             if (spring.getCurrentValue() !== 1) {
-              return
+              return deleteFlipInitiatorData()
             }
             resolve()
             onAnimationEnd!()
@@ -76,7 +104,9 @@ const finishFlip = ({
       })
     })
     .filter(Boolean)
-  return Promise.all(onFinishedPromises).then(onFinished)
+  return Promise.all(onFinishedPromises).then(() => {
+    deleteFlipInitiatorData()
+  })
 }
 
 const cancelFlip = ({
@@ -154,13 +184,29 @@ const getDirection = (deltaX: number, deltaY: number) => {
   return deltaY > 0 ? 'down' : 'up'
 }
 
-export class Flipped extends Component<GestureFlippedProps> {
+export default class Swipeable extends Component<GestureFlippedProps> {
   // maintain a list of flip ids that have a mousedown but not a mouseup event
   // so that once the flip has passed the inflection point, the user needs
   // to release the gesture before they can do anything else
   private temporarilyInvalidFlipIds: string[] = []
   private prevProps = {}
   private flipInitiatorData: FlipInitiatorData | null = null
+
+  static propTypes = {
+    children: PropTypes.node.isRequired,
+    initFlip: PropTypes.func.isRequired,
+    cancelFlip: PropTypes.func.isRequired,
+    direction: PropTypes.string.isRequired,
+    mouseEvents: PropTypes.bool,
+    onClick: PropTypes.func,
+    threshold: PropTypes.number
+  }
+
+  static defaultProps = {
+    threshold: 0.1,
+    onClick: () => {},
+    mouseEvents: true
+  }
 
   componentDidMount() {
     this.gestureHandler = this.gestureHandler.bind(this)
@@ -172,12 +218,13 @@ export class Flipped extends Component<GestureFlippedProps> {
 
   gestureHandler({
     inProgressAnimations,
-    setIsGestureControlled,
-    onNonSwipeClick
+    setIsGestureInitiated,
+    onClick,
+    config,
+    flipId
   }: {
     inProgressAnimations: InProgressAnimations
-    setIsGestureControlled: SetIsGestureControlled
-    onNonSwipeClick?: OnNonSwipeClick
+    onClick: OnNonSwipeClick
   }) {
     return ({
       velocity,
@@ -192,29 +239,40 @@ export class Flipped extends Component<GestureFlippedProps> {
       first: boolean
       event: SyntheticEvent
     }) => {
-      const gestureIsSimpleClick =
-        down === false && Math.abs(deltaX) < 2 && Math.abs(deltaY) < 2
-      if (gestureIsSimpleClick) {
-        if (onNonSwipeClick) onNonSwipeClick(event)
-        return
+      // previous animation was probably cancelled
+      if (
+        this.flipInitiatorData &&
+        inProgressAnimations[flipId] &&
+        // if flipInitiator is undefined, this could be right before
+        // afterFlipHasBeenInitiated gets called
+        // and adds a flipInitiator id
+        inProgressAnimations[flipId].flipInitiator &&
+        inProgressAnimations[flipId].flipInitiator !== flipId
+      ) {
+        delete this.flipInitiatorData
       }
-      event.preventDefault()
+
+      const gestureFlipOnThisElementInProgress =
+        Boolean(this.flipInitiatorData) && inProgressAnimations[flipId]
+
+      const gestureIsSimpleClick =
+        !gestureFlipOnThisElementInProgress &&
+        down === false &&
+        Math.abs(deltaX) < 2 &&
+        Math.abs(deltaY) < 2
+      if (gestureIsSimpleClick) {
+        return onClick(event)
+      }
       event.stopPropagation()
+      event.preventDefault()
 
       if (first) {
         this.temporarilyInvalidFlipIds = []
-      } else if (
-        this.temporarilyInvalidFlipIds.indexOf(String(this.props.flipId)) > -1
-      ) {
+      } else if (this.temporarilyInvalidFlipIds.indexOf(String(flipId)) > -1) {
         // require user to mouseup before doing another action
         return
       }
-      const generalFlipInProgress = Boolean(
-        inProgressAnimations[this.props.flipId]
-      )
-
-      const gestureFlipOnThisElementInProgress =
-        Boolean(this.flipInitiatorData) && generalFlipInProgress
+      const generalFlipInProgress = Boolean(inProgressAnimations[flipId])
 
       const gestureIsTooSmallToTriggerFLIP =
         Math.abs(deltaX) + Math.abs(deltaY) < 3
@@ -226,46 +284,28 @@ export class Flipped extends Component<GestureFlippedProps> {
         return
       }
 
-      const currentDirection = getDirection(deltaX, deltaY)
-
-      const initiateGestureControlledFLIP = () => {
-        const normalizedRespondToGesture = isArray(this.props.flipOnSwipe)
-          ? this.props.flipOnSwipe
-          : [this.props.flipOnSwipe]
-
-        let configMatchingCurrentDirection = normalizedRespondToGesture.filter(
-          config => config && config.direction === currentDirection
-        )[0]
-
-        if (!configMatchingCurrentDirection) {
-          return
-        }
-
-        configMatchingCurrentDirection = {
-          // can be overridden
-          completeThreshold: defaultCompleteThreshhold,
-          ...configMatchingCurrentDirection,
-          direction: currentDirection
-        }
-
-        setIsGestureControlled(true)
-
-        // we have to cache all config BEFORE calling initFLIP
+      const initiateGestureControlledFLIP = ({
+        configMatchingCurrentDirection
+      }) => {
+        // we have to cache all config BEFORE calling initFlip
         // which can dramatically change the UI and/or the FLIP config
         // that the component has
         this.flipInitiatorData = {
           cachedConfig: configMatchingCurrentDirection
         }
 
-        configMatchingCurrentDirection.initFLIP({
+        setIsGestureInitiated(true)
+        configMatchingCurrentDirection.initFlip({
           props: this.props,
           prevProps: this.prevProps
         })
 
+        // must call this func this after getSnapshotBeforeUpdate has run!
         const afterFLIPHasBeenInitiated = () => {
           // maybe gesture occurred but nothing changed position
-          if (!inProgressAnimations[this.props.flipId]) {
+          if (!inProgressAnimations[flipId]) {
             delete this.flipInitiatorData
+            console.log('nothing changed')
             return
           }
 
@@ -273,35 +313,41 @@ export class Flipped extends Component<GestureFlippedProps> {
             inProgressAnimationFlipId => {
               inProgressAnimations[
                 inProgressAnimationFlipId
-              ].flipInitiator = String(this.props.flipId)
+              ].flipInitiator = String(flipId)
             }
           )
         }
-
         setTimeout(afterFLIPHasBeenInitiated, 0)
       }
 
+      const currentDirection = getDirection(deltaX, deltaY)
+
       if (!gestureFlipOnThisElementInProgress) {
-        return initiateGestureControlledFLIP()
+        const configMatchingCurrentDirection = config.filter(
+          configEntry => configEntry.direction === currentDirection
+        )[0]
+
+        if (!configMatchingCurrentDirection) {
+          return
+        }
+        return initiateGestureControlledFLIP({ configMatchingCurrentDirection })
       }
 
-      const gestureData = inProgressAnimations[this.props.flipId]
+      const gestureData = inProgressAnimations[flipId]
 
       if (!gestureData) {
-        debugger // eslint-disable-line
         console.warn('no gesture data found')
-        return
+        debugger // eslint-disable-line
+        return initiateGestureControlledFLIP()
       }
 
       if (!this.flipInitiatorData) {
         console.warn('flip initiator data missing')
         return
       }
-
       const onFlipCancelled = () => {
-        setIsGestureControlled(false)
         this.flipInitiatorData &&
-          this.flipInitiatorData.cachedConfig.cancelFLIP({
+          this.flipInitiatorData.cachedConfig.cancelFlip({
             props: this.props,
             prevProps: this.prevProps
           })
@@ -352,23 +398,18 @@ export class Flipped extends Component<GestureFlippedProps> {
 
       // abort flip -- this is interruptible if user
       // tries to drag before animation is completed
-      if (
-        !down &&
-        percentage < this.flipInitiatorData.cachedConfig.completeThreshold
-      ) {
+      if (!down && percentage < this.flipInitiatorData.cachedConfig.theshold) {
         return returnToUnFlippedState()
       }
 
       // gesture has gone far enough, animation can complete
-      if (percentage > this.flipInitiatorData.cachedConfig.completeThreshold) {
-        this.temporarilyInvalidFlipIds.push(String(this.props.flipId))
+      if (percentage > this.flipInitiatorData.cachedConfig.theshold) {
+        this.temporarilyInvalidFlipIds.push(String(flipId))
         return finishFlip({
+          flipInitiator: flipId,
           velocity,
           inProgressAnimations,
-          onFinished: () => {
-            delete this.flipInitiatorData
-            setIsGestureControlled(false)
-          }
+          deleteFlipInitiatorData: () => delete this.flipInitiatorData
         })
       }
       return updateSprings({
@@ -379,32 +420,37 @@ export class Flipped extends Component<GestureFlippedProps> {
   }
 
   render() {
-    // taking out flipOnSwipe so we don't spread it into a data attribute
-    const { onNonSwipeClick, flipOnSwipe, ...rest } = this.props
+    const config = [createConfigFromProps(this.props)]
+    let child = Children.only(this.props.children)
+    while (child.type.name === 'Swipeable') {
+      config.push(createConfigFromProps(child.props))
+      child = child.props.children
+    }
+
+    if (child.type.name !== 'FlippedWithContext') {
+      console.error(
+        '[react-flip-toolkit] Swipeable components must wrap a single Flipped component'
+      )
+    }
+
+    const flipId = String(child.props.flipId)
+
+    console.log({ config })
 
     return (
       <GestureContext.Consumer>
-        {({
-          inProgressAnimations,
-          setIsGestureControlled,
-          isGestureControlled
-        }: GestureParams) => {
+        {({ inProgressAnimations, setIsGestureInitiated }: GestureParams) => {
           return (
             <Gesture
               onAction={this.gestureHandler({
                 inProgressAnimations,
-                setIsGestureControlled,
-                onNonSwipeClick
+                setIsGestureInitiated,
+                config,
+                flipId
               })}
             >
               {(gestureHandlers: GestureEventHandlers) => {
-                return (
-                  <DefaultFlipped
-                    {...rest}
-                    isGestureControlled={isGestureControlled}
-                    gestureHandlers={gestureHandlers}
-                  />
-                )
+                return cloneElement(child, { gestureHandlers })
               }}
             </Gesture>
           )
@@ -412,10 +458,4 @@ export class Flipped extends Component<GestureFlippedProps> {
       </GestureContext.Consumer>
     )
   }
-}
-
-// for umd build
-export default {
-  Flipper,
-  Flipped
 }
