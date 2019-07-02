@@ -85,6 +85,7 @@ const StyledImg = styled.img`
   top: -4rem;
   left: -4rem;
   background-color: black;
+  user-select: none;
 `
 
 const StyledList = styled.ul`
@@ -142,20 +143,24 @@ const Card = ({
   return (
     <li>
       <Swipe
-        right={{
-          initFlip: () => {
-            return setNextCardId(nextCardId)
-          },
-          cancelFlip: () => setNextCardId(id)
-        }}
-        left={{
-          initFLIP: () => {
-            setNextCardId(prevCardId)
-          },
-          cancelFLIP: () => {
-            setNextCardId(id)
+        right={
+          isCurrentCard && {
+            initFlip: () => {
+              return setNextCardId(prevCardId)
+            },
+            cancelFlip: () => setNextCardId(id)
           }
-        }}
+        }
+        left={
+          isCurrentCard && {
+            initFlip: () => {
+              setNextCardId(nextCardId)
+            },
+            cancelFlip: () => {
+              setNextCardId(id)
+            }
+          }
+        }
       >
         {card}
       </Swipe>

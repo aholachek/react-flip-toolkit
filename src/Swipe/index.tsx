@@ -12,10 +12,7 @@ import {
 } from './types'
 import { FlipId } from '../Flipped/types'
 
-const defaultCompleteThreshhold = 0.15
-
-const isArray = (x: any): x is any[] =>
-  Object.prototype.toString.call(x) === '[object Array]'
+const defaultCompleteThreshhold = 0.2
 
 const getMovementScalar = ({
   deltaX,
@@ -173,11 +170,14 @@ const getDirection = (deltaX: number, deltaY: number) => {
   return deltaY > 0 ? 'down' : 'up'
 }
 
-const configProps = PropTypes.shape({
-  initFlip: PropTypes.func,
-  cancelFlip: PropTypes.func,
-  threshold: PropTypes.number
-})
+const configProps = PropTypes.oneOfType([
+  PropTypes.shape({
+    initFlip: PropTypes.func,
+    cancelFlip: PropTypes.func,
+    threshold: PropTypes.number
+  }),
+  PropTypes.bool
+])
 
 export default class Swipe extends Component<GestureFlippedProps> {
   // maintain a list of flip ids that have a mousedown but not a mouseup event
@@ -291,13 +291,14 @@ export default class Swipe extends Component<GestureFlippedProps> {
       const initiateGestureControlledFLIP = ({
         configMatchingCurrentDirection
       }) => {
-        debugger
         // we have to cache all config BEFORE calling initFlip
         // which can dramatically change the UI and/or the FLIP config
         // that the component has
-        this.flipInitiatorData = {
-          cachedConfig: configMatchingCurrentDirection
-        }
+        // copying it for safety but maybe that isnt necessary
+        this.flipInitiatorData = Object.assign(
+          {},
+          configMatchingCurrentDirection
+        )
 
         setIsGestureInitiated(true)
         configMatchingCurrentDirection.initFlip({
@@ -309,7 +310,6 @@ export default class Swipe extends Component<GestureFlippedProps> {
         const afterFLIPHasBeenInitiated = () => {
           // maybe gesture occurred but nothing changed position
           if (!inProgressAnimations[flipId]) {
-            debugger
             delete this.flipInitiatorData
             console.log('nothing changed')
             return
