@@ -1,17 +1,17 @@
 import Flipper from './Flipper'
 import Flipped from './Flipped'
 import ExitContainer from './ExitContainer'
-import Swipeable from './Swipeable'
+import Swipe from './Swipe'
 
 // for umd build
 export default {
   Flipper,
   Flipped,
   ExitContainer,
-  Swipeable
+  Swipe
 }
 
 export { default as Flipper } from './Flipper'
 export { default as Flipped } from './Flipped'
 export { default as ExitContainer } from './ExitContainer'
-export { default as Swipeable } from './Swipeable'
+export { default as Swipe } from './Swipe'

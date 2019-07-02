@@ -2,7 +2,7 @@
 /* eslint-disable no-return-assign */
 
 import React, { Component } from 'react'
-import { Flipper, Flipped, Swipeable } from '../../../src'
+import { Flipper, Flipped, Swipe } from '../../../src'
 import backgroundImg from './assets/nighttime.jpg'
 import './styles.css'
 
@@ -17,7 +17,7 @@ class PaymentSidebar extends Component {
 
     return (
       <Flipper flipKey={collapsed} element="nav" className="foo">
-        <Swipeable
+        <Swipe
           onSwipe={{
             initFlip: this.toggleCollapsed,
             cancelFlip: this.toggleCollapsed,
@@ -53,7 +53,7 @@ class PaymentSidebar extends Component {
               </Flipped>
             </div>
           </Flipped>
-        </Swipeable>
+        </Swipe>
       </Flipper>
     )
   }

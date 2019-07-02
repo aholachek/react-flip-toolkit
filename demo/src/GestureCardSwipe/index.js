@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled, { css } from 'styled-components'
 import PropTypes from 'prop-types'
-import { Flipper, Flipped, Swipeable } from '../../../src'
+import { Flipper, Flipped, Swipe } from '../../../src'
 import Aussie from '../assets/dogs/australian-shepard.jpg'
 import Corgi from '../assets/dogs/corgi.jpg'
 import Golden from '../assets/dogs/golden-with-flower.jpg'
@@ -85,7 +85,6 @@ const StyledImg = styled.img`
   top: -4rem;
   left: -4rem;
   background-color: black;
-  opacity: 0.1;
 `
 
 const StyledList = styled.ul`
@@ -142,26 +141,24 @@ const Card = ({
   )
   return (
     <li>
-      {isCurrentCard ? (
-        <Swipeable
-          direction="right"
-          initFlip={() => {
-            console.log({ prevCardId, id, nextCardId })
-            return setNextCardId(prevCardId)
-          }}
-          cancelFlip={() => setNextCardId(id)}
-        >
-          <Swipeable
-            direction="left"
-            initFlip={() => setNextCardId(nextCardId)}
-            cancelFlip={() => setNextCardId(id)}
-          >
-            {card}
-          </Swipeable>
-        </Swipeable>
-      ) : (
-        card
-      )}
+      <Swipe
+        right={{
+          initFlip: () => {
+            return setNextCardId(nextCardId)
+          },
+          cancelFlip: () => setNextCardId(id)
+        }}
+        left={{
+          initFLIP: () => {
+            setNextCardId(prevCardId)
+          },
+          cancelFLIP: () => {
+            setNextCardId(id)
+          }
+        }}
+      >
+        {card}
+      </Swipe>
     </li>
   )
 }
@@ -193,8 +190,8 @@ const GestureCardSwipe = ({}) => {
                   key={card.id}
                   currentCardId={currentCardId}
                   setNextCardId={setCurrentCardId}
-                  prevCardId={cardsToRender[i - 1].id}
-                  nextCardId={cardsToRender[i + 1].id}
+                  prevCardId={card.prev.id}
+                  nextCardId={card.next.id}
                   isCurrentCard={card.id === currentCardId}
                 />
               )

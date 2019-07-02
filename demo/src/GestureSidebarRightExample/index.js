@@ -2,7 +2,7 @@
 // /* eslint-disable no-return-assign */
 
 // import React, { Component } from 'react'
-// import { Flipper, Flipped } from '../../../src/Swipeable'
+// import { Flipper, Flipped } from '../../../src/Swipe'
 // import backgroundImg from './assets/nighttime.jpg'
 // import './styles.css'
 

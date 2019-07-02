@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Flipper, Flipped } from '../../../src'
-import Swipeable from '../../../src/Swipeable'
+import Swipe from '../../../src/Swipe'
 import styled, { css } from 'styled-components'
 
 const StyledFlipper = styled(Flipper)`
@@ -94,9 +94,12 @@ const StyledDrawerContent = styled.div`
 
 function usePrevious(value) {
   const ref = useRef()
-  useEffect(() => {
-    ref.current = value
-  }, [value])
+  useEffect(
+    () => {
+      ref.current = value
+    },
+    [value]
+  )
   return ref.current
 }
 
@@ -104,9 +107,8 @@ const Drawer = ({ article, returnToListView, setCurrentlyViewed }) => {
   const previousArticle = usePrevious(article)
   const articleToRender = article || previousArticle
   return (
-    <Swipeable
-      onSwipe={{
-        direction: 'down',
+    <Swipe
+      left={{
         initFLIP: () => {
           returnToListView()
         },
@@ -133,7 +135,7 @@ const Drawer = ({ article, returnToListView, setCurrentlyViewed }) => {
           )}
         </StyledDrawer>
       </Flipped>
-    </Swipeable>
+    </Swipe>
   )
 }
 
@@ -149,7 +151,7 @@ const ArticleListItem = ({
   }
   return (
     <StyledCollapsedArticleContainer flipKey={isGettingDeleted}>
-      <Swipeable
+      <Swipe
         onSwipe={[
           {
             direction: 'right',
@@ -182,7 +184,7 @@ const ArticleListItem = ({
             <p>{article.id}</p>
           </StyledCollapsedArticle>
         </Flipped>
-      </Swipeable>
+      </Swipe>
     </StyledCollapsedArticleContainer>
   )
 }

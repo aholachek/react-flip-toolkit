@@ -1,7 +1,7 @@
 // inspired by this animated demo:
 // https://uxplanet.org/animation-in-ui-design-from-concept-to-reality-85c49907b19d
 import React, { Component } from 'react'
-import { Flipper, Flipped, Swipeable } from '../../../src'
+import { Flipper, Flipped, Swipe } from '../../../src'
 import './styles.css'
 const listData = [0, 1, 2, 3, 4, 5, 6, 7]
 const colors = ['#ff4f66', '#7971ea', '#5900d8']
@@ -13,7 +13,7 @@ const shouldFlip = index => (prev, current) => {
 
 const ListItem = ({ index, color, onClick }) => {
   return (
-    <Swipeable
+    <Swipe
       onSwipe={[
         {
           initFlip: () => {
@@ -80,13 +80,13 @@ const ListItem = ({ index, color, onClick }) => {
           </Flipped>
         </div>
       </Flipped>
-    </Swipeable>
+    </Swipe>
   )
 }
 
 const ExpandedListItem = ({ index, color, onClick }) => {
   return (
-    <Swipeable
+    <Swipe
       onSwipe={{
         initFlip: () => {
           onClick(index)
@@ -138,7 +138,7 @@ const ExpandedListItem = ({ index, color, onClick }) => {
           </Flipped>
         </div>
       </Flipped>
-    </Swipeable>
+    </Swipe>
   )
 }
 export default class AnimatedList extends Component {
