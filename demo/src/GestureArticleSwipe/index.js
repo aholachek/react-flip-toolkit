@@ -94,36 +94,29 @@ const StyledDrawerContent = styled.div`
 
 function usePrevious(value) {
   const ref = useRef()
-  useEffect(
-    () => {
-      ref.current = value
-    },
-    [value]
-  )
+  useEffect(() => {
+    ref.current = value
+  }, [value])
   return ref.current
 }
 
-const Drawer = ({ article, returnToListView, setCurrentlyViewed }) => {
+const Drawer = ({ article, setCurrentlyViewed }) => {
   const previousArticle = usePrevious(article)
   const articleToRender = article || previousArticle
   return (
     <Swipe
-      left={{
-        initFLIP: () => {
-          returnToListView()
+      down={{
+        initFlip: () => {
+          setCurrentlyViewed(null)
         },
-        cancelFLIP: () => {
+        cancelFlip: () => {
+          console.log('cancelling flip')
           setCurrentlyViewed(article.id)
         }
       }}
     >
       <Flipped flipId="drawer">
-        <StyledDrawer
-          article={article}
-          onClick={e => {
-            setCurrentlyViewed(null)
-          }}
-        >
+        <StyledDrawer article={article}>
           {articleToRender && (
             <Flipped flipId="article-text" opacity>
               <StyledDrawerContent article={article}>
@@ -152,24 +145,20 @@ const ArticleListItem = ({
   return (
     <StyledCollapsedArticleContainer flipKey={isGettingDeleted}>
       <Swipe
-        onSwipe={[
-          {
-            direction: 'right',
-            initFLIP: () => {
-              return setIsGettingDeleted(true)
-            },
-            cancelFLIP: () => {
-              return setIsGettingDeleted(false)
-            }
+        right={{
+          initFlip: () => {
+            return setIsGettingDeleted(true)
+          },
+          cancelFlip: () => {
+            return setIsGettingDeleted(false)
           }
-        ]}
+        }}
         onClick={e => {
           console.log('on click!', currentlyViewed)
           setCurrentlyViewed(article.id)
         }}
       >
         <Flipped
-          stagger
           flipId={`article-${article.id}`}
           onComplete={() => {
             deleteArticle(article.id)
@@ -222,10 +211,6 @@ const App = () => {
 
   const article = articles.find(article => article.id === currentlyViewed)
 
-  const returnToListView = () => {
-    setCurrentlyViewed(null)
-  }
-
   const deleteArticle = id => {
     setVisibleArticles(prevState => {
       return prevState.filter(({ id: articleId }) => id !== articleId)
@@ -234,6 +219,7 @@ const App = () => {
 
   return (
     <StyledFlipper
+      retainTransform
       flipKey={`${currentlyViewed}-${visibleArticles.map(a => a.id)}`}
     >
       <StyledContainer>
@@ -252,11 +238,7 @@ const App = () => {
           ))}
         </StyledList>
       </StyledContainer>
-      <Drawer
-        article={article}
-        returnToListView={returnToListView}
-        setCurrentlyViewed={setCurrentlyViewed}
-      />
+      <Drawer article={article} setCurrentlyViewed={setCurrentlyViewed} />
     </StyledFlipper>
   )
 }

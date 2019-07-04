@@ -59,9 +59,7 @@ export const invertTransformsForChildren = ({
     if (childFlipConfig.translate) {
       inverseVals.translateX = -translateX / scaleX
       inverseVals.translateY = -translateY / scaleY
-      transformString += `translate(${inverseVals.translateX}px, ${
-        inverseVals.translateY
-      }px)`
+      transformString += `translate(${inverseVals.translateX}px, ${inverseVals.translateY}px)`
     }
     if (childFlipConfig.scale) {
       inverseVals.scaleX = 1 / scaleX
@@ -397,8 +395,8 @@ export default ({
 
       const getOnUpdateFunc: GetOnUpdateFunc = ({ spring, onAnimationEnd }) => {
         inProgressAnimations[id] = {
-          stop: spring.destroy.bind(spring),
-          //  only for gesture control
+          destroy: spring.destroy.bind(spring),
+          // only for gesture control
           // @ts-ignore
           spring,
           onAnimationEnd,

@@ -1,6 +1,4 @@
 // edited from https://github.com/react-spring/react-use-gesture/blob/v4.0.7/index.js
-import React from 'react'
-
 const touchMove = 'touchmove'
 const touchEnd = 'touchend'
 const mouseMove = 'mousemove'
@@ -42,6 +40,8 @@ function handlers(set, props = {}, args) {
     })
   }
   const handleDown = event => {
+    event.stopPropagation()
+    event.preventDefault()
     const { target, pageX, pageY, shiftKey } = event.touches
       ? event.touches[0]
       : event
@@ -71,6 +71,8 @@ function handlers(set, props = {}, args) {
     })
   }
   const handleMove = event => {
+    event.stopPropagation()
+    event.preventDefault()
     const { pageX, pageY, shiftKey } = event.touches ? event.touches[0] : event
     set(state => {
       const time = Date.now()
@@ -138,45 +140,33 @@ function handlers(set, props = {}, args) {
 
     handleUp(e, shiftKey)
   }
-
   const output = {}
-  const capture = { passive: false }.capture ? 'Capture' : ''
 
   if (props.mouse) {
-    output[`onMouseDown${capture}`] = onDown
+    output[`onMouseDown`] = onDown
   }
 
   if (props.touch) {
-    output[`onTouchStart${capture}`] = onDown
+    output[`onTouchStart`] = onDown
   }
-
   return output
 }
 
-class Gesture extends React.Component {
-  static defaultProps = {
-    window,
-    touch: true,
-    mouse: true,
-    passive: { passive: false },
-    onAction: undefined,
-    onDown: undefined,
-    onUp: undefined
-  }
-  constructor(props) {
-    super(props)
-    this.state = initialState
-    let set = this.setState.bind(this)
-    if (props.onAction) {
-      this._state = initialState
-      set = cb => (this._state = cb(this._state))
-    }
-    this.handlers = handlers(set, props)
-  }
+const defaultProps = {
+  window,
+  touch: true,
+  mouse: true,
+  passive: { passive: false },
+  onAction: undefined,
+  onDown: undefined,
+  onUp: undefined
+}
 
-  render() {
-    return this.props.children(this.handlers)
-  }
+function Gesture(props) {
+  props = Object.assign({}, defaultProps, props)
+  let _state = initialState
+  const set = cb => (_state = cb(_state))
+  return handlers(set, props)
 }
 
 export default Gesture
