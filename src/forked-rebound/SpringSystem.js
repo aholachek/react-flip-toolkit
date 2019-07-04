@@ -33,20 +33,10 @@ class SpringSystem {
   }
 
   /**
-   * Add a new spring to this SpringSystem. This Spring will now be solved for
-   * during the physics iteration loop. By default the spring will use the
-   * default Origami spring config with 40 tension and 7 friction, but you can
-   * also provide your own values here.
-   * @public
-   */
-  createSpring(tension, friction) {
-    return this.createSpringWithConfig({ tension, friction })
-  }
-  /**
    * Add a spring with the provided SpringConfig.
    * @public
    */
-  createSpringWithConfig(springConfig) {
+  createSpring(springConfig) {
     const spring = new Spring(this)
     this.registerSpring(spring)
     spring.setSpringConfig(springConfig)

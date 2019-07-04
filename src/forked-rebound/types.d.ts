@@ -13,5 +13,11 @@ export interface Spring {
 }
 
 export interface SpringSystemInterface {
-  createSpring: (stiffness: number, damping: number) => Spring
+  createSpring: ({
+    stiffness,
+    damping
+  }: {
+    stiffness: number
+    damping: number
+  }) => Spring
 }

@@ -16,7 +16,7 @@ export const createSuspendedSpring = ({
   if (noOp) {
     return null
   }
-  const spring = springSystem.createSpring(stiffness!, damping!)
+  const spring = springSystem.createSpring({ stiffness, damping })
   spring.setOvershootClampingEnabled(!!overshootClamping)
   spring.addListener({
     onSpringActivate,
