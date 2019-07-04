@@ -1,0 +1,20 @@
+{
+  "name": "flip-toolkit",
+  "version": "0.0.1",
+  "source": "index.ts",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "author": "Alex Holachek",
+  "license": "MIT",
+  "scripts": {
+    "test": "parcel --no-cache 'test/index.html'",
+    "version": "npm run build",
+    "check-types": "tsc --noEmit",
+    "build": "microbundle -f modern,umd"
+  },
+  "devDependencies": {
+    "microbundle": "^0.11.0",
+    "parcel": "^1.12.3",
+    "typescript": "^3.5.2"
+  }
+}
