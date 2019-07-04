@@ -59,8 +59,8 @@ class Demo extends Component {
       return <GestureCardSwipe />
     else if (window.location.pathname === '/gesture-article-swipe')
       return <GestureArticleSwipe />
-    else if (window.location.pathname === '/gesture-sidebar-right')
-      return <GestureSidebarRight />
+    // else if (window.location.pathname === '/gesture-sidebar-right')
+    //   return <GestureSidebarRight />
     else if (window.location.pathname === '/nested-flipper')
       return <NestedFlipper />
     else

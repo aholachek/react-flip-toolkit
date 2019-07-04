@@ -65,7 +65,8 @@ const StyledCollapsedArticle = styled.div`
   bottom: 0;
   width: 100%;
   height: 100%;
-  left: ${props => (props.isGettingDeleted ? `110%` : 0)};
+  left: ${props =>
+    props.isGettingDeleted ? `110%` : props.isStarred ? '-20%' : 0};
 `
 
 const StyledList = styled.ul`
@@ -139,11 +140,14 @@ const ArticleListItem = ({
   deleteArticle
 }) => {
   const [isGettingDeleted, setIsGettingDeleted] = useState(false)
+  const [isStarred, setIsStarred] = useState(false)
   const cancelFLIP = ({ prevProps }) => {
     return setPosition(prevProps.position)
   }
   return (
-    <StyledCollapsedArticleContainer flipKey={isGettingDeleted}>
+    <StyledCollapsedArticleContainer
+      flipKey={`${isGettingDeleted} ${isStarred}`}
+    >
       <Swipe
         right={{
           initFlip: () => {
@@ -151,6 +155,14 @@ const ArticleListItem = ({
           },
           cancelFlip: () => {
             return setIsGettingDeleted(false)
+          }
+        }}
+        left={{
+          initFlip: () => {
+            return setIsStarred(true)
+          },
+          cancelFlip: () => {
+            return setIsStarred(false)
           }
         }}
         onClick={e => {
@@ -161,12 +173,15 @@ const ArticleListItem = ({
         <Flipped
           flipId={`article-${article.id}`}
           onComplete={() => {
+            console.log({ isGettingDeleted, isStarred })
+            debugger
             deleteArticle(article.id)
           }}
         >
           <StyledCollapsedArticle
             currentlyViewed={currentlyViewed}
             isGettingDeleted={isGettingDeleted}
+            isStarred={isStarred}
             href="#"
           >
             <h3>{article.title}</h3>

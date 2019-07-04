@@ -14,26 +14,14 @@ const shouldFlip = index => (prev, current) => {
 const ListItem = ({ index, color, onClick }) => {
   return (
     <Swipe
-      onSwipe={[
-        {
-          initFlip: () => {
-            onClick(index)
-          },
-          cancelFlip: () => {
-            onClick(index)
-          },
-          direction: 'down'
+      down={{
+        initFlip: () => {
+          onClick(index)
         },
-        {
-          initFlip: () => {
-            onClick(index)
-          },
-          cancelFlip: () => {
-            onClick(index)
-          },
-          direction: 'right'
+        cancelFlip: () => {
+          onClick(index)
         }
-      ]}
+      }}
     >
       <Flipped
         flipId={`listItem-${index}`}
@@ -87,14 +75,14 @@ const ListItem = ({ index, color, onClick }) => {
 const ExpandedListItem = ({ index, color, onClick }) => {
   return (
     <Swipe
-      onSwipe={{
+      up={{
         initFlip: () => {
           onClick(index)
         },
         cancelFlip: () => {
           onClick(index)
         },
-        direction: 'up'
+        threshold: 0.8
       }}
     >
       <Flipped

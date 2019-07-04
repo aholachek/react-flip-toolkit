@@ -15,15 +15,14 @@ class PaymentSidebar extends Component {
     const { collapsed } = this.state
     const sidebarClassName = `sidebar ${collapsed ? 'sidebarCollapsed' : ''}`
 
+    const swipeConfig = {
+      initFlip: this.toggleCollapsed,
+      cancelFlip: this.toggleCollapsed
+    }
+
     return (
       <Flipper flipKey={collapsed} element="nav" className="foo">
-        <Swipe
-          onSwipe={{
-            initFlip: this.toggleCollapsed,
-            cancelFlip: this.toggleCollapsed,
-            direction: collapsed ? 'down' : 'up'
-          }}
-        >
+        <Swipe down={collapsed && swipeConfig} up={!collapsed && swipeConfig}>
           <Flipped flipId="container">
             <div className={sidebarClassName}>
               <Flipped inverseFlipId="container">
