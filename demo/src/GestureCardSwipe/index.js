@@ -43,10 +43,6 @@ const StyledHeader = styled.div`
   color: white;
 `
 
-const StyledFlipper = styled(Flipper)`
-  height: 100vh;
-`
-
 const StyledContainer = styled.div`
   padding-top: 1rem;
   padding-bottom: 1rem;
@@ -56,6 +52,7 @@ const StyledContainer = styled.div`
   margin: 0 auto;
   position: relative;
   overflow: hidden;
+  background: teal;
 `
 
 const StyledCard = styled.div`
@@ -181,7 +178,7 @@ const GestureCardSwipe = ({}) => {
   return (
     <>
       {/* <StyledHeader>Playlists for Dogs</StyledHeader> */}
-      <StyledFlipper
+      <Flipper
         flipKey={currentCardId}
         decisionData={cardsToRender}
         spring={{ stiffness: 280, damping: 22 }}
@@ -203,7 +200,7 @@ const GestureCardSwipe = ({}) => {
             })}
           </StyledList>
         </StyledContainer>
-      </StyledFlipper>
+      </Flipper>
     </>
   )
 }

@@ -26,6 +26,8 @@ const initialState = {
 function handlers(set, props = {}, args) {
   // Common handlers
   const handleUp = (event, shiftKey) => {
+    event.stopPropagation()
+    event.preventDefault()
     set(state => {
       const newProps = { ...state, down: false, first: false }
       const temp = props.onAction && props.onAction(newProps)

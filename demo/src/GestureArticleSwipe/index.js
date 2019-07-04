@@ -66,7 +66,7 @@ const StyledCollapsedArticle = styled.div`
   width: 100%;
   height: 100%;
   left: ${props =>
-    props.isGettingDeleted ? `110%` : props.isStarred ? '-20%' : 0};
+    props.isGettingDeleted ? `110%` : props.isGettingStarred ? '-50%' : 0};
 `
 
 const StyledList = styled.ul`
@@ -137,33 +137,33 @@ const ArticleListItem = ({
   setCurrentlyViewed,
   article,
   currentlyViewed,
-  deleteArticle
+  deleteArticle,
+  toggleArticleStarred
 }) => {
   const [isGettingDeleted, setIsGettingDeleted] = useState(false)
-  const [isStarred, setIsStarred] = useState(false)
-  const cancelFLIP = ({ prevProps }) => {
-    return setPosition(prevProps.position)
+  const [isGettingStarred, setIsGettingStarred] = useState(false)
+
+  const callOnce = (func, threshold) => {
+    let isCalled = false
+    return springVal => {
+      if (springVal >= threshold && !isCalled) {
+        isCalled = true
+        func()
+      }
+    }
   }
   return (
     <StyledCollapsedArticleContainer
-      flipKey={`${isGettingDeleted} ${isStarred}`}
+      flipKey={`${isGettingDeleted} ${isGettingStarred}`}
     >
       <Swipe
         right={{
-          initFlip: () => {
-            return setIsGettingDeleted(true)
-          },
-          cancelFlip: () => {
-            return setIsGettingDeleted(false)
-          }
+          initFlip: () => setIsGettingDeleted(true),
+          cancelFlip: () => setIsGettingDeleted(false)
         }}
         left={{
-          initFlip: () => {
-            return setIsStarred(true)
-          },
-          cancelFlip: () => {
-            return setIsStarred(false)
-          }
+          initFlip: () => setIsGettingStarred(true),
+          cancelFlip: () => setIsGettingStarred(false)
         }}
         onClick={e => {
           console.log('on click!', currentlyViewed)
@@ -172,18 +172,25 @@ const ArticleListItem = ({
       >
         <Flipped
           flipId={`article-${article.id}`}
+          onSpringUpdate={callOnce(() => {
+            if (isGettingDeleted) {
+              deleteArticle(article.id)
+            }
+          }, 0.85)}
           onComplete={() => {
-            console.log({ isGettingDeleted, isStarred })
-            debugger
-            deleteArticle(article.id)
+            if (isGettingStarred) {
+              toggleArticleStarred(article.id)
+              setIsGettingStarred(false)
+            }
           }}
         >
           <StyledCollapsedArticle
             currentlyViewed={currentlyViewed}
             isGettingDeleted={isGettingDeleted}
-            isStarred={isStarred}
+            isGettingStarred={isGettingStarred}
             href="#"
           >
+            {article.starred && 'i am starred'}
             <h3>{article.title}</h3>
             <p>{article.id}</p>
           </StyledCollapsedArticle>
@@ -232,6 +239,17 @@ const App = () => {
     })
   }
 
+  const toggleArticleStarred = id => {
+    setVisibleArticles(prevState => {
+      return prevState.map(article => {
+        if (article.id === id) {
+          return Object.assign({}, article, { starred: !article.starred })
+        }
+        return article
+      })
+    })
+  }
+
   return (
     <StyledFlipper
       retainTransform
@@ -247,6 +265,7 @@ const App = () => {
                   currentlyViewed={currentlyViewed}
                   setCurrentlyViewed={setCurrentlyViewed}
                   deleteArticle={deleteArticle}
+                  toggleArticleStarred={toggleArticleStarred}
                 />
               }
             </StyledLi>

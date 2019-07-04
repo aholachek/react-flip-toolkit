@@ -250,8 +250,8 @@ class Swipe extends Component<GestureFlippedProps> {
     const gestureIsSimpleClick =
       !gestureFlipOnThisElementInProgress &&
       down === false &&
-      Math.abs(deltaX) < 2 &&
-      Math.abs(deltaY) < 2
+      Math.abs(deltaX) < 3 &&
+      Math.abs(deltaY) < 3
     if (gestureIsSimpleClick) {
       return onClick(event)
     }
