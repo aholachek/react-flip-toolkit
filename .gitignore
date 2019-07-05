@@ -2,13 +2,12 @@ node_modules
 coverage
 demo/dist
 es
-lib
-umd
+core
+dist
 npm-debug.log*
 yarn-error.log*
 TODO
 .cache
-dist
 stats.json
 .idea
 .DS_STORE

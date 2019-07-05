@@ -29,9 +29,9 @@
     "demo": "parcel --no-cache demo/src/index.html",
     "deploy-demo": "parcel build demo/src/index.html --out-dir demo/dist; cp demo/dist/index.html demo/dist/200.html; surge demo/dist --domain react-flip-toolkit-demos.surge.sh",
     "test:watch": "react-scripts-ts test --env=jsdom",
-    "build-react": "microbundle --globals --name=ReactFlipToolkit react=React,prop-types=PropTypes",
-    "build-core": "microbundle --name=FlipToolkit -o=core -i=src/core.ts; node rename-files core react-flip-toolkit index",
-    "build": "yarn run build-react && yarn run build-core",
+    "build-react": "microbundle --name=ReactFlipToolkit --globals react=React,prop-types=PropTypes,rematrix=Rematrix",
+    "build-core": "microbundle --name=FlipToolkit -o=core -i=src/core.ts --globals rematrix=Rematrix; node rename-files core react-flip-toolkit index",
+    "build": "yarn run build-react && yarn run build-core; mkdir es; cp core/index.js es/core.js",
     "start": "yarn run demo",
     "check-types": "tsc --noEmit",
     "prepare": "yarn run build",
@@ -95,7 +95,8 @@
   },
   "files": [
     "dist",
-    "core"
+    "core",
+    "es"
   ],
   "browserslist": [
     "IE 11"
