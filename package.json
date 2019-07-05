@@ -91,10 +91,7 @@
     "typescript": "^3.5.2"
   },
   "files": [
-    "es",
-    "lib",
-    "umd",
-    "types"
+    "dist"
   ],
   "browserslist": [
     "IE 11"
