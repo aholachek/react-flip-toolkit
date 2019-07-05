@@ -1,6 +1,6 @@
 {
   "name": "react-flip-toolkit",
-  "version": "6.6.8-0",
+  "version": "6.6.8",
   "description": "Configurable FLIP animation helpers for React",
   "license": "MIT",
   "source": "src/index.ts",
@@ -31,7 +31,7 @@
     "test:watch": "react-scripts-ts test --env=jsdom",
     "build-react": "microbundle --name=ReactFlipToolkit --globals react=React,prop-types=PropTypes,rematrix=Rematrix",
     "build-core": "microbundle --name=FlipToolkit -o=core -i=src/core.ts --globals rematrix=Rematrix; node rename-files core react-flip-toolkit index",
-    "build": "yarn run build-react && yarn run build-core; mkdir es; cp core/index.js es/core.js",
+    "build": "yarn run build-react && yarn run build-core; rm -rf es; mkdir es; cp core/index.js es/core.js",
     "start": "yarn run demo",
     "check-types": "tsc --noEmit",
     "prepare": "yarn run build",
