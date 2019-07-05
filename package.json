@@ -5,7 +5,7 @@
   "license": "MIT",
   "source": "src/index.ts",
   "main": "dist/index.js",
-  "umd:main": "dist/react-flip-toolkit.umd.js",
+  "umd:main": "dist/index.umd.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
   "amdName": "ReactFlipToolkit",
@@ -29,7 +29,9 @@
     "demo": "parcel --no-cache demo/src/index.html",
     "deploy-demo": "parcel build demo/src/index.html --out-dir demo/dist; cp demo/dist/index.html demo/dist/200.html; surge demo/dist --domain react-flip-toolkit-demos.surge.sh",
     "test:watch": "react-scripts-ts test --env=jsdom",
-    "build": "microbundle --name=ReactFlipToolkit --globals react=React,prop-types=PropTypes",
+    "build-react": "microbundle --globals react=React,prop-types=PropTypes",
+    "build-core": "microbundle --name=Core -o=core -i=src/core.ts; node rename-files core react-flip-toolkit index",
+    "build": "yarn run build-react && yarn run build-core",
     "start": "yarn run demo",
     "check-types": "tsc --noEmit",
     "prepare": "yarn run build",
@@ -92,7 +94,8 @@
     "typescript": "^3.5.2"
   },
   "files": [
-    "dist"
+    "dist",
+    "core"
   ],
   "browserslist": [
     "IE 11"

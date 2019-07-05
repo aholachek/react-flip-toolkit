@@ -399,8 +399,7 @@ You can refer to the React documentation below to see what options can be passed
 ### Expanding Div ([Fork on Code Sandbox](https://codesandbox.io/s/5v1k1nwz8l))
 
 ```js
-import Flipper from 'react-flip-toolkit/es/core'
-// or if you're using commonjs imports: import Flipper from "react-flip-toolkit/lib/core
+import Flipper from 'react-flip-toolkit/core'
 const container = document.querySelector('.container')
 const square = document.querySelector('.square')
 const innerSquare = document.querySelector('.inner-square')
