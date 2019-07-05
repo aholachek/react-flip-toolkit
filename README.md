@@ -5,7 +5,7 @@
 </p>
 
 [![Build Status](https://travis-ci.com/aholachek/react-flip-toolkit.svg?branch=master)](https://travis-ci.com/aholachek/react-flip-toolkit)
-[![Minified & Gzipped size](https://img.badgesize.io/https://unpkg.com/react-flip-toolkit@beta/dist/index.js?compression=gzip&label=min%20gzipped%20size)](https://unpkg.com/react-flip-toolkit@latest/dist/index.js)
+[![Minified & Gzipped size](https://badgen.net/bundlephobia/minzip/react-flip-toolkit)](https://bundlephobia.com/result?p=react-flip-toolkit)
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
 [![npm version](http://img.shields.io/npm/v/react-flip-toolkit.svg?style=flat)](https://npmjs.org/package/react-flip-toolkit 'View this project on npm')
 
