@@ -133,25 +133,22 @@ class Flipper extends Component<FlipperProps> {
     return flipperMarkup
   }
 }
-
-if (process.env.NODE_ENV !== 'production') {
-  // @ts-ignore
-  Flipper.propTypes = {
-    flipKey: PropTypes.any,
-    children: PropTypes.node.isRequired,
-    spring: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    applyTransformOrigin: PropTypes.bool,
-    debug: PropTypes.bool,
-    element: PropTypes.string,
-    className: PropTypes.string,
-    portalKey: PropTypes.string,
-    staggerConfig: PropTypes.object,
-    decisionData: PropTypes.any,
-    handleEnterUpdateDelete: PropTypes.func,
-    retainTransform: PropTypes.bool,
-    onComplete: PropTypes.func,
-    isGestureControlled: PropTypes.bool
-  }
+// @ts-ignore
+Flipper.propTypes = {
+  flipKey: PropTypes.any,
+  children: PropTypes.node.isRequired,
+  spring: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  applyTransformOrigin: PropTypes.bool,
+  debug: PropTypes.bool,
+  element: PropTypes.string,
+  className: PropTypes.string,
+  portalKey: PropTypes.string,
+  staggerConfig: PropTypes.object,
+  decisionData: PropTypes.any,
+  handleEnterUpdateDelete: PropTypes.func,
+  retainTransform: PropTypes.bool,
+  onComplete: PropTypes.func,
+  isGestureControlled: PropTypes.bool
 }
 
 export default Flipper

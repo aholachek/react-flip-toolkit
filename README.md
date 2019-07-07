@@ -63,48 +63,47 @@
 ### Example 1: Expanding Div ([Fork on Code Sandbox](https://codesandbox.io/s/8130rn9q2))
 
 ```jsx
-import React, { useState } from "react";
-import { Flipper, Flipped } from "react-flip-toolkit";
+import React, { useState } from 'react'
+import { Flipper, Flipped } from 'react-flip-toolkit'
 
 const AnimatedSquare = () => {
-  const [fullScreen, setFullScreen] = useState(false);
-  const toggleFullScreen = () => setFullScreen(prevState => !prevState);
+  const [fullScreen, setFullScreen] = useState(false)
+  const toggleFullScreen = () => setFullScreen(prevState => !prevState)
 
   return (
     <Flipper flipKey={fullScreen}>
       <Flipped flipId="square">
         <div
-          className={fullScreen ? "full-screen-square" : "square"}
+          className={fullScreen ? 'full-screen-square' : 'square'}
           onClick={toggleFullScreen}
         />
       </Flipped>
     </Flipper>
-  );
-};
-
+  )
+}
 ```
 
 ### Example 2: Two Divs ([Fork on Code Sandbox](https://codesandbox.io/s/74q85nq1qq))
 
 ```jsx
-import React, { useState } from "react";
-import { Flipper, Flipped } from "react-flip-toolkit";
+import React, { useState } from 'react'
+import { Flipper, Flipped } from 'react-flip-toolkit'
 
 const Square = ({ toggleFullScreen }) => (
   <Flipped flipId="square">
     <div className="square" onClick={toggleFullScreen} />
   </Flipped>
-);
+)
 
 const FullScreenSquare = ({ toggleFullScreen }) => (
   <Flipped flipId="square">
     <div className="full-screen-square" onClick={toggleFullScreen} />
   </Flipped>
-);
+)
 
 const AnimatedSquare = () => {
-  const [fullScreen, setFullScreen] = useState(false);
-  const toggleFullScreen = () => setFullScreen(prevState => !prevState);
+  const [fullScreen, setFullScreen] = useState(false)
+  const toggleFullScreen = () => setFullScreen(prevState => !prevState)
 
   return (
     <Flipper flipKey={fullScreen}>
@@ -114,23 +113,23 @@ const AnimatedSquare = () => {
         <Square toggleFullScreen={toggleFullScreen} />
       )}
     </Flipper>
-  );
-};
+  )
+}
 ```
 
 ### Example 3: List Shuffle ([Fork on Code Sandbox](https://codesandbox.io/s/14v8o5xy44))
 
 ```jsx
-import React, { useState } from "react";
-import { Flipper, Flipped } from "react-flip-toolkit";
-import shuffle from "lodash.shuffle";
+import React, { useState } from 'react'
+import { Flipper, Flipped } from 'react-flip-toolkit'
+import shuffle from 'lodash.shuffle'
 
 const ListShuffler = () => {
-  const [data, setData] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-  const shuffleList = () => setData(shuffle(data));
+  const [data, setData] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+  const shuffleList = () => setData(shuffle(data))
 
   return (
-    <Flipper flipKey={data.join("")}>
+    <Flipper flipKey={data.join('')}>
       <button onClick={shuffleList}> shuffle</button>
       <ul className="list">
         {data.map(d => (
@@ -140,8 +139,8 @@ const ListShuffler = () => {
         ))}
       </ul>
     </Flipper>
-  );
-};
+  )
+}
 ```
 
 ## Demos
@@ -243,7 +242,7 @@ staggerConfig={{
 | debug                   | `false` | `boolean`  | This experimental prop will pause your animation right at the initial application of FLIP-ped styles. That will allow you to inspect the state of the animation at the very beginning, when it should look similar or identical to the UI before the animation began.                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | portalKey               |    -    | `string`   | In general, the `Flipper` component will only apply transitions to its descendents. This allows multiple `Flipper` elements to coexist on the same page, but it will prevent animations from working if you use [portals](https://reactjs.org/docs/portals.html). You can provide a unique `portalKey` prop to `Flipper` to tell it to scope element selections to the entire document, not just to its children, so that elements in portals can be transitioned.                                                                                                                                                                                                                                     |
 | retainTransform         |  false  | `boolean`  | This performance enhancement can be set to `true` to retain an imperceptible `rotateZ` transform on all `Flipped` elements after they animate. This persistent transform will prevent the "pixel-snapping" effect sometimes seem in Chrome when a scale transform is fully removed from an element.                                                                                                                                                                                                                                                                                                                                                                                                    |
-| onComplete              |    -    | `function` | This callback prop will be called when all individual FLIP animations have completed. Its single argument is a list of `flipId`s for the `Flipped` components that were activated during the animation. If an animation is interrupted, `onComplete` will be still called right before the in-progress animation is terminated.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| onComplete              |    -    | `function` | This callback prop will be called when all individual FLIP animations have completed. Its single argument is a list of `flipId`s for the `Flipped` components that were activated during the animation. If an animation is interrupted, `onComplete` will be still called right before the in-progress animation is terminated.                                                                                                                                                                                                                                                                                                                                                                        |
 | handleEnterUpdateDelete |    -    | `function` | By default, `react-flip-toolkit` finishes animating out exiting elements before animating in new elements, with updating elements transforming immediately. You might want to have more control over the sequence of transitions &mdash; say, if you wanted to hide elements, pause, update elements, pause again, and finally animate in new elements. Or you might want transitions to happen simultaneously. If so, provide the function `handleEnterUpdateDelete` as a prop. [The best way to understand how this works is to check out this interactive example.](https://codesandbox.io/s/4q7qpkn8q0) `handleEnterUpdateDelete` receives the following arguments every time a transition occurs: |
 
 ```js
@@ -292,7 +291,7 @@ The `Flipped` component produces no markup, it simply passes some props down to 
 If you want to wrap a React component rather than a JSX element like a `div`, you can provide a render prop and then apply the `flippedProps` directly to the wrapped element in your component:
 
 ```jsx
-<Flipped>
+;<Flipped>
   {flippedProps => <MyCoolComponent flippedProps={flippedProps} />}
 </Flipped>
 
@@ -302,7 +301,7 @@ const MyCoolComponent = ({ flippedProps }) => <div {...flippedProps} />
 You can also simply provide a regular React component as long as that component spreads unrecognized props directly onto the wrapped element (this technique works well for wrapping styled components):
 
 ```jsx
-<Flipped>
+;<Flipped>
   <MyCoolComponent />
 </Flipped>
 
@@ -400,8 +399,7 @@ You can refer to the React documentation below to see what options can be passed
 ### Expanding Div ([Fork on Code Sandbox](https://codesandbox.io/s/5v1k1nwz8l))
 
 ```js
-import Flipper from 'react-flip-toolkit/es/core'
-// or if you're using commonjs imports: import Flipper from "react-flip-toolkit/lib/core
+import Flipper from 'react-flip-toolkit/core'
 const container = document.querySelector('.container')
 const square = document.querySelector('.square')
 const innerSquare = document.querySelector('.inner-square')
@@ -415,12 +413,12 @@ const flipper = new Flipper({ element: container })
 // for the Flipped component
 flipper.addFlipped({
   element: square,
-  flipId: "square",
-  onStart: () => console.log("animation started!"),
+  flipId: 'square',
+  onStart: () => console.log('animation started!'),
   onSpringUpdate: springValue =>
     console.log(`current spring value: ${springValue}`),
-  onComplete: () => console.log("animation completed!")
-});
+  onComplete: () => console.log('animation completed!')
+})
 
 // to add an inverted child, use this method with
 // a reference to the parent element
