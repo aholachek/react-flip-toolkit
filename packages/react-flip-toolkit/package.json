@@ -1,0 +1,99 @@
+{
+  "name": "react-flip-toolkit",
+  "version": "6.6.8",
+  "description": "Configurable FLIP animation helpers for React",
+  "license": "MIT",
+  "source": "index.ts",
+  "main": "dist/index.js",
+  "umd:main": "dist/index.umd.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "amdName": "ReactFlipToolkit",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aholachek/react-flip-toolkit"
+  },
+  "bugs": "https://github.com/aholachek/react-flip-toolkit/issues",
+  "author": "Alex Holachek",
+  "keywords": [
+    "react-component",
+    "FLIP",
+    "transition",
+    "animation"
+  ],
+  "engines": {
+    "node": ">=8",
+    "npm": ">=5"
+  },
+  "scripts": {
+    "start": "parcel --no-cache demo/index.html",
+    "deploy-demo": "parcel build demo/index.html --out-dir demo/dist; cp demo/dist/index.html demo/dist/200.html; surge demo/dist --domain react-flip-toolkit-demos.surge.sh",
+    "build": "microbundle --name=ReactFlipToolkit --globals react=React,prop-types=PropTypes,flip-toolkit=FlipToolkit",
+    "check-types": "tsc --noEmit",
+    "prepare": "yarn run build",
+    "predeploy": "cd example && yarn install && yarn run build",
+    "inspect": "npx source-map-explorer umd/react-flip-toolkit.min.*",
+    "lint": "eslint src/**/*.ts",
+    "format": "prettier --write 'src/**/*.{ts,tsx}",
+    "format-and-fix": "npm-run-all format eslint-fix",
+    "fix": "eslint src/**/*.ts --fix",
+    "test:dom": "parcel mocha/testrunner.html",
+    "test": "jest",
+    "test:all": "npm-run-all test test:dom",
+    "preversion": "npm test",
+    "postpublish": "git push origin master; git push origin --tags",
+    "version": "npm run build"
+  },
+  "dependencies": {
+    "flip-toolkit": "6.6.8"
+  },
+  "peerDependencies": {
+    "prop-types": "^15.x.x",
+    "react": "16.x"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-transform-typescript": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/preset-typescript": "7.3.3",
+    "@babel/runtime": "^7.4.5",
+    "@types/jest": "^24.0.15",
+    "@types/react": "^16.8.20",
+    "@types/react-dom": "^16.8.4",
+    "@types/react-test-renderer": "^16.8.2",
+    "@typescript-eslint/eslint-plugin": "^1.10.2",
+    "@typescript-eslint/parser": "^1.10.2",
+    "animejs": "^3.0.1",
+    "babel-jest": "^24.8.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-react-app": "^9.0.0",
+    "chai": "^4.2.0",
+    "eslint": "^5.16.0",
+    "eslint-plugin-react": "^7.13.0",
+    "jest": "^24.8.0",
+    "microbundle": "^0.11.0",
+    "mocha": "^6.1.4",
+    "normalize.css": "^8.0.1",
+    "npm-run-all": "^4.1.5",
+    "parcel": "^1.12.3",
+    "prettier": "1.18.2",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-scripts": "^3.0.1",
+    "react-test-renderer": "^16.8.6",
+    "regenerator-runtime": "^0.13.2",
+    "sinon": "^7.3.2",
+    "ts-jest": "^24.0.2",
+    "typescript": "^3.5.2"
+  },
+  "files": [
+    "dist",
+    "core",
+    "es"
+  ],
+  "browserslist": [
+    "IE 11"
+  ]
+}

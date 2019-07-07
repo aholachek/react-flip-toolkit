@@ -17,7 +17,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
   },
-  "include": ["src"],
+  "include": ["packages/flip-toolkit", "packages/react-flip-toolkit"],
   "exclude": [
     "node_modules",
     "build",
