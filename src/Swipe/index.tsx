@@ -1,4 +1,4 @@
-import React, { Component, SyntheticEvent, Children, cloneElement } from 'react'
+import React, { Component, SyntheticEvent, cloneElement } from 'react'
 import PropTypes from 'prop-types'
 import gestureHandlers from './gestureHandlers'
 import { GestureContext } from '../Flipper'
