@@ -6,7 +6,7 @@ import React, {
 } from 'react'
 import PropTypes from 'prop-types'
 import { utilities, constants } from 'flip-toolkit'
-import { IndexableObject, FlippedProps, SerializableFlippedProps } from 'flip-toolkit/types'
+import { FlippedProps, SerializableFlippedProps } from 'flip-toolkit/dist/types'
 import { FlipContext, PortalContext } from '../Flipper'
 
 const propTypes = {
@@ -61,7 +61,7 @@ export const Flipped = ({
     })
   }
 
-  const dataAttributes: IndexableObject = {
+  const dataAttributes: Record<string, string | undefined> = {
     // these are both used as selectors so they have to be separate
     [constants.DATA_FLIP_ID]: flipId,
     [constants.DATA_INVERSE_FLIP_ID]: inverseFlipId,

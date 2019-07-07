@@ -3,7 +3,7 @@ import {
   FlipCallbacks,
   StaggerConfig,
   HandleEnterUpdateDelete
-} from '../Flipper/types'
+} from '../types'
 import { FlippedElementPositionsBeforeUpdate } from './getFlippedElementPositions/getFlippedElementPositionsBeforeUpdate/types'
 import { FlippedElementPositionsAfterUpdate } from './getFlippedElementPositions/getFlippedElementPositionsAfterUpdate/types'
 import { CachedOrderedFlipIds } from '../flip/getFlippedElementPositions/getFlippedElementPositionsBeforeUpdate/types'

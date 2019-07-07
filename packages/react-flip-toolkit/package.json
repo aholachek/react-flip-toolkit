@@ -7,7 +7,7 @@
   "main": "dist/index.js",
   "umd:main": "dist/index.umd.js",
   "module": "dist/index.es.js",
-  "types": "dist/index.d.ts",
+  "types": "dist/react-flip-toolkit/types.d.ts",
   "amdName": "ReactFlipToolkit",
   "repository": {
     "type": "git",
@@ -26,7 +26,7 @@
     "npm": ">=5"
   },
   "scripts": {
-    "start": "parcel --no-cache demo/index.html",
+    "start": "parcel --no-cache demo/index.html --out-dir demo/dist",
     "deploy-demo": "parcel build demo/index.html --out-dir demo/dist; cp demo/dist/index.html demo/dist/200.html; surge demo/dist --domain react-flip-toolkit-demos.surge.sh",
     "build": "microbundle --name=ReactFlipToolkit --globals react=React,prop-types=PropTypes,flip-toolkit=FlipToolkit",
     "check-types": "tsc --noEmit",
@@ -52,7 +52,7 @@
     "react": "16.x"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.5",
+    "@babel/core": "^7.5.0",
     "@babel/plugin-proposal-class-properties": "^7.5.0",
     "@babel/plugin-transform-typescript": "^7.4.5",
     "@babel/preset-env": "^7.5.0",

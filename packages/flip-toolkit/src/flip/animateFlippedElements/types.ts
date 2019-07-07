@@ -2,7 +2,7 @@ import { BaseFlipArgs, FlippedIds } from '../types'
 import { SpringOption, SpringConfig } from '../../springSettings/types'
 import { StaggerConfig, OnFlipperComplete } from '../../types'
 import { SerializableFlippedProps, FlipId } from '../../types'
-import { Spring } from '../../src/forked-rebound/types'
+import { Spring } from '../../forked-rebound/types'
 
 export type ScopedSelector = (selector: string) => HTMLElement[]
 

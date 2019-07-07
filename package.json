@@ -9,7 +9,7 @@
     "format": "yarn workspaces run format",
     "format-and-fix": "yarn workspaces run format-and-fix",
     "fix": "yarn workspaces run fix",
-    "check-types": "yarn workspaces check-types",
+    "check-types": "yarn workspaces run check-types",
     "build": "yarn workspaces run build"
   }
 }

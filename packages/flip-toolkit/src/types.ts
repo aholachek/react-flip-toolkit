@@ -2,7 +2,9 @@ import { SpringOption } from './springSettings/types'
 import { FlippedIds } from './flip/types'
 import { IndexableObject } from './utilities/types'
 import { FlippedElementPositionsBeforeUpdateReturnVals } from  './flip/getFlippedElementPositions/getFlippedElementPositionsBeforeUpdate/types'
+import getFlippedElementPositionsBeforeUpdate from './flip/getFlippedElementPositions/getFlippedElementPositionsBeforeUpdate'
 
+export type GetFlippedElementPositionsBeforeUpdate = typeof getFlippedElementPositionsBeforeUpdate
 export type IndexableObject = IndexableObject
 export type FlippedElementPositionsBeforeUpdateReturnVals = FlippedElementPositionsBeforeUpdateReturnVals
 
@@ -129,3 +131,7 @@ export interface CallbackFlippedProps {
 }
 
 export type FlippedProps = CallbackFlippedProps & SerializableFlippedProps
+
+// ========================================================
+// Flipped Types
+// ========================================================

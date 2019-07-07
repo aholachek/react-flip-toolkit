@@ -15,8 +15,9 @@
     "esModuleInterop": true,
     "strict": true,
     "resolveJsonModule": true,
+    "isolatedModules": true,
   },
-  "include": ["packages/flip-toolkit", "packages/react-flip-toolkit"],
+  "include": ["src", "@types"],
   "exclude": [
     "node_modules",
     "build",
@@ -24,6 +25,6 @@
     "example",
     "src/**/*.test.ts",
     "src/**/*.test.tsx",
-    "__tests__",
+    "__tests__"
   ]
 }

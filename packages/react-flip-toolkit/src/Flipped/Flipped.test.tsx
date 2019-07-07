@@ -9,7 +9,7 @@ describe('Flipped Component', () => {
         <div />
       </Flipped>
     )
-    expect(testRenderer.toJSON().props['data-flip-id']).toEqual('foo')
+    expect(testRenderer.toJSON()!.props['data-flip-id']).toEqual('foo')
   })
   it('adds a data-inverse-flip-id attribute', () => {
     const testRenderer = TestRenderer.create(
@@ -17,7 +17,7 @@ describe('Flipped Component', () => {
         <div />
       </Flipped>
     )
-    expect(testRenderer.toJSON().props['data-inverse-flip-id']).toEqual('foo2')
+    expect(testRenderer.toJSON()!.props['data-inverse-flip-id']).toEqual('foo2')
   })
 
   it('only if provided with a portalKey via context, puts that on the attributes to help with document scoped selection ', () => {
@@ -26,14 +26,16 @@ describe('Flipped Component', () => {
         <div />
       </Flipped>
     )
-    expect(testRenderer.toJSON().props['data-portal-key']).toBe('plants')
+    expect(testRenderer.toJSON()!.props['data-portal-key']).toBe('plants')
 
     const testRenderer2 = TestRenderer.create(
       <Flipped>
         <div />
       </Flipped>
     )
-    expect(testRenderer2.toJSON().props['data-flip-portal-key']).toBe(undefined)
+    expect(testRenderer2.toJSON()!.props['data-flip-portal-key']).toBe(
+      undefined
+    )
   })
   it('adds all data transform attributes if none are specified', () => {
     const testRenderer = TestRenderer.create(
@@ -43,13 +45,13 @@ describe('Flipped Component', () => {
     )
 
     const flipConfig = JSON.parse(
-      testRenderer.toJSON().props['data-flip-config']
+      testRenderer.toJSON()!.props['data-flip-config']
     )
 
     expect(flipConfig).toEqual({ translate: true, scale: true, opacity: true })
   })
 
-  it('doesn\'t add any additional transform attributes if at least one was specified', () => {
+  it("doesn't add any additional transform attributes if at least one was specified", () => {
     const testRenderer2 = TestRenderer.create(
       <Flipped flipId="foo" opacity={true}>
         <div />
@@ -57,7 +59,7 @@ describe('Flipped Component', () => {
     )
 
     const flipConfig2 = JSON.parse(
-      testRenderer2.toJSON().props['data-flip-config']
+      testRenderer2.toJSON()!.props['data-flip-config']
     )
 
     expect(flipConfig2).toEqual({ opacity: true })
@@ -70,7 +72,7 @@ describe('Flipped Component', () => {
       </Flipped>
     )
     const flipConfig = JSON.parse(
-      testRenderer.toJSON().props['data-flip-config']
+      testRenderer.toJSON()!.props['data-flip-config']
     )
 
     expect(flipConfig).toEqual({ scale: true })
@@ -84,7 +86,7 @@ describe('Flipped Component', () => {
     )
 
     const flipConfig = JSON.parse(
-      testRenderer.toJSON().props['data-flip-config']
+      testRenderer.toJSON()!.props['data-flip-config']
     )
 
     expect(flipConfig).toEqual({ translate: true })
@@ -93,10 +95,10 @@ describe('Flipped Component', () => {
   it('passes props if it receives a function as a child', () => {
     const testRenderer = TestRenderer.create(
       <Flipped flipId="foo" inverseFlipId="bar">
-        {flippedProps => <div {...flippedProps} />}
+        {(flippedProps: any) => <div {...flippedProps} />}
       </Flipped>
     )
-    expect(testRenderer.toJSON().props).toEqual({
+    expect(testRenderer.toJSON()!.props).toEqual({
       'data-flip-id': 'foo',
       'data-inverse-flip-id': 'bar',
       'data-flip-config': JSON.stringify({

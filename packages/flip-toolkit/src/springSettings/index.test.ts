@@ -9,13 +9,13 @@ describe('getSpringConfig', () => {
     expect(
       getSpringConfig({
         flipperSpring: 'wobbly',
-        flippedSpring: null
+        flippedSpring: undefined
       })
     ).toEqual(springPresets.wobbly)
 
     expect(
       getSpringConfig({
-        flippedSpring: null,
+        flippedSpring: undefined,
         flipperSpring: 'stiff'
       })
     ).toEqual(springPresets.stiff)
@@ -24,7 +24,7 @@ describe('getSpringConfig', () => {
   it('should allow the passing in of an object, and use noWobble to fill in missing keys', () => {
     expect(
       getSpringConfig({
-        flippedSpring: null,
+        flippedSpring: undefined,
         flipperSpring: { stiffness: 400 }
       })
     ).toEqual({
