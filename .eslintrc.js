@@ -18,6 +18,7 @@ module.exports = {
     '@typescript-eslint/member-delimiter-style': 0,
     '@typescript-eslint/no-non-null-assertion': 0,
     '@typescript-eslint/no-explicit-any': 0,
-    '@typescript-eslint/explicit-member-accessibility': 0
+    '@typescript-eslint/explicit-member-accessibility': 0,
+    '@typescript-eslint/no-object-literal-type-assertion': 0
   }
 }

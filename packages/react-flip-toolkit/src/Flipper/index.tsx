@@ -5,13 +5,13 @@ import {
   onFlipKeyUpdate,
 } from 'flip-toolkit'
 import {   FlipperProps, InProgressAnimations, FlipCallbacks, FlippedElementPositionsBeforeUpdateReturnVals
-} from 'flip-toolkit/types'
+} from 'flip-toolkit/flip-toolkit/types'
 
 export const FlipContext = createContext({} as FlipCallbacks)
 export const PortalContext = createContext('portal')
 
 class Flipper extends Component<FlipperProps> {
-   static defaultProps = {
+  static defaultProps = {
     applyTransformOrigin: true,
     element: 'div',
     retainTransform: false

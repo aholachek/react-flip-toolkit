@@ -3,7 +3,7 @@
   "version": "6.6.8",
   "description": "Configurable FLIP animation helpers",
   "license": "MIT",
-  "source": "index.ts",
+  "source": "src/index.ts",
   "main": "dist/index.js",
   "umd:main": "dist/index.umd.js",
   "module": "dist/index.es.js",
@@ -26,15 +26,14 @@
   },
   "scripts": {
     "start": "parcel 'core-test/index.html' --out-dir build",
-    "test": "jest",
-    "test:watch": "react-scripts-ts test --env=jsdom",
+    "test": "jest --testPathIgnorePatterns \"(dist|domtest)\"",
     "build": "microbundle --name=FlipToolkit --globals rematrix=Rematrix",
     "check-types": "tsc --noEmit",
     "prepare": "yarn run build",
     "predeploy": "cd example && yarn install && yarn run build",
     "inspect": "npx source-map-explorer dist/index.es.*",
     "lint": "eslint src/**/*.ts",
-    "format": "prettier --write 'src/**/*.{ts,tsx}",
+    "format": "prettier --write src/**/*.{ts,tsx}",
     "format-and-fix": "npm-run-all format eslint-fix",
     "fix": "eslint src/**/*.ts --fix",
     "test:dom": "parcel mocha/testrunner.html --out-dir build",
@@ -48,11 +47,11 @@
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",
-    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-proposal-class-properties": "^7.5.0",
     "@babel/plugin-transform-typescript": "^7.4.5",
-    "@babel/preset-env": "^7.4.5",
+    "@babel/preset-env": "^7.5.0",
     "@babel/preset-react": "^7.0.0",
-    "@babel/preset-typescript": "7.3.3",
+    "@babel/preset-typescript": "^7.3.3",
     "@babel/runtime": "^7.4.5",
     "@types/jest": "^24.0.15",
     "@typescript-eslint/eslint-plugin": "^1.10.2",
@@ -76,11 +75,11 @@
     "typescript": "^3.5.2"
   },
   "files": [
-    "dist",
-    "core",
-    "es"
+    "dist"
   ],
   "browserslist": [
+    "> 1%",
+    "last 2 versions",
     "IE 11"
   ]
 }

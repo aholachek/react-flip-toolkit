@@ -19,6 +19,7 @@ const propTypes = {
   transformOrigin: PropTypes.string,
   spring: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   onStart: PropTypes.func,
+  onStartImmediate: PropTypes.func,
   onComplete: PropTypes.func,
   onAppear: PropTypes.func,
   onSpringUpdate: PropTypes.func,

@@ -15,7 +15,6 @@
     "esModuleInterop": true,
     "strict": true,
     "resolveJsonModule": true,
-    "isolatedModules": true,
   },
   "include": ["packages/flip-toolkit", "packages/react-flip-toolkit"],
   "exclude": [
@@ -23,7 +22,6 @@
     "build",
     "dist",
     "example",
-    "rollup.config.js",
     "src/**/*.test.ts",
     "src/**/*.test.tsx",
     "__tests__",
