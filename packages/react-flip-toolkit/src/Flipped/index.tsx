@@ -12,7 +12,7 @@ import { FlipContext, PortalContext } from '../Flipper'
 const propTypes = {
   children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
   inverseFlipId: PropTypes.string,
-  flipId: PropTypes.string,
+  flipId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   opacity: PropTypes.bool,
   translate: PropTypes.bool,
   scale: PropTypes.bool,
@@ -33,14 +33,16 @@ const propTypes = {
 function isFunction(child: any): child is Function {
   return typeof child === 'function'
 }
+
 // This wrapper creates child components for the main Flipper component
-export const Flipped = ({
+export const Flipped: FunctionComponent<SerializableFlippedProps> = ({
   children,
   flipId,
   inverseFlipId,
   portalKey,
+  gestureHandlers,
   ...rest
-}: SerializableFlippedProps): ReactElement<any> => {
+}) => {
   let child = children
   const isFunctionAsChildren = isFunction(child)
 
@@ -68,6 +70,12 @@ export const Flipped = ({
     [constants.DATA_FLIP_CONFIG]: JSON.stringify(rest)
   }
 
+  if (gestureHandlers) {
+    Object.assign(dataAttributes, gestureHandlers, {
+      [constants.DATA_NO_TOUCH]: true
+    })
+  }
+
   if (portalKey) {
     dataAttributes[constants.DATA_PORTAL_KEY] = portalKey
   }
@@ -89,6 +97,8 @@ export const FlippedWithContext: FunctionComponent<FlippedProps> = ({
   onComplete,
   onExit,
   onSpringUpdate,
+  isGestureControlled,
+  gestureHandlers,
   ...rest
 }) => {
   if (!children) {
@@ -97,6 +107,7 @@ export const FlippedWithContext: FunctionComponent<FlippedProps> = ({
   if (rest.inverseFlipId) {
     return <Flipped {...rest}>{children}</Flipped>
   }
+
   return (
     <PortalContext.Consumer>
       {portalKey => (
@@ -119,7 +130,12 @@ export const FlippedWithContext: FunctionComponent<FlippedProps> = ({
               }
             }
             return (
-              <Flipped flipId={flipId} {...rest} portalKey={portalKey}>
+              <Flipped
+                flipId={flipId}
+                {...rest}
+                portalKey={portalKey}
+                gestureHandlers={gestureHandlers}
+              >
                 {children}
               </Flipped>
             )

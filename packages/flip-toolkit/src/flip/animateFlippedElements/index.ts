@@ -25,7 +25,7 @@ import {
 } from './types'
 import { BoundingClientRect } from '../getFlippedElementPositions/types'
 import { FlippedIds } from '../types'
-import { IndexableObject } from '../../utilities/types';
+import { IndexableObject } from '../../utilities/types'
 
 // 3d transforms were causing weird issues in chrome,
 // especially when opacity was also being tweened,
@@ -59,9 +59,7 @@ export const invertTransformsForChildren = ({
     if (childFlipConfig.translate) {
       inverseVals.translateX = -translateX / scaleX
       inverseVals.translateY = -translateY / scaleY
-      transformString += `translate(${inverseVals.translateX}px, ${
-        inverseVals.translateY
-      }px)`
+      transformString += `translate(${inverseVals.translateX}px, ${inverseVals.translateY}px)`
     }
     if (childFlipConfig.scale) {
       inverseVals.scaleX = 1 / scaleX
@@ -112,7 +110,9 @@ export const createApplyStylesFunc = ({
   if (retainTransform && stringTransform === identityTransform) {
     stringTransform = transformWithInvisibleSkew
   }
-
+  // always apply transform, even if identity,
+  // because identity might be the starting state in a FLIP
+  // transition, if the element's position is controlled by transforms
   element.style.transform = stringTransform
 
   if (invertedChildren) {
@@ -160,7 +160,8 @@ export default ({
   decisionData = {},
   scopedSelector,
   retainTransform,
-  onComplete
+  onComplete,
+  isGestureControlled
 }: AnimateFlippedElementsArgs) => {
   // the stuff below is used so we can return a promise that resolves when all FLIP animations have
   // completed
@@ -205,6 +206,8 @@ export default ({
       }: ${duplicateFlipIds.join('\n')}`
     )
   }
+  // defining this up here to that it's accessible in onUpdate functions
+  const flipDataDict: FlipDataDict = {}
 
   const flipDataArray: FlipDataArray = flippedIds
     // take all the measurements we need
@@ -215,7 +218,6 @@ export default ({
       const prevOpacity = flippedElementPositionsBeforeUpdate[id].opacity
       const currentOpacity = flippedElementPositionsAfterUpdate[id].opacity
       const needsForcedMinVals = currentRect.width < 1 || currentRect.height < 1
-
       // don't animate elements outside of the user's viewport
       if (!rectInViewport(prevRect) && !rectInViewport(currentRect)) {
         return false
@@ -264,18 +266,23 @@ export default ({
         }
       }
 
-      // don't animate elements that didn't visbly change
+      // don't animate elements that didn't visibly change
       // but possibly animate their children
-      const transformDifference =
-        Math.abs(prevRect.left - currentRect.left) +
-        Math.abs(prevRect.top - currentRect.top)
-      const sizeDifference =
-        Math.abs(prevRect.width - currentRect.width) +
-        Math.abs(prevRect.height - currentRect.height)
+
+      const translateXDifference = Math.abs(prevRect.left - currentRect.left)
+      const translateYDifference = Math.abs(prevRect.top - currentRect.top)
+
+      const translateDifference = translateXDifference + translateYDifference
+
+      const scaleXDifference = Math.abs(prevRect.width - currentRect.width)
+      const scaleYDifference = Math.abs(prevRect.height - currentRect.height)
+
+      const scaleDifference = scaleXDifference + scaleYDifference
+
       const opacityDifference = Math.abs(currentOpacity - prevOpacity)
       if (
-        transformDifference < 0.5 &&
-        sizeDifference < 0.5 &&
+        translateDifference < 0.5 &&
+        scaleDifference < 0.5 &&
         opacityDifference < 0.01
       ) {
         // this element wont be animated, but its children might be
@@ -386,10 +393,19 @@ export default ({
 
       let onStartCalled = false
 
-      const getOnUpdateFunc: GetOnUpdateFunc = stop => {
+      const getOnUpdateFunc: GetOnUpdateFunc = ({ spring, onAnimationEnd }) => {
         inProgressAnimations[id] = {
-          stop,
-          onComplete
+          destroy: spring.destroy.bind(spring),
+          // only for gesture control
+          // @ts-ignore
+          spring,
+          onAnimationEnd,
+          difference: {
+            translateXDifference,
+            translateYDifference,
+            scaleXDifference,
+            scaleYDifference
+          }
         }
         const onUpdate: OnUpdate = spring => {
           if (flipCallbacks[id] && flipCallbacks[id].onSpringUpdate) {
@@ -408,9 +424,8 @@ export default ({
           }
 
           const currentValue = spring.getCurrentValue()
-
           if (!body.contains(element)) {
-            stop()
+            spring.destroy()
             return
           }
 
@@ -439,6 +454,7 @@ export default ({
           opacity: animateOpacity ? fromVals.opacity : undefined,
           forceMinVals: needsForcedMinVals
         })
+
         if (flipCallbacks[id] && flipCallbacks[id].onStartImmediate) {
           flipCallbacks[id].onStartImmediate!(
             element,
@@ -471,7 +487,7 @@ export default ({
       }) as FlipData
     })
     // filter out data for all non-animated elements first
-    .filter(x => x) as FlipDataArray
+    .filter(Boolean) as FlipDataArray
 
   // we use this array to compare with completed animations
   // to decide when all animations are completed
@@ -485,10 +501,13 @@ export default ({
     return () => {}
   }
 
-  const flipDataDict: FlipDataDict = flipDataArray.reduce((acc:IndexableObject, curr) => {
-    acc[curr.id] = curr
-    return acc
-  }, {})
+  Object.assign(
+    flipDataDict,
+    flipDataArray.reduce((acc: IndexableObject, curr) => {
+      acc[curr.id] = curr
+      return acc
+    }, {})
+  )
 
   // this function modifies flipDataDict in-place
   // by removing references to non-direct children
@@ -505,7 +524,12 @@ export default ({
     if (!withInitFuncs.length) {
       closureResolve([])
     }
-    initiateAnimations({ topLevelChildren, flipDataDict, staggerConfig })
+    initiateAnimations({
+      topLevelChildren,
+      flipDataDict,
+      staggerConfig,
+      isGestureControlled
+    })
     return flipCompletedPromise
   }
 }

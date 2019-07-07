@@ -35,5 +35,6 @@ export interface OnFlipKeyUpdateArgs {
   decisionData?: { prev?: any; current?: any }
   handleEnterUpdateDelete?: HandleEnterUpdateDelete
   retainTransform?: boolean
+  isGestureControlled?: boolean
   onComplete?: (flipIds: FlippedIds) => void
 }

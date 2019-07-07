@@ -9,7 +9,7 @@
  *
  */
 
-import { removeFirst } from "./util"
+import { removeFirst } from './util'
 
 class PhysicsState {
   constructor() {
@@ -35,7 +35,7 @@ class PhysicsState {
  */
 class Spring {
   constructor(springSystem) {
-    this._id = "s" + Spring._ID++
+    this._id = 's' + Spring._ID++
     this._springSystem = springSystem
 
     this.listeners = []
@@ -51,6 +51,8 @@ class Spring {
     this._tempState = new PhysicsState()
     this._timeAccumulator = 0
     this._wasAtRest = true
+    // hack from alex -- only call 1x
+    this._onActivateCalled
   }
 
   getId() {
@@ -100,7 +102,10 @@ class Spring {
    * immediately.
    * @public
    */
+
   setEndValue(endValue) {
+    if (endValue === this._endValue) return this
+    this.prevEndValue = endValue
     if (this._endValue === endValue && this.isAtRest()) {
       return this
     }
@@ -283,11 +288,14 @@ class Spring {
   }
 
   notifyPositionUpdated(notifyActivate, notifyAtRest) {
-    for (let i = 0, len = this.listeners.length; i < len; i++) {
-      const listener = this.listeners[i]
-
-      if (notifyActivate && listener.onSpringActivate) {
+    this.listeners.filter(Boolean).forEach(listener => {
+      if (
+        notifyActivate &&
+        listener.onSpringActivate &&
+        !this._onActivateCalled
+      ) {
         listener.onSpringActivate(this)
+        this._onActivateCalled = true
       }
 
       if (listener.onSpringUpdate) {
@@ -297,7 +305,7 @@ class Spring {
       if (notifyAtRest && listener.onSpringAtRest) {
         listener.onSpringAtRest(this)
       }
-    }
+    })
   }
 
   /**
@@ -325,12 +333,12 @@ class Spring {
    * @public
    */
   isAtRest() {
-    return (
+    const isAtRest =
       Math.abs(this._currentState.velocity) < this._restSpeedThreshold &&
       (this.getDisplacementDistanceForState(this._currentState) <=
         this._displacementFromRestThreshold ||
         this._springConfig.tension === 0)
-    )
+    return isAtRest
   }
 
   _interpolate(alpha) {
@@ -343,6 +351,18 @@ class Spring {
   }
 
   addListener(newListener) {
+    this.listeners.push(newListener)
+    return this
+  }
+
+  addOneTimeListener(newListener) {
+    const oneTimeFunc = func => (...args) => {
+      func(...args)
+      this.removeListener(newListener)
+    }
+    Object.keys(newListener).forEach(key => {
+      newListener[key] = oneTimeFunc(newListener[key])
+    })
     this.listeners.push(newListener)
     return this
   }

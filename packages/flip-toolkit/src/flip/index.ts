@@ -72,6 +72,7 @@ const onFlipKeyUpdate = ({
   decisionData = {},
   handleEnterUpdateDelete,
   retainTransform,
+  isGestureControlled,
   onComplete
 }: OnFlipKeyUpdateArgs) => {
   const flippedElementPositionsAfterUpdate = getFlippedElementPositionsAfterUpdate(
@@ -103,13 +104,9 @@ const onFlipKeyUpdate = ({
     inProgressAnimations
   }
 
-  const animateUnFlippedElementsArgs = assign(
-    {},
-    baseArgs,
-    {
-      unflippedIds
-    }
-  ) as AnimateUnflippedElementsArgs
+  const animateUnFlippedElementsArgs = assign({}, baseArgs, {
+    unflippedIds
+  }) as AnimateUnflippedElementsArgs
 
   const {
     hideEnteringElements,
@@ -123,6 +120,7 @@ const onFlipKeyUpdate = ({
     {},
     baseArgs,
     {
+      isGestureControlled,
       flippedIds,
       applyTransformOrigin,
       spring,

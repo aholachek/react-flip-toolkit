@@ -16,10 +16,18 @@ export interface AnimateFlippedElementsArgs extends BaseFlipArgs {
   scopedSelector: ScopedSelector
   retainTransform: boolean
   onComplete: OnFlipperComplete
+  isGestureControlled?: boolean
 }
 
 export type OnUpdate = (spring: Spring) => void
-export type GetOnUpdateFunc = (stop: () => void) => OnUpdate
+
+export type GetOnUpdateFunc = ({
+  spring,
+  onAnimationEnd
+}: {
+  spring: Spring
+  onAnimationEnd: () => void
+}) => OnUpdate
 
 export type Matrix = number[]
 
@@ -60,6 +68,7 @@ export interface FlipData {
   onSpringActivate: () => void
   immediateChildren: FlipDataArray
   staggeredChildren: StaggeredChildren
+  isGestureControlled?: boolean
 }
 export type FlipDataArray = FlipData[]
 
@@ -73,7 +82,10 @@ export interface LevelToChildren {
 
 export type TopLevelChildren = FlipId[]
 
-export type InitiateStaggeredAnimations = (staggered: StaggeredChildren) => void
+export type InitiateStaggeredAnimations = (
+  staggered: StaggeredChildren,
+  isGestureControlled?: boolean
+) => void
 
 export interface TreeNode {
   staggeredChildren: StaggeredChildren

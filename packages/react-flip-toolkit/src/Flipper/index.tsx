@@ -2,17 +2,22 @@ import React, { Component, createContext } from 'react'
 import PropTypes from 'prop-types'
 import {
   getFlippedElementPositionsBeforeUpdate,
-  onFlipKeyUpdate
+  onFlipKeyUpdate,
+  constants
 } from 'flip-toolkit'
 import {
   FlipperProps,
   InProgressAnimations,
   FlipCallbacks,
-  FlippedElementPositionsBeforeUpdateReturnVals
+  FlippedElementPositionsBeforeUpdateReturnVals,
+  GestureParams
 } from 'flip-toolkit/dist/types'
 
 export const FlipContext = createContext({} as FlipCallbacks)
 export const PortalContext = createContext('portal')
+export const GestureContext = createContext({} as GestureParams)
+
+const styleId = `react-flip-toolkit-${constants.DATA_NO_TOUCH}`
 
 class Flipper extends Component<FlipperProps> {
   static defaultProps = {
@@ -21,11 +26,39 @@ class Flipper extends Component<FlipperProps> {
     retainTransform: false
   }
 
+  private isGestureControlled: boolean = false
+  private isGestureInitiated: boolean = false
+
   private inProgressAnimations: InProgressAnimations = {}
   private flipCallbacks: FlipCallbacks = {}
   private el?: HTMLElement = undefined
 
-  public getSnapshotBeforeUpdate(prevProps: FlipperProps) {
+  setIsGestureInitiated = () => {
+    this.isGestureInitiated = true
+  }
+
+  componentDidMount() {
+    try {
+      if (document.getElementById(styleId)) return
+      const css = `[${DATA_NO_TOUCH}] { touch-action: none; }`
+      const style = document.createElement('style')
+      style.appendChild(document.createTextNode(css))
+      style.type = 'text/css'
+      style.id = styleId
+      document.head.appendChild(style)
+    } catch (e) {
+      // if this errors, gestures aren't gonna work great on mobile
+    }
+  }
+
+  getSnapshotBeforeUpdate(prevProps: FlipperProps) {
+    // a roundabout method to fix issues with gesture ==> nongesture cancellations
+    if (this.isGestureInitiated) {
+      this.isGestureControlled = true
+      this.isGestureInitiated = false
+    } else {
+      this.isGestureControlled = false
+    }
     if (prevProps.flipKey !== this.props.flipKey && this.el) {
       return getFlippedElementPositionsBeforeUpdate({
         element: this.el,
@@ -38,7 +71,7 @@ class Flipper extends Component<FlipperProps> {
     return null
   }
 
-  public componentDidUpdate(
+  componentDidUpdate(
     prevProps: FlipperProps,
     _prevState: any,
     cachedData: FlippedElementPositionsBeforeUpdateReturnVals
@@ -47,6 +80,7 @@ class Flipper extends Component<FlipperProps> {
       onFlipKeyUpdate({
         flippedElementPositionsBeforeUpdate: cachedData.flippedElementPositions,
         cachedOrderedFlipIds: cachedData.cachedOrderedFlipIds,
+        isGestureControlled: this.isGestureControlled,
         containerEl: this.el,
         inProgressAnimations: this.inProgressAnimations,
         flipCallbacks: this.flipCallbacks,
@@ -71,28 +105,35 @@ class Flipper extends Component<FlipperProps> {
     const { element, className, portalKey } = this.props
     const Element = element
 
-    const FlipperBase = (
-      <FlipContext.Provider value={this.flipCallbacks}>
-        {/*
+    let flipperMarkup = (
+      <GestureContext.Provider
+        value={{
+          inProgressAnimations: this.inProgressAnimations,
+          setIsGestureInitiated: this.setIsGestureInitiated
+        }}
+      >
+        <FlipContext.Provider value={this.flipCallbacks}>
+          {/*
         // @ts-ignore */}
-        <Element
-          className={className}
-          ref={(el: HTMLElement) => (this.el = el)}
-        >
-          {this.props.children}
-        </Element>
-      </FlipContext.Provider>
+          <Element
+            className={className}
+            ref={(el: HTMLElement) => (this.el = el)}
+          >
+            {this.props.children}
+          </Element>
+        </FlipContext.Provider>
+      </GestureContext.Provider>
     )
 
     if (portalKey) {
-      return (
+      flipperMarkup = (
         <PortalContext.Provider value={portalKey}>
-          {FlipperBase}
+          {flipperMarkup}
         </PortalContext.Provider>
       )
-    } else {
-      return FlipperBase
     }
+
+    return flipperMarkup
   }
 }
 // @ts-ignore
@@ -109,7 +150,8 @@ Flipper.propTypes = {
   decisionData: PropTypes.any,
   handleEnterUpdateDelete: PropTypes.func,
   retainTransform: PropTypes.bool,
-  onComplete: PropTypes.func
+  onComplete: PropTypes.func,
+  isGestureControlled: PropTypes.bool
 }
 
 export default Flipper

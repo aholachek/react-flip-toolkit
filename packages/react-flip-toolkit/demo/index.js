@@ -20,6 +20,13 @@ import RemountedFlipperExample from './RemountedFlipperExample'
 import HandleEnterUpdateDelete from './HandleEnterUpdateDelete'
 import NestedFlipper from './NestedFlipper'
 
+import GestureSidebarExample from './GestureSidebarExample'
+import GestureStaggeredList from './GestureStaggeredList'
+import FancyDrawerSwipe from './FancyDrawerSwipe'
+import GestureCardSwipe from './GestureCardSwipe'
+import GestureArticleSwipe from './GestureArticleSwipe'
+// import GestureSidebarRight from './GestureSidebarRightExample'
+
 class Demo extends Component {
   render() {
     if (window.location.pathname === '/cards') return <CardsExample />
@@ -42,6 +49,18 @@ class Demo extends Component {
       return <RemountedFlipperExample />
     else if (window.location.pathname === '/enter-update-delete')
       return <HandleEnterUpdateDelete />
+    else if (window.location.pathname === '/gesture-staggered-list')
+      return <GestureStaggeredList />
+    else if (window.location.pathname === '/gesture-sidebar')
+      return <GestureSidebarExample />
+    else if (window.location.pathname === '/gesture-email-swipe')
+      return <FancyDrawerSwipe />
+    else if (window.location.pathname === '/gesture-card-swipe')
+      return <GestureCardSwipe />
+    else if (window.location.pathname === '/gesture-article-swipe')
+      return <GestureArticleSwipe />
+    // else if (window.location.pathname === '/gesture-sidebar-right')
+    //   return <GestureSidebarRight />
     else if (window.location.pathname === '/nested-flipper')
       return <NestedFlipper />
     else
@@ -88,6 +107,28 @@ class Demo extends Component {
             </li>
             <li>
               <a href="/nested-flipper">Nested Flipper</a>
+            </li>
+          </ul>
+
+          <h3>Gesture</h3>
+          <ul>
+            <li>
+              <a href="/gesture-sidebar">Sidebar</a>
+            </li>
+            <li>
+              <a href="/gesture-staggered-list">Staggered List</a>
+            </li>
+            <li>
+              <a href="/gesture-article-swipe">Gesture Article Swipe </a>
+            </li>
+            <li>
+              <a href="/gesture-email-swipe">Gesture Email Swipe</a>
+            </li>
+            <li>
+              <a href="/gesture-card-swipe">Gesture Card Swipe</a>
+            </li>
+            <li>
+              <a href="/gesture-sidebar-right">Gesture Sidebar Right</a>
             </li>
           </ul>
         </nav>

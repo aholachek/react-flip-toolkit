@@ -6,32 +6,46 @@ import { SpringSystemInterface } from '../../../forked-rebound/types'
 // this should get created only 1x
 const springSystem: SpringSystemInterface = new SpringSystem()
 
-export const createSuspendedSpring = ({
-  springConfig: { stiffness, damping, overshootClamping },
-  noOp,
-  onSpringActivate,
-  getOnUpdateFunc,
-  onAnimationEnd
-}: FlipData) => {
+export const createSuspendedSpring = (flipData: FlipData) => {
+  const {
+    springConfig: { stiffness, damping, overshootClamping },
+    noOp,
+    onSpringActivate,
+    getOnUpdateFunc,
+    onAnimationEnd,
+    isGestureControlled
+  } = flipData
+
   if (noOp) {
     return null
   }
   const spring = springSystem.createSpring(stiffness!, damping!)
   spring.setOvershootClampingEnabled(!!overshootClamping)
+  const onSpringAtRest = () => {
+    // prevent SpringSystem from caching unused springs
+    spring.destroy()
+    onAnimationEnd()
+  }
+
   spring.addListener({
     onSpringActivate,
-    onSpringUpdate: getOnUpdateFunc(spring.destroy.bind(spring)),
-    onSpringAtRest: () => {
-      // prevent SpringSystem from caching unused springs
-      spring.destroy()
-      onAnimationEnd()
-    }
+    onSpringAtRest: !isGestureControlled ? onSpringAtRest : () => {},
+    onSpringUpdate: getOnUpdateFunc({
+      spring,
+      onAnimationEnd
+    })
   })
   return spring
 }
 
-export const createSpring = (flipped: FlipData) => {
-  const spring = createSuspendedSpring(flipped)
+export const createSpring = (
+  flipped: FlipData,
+  isGestureControlled?: boolean
+) => {
+  const spring = createSuspendedSpring({ ...flipped, isGestureControlled })
+  if (isGestureControlled) {
+    return flipped.onSpringActivate()
+  }
   if (spring) {
     spring.setEndValue(1)
   } else {
@@ -49,7 +63,8 @@ export const normalizeSpeed = (speedConfig: number | undefined) => {
 
 export const staggeredSprings = (
   flippedArray: FlipDataArray,
-  staggerConfig: StaggerConfigValue = {}
+  staggerConfig: StaggerConfigValue = {},
+  isGestureControlled?: boolean
 ) => {
   if (!flippedArray || !flippedArray.length) {
     return
@@ -63,21 +78,28 @@ export const staggeredSprings = (
 
   const nextThreshold = 1 / Math.max(Math.min(flippedArray.length, 100), 10)
 
-  const springFuncs = flippedArray
+  const setEndValueFuncs = flippedArray
     .filter(flipped => !flipped.noOp)
     .map((flipped, i) => {
       const cachedGetOnUpdate = flipped.getOnUpdateFunc
 
       // modify the update function to adjust
       // the end value of the trailing Flipped component
-      flipped.getOnUpdateFunc = stop => {
-        const onUpdate = cachedGetOnUpdate(stop)
+      flipped.getOnUpdateFunc = args => {
+        const onUpdate = cachedGetOnUpdate(args)
         return spring => {
-          const currentValue = spring.getCurrentValue()
-          if (currentValue > nextThreshold) {
-            if (springFuncs[i + 1]) {
-              springFuncs[i + 1]!.setEndValue(
-                Math.min(currentValue * normalizedSpeed, 1)
+          let currentValue = spring.getCurrentValue()
+          // make sure trailing animations complete
+          currentValue =
+            currentValue < 0.01 ? 0 : currentValue > 0.99 ? 1 : currentValue
+
+          // direction is 0 when animation is gesture controlled and user has released before the threshold
+          const updateTrailingAnimation =
+            currentValue > nextThreshold || isGestureControlled
+          if (updateTrailingAnimation) {
+            if (setEndValueFuncs[i + 1]) {
+              setEndValueFuncs[i + 1]!(
+                Math.max(Math.min(currentValue * normalizedSpeed, 1), 0)
               )
             }
           }
@@ -87,9 +109,16 @@ export const staggeredSprings = (
       }
       return flipped
     })
-    .map(flipped => createSuspendedSpring(flipped))
+    .map(flipped => {
+      const spring = createSuspendedSpring({ ...flipped, isGestureControlled })
+      if (!spring) {
+        return
+      }
+      return spring.setEndValue.bind(spring)
+    })
+    .filter(Boolean)
 
-  if (springFuncs[0]) {
-    springFuncs[0]!.setEndValue(1)
+  if (setEndValueFuncs[0] && !isGestureControlled) {
+    setEndValueFuncs[0]!(1)
   }
 }
