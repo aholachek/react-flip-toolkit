@@ -1,12 +1,14 @@
 // edited from https://github.com/react-spring/react-use-gesture/blob/v4.0.7/index.js
+// TODO: stop using ts-ignore everywhere
+import { OnAction, SwipeEvent } from './types'
+
 const touchMove = 'touchmove'
 const touchEnd = 'touchend'
 const mouseMove = 'mousemove'
 const mouseUp = 'mouseup'
+
 const initialState = {
   event: undefined,
-  args: undefined,
-  temp: undefined,
   target: undefined,
   time: undefined,
   xy: [0, 0],
@@ -23,37 +25,79 @@ const initialState = {
   shiftKey: false
 }
 
-function handlers(set, props = {}, args) {
-  // Common handlers
-  const handleUp = (event, shiftKey) => {
+const defaultProps = {
+  window,
+  touch: true,
+  mouse: true,
+  onAction: undefined,
+  onDown: undefined,
+  onUp: undefined
+}
+
+type State = {
+  event?: SwipeEvent
+  target: EventTarget | null
+  time: number
+  xy: [number, number]
+  delta: [number, number]
+  initial: [number, number]
+  previous: [number, number]
+  direction: [number, number]
+  local: [number, number]
+  lastLocal: [number, number]
+  velocity: number
+  distance: number
+  down: boolean
+  first: boolean
+  shiftKey: boolean
+}
+
+type Props = {
+  onAction: OnAction
+  onUp?: (state: State) => void
+  onDown?: (state: State) => void
+  window: Window
+  touch: boolean
+  mouse: boolean
+}
+
+type PropsArgs = Partial<Props> & {
+  onAction: OnAction
+}
+
+type SetCallback = (state: State) => State
+type Set = (cb: SetCallback) => void
+
+function handlers(set: Set, props: Props) {
+  const handleUp = (event: SwipeEvent) => {
     event.stopPropagation()
     event.preventDefault()
     set(state => {
-      const newProps = { ...state, down: false, first: false }
-      const temp = props.onAction && props.onAction(newProps)
-      if (props.onUp) props.onUp(newProps)
+      const newState = { ...state, down: false, first: false }
+      // @ts-ignores
+      if (props.onAction) props.onAction(newState)
+      if (props.onUp) props.onUp(newState)
       return {
-        ...newProps,
+        ...newState,
         event,
-        shiftKey,
-        lastLocal: state.local,
-        temp: temp || newProps.temp
+        shiftKey: event.shiftKey,
+        lastLocal: state.local
       }
     })
   }
-  const handleDown = event => {
+  const handleDown = (event: any) => {
     event.stopPropagation()
     event.preventDefault()
     const { target, pageX, pageY, shiftKey } = event.touches
       ? event.touches[0]
       : event
+    // @ts-ignore
     set(state => {
       const lastLocal = state.lastLocal || initialState.lastLocal
-      const newProps = {
+      const newState = {
         ...initialState,
         event,
         target,
-        args,
         lastLocal,
         shiftKey,
         local: lastLocal,
@@ -67,15 +111,17 @@ function handlers(set, props = {}, args) {
           requestAnimationFrame(() => handleUp(event))
         }
       }
-      const temp = props.onAction && props.onAction(newProps)
-      if (props.onDown) props.onDown(newProps)
-      return { ...newProps, temp }
+      props.onAction!(newState)
+      // @ts-ignore
+      if (props.onDown) props.onDown(newState)
+      return { ...newState }
     })
   }
-  const handleMove = event => {
+  const handleMove = (event: any) => {
     event.stopPropagation()
     event.preventDefault()
     const { pageX, pageY, shiftKey } = event.touches ? event.touches[0] : event
+    // @ts-ignore
     set(state => {
       const time = Date.now()
       const x_dist = pageX - state.xy[0]
@@ -85,7 +131,7 @@ function handlers(set, props = {}, args) {
       const distance = Math.sqrt(delta_x * delta_x + delta_y * delta_y)
       const len = Math.sqrt(x_dist * x_dist + y_dist * y_dist)
       const scalar = 1 / (len || 1)
-      const newProps = {
+      const newState = {
         ...state,
         event,
         time,
@@ -102,14 +148,15 @@ function handlers(set, props = {}, args) {
         previous: state.xy,
         first: false
       }
-      const temp = props.onAction && props.onAction(newProps)
-      return { ...newProps, temp: temp || newProps.temp }
+      props.onAction && props.onAction!(newState)
+      return { ...newState }
     })
   }
 
-  const onDown = e => {
+  const onDown = (e: SwipeEvent | MouseEvent): void => {
     if (props.mouse) {
       props.window.addEventListener(mouseMove, handleMove, { passive: false })
+      // @ts-ignore
       props.window.addEventListener(mouseUp, onUp, { passive: false })
     }
     if (props.touch) {
@@ -123,26 +170,30 @@ function handlers(set, props = {}, args) {
   const stop = () => {
     if (props.mouse) {
       props.window.removeEventListener(mouseMove, handleMove, {
+        // @ts-ignore
         passive: false
       })
+      // @ts-ignore
       props.window.removeEventListener(mouseUp, onUp, { passive: false })
     }
     if (props.touch) {
       props.window.removeEventListener(touchMove, handleMove, {
+        // @ts-ignore
         passive: false
       })
+      // @ts-ignore
       props.window.removeEventListener(touchEnd, onUp, { passive: false })
     }
   }
 
-  const onUp = e => {
-    const { shiftKey } = e
-
+  const onUp = (e: SwipeEvent) => {
     stop()
-
-    handleUp(e, shiftKey)
+    handleUp(e)
   }
-  const output = {}
+  const output: {
+    onMouseDown?: (e: SwipeEvent) => void
+    onTouchStart?: (e: SwipeEvent) => void
+  } = {}
 
   if (props.mouse) {
     output[`onMouseDown`] = onDown
@@ -154,21 +205,12 @@ function handlers(set, props = {}, args) {
   return output
 }
 
-const defaultProps = {
-  window,
-  touch: true,
-  mouse: true,
-  passive: { passive: false },
-  onAction: undefined,
-  onDown: undefined,
-  onUp: undefined
-}
-
-function Gesture(props) {
-  props = Object.assign({}, defaultProps, props)
+function Gesture(props: PropsArgs) {
+  const propsWithDefaults = Object.assign({}, defaultProps, props) as Props
   let _state = initialState
-  const set = cb => (_state = cb(_state))
-  return handlers(set, props)
+  // @ts-ignore
+  const set: Set = (cb: SetCallback) => (_state = cb(_state))
+  return handlers(set, propsWithDefaults)
 }
 
 export default Gesture

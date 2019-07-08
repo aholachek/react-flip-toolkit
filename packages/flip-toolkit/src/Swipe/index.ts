@@ -1,7 +1,13 @@
 import gestureHandlers from './gestureHandlers'
 import Spring from '../forked-rebound/Spring'
 import { InProgressAnimations, FlipId } from '../types'
-import { FlipInitiatorData, SwipeProps, SwipeEventHandlers } from './types'
+import {
+  SwipeProps,
+  SwipeEventHandlers,
+  OnActionArgs,
+  Direction,
+  FlipInitiatorData
+} from './types'
 
 const defaultCompleteThreshhold = 0.2
 
@@ -12,7 +18,7 @@ const getMovementScalar = ({
 }: {
   deltaX: number
   deltaY: number
-  direction: 'up' | 'down' | 'left' | 'right'
+  direction: Direction
 }) => {
   const normalized = {
     up: -deltaY,
@@ -167,9 +173,12 @@ class Swipe {
 
   private temporarilyInvalidFlipIds: string[] = []
   private prevProps = {}
-  private flipInitiatorData: FlipInitiatorData | null = null
+  private flipInitiatorData: FlipInitiatorData
+    | undefined = undefined
 
-  handlers: SwipeEventHandlers = gestureHandlers({ onAction: this.onAction })
+  handlers: SwipeEventHandlers = gestureHandlers({
+    onAction: this.onAction
+  }) as SwipeEventHandlers
 
   onAction({
     velocity,
@@ -177,13 +186,7 @@ class Swipe {
     down,
     first,
     event
-  }: {
-    velocity: number
-    delta: number[]
-    down: boolean
-    first: boolean
-    event: Event
-  }) {
+  }: OnActionArgs) {
     const {
       inProgressAnimations,
       onClick,
@@ -202,7 +205,6 @@ class Swipe {
       inProgressAnimations[flipId].flipInitiator &&
       inProgressAnimations[flipId].flipInitiator !== flipId
     ) {
-      debugger // eslint-disable-line
       delete this.flipInitiatorData
     }
 
@@ -215,7 +217,7 @@ class Swipe {
       Math.abs(deltaX) < 3 &&
       Math.abs(deltaY) < 3
     if (gestureIsSimpleClick) {
-      return onClick(event)
+      if (onClick) return onClick(event)
     }
 
     if (first) {
@@ -233,19 +235,22 @@ class Swipe {
       return
     }
 
-    const config = ['left', 'right', 'up', 'down']
-      .map(direction => {
+    // TODO: figure out why the typings don't just work
+    const config = Object.keys(Direction)
+      .map((direction) => {
+        // @ts-ignore
         if (!rest[direction]) return null
         return Object.assign(
           { direction, threshold: defaultCompleteThreshhold },
+          // @ts-ignore
           rest[direction]
         )
       })
       .filter(Boolean)
 
-    const initiateGestureControlledFLIP = ({
-      configMatchingCurrentDirection
-    }) => {
+    const initiateGestureControlledFLIP = (
+      configMatchingCurrentDirection: FlipInitiatorData
+    ) => {
       // we have to cache all config BEFORE calling initFlip
       // which can dramatically change the UI and/or the FLIP config
       // that the component has
@@ -286,15 +291,10 @@ class Swipe {
       if (!configMatchingCurrentDirection) {
         return
       }
-      return initiateGestureControlledFLIP({ configMatchingCurrentDirection })
+      return initiateGestureControlledFLIP(configMatchingCurrentDirection)
     }
 
     const gestureData = inProgressAnimations[flipId]
-
-    if (!gestureData) {
-      console.warn('no gesture data found')
-      return initiateGestureControlledFLIP({ configMatchingCurrentDirection })
-    }
 
     if (!this.flipInitiatorData) {
       console.warn('flip initiator data missing')

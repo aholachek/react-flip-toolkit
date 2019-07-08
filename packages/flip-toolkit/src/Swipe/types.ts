@@ -1,12 +1,10 @@
-import { FlipId } from '../types'
+import { FlipId, InProgressAnimations } from '../types'
 
-type Direction = 'right' | 'left' | 'down' | 'up'
-
-export interface RespondToSwipe {
-  initFlip: () => void
-  cancelFlip: () => void
-  direction: Direction
-  theshold: number
+export enum Direction {
+  right = 'right',
+  left = 'left',
+  down = 'down',
+  up = 'up'
 }
 
 export interface SwipeDecisionData {
@@ -14,13 +12,17 @@ export interface SwipeDecisionData {
   prevProps: Record<string, any>
 }
 
-interface OnSwipeConfigObject {
+export type SwipeEvent = MouseEvent | TouchEvent
+
+export interface OnSwipeConfigObject {
   initFlip: (data: SwipeDecisionData) => void
   cancelFlip: (data: SwipeDecisionData) => void
-  theshold: number
+  threshold: number
 }
 
-export type OnNonSwipeClick = (event: Event) => void
+export type FlipInitiatorData = OnSwipeConfigObject & { direction: Direction }
+
+export type OnNonSwipeClick = (event: SwipeEvent) => void
 
 type DirectionConfig = Record<Direction, OnSwipeConfigObject>
 
@@ -28,12 +30,21 @@ interface BasicSwipeProps {
   onClick?: OnNonSwipeClick
   flipId: FlipId
   inProgressAnimations: InProgressAnimations
-  setIsGestureInitiated: () => void
+  setIsGestureInitiated: (isGestureInitiated: boolean) => void
 }
 
 export type SwipeProps = BasicSwipeProps & DirectionConfig
 
 export interface SwipeEventHandlers {
-  onMouseDown: () => void
-  onTouchStart: () => void
+  onMouseDown: (event: SwipeEvent) => void
+  onTouchStart: (state: SwipeEvent) => void
 }
+
+export type OnActionArgs = {
+  velocity: number
+  delta: number[]
+  down: boolean
+  first: boolean
+  event: TouchEvent | MouseEvent
+}
+export type OnAction = (args: OnActionArgs) => void

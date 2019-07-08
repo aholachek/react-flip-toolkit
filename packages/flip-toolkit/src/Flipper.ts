@@ -45,7 +45,7 @@ class Flipper {
     this.flipCallbacks = {}
 
     this.recordBeforeUpdate = this.recordBeforeUpdate.bind(this)
-    this.onUpdate = this.onUpdate.bind(this)
+    this.update = this.update.bind(this)
     this.addFlipped = this.addFlipped.bind(this)
     this.addInverted = this.addInverted.bind(this)
   }
