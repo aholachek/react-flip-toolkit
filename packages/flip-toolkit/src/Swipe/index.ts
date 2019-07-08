@@ -167,9 +167,7 @@ const getDirection = (deltaX: number, deltaY: number) => {
 }
 
 class Swipe {
-  constructor(public props: SwipeProps) {
-    this.onAction = this.onAction.bind(this)
-  }
+  constructor(public props: SwipeProps) {}
 
   private temporarilyInvalidFlipIds: string[] = []
   private flipInitiatorData: FlipInitiatorData | undefined = undefined
@@ -177,7 +175,7 @@ class Swipe {
   public prevProps = {}
 
   handlers: SwipeEventHandlers = gestureHandlers({
-    onAction: this.onAction
+    onAction: this.onAction.bind(this)
   }) as SwipeEventHandlers
 
   onAction({
@@ -187,6 +185,7 @@ class Swipe {
     first,
     event
   }: OnActionArgs) {
+    console.log(this)
     const {
       inProgressAnimations,
       onClick,

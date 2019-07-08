@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled, { css } from 'styled-components'
 import PropTypes from 'prop-types'
-import { Flipper, Flipped, Swipe } from '../../../src'
+import { Flipper, Flipped, Swipe } from '../../src'
 import Aussie from '../assets/dogs/australian-shepard.jpg'
 import Corgi from '../assets/dogs/corgi.jpg'
 import Golden from '../assets/dogs/golden-with-flower.jpg'

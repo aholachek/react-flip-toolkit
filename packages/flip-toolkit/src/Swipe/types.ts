@@ -47,6 +47,6 @@ export type OnActionArgs = {
   delta: number[]
   down: boolean
   first: boolean
-  event: TouchEvent | MouseEvent
+  event: SwipeEvent
 }
 export type OnAction = (args: OnActionArgs) => void

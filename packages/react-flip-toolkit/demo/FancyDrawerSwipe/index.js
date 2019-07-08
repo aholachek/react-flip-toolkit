@@ -1,7 +1,7 @@
 // inspired by this animated demo:
 // https://uxplanet.org/animation-in-ui-design-from-concept-to-reality-85c49907b19d
 import React, { useState } from 'react'
-import { Flipper, Flipped } from '../../../src/Swipe'
+import { Flipper, Flipped } from '../../src'
 import styled from 'styled-components'
 import {
   FaEgg,

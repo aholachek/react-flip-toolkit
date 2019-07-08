@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { Flipper, Flipped } from '../../../src'
-import Swipe from '../../../src/Swipe'
+import { Flipper, Flipped } from '../../src'
+import Swipe from '../../src'
 import styled, { css } from 'styled-components'
 
 const StyledFlipper = styled(Flipper)`
