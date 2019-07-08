@@ -15,7 +15,6 @@ export interface SerializableFlippedProps {
   /** Tween Tween scaleX and scaleY (applying this prop will remove the default transitions on the transform and opacity values) */
   translate?: boolean
   /** Tween Tween scaleX and scaleY (applying this prop will remove the default transitions on the transform and opacity values) */
-
   scale?: boolean
   transformOrigin?: string
   /** Provide a string referencing one of the spring presets — (default), veryGentle, gentle, wobbly, or stiff, OR provide an object with stiffness and damping parameters */
@@ -65,7 +64,3 @@ export interface CallbackFlippedProps {
 }
 
 export type FlippedProps = CallbackFlippedProps & SerializableFlippedProps
-
-// ========================================================
-// Flipped Types
-// ========================================================

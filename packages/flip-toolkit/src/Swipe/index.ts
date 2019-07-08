@@ -1,16 +1,7 @@
-import React, { Component, SyntheticEvent, cloneElement } from 'react'
-import PropTypes from 'prop-types'
 import gestureHandlers from './gestureHandlers'
-import { GestureContext } from '../Flipper'
 import Spring from '../forked-rebound/Spring'
-import { InProgressAnimations, GestureParams } from '../Flipper/types'
-import {
-  OnNonSwipeClick,
-  GestureFlippedProps,
-  GestureEventHandlers,
-  FlipInitiatorData
-} from './types'
-import { FlipId } from '../Flipped/types'
+import { InProgressAnimations, FlipId } from '../types'
+import { FlipInitiatorData, SwipeProps, SwipeEventHandlers } from './types'
 
 const defaultCompleteThreshhold = 0.2
 
@@ -169,44 +160,16 @@ const getDirection = (deltaX: number, deltaY: number) => {
   return deltaY > 0 ? 'down' : 'up'
 }
 
-const configProps = PropTypes.oneOfType([
-  PropTypes.shape({
-    initFlip: PropTypes.func,
-    cancelFlip: PropTypes.func,
-    threshold: PropTypes.number
-  }),
-  PropTypes.bool
-])
+class Swipe {
+  constructor(private props: SwipeProps) {
+    this.onAction = this.onAction.bind(this)
+  }
 
-class Swipe extends Component<GestureFlippedProps> {
-  // maintain a list of flip ids that have a mousedown but not a mouseup event
-  // so that once the flip has passed the inflection point, the user needs
-  // to release the gesture before they can do anything else
   private temporarilyInvalidFlipIds: string[] = []
   private prevProps = {}
   private flipInitiatorData: FlipInitiatorData | null = null
 
-  static propTypes = {
-    children: PropTypes.node.isRequired,
-    mouseEvents: PropTypes.bool,
-    onClick: PropTypes.func,
-    threshold: PropTypes.number,
-    right: configProps,
-    left: configProps,
-    top: configProps,
-    bottom: configProps
-  }
-
-  static defaultProps = {
-    onClick: () => {},
-    mouseEvents: true
-  }
-
-  handlers = gestureHandlers({ onAction: this.onAction.bind(this) })
-
-  componentDidUpdate(prevProps: Record<string, any>) {
-    this.prevProps = prevProps
-  }
+  handlers: SwipeEventHandlers = gestureHandlers({ onAction: this.onAction })
 
   onAction({
     velocity,
@@ -219,16 +182,15 @@ class Swipe extends Component<GestureFlippedProps> {
     delta: number[]
     down: boolean
     first: boolean
-    event: SyntheticEvent
+    event: Event
   }) {
     const {
       inProgressAnimations,
       onClick,
       setIsGestureInitiated,
-      children,
+      flipId,
       ...rest
     } = this.props
-    const flipId = String(children.props.flipId)
 
     // previous animation was probably cancelled
     if (
@@ -409,23 +371,6 @@ class Swipe extends Component<GestureFlippedProps> {
       inProgressAnimations
     })
   }
-
-  render() {
-    React.Children.only(this.props.children)
-    return cloneElement(this.props.children, { gestureHandlers: this.handlers })
-  }
 }
 
-export default function SwipeWrapper(props) {
-  return (
-    <GestureContext.Consumer>
-      {({ inProgressAnimations, setIsGestureInitiated }: GestureParams) => (
-        <Swipe
-          inProgressAnimations={inProgressAnimations}
-          setIsGestureInitiated={setIsGestureInitiated}
-          {...props}
-        />
-      )}
-    </GestureContext.Consumer>
-  )
-}
+export default Swipe

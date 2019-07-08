@@ -1,44 +1,39 @@
-import { FlipId, FlippedProps } from '../Flipped/types'
-import { SyntheticEvent } from 'react'
+import { FlipId } from '../types'
 
 type Direction = 'right' | 'left' | 'down' | 'up'
 
-export interface RespondToGesture {
+export interface RespondToSwipe {
   initFlip: () => void
   cancelFlip: () => void
   direction: Direction
   theshold: number
 }
 
-export interface GestureFlipDecisionData {
+export interface SwipeDecisionData {
   props: Record<string, any>
   prevProps: Record<string, any>
 }
 
 interface OnSwipeConfigObject {
-  direction: Direction
-  initFlip: (data: GestureFlipDecisionData) => void
-  cancelFlip: (data: GestureFlipDecisionData) => void
+  initFlip: (data: SwipeDecisionData) => void
+  cancelFlip: (data: SwipeDecisionData) => void
   theshold: number
 }
 
-export type onSwipe = OnSwipeConfigObject | OnSwipeConfigObject[]
+export type OnNonSwipeClick = (event: Event) => void
 
-export type OnNonSwipeClick = (event: SyntheticEvent) => void
+type DirectionConfig = Record<Direction, OnSwipeConfigObject>
 
-interface GestureSpecificFlippedProps {
-  onSwipe: onSwipe
-  onNonSwipeClick?: OnNonSwipeClick
+interface BasicSwipeProps {
+  onClick?: OnNonSwipeClick
   flipId: FlipId
+  inProgressAnimations: InProgressAnimations
+  setIsGestureInitiated: () => void
 }
 
-export type GestureFlippedProps = GestureSpecificFlippedProps & FlippedProps
+export type SwipeProps = BasicSwipeProps & DirectionConfig
 
-export interface GestureEventHandlers {
+export interface SwipeEventHandlers {
   onMouseDown: () => void
   onTouchStart: () => void
-}
-
-export interface FlipInitiatorData {
-  cachedConfig: OnSwipeConfigObject
 }

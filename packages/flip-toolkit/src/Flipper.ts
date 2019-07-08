@@ -29,7 +29,7 @@ class Flipper {
   private retainTransform: boolean = false
   private onComplete!: OnFlipperComplete
 
-  public constructor(options: {
+  constructor(options: {
     element: HTMLElement
     staggerConfig: StaggerConfig
     spring: SpringOption
@@ -50,14 +50,14 @@ class Flipper {
     this.addInverted = this.addInverted.bind(this)
   }
 
-  public recordBeforeUpdate() {
+  recordBeforeUpdate() {
     this.snapshot = getFlippedElementPositionsBeforeUpdate({
       element: this.element,
       flipCallbacks: this.flipCallbacks,
       inProgressAnimations: this.inProgressAnimations
     })
   }
-  public onUpdate(prevDecisionData: any, currentDecisionData: any) {
+  update(prevDecisionData: any, currentDecisionData: any) {
     if (this.snapshot) {
       onFlipKeyUpdate({
         flippedElementPositionsBeforeUpdate: this.snapshot
@@ -82,7 +82,7 @@ class Flipper {
     }
   }
 
-  public addFlipped({
+  addFlipped({
     element,
     flipId,
     opacity,
@@ -136,7 +136,7 @@ class Flipper {
     }
   }
 
-  public addInverted({
+  addInverted({
     element,
     parent,
     opacity,
