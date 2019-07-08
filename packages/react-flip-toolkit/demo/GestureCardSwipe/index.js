@@ -52,7 +52,6 @@ const StyledContainer = styled.div`
   margin: 0 auto;
   position: relative;
   overflow: hidden;
-  background: teal;
 `
 
 const StyledCard = styled.div`

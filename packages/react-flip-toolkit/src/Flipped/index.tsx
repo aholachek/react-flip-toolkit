@@ -64,11 +64,12 @@ export const Flipped: FunctionComponent<SerializableFlippedProps> = ({
   }
 
   const dataAttributes: Record<string, string | undefined> = {
-    // these are both used as selectors so they have to be separate
-    [constants.DATA_FLIP_ID]: String(flipId),
-    [constants.DATA_INVERSE_FLIP_ID]: String(inverseFlipId),
     [constants.DATA_FLIP_CONFIG]: JSON.stringify(rest)
   }
+
+  if (flipId) dataAttributes[constants.DATA_FLIP_ID] = String(flipId)
+  else if (inverseFlipId)
+    dataAttributes[constants.DATA_INVERSE_FLIP_ID] = String(inverseFlipId)
 
   if (gestureHandlers) {
     Object.assign(dataAttributes, gestureHandlers, {
@@ -115,8 +116,7 @@ export const FlippedWithContext: FunctionComponent<FlippedProps> = ({
             // we don't want to throw an error, so check
             // that data exists and is not the default string
             if (utilities.isObject(data)) {
-              // @ts-ignore
-              data[flipId as string] = {
+              data[flipId] = {
                 shouldFlip,
                 shouldInvert,
                 onAppear,

@@ -185,7 +185,6 @@ class Swipe {
     first,
     event
   }: OnActionArgs) {
-    console.log(this)
     const {
       inProgressAnimations,
       onClick,
