@@ -167,14 +167,14 @@ const getDirection = (deltaX: number, deltaY: number) => {
 }
 
 class Swipe {
-  constructor(private props: SwipeProps) {
+  constructor(public props: SwipeProps) {
     this.onAction = this.onAction.bind(this)
   }
 
   private temporarilyInvalidFlipIds: string[] = []
-  private prevProps = {}
-  private flipInitiatorData: FlipInitiatorData
-    | undefined = undefined
+  private flipInitiatorData: FlipInitiatorData | undefined = undefined
+
+  public prevProps = {}
 
   handlers: SwipeEventHandlers = gestureHandlers({
     onAction: this.onAction
@@ -237,7 +237,7 @@ class Swipe {
 
     // TODO: figure out why the typings don't just work
     const config = Object.keys(Direction)
-      .map((direction) => {
+      .map(direction => {
         // @ts-ignore
         if (!rest[direction]) return null
         return Object.assign(

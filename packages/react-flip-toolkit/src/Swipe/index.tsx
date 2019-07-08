@@ -1,7 +1,8 @@
 import React, { Component, cloneElement } from 'react'
-import { GestureContext } from '../Flipper'
+import { GestureContext, GestureContextProps } from '../Flipper'
 import PropTypes from 'prop-types'
-import { Swipe, SwipeProps } from 'flip-toolkit'
+import { Swipe } from 'flip-toolkit'
+import { SwipeProps } from 'flip-toolkit/dist/Swipe/types'
 
 const configProps = PropTypes.oneOfType([
   PropTypes.shape({
@@ -23,7 +24,11 @@ const swipePropTypes = {
   bottom: configProps
 }
 
-class SwipeComponent extends Component<GestureFlippedProps> {
+type SwipeComponentProps = Omit<SwipeProps, 'flipId'> & {
+  children: React.ReactElement
+}
+
+class SwipeComponent extends Component<SwipeComponentProps> {
   // maintain a list of flip ids that have a mousedown but not a mouseup event
   // so that once the flip has passed the inflection point, the user needs
   // to release the gesture before they can do anything else
@@ -34,12 +39,12 @@ class SwipeComponent extends Component<GestureFlippedProps> {
     mouseEvents: true
   }
 
-  processProps = (props: G )=> ({
+  processProps = (props: SwipeComponentProps) => ({
     ...props,
     flipId: String(props.children.props.flipId)
   })
 
-  componentDidUpdate(prevProps: Record<string, any>) {
+  componentDidUpdate(prevProps: SwipeComponentProps) {
     this.swipe.props = this.processProps(this.props)
     this.swipe.prevProps = this.processProps(prevProps)
   }
@@ -54,10 +59,13 @@ class SwipeComponent extends Component<GestureFlippedProps> {
   }
 }
 
-export default function SwipeWrapper(props: SwipeProps) {
+export default function SwipeWrapper(props: SwipeComponentProps) {
   return (
     <GestureContext.Consumer>
-      {({ inProgressAnimations, setIsGestureInitiated }: GestureParams) => (
+      {({
+        inProgressAnimations,
+        setIsGestureInitiated
+      }: GestureContextProps) => (
         <SwipeComponent
           inProgressAnimations={inProgressAnimations}
           setIsGestureInitiated={setIsGestureInitiated}

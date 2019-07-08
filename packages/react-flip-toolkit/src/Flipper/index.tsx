@@ -8,14 +8,19 @@ import {
 import {
   FlipperProps,
   InProgressAnimations,
-  FlipCallbacks,
-  FlippedElementPositionsBeforeUpdateReturnVals,
-  GestureParams
+  FlipCallbacks
 } from 'flip-toolkit/dist/types'
+import { FlippedElementPositionsBeforeUpdateReturnVals } from 'flip-toolkit/dist/flip/getFlippedElementPositions/getFlippedElementPositionsBeforeUpdate/types'
+import { SetIsGestureInitiated } from 'flip-toolkit/dist/Swipe/types'
+
+export type GestureContextProps = {
+  inProgressAnimations: InProgressAnimations
+  setIsGestureInitiated: SetIsGestureInitiated
+}
 
 export const FlipContext = createContext({} as FlipCallbacks)
 export const PortalContext = createContext('portal')
-export const GestureContext = createContext({} as GestureParams)
+export const GestureContext = createContext({} as GestureContextProps)
 
 const styleId = `react-flip-toolkit-${constants.DATA_NO_TOUCH}`
 
@@ -40,7 +45,7 @@ class Flipper extends Component<FlipperProps> {
   componentDidMount() {
     try {
       if (document.getElementById(styleId)) return
-      const css = `[${DATA_NO_TOUCH}] { touch-action: none; }`
+      const css = `[${constants.DATA_NO_TOUCH}] { touch-action: none; }`
       const style = document.createElement('style')
       style.appendChild(document.createTextNode(css))
       style.type = 'text/css'

@@ -26,11 +26,13 @@ export type OnNonSwipeClick = (event: SwipeEvent) => void
 
 type DirectionConfig = Record<Direction, OnSwipeConfigObject>
 
+export type SetIsGestureInitiated = (isGestureInitiated: boolean) => void
+
 interface BasicSwipeProps {
   onClick?: OnNonSwipeClick
   flipId: FlipId
   inProgressAnimations: InProgressAnimations
-  setIsGestureInitiated: (isGestureInitiated: boolean) => void
+  setIsGestureInitiated: SetIsGestureInitiated
 }
 
 export type SwipeProps = BasicSwipeProps & DirectionConfig

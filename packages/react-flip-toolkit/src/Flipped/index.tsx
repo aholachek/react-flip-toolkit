@@ -65,8 +65,8 @@ export const Flipped: FunctionComponent<SerializableFlippedProps> = ({
 
   const dataAttributes: Record<string, string | undefined> = {
     // these are both used as selectors so they have to be separate
-    [constants.DATA_FLIP_ID]: flipId,
-    [constants.DATA_INVERSE_FLIP_ID]: inverseFlipId,
+    [constants.DATA_FLIP_ID]: String(flipId),
+    [constants.DATA_INVERSE_FLIP_ID]: String(inverseFlipId),
     [constants.DATA_FLIP_CONFIG]: JSON.stringify(rest)
   }
 
@@ -97,7 +97,6 @@ export const FlippedWithContext: FunctionComponent<FlippedProps> = ({
   onComplete,
   onExit,
   onSpringUpdate,
-  isGestureControlled,
   gestureHandlers,
   ...rest
 }) => {

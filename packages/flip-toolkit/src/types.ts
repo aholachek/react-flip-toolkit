@@ -24,9 +24,8 @@ export interface SerializableFlippedProps {
   stagger?: string | boolean
   flipId?: FlipId
   inverseFlipId?: string
+  /** internal use only */
   isGestureControlled?: boolean
-  // only added for gesture-controlled Flipped components
-  key?: string
 }
 export interface CallbackFlippedProps {
   /** Called when the FLIP animation for the element starts. It is provided a reference to the DOM element being transitioned as the first argument. */
@@ -64,6 +63,10 @@ export interface CallbackFlippedProps {
 }
 
 export type FlippedProps = CallbackFlippedProps & SerializableFlippedProps
+
+export type InternalFlippedProps = FlippedProps & {
+  isGestureControlled?: boolean
+}
 
 export interface StaggerConfigValue {
   reverse?: boolean
@@ -122,7 +125,7 @@ export interface InProgressAnimations {
     destroy: () => void
     onComplete?: () => void
     difference: Difference
-    flipInitiator?: string,
+    flipInitiator?: string
     onAnimationEnd: () => void
   }
 }
