@@ -85,7 +85,6 @@ export const Flipped: FunctionComponent<SerializableFlippedProps> = ({
   return cloneElement(child as ReactElement<any>, dataAttributes)
 }
 
-// @ts-ignore
 export const FlippedWithContext: FunctionComponent<FlippedProps> = ({
   children,
   flipId,

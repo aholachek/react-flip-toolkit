@@ -1,6 +1,7 @@
 import { SpringOption } from './springSettings/types'
 import { FlippedIds } from './flip/types'
 import Spring from './forked-rebound/Spring'
+import { SwipeEventHandlers } from './Swipe/types'
 
 export type FlipId = string | number
 
@@ -24,8 +25,8 @@ export interface SerializableFlippedProps {
   stagger?: string | boolean
   flipId?: FlipId
   inverseFlipId?: string
-  /** internal use only */
-  isGestureControlled?: boolean
+  /** Internal use only */
+  gestureHandlers?: SwipeEventHandlers
 }
 export interface CallbackFlippedProps {
   /** Called when the FLIP animation for the element starts. It is provided a reference to the DOM element being transitioned as the first argument. */
