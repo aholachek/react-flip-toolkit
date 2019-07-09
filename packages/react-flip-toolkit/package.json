@@ -69,7 +69,7 @@
     "@types/react-test-renderer": "^16.8.2",
     "@typescript-eslint/eslint-plugin": "^1.10.2",
     "@typescript-eslint/parser": "^1.10.2",
-    "babel-jest": "^24.8.0",
+    "babel-jest": "^24.7.0",
     "babel-polyfill": "^6.26.0",
     "babel-preset-react-app": "^9.0.0",
     "chai": "^4.2.0",

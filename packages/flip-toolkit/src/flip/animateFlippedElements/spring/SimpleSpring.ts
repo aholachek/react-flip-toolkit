@@ -8,6 +8,10 @@ import { SimpleSpringOptions } from './types'
 // this should get created only 1x
 const springSystem: SpringSystemInterface = new SpringSystem()
 
+/**
+ * A simple spring function for animating DOM properties.
+ * Returns a function that will immediately cancel the in-progress animation.
+ * */
 const createSimpleSpring = ({
   springConfig,
   values,

@@ -115,7 +115,7 @@ export const FlippedWithContext: FunctionComponent<FlippedProps> = ({
             // if there is no surrounding Flipper component,
             // we don't want to throw an error, so check
             // that data exists and is not the default string
-            if (utilities.isObject(data)) {
+            if (utilities.isObject(data) && flipId) {
               data[flipId] = {
                 shouldFlip,
                 shouldInvert,
