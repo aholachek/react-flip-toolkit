@@ -153,6 +153,7 @@ const updateSprings = ({
   inProgressAnimations: InProgressAnimations
   percentage: number
 }) => {
+  console.log(percentage)
   const clampedPercentage = clamp(percentage, 0, 1)
   Object.keys(inProgressAnimations).forEach(flipId => {
     inProgressAnimations[flipId].spring!.setEndValue(clampedPercentage)
@@ -192,6 +193,8 @@ class Swipe {
       flipId,
       ...rest
     } = this.props
+
+    debugger
 
     // previous animation was probably cancelled
     if (
