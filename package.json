@@ -26,12 +26,12 @@
     "npm": ">=5"
   },
   "scripts": {
+    "microbundle": "microbundle --globals rematrix=Rematrix",
     "demo": "parcel --no-cache demo/src/index.html",
     "deploy-demo": "parcel build demo/src/index.html --out-dir demo/dist; cp demo/dist/index.html demo/dist/200.html; surge demo/dist --domain react-flip-toolkit-demos.surge.sh",
     "test:watch": "react-scripts-ts test --env=jsdom",
     "build-react": "microbundle --name=ReactFlipToolkit --globals react=React,prop-types=PropTypes,rematrix=Rematrix",
-    "build-core": "microbundle --name=FlipToolkit -o=core -i=src/core.ts --globals rematrix=Rematrix; node rename-files core react-flip-toolkit index",
-    "build": "yarn run build-react && yarn run build-core; rm -rf es; mkdir es; cp core/index.js es/core.js",
+    "build": "yarn run build-react && node build-core; rm -rf es; mkdir es; mkdir es/core; cp core/index.js es/core/index.js; cp core/index.js.map es/core/index.js.map",
     "start": "yarn run demo",
     "check-types": "tsc --noEmit",
     "prepare": "yarn run build",
@@ -81,6 +81,7 @@
     "microbundle": "^0.11.0",
     "mocha": "^6.1.4",
     "normalize.css": "^8.0.1",
+    "npm": "^6.10.0",
     "npm-run-all": "^4.1.5",
     "parcel": "^1.12.3",
     "prettier": "1.18.2",
