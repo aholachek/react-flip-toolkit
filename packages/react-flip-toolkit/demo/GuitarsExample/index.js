@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Flipper } from '..'
+import { Flipper } from '../../src'
 import GuitarItem from './GuitarItem'
 import SelectedGuitar from './SelectedGuitar'
 import guitarsData from './guitarsData'

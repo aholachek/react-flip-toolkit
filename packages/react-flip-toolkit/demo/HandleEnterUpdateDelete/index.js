@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { Flipper, Flipped, ExitContainer } from '..'
-import anime from 'animejs'
+import { Flipper, Flipped, ExitContainer, spring } from '../../src'
 import getRandomList from './getRandomList'
 import './styles.css'
 
@@ -58,23 +57,25 @@ class EnterUpdateDeleteDemo extends Component {
   currentAnimations = []
   onAppear = (el, i) => {
     this.currentAnimations.push(
-      anime({
-        targets: el,
-        opacity: 1,
-        delay: i * 20,
-        easing: 'easeOutSine'
+      spring({
+        onUpdate: value => {
+          el.style.opacity = value
+        },
+        delay: i * 20
       })
     )
   }
   onExit = (el, i, onComplete) => {
     el.style.color = 'red'
     this.currentAnimations.push(
-      anime({
-        targets: el,
-        opacity: 0,
+      spring({
+        startValue: 1,
+        endValue: 0,
+        onUpdate: value => {
+          el.style.opacity = value
+        },
         delay: i * 20,
-        easing: 'easeOutSine',
-        complete: onComplete
+        onComplete
       })
     )
   }
@@ -140,7 +141,7 @@ class EnterUpdateDeleteDemo extends Component {
           element="ul"
           className="enter-update-delete-list"
           handleEnterUpdateDelete={callbacks => {
-            this.currentAnimations.forEach(animation => animation.pause())
+            this.currentAnimations.forEach(spring => spring.destroy())
             this.currentAnimations = []
             transitions[this.state.transitionType](callbacks)
           }}

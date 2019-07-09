@@ -1,28 +1,37 @@
 import React, { Component } from 'react'
-import { Flipped } from '..'
-import anime from 'animejs'
+import { Flipped, spring } from '../../src'
 
 class SelectedGuitar extends Component {
   animateIn = () => {
-    anime({
-      targets: this.el.querySelectorAll('[data-fade-in]'),
-      translateY: [-15, 0],
-      opacity: [0, 1],
-      duration: 200,
-      easing: 'easeOutSine',
-      delay: (d, i) => i * 75
+    ;[...this.el.querySelectorAll('*[data-fade-in]')].forEach((el, i) => {
+      spring({
+        values: {
+          translateY: [-15, 0],
+          opacity: [0, 1]
+        },
+        onUpdate: ({ translateY, opacity }) => {
+          el.style.opacity = opacity
+          el.style.transform = `translateY(${translateY}px)`
+        },
+        delay: i * 75
+      })
     })
   }
 
   animateOut = () => {
-    anime({
-      targets: this.el.querySelectorAll('[data-fade-in]'),
-      translateY: [0, -15],
-      opacity: 0,
-      duration: 150,
-      easing: 'easeOutSine',
-      complete: this.props.closeSelected,
-      delay: (d, i) => i * 50
+    ;[...this.el.querySelectorAll('*[data-fade-in]')].forEach((el, i) => {
+      spring({
+        values: {
+          translateY: [0, -30],
+          opacity: [1, 0]
+        },
+        onUpdate: ({ translateY, opacity }) => {
+          el.style.opacity = opacity
+          el.style.transform = `translateY(${translateY}px)`
+        },
+        delay: i * 50,
+        onComplete: this.props.closeSelected
+      })
     })
   }
 

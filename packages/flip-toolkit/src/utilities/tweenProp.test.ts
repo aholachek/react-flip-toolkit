@@ -1,4 +1,4 @@
-import { tweenProp } from '../index'
+import { tweenProp } from './'
 
 describe('tweenProp', () => {
   it('interpolates a number from 0 - 1 to a given range ', () => {

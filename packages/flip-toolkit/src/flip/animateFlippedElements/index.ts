@@ -5,7 +5,8 @@ import {
   isFunction,
   isNumber,
   getDuplicateValsAsStrings,
-  assign
+  assign,
+  tweenProp
 } from '../../utilities'
 import * as constants from '../../constants'
 import filterFlipDescendants from './filterFlipDescendants'
@@ -142,9 +143,6 @@ const getInvertedChildren = (element: HTMLElement, id: string) =>
   toArray(
     element.querySelectorAll(`[${constants.DATA_INVERSE_FLIP_ID}="${id}"]`)
   )
-
-export const tweenProp = (start: number, end: number, position: number) =>
-  start + (end - start) * position
 
 export default ({
   flippedIds,

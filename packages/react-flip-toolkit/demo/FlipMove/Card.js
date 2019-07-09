@@ -1,27 +1,23 @@
-
 import React, { PureComponent } from 'react'
-import { Flipped } from '..'
-import anime from 'animejs'
+import { Flipped, spring } from '../../src'
 
-const onElementAppear = (el, index) => {
-  anime({
-    targets: el,
-    opacity: [0, 1],
-    duration: 400,
-    delay: index * 50,
-    easing: 'easeOutSine'
+const onElementAppear = (el, index) =>
+  spring({
+    onUpdate: val => {
+      el.style.opacity = val
+    },
+    delay: index * 50
   })
-}
 
 const onExit = type => (el, index, removeElement) => {
-  anime({
-    targets: el,
-    scaleY: type === 'list' ? 0 : 1,
-    scaleX: type === 'grid' ? 0 : 1,
-    duration: 200,
-    complete: removeElement,
-    easing: 'easeOutSine'
-  }).pause
+  spring({
+    config: { overshootClamping: true },
+    onUpdate: val => {
+      el.style.transform = `scale${type === 'grid' ? 'X' : 'Y'}(${1 - val})`
+    },
+    delay: index * 50,
+    onComplete: removeElement
+  })
 
   return () => {
     el.style.opacity = ''

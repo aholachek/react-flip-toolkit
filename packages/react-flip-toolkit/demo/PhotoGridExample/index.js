@@ -1,10 +1,8 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable no-return-assign */
 import './index.css'
-
 import React, { Component } from 'react'
-import anime from 'animejs'
-import { Flipper, Flipped } from '../../'
+import { Flipper, Flipped, spring } from '../../src'
 import detail1Img from './assets/detail-1.jpg'
 import detail5Img from './assets/detail-5.jpg'
 import detail6Img from './assets/detail-6.jpg'
@@ -29,14 +27,18 @@ class PhotoGrid extends Component {
   }
 
   animateIn = () => {
-    anime({
-      targets: this.el.querySelectorAll('*[data-fade-in]'),
-      translateY: [50, 0],
-      opacity: [0, 1],
-      duration: 600,
-      elasticity: 0,
-      ease: 'easeOutSine',
-      delay: (d, i) => i * 60
+    ;[...this.el.querySelectorAll('*[data-fade-in]')].forEach((el, i) => {
+      spring({
+        values: {
+          translateY: [50, 0],
+          opacity: [0, 1]
+        },
+        onUpdate: ({ translateY, opacity }) => {
+          el.style.opacity = opacity
+          el.style.transform = `translateY(${translateY}px)`
+        },
+        delay: i * 60
+      })
     })
   }
 

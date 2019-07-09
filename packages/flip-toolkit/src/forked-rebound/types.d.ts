@@ -1,7 +1,9 @@
+type SpringCallback = (spring: Spring) => void
+
 export interface AddListenerArgs {
-  onSpringActivate: () => void
-  onSpringUpdate: (spring: Spring) => void
-  onSpringAtRest: () => void
+  onSpringActivate?: SpringCallback
+  onSpringUpdate: SpringCallback
+  onSpringAtRest: SpringCallback
 }
 
 export interface Spring {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Flipper } from '..'
+import { Flipper } from '../../src'
 import userData from './userData.json'
 import UserGrid from './UserGrid'
 import FocusedUser from './FocusedUser'

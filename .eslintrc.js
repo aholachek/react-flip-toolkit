@@ -19,7 +19,8 @@ module.exports = {
     '@typescript-eslint/no-non-null-assertion': 0,
     '@typescript-eslint/no-explicit-any': 0,
     '@typescript-eslint/explicit-member-accessibility': 0,
-    '@typescript-eslint/no-object-literal-type-assertion': 0
-    '@typescript-eslint/array-type': 0
+    '@typescript-eslint/no-object-literal-type-assertion': 0,
+    '@typescript-eslint/array-type': 0,
+    '@typescript-eslint/explicit-member-accessibility': 0
   }
 }

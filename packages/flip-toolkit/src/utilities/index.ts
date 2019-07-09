@@ -38,3 +38,6 @@ export function assign(
   })
   return target
 }
+
+export const tweenProp = (start: number, end: number, position: number) =>
+  start + (end - start) * position

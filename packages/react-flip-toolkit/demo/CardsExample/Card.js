@@ -1,33 +1,37 @@
-import React, { PureComponent } from "react";
-import { Flipped } from "../../";
-import anime from "animejs";
+import React, { PureComponent } from 'react'
+import { Flipped, spring } from '../../src'
 
 class Card extends PureComponent {
-  hideElements = (el, prev, current) => {
-    if (prev !== this.props.i) return;
-    const elements = [].slice.apply(el.querySelectorAll("*[data-fade-in]"));
-    elements.forEach(el => (el.style.opacity = "0"));
-    el.style.zIndex = 2;
-  };
-  animateIn = (el, prev, current) => {
-    if (prev !== this.props.i) return;
-    anime({
-      targets: el.querySelectorAll("*[data-fade-in]"),
-      translateY: [-30, 0],
-      opacity: [0, 1],
-      duration: 250,
-      easing: "easeOutSine",
-      delay: (d, i) => i * 75
-    });
-    el.style.zIndex = 1;
-  };
+  hideElements = (el, prev) => {
+    if (prev !== this.props.i) return
+    const elements = [].slice.apply(el.querySelectorAll('*[data-fade-in]'))
+    elements.forEach(el => (el.style.opacity = '0'))
+    el.style.zIndex = 2
+  }
+  animateIn = (el, prev) => {
+    if (prev !== this.props.i) return
+    const elements = [...el.querySelectorAll('*[data-fade-in]')]
+    elements.forEach((el, i) => {
+      spring({
+        values: {
+          translateY: [-30, 0],
+          opacity: [0, 1]
+        },
+        onUpdate: ({ translateY, opacity }) => {
+          el.style.opacity = opacity
+          el.style.transform = `translateY(${translateY}px)`
+        },
+        delay: i * 75
+      })
+    })
+  }
 
   shouldFlip = (prev, current) => {
-    if (prev === this.props.i) return true;
-    return false;
-  };
+    if (prev === this.props.i) return true
+    return false
+  }
   render() {
-    const { parentFlipId, d, i, setFocusedIndex } = this.props;
+    const { parentFlipId, d, i, setFocusedIndex } = this.props
     return (
       <li key={parentFlipId}>
         <Flipped
@@ -74,8 +78,8 @@ class Card extends PureComponent {
           </div>
         </Flipped>
       </li>
-    );
+    )
   }
 }
 
-export default Card;
+export default Card

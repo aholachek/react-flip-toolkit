@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Flipper, Flipped } from '../../'
+import { Flipper, Flipped } from '../../src'
 import Card from './Card'
 import './index.css'
 

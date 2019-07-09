@@ -17,22 +17,22 @@ function argIsSpringConfig(
   return isObject(arg)
 }
 
+export const normalizeSpring = (
+  spring?: SpringConfig | keyof SpringPresets | any
+) => {
+  if (argIsSpringConfig(spring)) {
+    return spring
+  } else if (Object.keys(springPresets).indexOf(spring) > -1) {
+    return springPresets[spring]
+  } else {
+    return springPresets.noWobble
+  }
+}
+
 export const getSpringConfig = ({
   flipperSpring,
   flippedSpring
 }: { flipperSpring?: SpringOption; flippedSpring?: SpringOption } = {}) => {
-  const normalizeSpring = (
-    spring?: SpringConfig | keyof SpringPresets | any
-  ) => {
-    if (argIsSpringConfig(spring)) {
-      return spring
-    } else if (Object.keys(springPresets).indexOf(spring) > -1) {
-      return springPresets[spring]
-    } else {
-      return {}
-    }
-  }
-
   return assign(
     {},
     springPresets.noWobble,

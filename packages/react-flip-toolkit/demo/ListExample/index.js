@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { Flipper, Flipped } from '../../'
-import anime from 'animejs'
+import { Flipper, Flipped, spring } from '../../src'
 import './index.css'
 
 const colors = ['#ff4f66', '#7971ea', '#5900d8']
@@ -15,25 +14,23 @@ const data = Array.apply(null, Array(30))
   }))
 
 const onElementAppear = (el, index) => {
-  anime({
-    targets: el,
-    opacity: [0, 1],
-    delay: index * 50,
-    easing: 'easeOutSine'
+  spring({
+    onUpdate: val => (el.style.opacity = val),
+    delay: index * 50
   })
 }
 
 const onExit = (el, index, removeElement) => {
   el.style.transformOrigin = '50% 50%'
   el.style.zIndex = 0
-  anime({
-    targets: el,
-    duration: 500,
-    opacity: 0,
-    complete: removeElement,
+  const stop = spring({
+    onUpdate: val => {
+      el.style.opacity = 1 - val
+    },
     delay: index * 50,
-    easing: 'easeOutSine'
-  }).pause
+    onComplete: removeElement
+  })
+  return stop
 }
 
 class ListExample extends Component {
