@@ -153,10 +153,9 @@ const updateSprings = ({
   inProgressAnimations: InProgressAnimations
   percentage: number
 }) => {
-  console.log(percentage)
   const clampedPercentage = clamp(percentage, 0, 1)
   Object.keys(inProgressAnimations).forEach(flipId => {
-    inProgressAnimations[flipId].spring!.setEndValue(clampedPercentage)
+    inProgressAnimations[flipId].spring!.setEndValue(percentage)
   })
 }
 
@@ -193,8 +192,6 @@ class Swipe {
       flipId,
       ...rest
     } = this.props
-
-    debugger
 
     // previous animation was probably cancelled
     if (
@@ -290,6 +287,7 @@ class Swipe {
       )[0]
 
       if (!configMatchingCurrentDirection) {
+        debugger // eslint-disable-line
         return
       }
       return initiateGestureControlledFLIP(configMatchingCurrentDirection)

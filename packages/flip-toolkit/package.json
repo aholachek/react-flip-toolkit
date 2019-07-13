@@ -28,6 +28,7 @@
     "start": "parcel 'core-test/index.html' --out-dir build",
     "test": "jest --testPathIgnorePatterns \"(dist|domtest)\"",
     "build": "microbundle --name=FlipToolkit --globals rematrix=Rematrix",
+    "watch": "microbundle watch --no-compress",
     "check-types": "tsc --noEmit",
     "prepare": "yarn run build",
     "predeploy": "cd example && yarn install && yarn run build",

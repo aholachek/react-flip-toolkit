@@ -97,10 +97,13 @@ const Card = ({
     <Flipped
       flipId={id}
       shouldFlip={(prevCardsToRender, currentCardsToRender) => {
-        return (
-          !isEndCard(id, prevCardsToRender) ||
-          !isEndCard(id, currentCardsToRender)
-        )
+        if (
+          isEndCard(id, prevCardsToRender) &&
+          isEndCard(id, currentCardsToRender)
+        ) {
+          return false
+        }
+        return true
       }}
     >
       <StyledCard isCurrentCard={isCurrentCard} draggable="false">
@@ -144,7 +147,7 @@ const Card = ({
   )
 }
 
-const CardList = ({}) => {
+const GestureCardSwipe = ({}) => {
   const [currentCardId, setCurrentCardId] = useState(cards[0].id)
   const currentCard = linkedCards[currentCardId]
   const cardsToRender = [
@@ -184,4 +187,4 @@ const CardList = ({}) => {
   )
 }
 
-export default CardList
+export default GestureCardSwipe

@@ -11,6 +11,7 @@
     "fix": "yarn workspaces run fix",
     "check-types": "yarn workspaces run check-types",
     "build": "yarn workspaces run build",
-    "demo": "yarn workspace react-flip-toolkit start"
+    "demo": "yarn workspace react-flip-toolkit start",
+    "watch": "yarn workspaces run watch"
   }
 }

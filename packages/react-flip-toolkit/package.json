@@ -29,6 +29,7 @@
     "start": "parcel --no-cache demo/index.html --out-dir demo/dist",
     "deploy-demo": "parcel build demo/index.html --out-dir demo/dist; cp demo/dist/index.html demo/dist/200.html; surge demo/dist --domain react-flip-toolkit-demos.surge.sh",
     "build": "microbundle --name=ReactFlipToolkit --globals react=React,prop-types=PropTypes,flip-toolkit=FlipToolkit",
+    "watch": "microbundle watch --no-compress",
     "check-types": "tsc --noEmit",
     "prepare": "yarn run build",
     "predeploy": "cd example && yarn install && yarn run build",
