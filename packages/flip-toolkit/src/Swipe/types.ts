@@ -43,7 +43,7 @@ export interface SwipeEventHandlers {
   onTouchStart: (state: SwipeEvent) => void
 }
 
-export type OnActionArgs = {
+export interface OnActionArgs {
   velocity: number
   delta: number[]
   down: boolean

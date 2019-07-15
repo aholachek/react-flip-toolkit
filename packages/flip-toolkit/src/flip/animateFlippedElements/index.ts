@@ -374,6 +374,9 @@ export default ({
         }
         // remove identity transform -- this should have no effect on layout
         element.style.transform = ''
+        invertedChildren.forEach(([element]) => {
+          element.style.transform = ''
+        })
         if (needsForcedMinVals && element) {
           element.style.minHeight = ''
           element.style.minWidth = ''

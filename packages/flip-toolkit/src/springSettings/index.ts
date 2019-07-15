@@ -25,7 +25,7 @@ export const normalizeSpring = (
   } else if (Object.keys(springPresets).indexOf(spring) > -1) {
     return springPresets[spring]
   } else {
-    return springPresets.noWobble
+    return {}
   }
 }
 

@@ -1,9 +1,10 @@
 // this is exclusively for users of the library to create their own enter + exit animations
 import { SpringSystem } from '../../../forked-rebound'
 import { SpringSystemInterface } from '../../../forked-rebound/types'
-import { tweenProp } from '../../../utilities'
-import { normalizeSpring } from '../../../springSettings'
+import { tweenProp, assign } from '../../../utilities'
+import { normalizeSpring, springPresets } from '../../../springSettings'
 import { SimpleSpringOptions } from './types'
+import { SpringConfig } from '../../../springSettings/types'
 
 // this should get created only 1x
 const springSystem: SpringSystemInterface = new SpringSystem()
@@ -19,10 +20,11 @@ const createSimpleSpring = ({
   delay = 0,
   onComplete
 }: SimpleSpringOptions) => {
-  const { stiffness, damping, overshootClamping } = normalizeSpring(
-    springConfig
-  )
-  const spring = springSystem.createSpring(stiffness, damping)
+  const { stiffness, damping, overshootClamping } = assign(
+    springPresets.noWobble,
+    normalizeSpring(springConfig)
+  ) as SpringConfig
+  const spring = springSystem.createSpring(stiffness!, damping!)
   spring.setOvershootClampingEnabled(!!overshootClamping)
   spring.addListener({
     onSpringAtRest: spring => {

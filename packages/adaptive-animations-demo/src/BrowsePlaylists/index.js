@@ -90,7 +90,7 @@ const Card = ({
 }
 
 const GestureCardSwipe = ({ history, match }) => {
-  const currentCardId = match.params.id || playlists[0].id
+  const currentCardId = parseInt(match.params.id, 10) || playlists[0].id
   const currentCard = linkedCards[currentCardId]
   const cardsToRender = [
     currentCard.prev.prev,
