@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Flipper, Flipped, Swipe, spring } from 'react-flip-toolkit'
-import * as Component from './components'
+import * as Components from './components'
+
 import playlists from '../playlists'
 
 const linkedCards = playlists
@@ -48,15 +49,15 @@ const Card = ({
         return true
       }}
     >
-      <Component.Card isCurrentCard={isCurrentCard} draggable="false">
+      <Components.Card isCurrentCard={isCurrentCard} draggable="false">
         <Flipped inverseFlipId={id}>
           <div>
             <Flipped flipId={`img-${id}`}>
-              <Component.Img src={src} alt={alt} draggable="false" />
+              <Components.Img src={src} alt={alt} draggable="false" />
             </Flipped>
           </div>
         </Flipped>
-      </Component.Card>
+      </Components.Card>
     </Flipped>
   )
   return (
@@ -88,8 +89,8 @@ const Card = ({
   )
 }
 
-const GestureCardSwipe = ({ history }) => {
-  const [currentCardId, setCurrentCardId] = useState(playlists[0].id)
+const GestureCardSwipe = ({ history, match }) => {
+  const currentCardId = match.params.id || playlists[0].id
   const currentCard = linkedCards[currentCardId]
   const cardsToRender = [
     currentCard.prev.prev,
@@ -98,23 +99,26 @@ const GestureCardSwipe = ({ history }) => {
     currentCard.next,
     currentCard.next.next
   ]
+
+  const setNextCardId = id => history.push(`/browse/${id}`)
+
   return (
     <>
-      {/* <Component.Header>Playlists for Dogs</Component.Header> */}
+      {/* <Components.Header>Playlists for Dogs</Components.Header> */}
       <Flipper
         flipKey={currentCardId}
         decisionData={cardsToRender}
         spring="wobbly"
       >
-        <Component.Container>
-          <Component.List>
+        <Components.Container>
+          <Components.List>
             {cardsToRender.map((card, i) => {
               return (
                 <Card
                   {...card}
                   key={card.id}
                   currentCardId={currentCardId}
-                  setNextCardId={setCurrentCardId}
+                  setNextCardId={setNextCardId}
                   prevCardId={card.prev.id}
                   nextCardId={card.next.id}
                   isCurrentCard={card.id === currentCardId}
@@ -122,16 +126,18 @@ const GestureCardSwipe = ({ history }) => {
                 />
               )
             })}
-          </Component.List>
-        </Component.Container>
-        <Component.CurrentCardMeta key={`${currentCard.title}-meta`}>
+          </Components.List>
+        </Components.Container>
+        <Components.CurrentCardMeta key={`${currentCard.title}-meta`}>
           <h2>{currentCard.title}</h2>
-          <Component.TagList>
+          <Components.TagList>
             {currentCard.tags.map(t => (
-              <Component.Tag>{t}</Component.Tag>
+              <Flipped flipId={`${currentCard.id}-${t}`} stagger>
+                <Components.Tag>{t}</Components.Tag>
+              </Flipped>
             ))}
-          </Component.TagList>
-        </Component.CurrentCardMeta>
+          </Components.TagList>
+        </Components.CurrentCardMeta>
       </Flipper>
     </>
   )

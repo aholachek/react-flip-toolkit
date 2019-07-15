@@ -60,13 +60,13 @@ const sampleTracks = [
 const playlists = [
   {
     src: Aussie,
-    title: 'Dog Day Afternoon',
+    title: 'Top of the charts',
     id: 1,
     tags: ['hip hop', 'country', 'pop']
   },
   {
     src: Golden,
-    title: 'Summertime Love',
+    title: "I'm in Love",
     id: 2,
     tags: ['pop', 'shoe gaze', 'rock']
   },
@@ -84,7 +84,7 @@ const playlists = [
   },
   {
     src: Samoyed,
-    title: 'Meditative beats',
+    title: 'Deep thoughts',
     id: 5,
     tags: ['instrumental', 'new age']
   },

@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components'
+export * from '../components'
 
 export const Header = styled.div`
   background: black;
@@ -43,20 +44,6 @@ export const CurrentCardMeta = styled.div`
   > h2 {
     font-size: 2rem;
   }
-`
-
-export const TagList = styled.ul`
-  margin: 0;
-  padding: 0;
-`
-
-export const Tag = styled.li`
-  list-style-type: none;
-  background-color: ${({ theme }) => theme.colors.gray};
-  display: inline-block;
-  border-radius: 5rem;
-  margin-right: 0.5rem;
-  padding: 0.25rem 0.75rem;
 `
 
 export const Img = styled.img`

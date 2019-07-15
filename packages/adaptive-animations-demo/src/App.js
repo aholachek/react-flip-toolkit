@@ -22,6 +22,7 @@ body {
 
 h1,h2,h3,h4,h5{
   margin-top: 0;
+  margin-bottom: 1rem;
 }
 
 `
@@ -39,9 +40,9 @@ function Routes() {
       render={props => {
         return (
           <Flipper flipKey={props.location.pathname}>
-            <Route exact path="/" render={() => <Redirect to="/browse" />} />
-            <Route path="/browse" exact component={BrowsePlaylists} />
-            <Route path="/playlists/:id" component={Playlist} />
+            <Route path="/" exact render={() => <Redirect to="/browse" />} />
+            <Route path="/browse/:id?" exact component={BrowsePlaylists} />
+            <Route path="/playlists/:id" exact component={Playlist} />
           </Flipper>
         )
       }}

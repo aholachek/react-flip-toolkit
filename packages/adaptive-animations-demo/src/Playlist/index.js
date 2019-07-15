@@ -1,36 +1,50 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Flipper, Flipped, Swipe } from 'react-flip-toolkit'
-import styled, { css } from 'styled-components'
+import styled, { css, keyframes } from 'styled-components'
 import playlists from '../playlists'
+import * as Components from './components'
 
 const Title = styled.h1`
   color: white;
-  font-size: 2.5rem;
-  position: absolute;
+  font-size: 3rem;
   max-width: 100vh;
-  z-index: 1;
-  text-shadow: 0 0 30px black;
-  left: 2rem;
-  right: 2rem;
-  bottom: 0;
-  letter-spacing: .1rem;
-  line-height: 1.2;
+  letter-spacing: 0.1rem;
+  line-height: 1;
 `
 const BackgroundImg = styled.img`
-  width: 26rem;
+  width: 30rem;
   height: auto;
   top: -2rem;
+  left: -2.5rem;
   position: relative;
+  z-index: -1;
+`
+
+const fadeIn = keyframes`
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 `
 
 const BackgroundImgContainer = styled.div`
-  overflow: hidden;
   border-radius: 4%;
   width: calc(100% + 2rem);
   position: relative;
   left: -1rem;
   right: -1rem;
-  height: 30rem;
+  height: calc(100vh - 5rem);
+  /* &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    right: -100%;
+    bottom: -100%;
+    background: hsla(0, 0%, 0%, 0.3);
+  } */
 `
 
 const StyledFlipper = styled(Flipper)`
@@ -257,7 +271,18 @@ const Playlist = props => {
         <BackgroundImgContainer>
           <Flipped inverseFlipId={playlist.id}>
             <div>
-              <Title>{playlist.title}</Title>
+              <Components.MetaContainer>
+                <Title>{playlist.title}</Title>
+                <Components.TagList>
+                  {playlist.tags.map(t => {
+                    return (
+                      <Flipped flipId={`${playlist.id}-${t}`} stagger>
+                        <Components.Tag>{t}</Components.Tag>
+                      </Flipped>
+                    )
+                  })}
+                </Components.TagList>
+              </Components.MetaContainer>
               <Flipped flipId={`img-${playlist.id}`}>
                 <BackgroundImg src={playlist.src} alt="" />
               </Flipped>
