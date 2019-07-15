@@ -6,7 +6,8 @@ const animateUnflippedElements = ({
   getElement,
   flippedElementPositionsBeforeUpdate,
   flippedElementPositionsAfterUpdate,
-  inProgressAnimations
+  inProgressAnimations,
+  decisionData
 }: AnimateUnflippedElementsArgs) => {
   const enteringElementIds = unflippedIds.filter(
     id => flippedElementPositionsAfterUpdate[id]
@@ -43,7 +44,7 @@ const animateUnflippedElements = ({
     animatedEnteringElementIds.forEach((id, i) => {
       const element = getElement(id)
       if (element) {
-        flipCallbacks[id].onAppear!(element, i)
+        flipCallbacks[id].onAppear!(element, i, decisionData)
       }
     })
   }
@@ -101,7 +102,7 @@ const animateUnflippedElements = ({
     }
     // @ts-ignore
     inProgressAnimations[id] = { stop }
-    return () => flipCallbacks[id].onExit!(element, i, stop)
+    return () => flipCallbacks[id].onExit!(element, i, stop, decisionData)
   })
 
   // now append all the fragments from the onExit callbacks

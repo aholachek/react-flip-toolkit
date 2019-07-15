@@ -8,20 +8,93 @@ import Samoyed from './assets/samoyed.jpg'
 
 const sampleTracks = [
   {
-    name: 'Total Eclipse of the Bark',
-    artist: '',
+    id: 1,
+    title: 'Total Eclipse of the Bark',
+    artist: 'Bonnie Tyler',
+    details: ''
+  },
+  {
+    id: 2,
+    title: 'Hungry like the Wolf',
+    artist: 'Duran Duran',
+    details: ''
+  },
+  {
+    id: 3,
+    title: 'Livin on a Prayer (for some treats)',
+    artist: 'Bon Jovi',
+    details: ''
+  },
+  {
+    id: 4,
+    title: "Don't you (forget about taking me for a walk)",
+    artist: 'Simple Minds',
+    details: ''
+  },
+  {
+    id: 5,
+    title: 'Total Eclipse of the Bark',
+    artist: 'Bonnie Tyler',
+    details: ''
+  },
+  {
+    id: 6,
+    title: 'Hungry like the Wolf',
+    artist: 'Duran Duran',
+    details: ''
+  },
+  {
+    id: 7,
+    title: 'Livin on a Prayer (for some treats)',
+    artist: 'Bon Jovi',
+    details: ''
+  },
+  {
+    id: 8,
+    title: "Don't you (forget about taking me for a walk)",
+    artist: 'Simple Minds',
     details: ''
   }
 ]
 
 const playlists = [
-  { src: Aussie, title: 'Happy Afternoon', id: 1 },
-  { src: Golden, title: 'Summertime Love', id: 2 },
-  { src: BlackDoodle, title: 'Fitness Beats', id: 3 },
-  { src: Friends, title: 'Out with the boys', id: 4 },
-  { src: Samoyed, title: 'Meditative beats', id: 5 },
-  { src: Pug, title: 'Life is pain', id: 6 },
-  { src: Corgi, title: 'Party Time', id: 7 }
+  {
+    src: Aussie,
+    title: 'Dog Day Afternoon',
+    id: 1,
+    tags: ['hip hop', 'country', 'pop']
+  },
+  {
+    src: Golden,
+    title: 'Summertime Love',
+    id: 2,
+    tags: ['pop', 'shoe gaze', 'rock']
+  },
+  {
+    src: BlackDoodle,
+    title: 'Fitness Beats',
+    id: 3,
+    tags: ['hip hop', 'rock', 'metal']
+  },
+  {
+    src: Friends,
+    title: 'Out with the boys',
+    id: 4,
+    tags: ['pop', 'jazz', 'rock']
+  },
+  {
+    src: Samoyed,
+    title: 'Meditative beats',
+    id: 5,
+    tags: ['instrumental', 'new age']
+  },
+  { src: Pug, title: 'Life is pain', id: 6, tags: ['ballads', 'grunge'] },
+  {
+    src: Corgi,
+    title: 'Party Time',
+    id: 7,
+    tags: ['hip hop', 'country', 'r&b']
+  }
 ]
 
 export default playlists.map(playlist =>

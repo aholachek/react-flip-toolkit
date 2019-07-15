@@ -73,7 +73,8 @@ const onFlipKeyUpdate = ({
   handleEnterUpdateDelete,
   retainTransform,
   isGestureControlled,
-  onComplete
+  onComplete,
+  onStart
 }: OnFlipKeyUpdateArgs) => {
   const flippedElementPositionsAfterUpdate = getFlippedElementPositionsAfterUpdate(
     {
@@ -101,7 +102,8 @@ const onFlipKeyUpdate = ({
     getElement,
     flippedElementPositionsBeforeUpdate,
     flippedElementPositionsAfterUpdate,
-    inProgressAnimations
+    inProgressAnimations,
+    decisionData
   }
 
   const animateUnFlippedElementsArgs = assign({}, baseArgs, {
@@ -120,13 +122,13 @@ const onFlipKeyUpdate = ({
     {},
     baseArgs,
     {
+      containerEl,
       isGestureControlled,
       flippedIds,
       applyTransformOrigin,
       spring,
       debug,
       staggerConfig,
-      decisionData,
       scopedSelector,
       retainTransform,
       onComplete
@@ -151,6 +153,8 @@ const onFlipKeyUpdate = ({
   }
 
   cleanupTempDataAttributes()
+
+  if (onStart) onStart(containerEl, decisionData)
 
   if (handleEnterUpdateDelete) {
     handleEnterUpdateDelete({

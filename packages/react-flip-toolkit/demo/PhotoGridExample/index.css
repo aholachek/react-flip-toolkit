@@ -1,6 +1,7 @@
-@import url("https://fonts.googleapis.com/css?family=Poppins:200,400,700");
+@import url('https://fonts.googleapis.com/css?family=DM+Sans&display=swap');
+
 .photoGridExample {
-  font-family: Poppins;
+  font-family: 'DM Sans';
   color: black;
 }
 

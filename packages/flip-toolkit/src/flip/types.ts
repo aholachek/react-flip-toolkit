@@ -2,7 +2,10 @@ import {
   InProgressAnimations,
   FlipCallbacks,
   StaggerConfig,
-  HandleEnterUpdateDelete
+  HandleEnterUpdateDelete,
+  OnFlipperComplete,
+  OnFlipperStart,
+  DecisionData
 } from '../types'
 import { FlippedElementPositionsBeforeUpdate } from './getFlippedElementPositions/getFlippedElementPositionsBeforeUpdate/types'
 import { FlippedElementPositionsAfterUpdate } from './getFlippedElementPositions/getFlippedElementPositionsAfterUpdate/types'
@@ -19,6 +22,7 @@ export interface BaseFlipArgs {
   flippedElementPositionsBeforeUpdate: FlippedElementPositionsBeforeUpdate
   flippedElementPositionsAfterUpdate: FlippedElementPositionsAfterUpdate
   inProgressAnimations: InProgressAnimations
+  decisionData?: DecisionData
 }
 
 export interface OnFlipKeyUpdateArgs {
@@ -32,9 +36,10 @@ export interface OnFlipKeyUpdateArgs {
   debug?: boolean
   portalKey?: string
   staggerConfig?: StaggerConfig
-  decisionData?: { prev?: any; current?: any }
   handleEnterUpdateDelete?: HandleEnterUpdateDelete
   retainTransform?: boolean
   isGestureControlled?: boolean
-  onComplete?: (flipIds: FlippedIds) => void
+  onComplete?: OnFlipperComplete
+  onStart?: OnFlipperStart
+  decisionData: DecisionData
 }

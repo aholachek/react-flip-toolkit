@@ -1,11 +1,19 @@
 // edited from https://github.com/react-spring/react-use-gesture/blob/v4.0.7/index.js
 // TODO: stop using ts-ignore everywhere
 import { OnAction, SwipeEvent } from './types'
+import { SyntheticEvent } from 'react'
 
 const touchMove = 'touchmove'
 const touchEnd = 'touchend'
 const mouseMove = 'mousemove'
 const mouseUp = 'mouseup'
+
+const cancelEvent = (event: SyntheticEvent | TouchEvent) => {
+  // @ts-ignore
+  const realEvent = event.nativeEvent ? event.nativeEvent : event
+  realEvent.preventDefault()
+  realEvent.stopPropagation()
+}
 
 const initialState = {
   event: undefined,
@@ -34,7 +42,7 @@ const defaultProps = {
   onUp: undefined
 }
 
-type State = {
+interface State {
   event?: SwipeEvent
   target: EventTarget | null
   time: number
@@ -52,7 +60,7 @@ type State = {
   shiftKey: boolean
 }
 
-type Props = {
+interface Props {
   onAction: OnAction
   onUp?: (state: State) => void
   onDown?: (state: State) => void
@@ -70,24 +78,22 @@ type Set = (cb: SetCallback) => void
 
 function handlers(set: Set, props: Props) {
   const handleUp = (event: SwipeEvent) => {
-    event.stopPropagation()
-    event.preventDefault()
     set(state => {
       const newState = { ...state, down: false, first: false }
-      // @ts-ignores
+      // @ts-ignore
       if (props.onAction) props.onAction(newState)
       if (props.onUp) props.onUp(newState)
       return {
         ...newState,
         event,
+        // @ts-ignore
         shiftKey: event.shiftKey,
         lastLocal: state.local
       }
     })
   }
   const handleDown = (event: any) => {
-    event.stopPropagation()
-    event.preventDefault()
+    cancelEvent(event)
     const { target, pageX, pageY, shiftKey } = event.touches
       ? event.touches[0]
       : event
@@ -118,8 +124,7 @@ function handlers(set: Set, props: Props) {
     })
   }
   const handleMove = (event: any) => {
-    event.stopPropagation()
-    event.preventDefault()
+    cancelEvent(event)
     const { pageX, pageY, shiftKey } = event.touches ? event.touches[0] : event
     // @ts-ignore
     set(state => {
@@ -153,7 +158,7 @@ function handlers(set: Set, props: Props) {
     })
   }
 
-  const onDown = (e: SwipeEvent | MouseEvent): void => {
+  const onDown = (event: SwipeEvent): void => {
     if (props.mouse) {
       props.window.addEventListener(mouseMove, handleMove, { passive: false })
       // @ts-ignore
@@ -161,10 +166,11 @@ function handlers(set: Set, props: Props) {
     }
     if (props.touch) {
       props.window.addEventListener(touchMove, handleMove, { passive: false })
+      // @ts-ignore
       props.window.addEventListener(touchEnd, onUp, { passive: false })
     }
 
-    handleDown(e)
+    handleDown(event)
   }
 
   const stop = () => {

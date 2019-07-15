@@ -202,7 +202,7 @@ const ListShuffler = () => {
 
 ### 1. `Flipper`
 
-The parent wrapper component that contains all the elements to be animated. You'll most typically need only one of these per page.
+The parent wrapper component that contains all the elements to be animated. You'll often need only one of these per page, but sometimes it will be more convenient to have multiple `Flipper` regions of your page concerned with different transitions.
 
 ```jsx
 <Flipper flipKey={someKeyThatChanges}>{/* children */}</Flipper>
@@ -354,8 +354,8 @@ Functions to control when FLIP happens
 
 | prop         | arguments                                 | details                                                                                                                                                                                                                                              |
 | ------------ | :---------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| shouldFlip   | `prevDecisionData`, `currentDecisionData` | A function provided with the current and previous `decisionData` props passed down by the `Flipper` component. Returns a `boolean` to indicate whether a `Flipped` component should animate at that particular moment or not.                        |
-| shouldInvert | `prevDecisionData`, `currentDecisionData` | A function provided with the current and previous `decisionData` props passed down by the `Flipper` component. Returns a `boolean` indicating whether to apply inverted transforms to all `Flipped` children that request it via an `inverseFlipId`. |
+| shouldFlip   | `previousDecisionData`, `currentDecisionData` | A function provided with the current and previous `decisionData` props passed down by the `Flipper` component. Returns a `boolean` to indicate whether a `Flipped` component should animate at that particular moment or not.                        |
+| shouldInvert | `previousDecisionData`, `currentDecisionData` | A function provided with the current and previous `decisionData` props passed down by the `Flipper` component. Returns a `boolean` indicating whether to apply inverted transforms to all `Flipped` children that request it via an `inverseFlipId`. |
 
 ## Intermediate Tutorial
 
@@ -408,6 +408,7 @@ That means any layout styles &mdash; padding, flexbox, etc&mdash;should be appli
 - Make sure you're updating the `flipKey` attribute in the `Flipper` component whenever an animation should happen.
 - If one of your `Flipped` components is wrapping another React component rather than a DOM element, [use a render prop to get the Flipped props](#wrapping-a-react-component) and pass down to the necessary DOM element.
 - Is the element that's receiving props from `Flipped` visible in the DOM? `react-flip-toolkit` attempts to optimize performance by not animating elements that are off-screen or elements that have no width or height.
+- `display:inline` elements cannot be animated. If you want an `inline` element to animate, set `display:inline-block`.
 
 ### Problem #2: Things look weird / animations aren't behaving
 

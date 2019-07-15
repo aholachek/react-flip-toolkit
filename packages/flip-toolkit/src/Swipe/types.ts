@@ -1,4 +1,5 @@
 import { FlipId, InProgressAnimations } from '../types'
+import { SyntheticEvent } from 'react'
 
 export enum Direction {
   right = 'right',
@@ -12,7 +13,7 @@ export interface SwipeDecisionData {
   prevProps: Record<string, any>
 }
 
-export type SwipeEvent = MouseEvent | TouchEvent
+export type SwipeEvent = SyntheticEvent<HTMLElement, TouchEvent>
 
 export interface OnSwipeConfigObject {
   initFlip: (data: SwipeDecisionData) => void

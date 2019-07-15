@@ -13,7 +13,7 @@ import {
 import { FlippedElementPositionsBeforeUpdateReturnVals } from 'flip-toolkit/dist/flip/getFlippedElementPositions/getFlippedElementPositionsBeforeUpdate/types'
 import { SetIsGestureInitiated } from 'flip-toolkit/dist/Swipe/types'
 
-export type GestureContextProps = {
+export interface GestureContextProps {
   inProgressAnimations: InProgressAnimations
   setIsGestureInitiated: SetIsGestureInitiated
 }
@@ -95,13 +95,13 @@ class Flipper extends Component<FlipperProps> {
         portalKey: this.props.portalKey,
         staggerConfig: this.props.staggerConfig,
         handleEnterUpdateDelete: this.props.handleEnterUpdateDelete,
-        // typescript doesn't recognize defaultProps (?)
-        retainTransform: this.props.retainTransform!,
+        retainTransform: this.props.retainTransform,
         decisionData: {
-          prev: prevProps.decisionData,
+          previous: prevProps.decisionData,
           current: this.props.decisionData
         },
-        onComplete: this.props.onComplete
+        onComplete: this.props.onComplete,
+        onStart: this.props.onStart
       })
     }
   }
@@ -156,7 +156,8 @@ Flipper.propTypes = {
   handleEnterUpdateDelete: PropTypes.func,
   retainTransform: PropTypes.bool,
   onComplete: PropTypes.func,
-  isGestureControlled: PropTypes.bool
+  isGestureControlled: PropTypes.bool,
+  onStart: PropTypes.func
 }
 
 export default Flipper

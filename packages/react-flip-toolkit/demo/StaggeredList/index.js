@@ -1,7 +1,7 @@
 // inspired by this animated demo:
 // https://uxplanet.org/animation-in-ui-design-from-concept-to-reality-85c49907b19d
 import React, { Component } from 'react'
-import { Flipper, Flipped } from '../../src/index'
+import { Flipper, Flipped } from '../../dist/index'
 import './styles.css'
 const listData = [0, 1, 2, 3, 4, 5, 6, 7]
 const colors = ['#ff4f66', '#7971ea', '#5900d8']

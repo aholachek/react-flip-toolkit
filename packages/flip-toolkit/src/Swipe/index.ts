@@ -138,7 +138,9 @@ const cancelFlip = ({
     }
     Object.keys(inProgressAnimations).map(flipId => {
       if (inProgressAnimations[flipId]) {
-        inProgressAnimations[flipId].spring!.destroy()
+        if (inProgressAnimations[flipId].spring) {
+          inProgressAnimations[flipId].spring!.destroy()
+        }
         delete inProgressAnimations[flipId]
       }
     })
@@ -153,9 +155,10 @@ const updateSprings = ({
   inProgressAnimations: InProgressAnimations
   percentage: number
 }) => {
-  const clampedPercentage = clamp(percentage, 0, 1)
   Object.keys(inProgressAnimations).forEach(flipId => {
-    inProgressAnimations[flipId].spring!.setEndValue(percentage)
+    // might not have a spring if the element is just entering or exiting
+    if (!inProgressAnimations[flipId].spring) return
+    inProgressAnimations[flipId].spring.setEndValue(percentage)
   })
 }
 
@@ -287,7 +290,6 @@ class Swipe {
       )[0]
 
       if (!configMatchingCurrentDirection) {
-        debugger // eslint-disable-line
         return
       }
       return initiateGestureControlledFLIP(configMatchingCurrentDirection)

@@ -17,6 +17,7 @@ export interface AnimateFlippedElementsArgs extends BaseFlipArgs {
   retainTransform: boolean
   onComplete: OnFlipperComplete
   isGestureControlled?: boolean
+  containerEl: HTMLElement
 }
 
 export type OnUpdate = (spring: Spring) => void

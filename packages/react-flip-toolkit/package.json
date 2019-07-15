@@ -46,7 +46,7 @@
     "version": "npm run build"
   },
   "dependencies": {
-    "flip-toolkit": "6.6.8",
+    "flip-toolkit": "6.6.9",
     "react": ">= 16.3.0",
     "react-dom": ">= 16.3.0",
     "react-icons": "^3.7.0",

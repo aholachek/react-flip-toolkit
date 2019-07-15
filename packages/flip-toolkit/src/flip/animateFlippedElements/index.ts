@@ -159,6 +159,7 @@ export default ({
   scopedSelector,
   retainTransform,
   onComplete,
+  containerEl,
   isGestureControlled
 }: AnimateFlippedElementsArgs) => {
   // the stuff below is used so we can return a promise that resolves when all FLIP animations have
@@ -170,7 +171,7 @@ export default ({
   })
   // hook for users of lib to attach logic when all flip animations have completed
   if (onComplete) {
-    flipCompletedPromise.then(onComplete)
+    flipCompletedPromise.then(() => onComplete(containerEl, decisionData))
   }
   if (!flippedIds.length) {
     return () => {
@@ -255,7 +256,7 @@ export default ({
 
       if (flipCallbacks[id] && flipCallbacks[id].shouldFlip) {
         const elementShouldFlip = flipCallbacks[id].shouldFlip!(
-          decisionData.prev,
+          decisionData.previous,
           decisionData.current
         )
         // this element wont be animated, but its children might be
@@ -331,7 +332,10 @@ export default ({
       if (
         !flipCallbacks[id] ||
         !flipCallbacks[id].shouldInvert ||
-        flipCallbacks[id].shouldInvert!(decisionData.prev, decisionData.current)
+        flipCallbacks[id].shouldInvert!(
+          decisionData.previous,
+          decisionData.current
+        )
       ) {
         const invertedChildElements = getInvertedChildren(element, id)
         invertedChildren = invertedChildElements.map(c => [
@@ -357,8 +361,7 @@ export default ({
       if (flipCallbacks[id] && flipCallbacks[id].onComplete) {
         // must cache or else this could cause an error
         const cachedOnComplete = flipCallbacks[id].onComplete
-        onComplete = () =>
-          cachedOnComplete!(element, decisionData.prev, decisionData.current)
+        onComplete = () => cachedOnComplete!(element, decisionData)
       }
 
       // this should be called when animation ends naturally
@@ -413,11 +416,7 @@ export default ({
           if (!onStartCalled) {
             onStartCalled = true
             if (flipCallbacks[id] && flipCallbacks[id].onStart) {
-              flipCallbacks[id].onStart!(
-                element,
-                decisionData.prev,
-                decisionData.current
-              )
+              flipCallbacks[id].onStart!(element, decisionData)
             }
           }
 
@@ -454,11 +453,7 @@ export default ({
         })
 
         if (flipCallbacks[id] && flipCallbacks[id].onStartImmediate) {
-          flipCallbacks[id].onStartImmediate!(
-            element,
-            decisionData.prev,
-            decisionData.current
-          )
+          flipCallbacks[id].onStartImmediate!(element, decisionData)
         }
         // and batch any other style updates if necessary
         if (flipConfig.transformOrigin) {
@@ -492,6 +487,7 @@ export default ({
   withInitFuncs = flipDataArray.filter(({ initializeFlip }) =>
     Boolean(initializeFlip)
   )
+
   //  put items back in place
   withInitFuncs.forEach(({ initializeFlip }) => initializeFlip())
 
