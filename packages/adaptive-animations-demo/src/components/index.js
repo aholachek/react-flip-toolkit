@@ -13,3 +13,7 @@ export const Tag = styled.li`
   margin-right: 0.5rem;
   padding: 0.25rem 0.75rem;
 `
+
+export const ToggleVisibility = styled.div`
+  display: ${props => (props.visible ? 'none' : 'block')};
+`

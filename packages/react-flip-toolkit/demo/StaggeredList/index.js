@@ -142,16 +142,26 @@ export default class AnimatedList extends Component {
                     onClick={this.onClick}
                   />
                 ) : (
-                  <ListItem
-                    index={index}
-                    key={index}
-                    color={colors[index % colors.length]}
-                    onClick={this.onClick}
-                  />
+                  <div>
+                    <ListItem
+                      index={index}
+                      key={index}
+                      color={colors[index % colors.length]}
+                      onClick={this.onClick}
+                    />
+                  </div>
                 )}
               </li>
             )
           })}
+          <div style={{ display: 'none' }}>
+            <ListItem
+              index={0}
+              key={0}
+              color={colors[0 % colors.length]}
+              onClick={this.onClick}
+            />
+          </div>
         </ul>
       </Flipper>
     )

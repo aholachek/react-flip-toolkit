@@ -209,6 +209,7 @@ export default ({
   const flipDataDict: FlipDataDict = {}
 
   const flipDataArray: FlipDataArray = flippedIds
+
     // take all the measurements we need
     // and return an object with animation functions + necessary data
     .map(id => {
@@ -217,6 +218,8 @@ export default ({
       const prevOpacity = flippedElementPositionsBeforeUpdate[id].opacity
       const currentOpacity = flippedElementPositionsAfterUpdate[id].opacity
       const needsForcedMinVals = currentRect.width < 1 || currentRect.height < 1
+      const element = flippedElementPositionsAfterUpdate[id].element
+
       // don't animate elements outside of the user's viewport
       if (!rectInViewport(prevRect) && !rectInViewport(currentRect)) {
         return false
@@ -228,8 +231,6 @@ export default ({
       ) {
         return false
       }
-
-      const element = getElement(id)
 
       // this might happen if we are rapidly adding & removing elements(?)
       if (!element) {

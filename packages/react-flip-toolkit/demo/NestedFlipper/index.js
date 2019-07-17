@@ -5,21 +5,23 @@ import './index.css'
 class MessageItem extends Component {
   state = {
     open: false
-  };
+  }
 
   toggleOpen = () => {
-    this.setState(s => ({ open: !s.open }));
-  };
+    this.setState(s => ({ open: !s.open }))
+  }
 
   render() {
-    const { i } = this.props;
-    const { open } = this.state;
+    const { i } = this.props
+    const { open } = this.state
 
     return (
       <div className="message-item">
         <Flipper flipKey={open} className="message-flipper">
           <Flipped flipId={`item-${i}`}>
-            <div className={`message-item-content ${open ? '_open' : '_closed'}`}>
+            <div
+              className={`message-item-content ${open ? '_open' : '_closed'}`}
+            >
               {open ? (
                 <div className="message-item-open" />
               ) : (
@@ -30,7 +32,7 @@ class MessageItem extends Component {
           </Flipped>
         </Flipper>
       </div>
-    );
+    )
   }
 }
 
@@ -51,14 +53,14 @@ const ClosedMessage = () => {
 class Message extends Component {
   state = {
     open: false
-  };
+  }
 
   toggleOpen = () => {
-    this.setState(s => ({ open: !s.open}));
-  };
+    this.setState(s => ({ open: !s.open }))
+  }
 
   render() {
-    const { open } = this.state;
+    const { open } = this.state
 
     return (
       <Flipper flipKey={open}>
@@ -69,7 +71,7 @@ class Message extends Component {
           </div>
         </Flipped>
       </Flipper>
-    );
+    )
   }
 }
 

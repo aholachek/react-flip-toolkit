@@ -90,6 +90,7 @@ const Card = ({
 }
 
 const GestureCardSwipe = ({ history, match }) => {
+  debugger
   const currentCardId = parseInt(match.params.id, 10) || playlists[0].id
   const currentCard = linkedCards[currentCardId]
   const cardsToRender = [
@@ -100,7 +101,7 @@ const GestureCardSwipe = ({ history, match }) => {
     currentCard.next.next
   ]
 
-  const setNextCardId = id => history.push(`/browse/${id}`)
+  const setNextCardId = id => history.push(`/playlists/${id}/browse`)
 
   return (
     <>

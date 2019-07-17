@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
+import { Route } from 'react-router'
 import { Flipper, Flipped, Swipe } from 'react-flip-toolkit'
 import styled, { css, keyframes } from 'styled-components'
 import playlists from '../playlists'
@@ -13,11 +14,12 @@ const Title = styled.h1`
 `
 const BackgroundImg = styled.img`
   width: 30rem;
-  height: auto;
+  height: 50rem;
   top: -2rem;
   left: -2.5rem;
   position: relative;
   z-index: -1;
+  will-change: transform;
 `
 
 const fadeIn = keyframes`
@@ -33,18 +35,10 @@ const BackgroundImgContainer = styled.div`
   border-radius: 4%;
   width: calc(100% + 2rem);
   position: relative;
+  height: calc(100vh - 5rem);
   left: -1rem;
   right: -1rem;
-  height: calc(100vh - 5rem);
-  /* &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    right: -100%;
-    bottom: -100%;
-    background: hsla(0, 0%, 0%, 0.3);
-  } */
+  overflow: hidden;
 `
 
 const StyledFlipper = styled(Flipper)`
@@ -266,7 +260,7 @@ const Playlist = props => {
   }
 
   return (
-    <div>
+    <Components.ToggleVisibility hide={props.match.params.browse}>
       <Flipped flipId={playlist.id}>
         <BackgroundImgContainer>
           <Flipped inverseFlipId={playlist.id}>
@@ -313,7 +307,7 @@ const Playlist = props => {
         </StyledContainer>
         <Drawer track={null} setCurrentlyViewed={setCurrentlyViewed} />
       </StyledFlipper>
-    </div>
+    </Components.ToggleVisibility>
   )
 }
 

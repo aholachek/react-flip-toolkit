@@ -40,9 +40,20 @@ function Routes() {
       render={props => {
         return (
           <Flipper flipKey={props.location.pathname}>
-            <Route path="/" exact render={() => <Redirect to="/browse" />} />
-            <Route path="/browse/:id?" exact component={BrowsePlaylists} />
-            <Route path="/playlists/:id" exact component={Playlist} />
+            <Route
+              path="/"
+              exact
+              render={() => <Redirect to="/playlists/1" />}
+            />
+            <Route
+              path="/playlists/:id/:tracks?"
+              render={props => (
+                <>
+                  <BrowsePlaylists {...props} />
+                  <Playlist {...props} />
+                </>
+              )}
+            />
           </Flipper>
         )
       }}

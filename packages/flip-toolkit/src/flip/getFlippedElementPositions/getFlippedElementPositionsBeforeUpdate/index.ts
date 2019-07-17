@@ -1,4 +1,8 @@
-import { addTupleToObject, getAllElements } from '../utilities'
+import {
+  addTupleToObject,
+  getAllElements,
+  filterInvisibleDuplicates
+} from '../utilities'
 import * as constants from '../../../constants'
 import { toArray, assign } from '../../../utilities'
 import {
@@ -66,10 +70,11 @@ const getFlippedElementPositionsBeforeUpdate = ({
       childIdsToParents[el.dataset.flipId!] = parent
     })
 
-  const flippedElementPositions: FlippedElementPositionsBeforeUpdate = flippedElements
-    .map(child => {
+  const filteredFlippedElements = filterInvisibleDuplicates(flippedElements)
+
+  const flippedElementPositions: FlippedElementPositionsBeforeUpdate = filteredFlippedElements
+    .map(([child, childBCR]) => {
       const domDataForExitAnimations = {}
-      const childBCR = child.getBoundingClientRect()
 
       // only cache extra data for exit animations
       // if the element has an onExit listener
@@ -113,7 +118,9 @@ const getFlippedElementPositionsBeforeUpdate = ({
 
   return {
     flippedElementPositions,
-    cachedOrderedFlipIds: flippedElements.map(el => el.dataset.flipId!)
+    cachedOrderedFlipIds: filteredFlippedElements.map(
+      ([el]) => el.dataset.flipId!
+    )
   }
 }
 

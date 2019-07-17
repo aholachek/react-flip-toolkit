@@ -47,12 +47,13 @@ export const CurrentCardMeta = styled.div`
 `
 
 export const Img = styled.img`
-  width: 26rem;
+  width: 30rem;
+  height: 50rem;
   position: relative;
   top: -4rem;
   left: -4rem;
-  background-color: black;
   user-select: none;
+  will-change: transform;
 `
 
 export const List = styled.ul`
