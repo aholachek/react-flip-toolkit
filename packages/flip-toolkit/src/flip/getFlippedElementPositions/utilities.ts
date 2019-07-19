@@ -1,5 +1,6 @@
 import { toArray, assign } from '../../utilities'
 import * as constants from '../../constants'
+import { BoundingClientRect } from './types'
 
 export const addTupleToObject = (acc: {}, curr: [any, any]) =>
   assign(acc, { [curr[0]]: curr[1] })
@@ -18,18 +19,16 @@ export const getAllElements = (
 }
 // if there are duplicate flipIds but some are display:none, we can safely ignore them
 // this enables some optimizations and more complex animations
-export const filterInvisibleDuplicates = (flippedElements) => {
-  const elementDict = flippedElements
-    .map((child: HTMLElement) => [child, child.getBoundingClientRect()])
-    // try to resolve the case with multiple flipIds where some are in a display:none container
-    .reduce((acc, curr) => {
-      const flipId = curr[0].dataset.flipId
-      if (acc[flipId]) {
-        if (acc[flipId][1].width === 0 && acc[flipId][1].height === 0) {
-          acc[flipId] = curr
-        }
-      } else acc[flipId] = curr
-      return acc
-    }, {})
-  return Object.keys(elementDict).map(flipId => elementDict[flipId])
+export const filterInvisibleElements = (flippedElements: HTMLElement[]) => {
+  return (
+    flippedElements
+      .map((child: HTMLElement): [HTMLElement, BoundingClientRect] => [
+        child,
+        child.getBoundingClientRect()
+      ])
+      // @ts-ignore
+      .filter(data => {
+        return data[1].width + data[1].height !== 0
+      })
+  )
 }

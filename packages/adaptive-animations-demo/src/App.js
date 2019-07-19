@@ -8,7 +8,11 @@ import {
   Redirect
 } from 'react-router-dom'
 import { Flipper } from 'react-flip-toolkit'
-import { createGlobalStyle, ThemeProvider } from 'styled-components'
+import styled, { createGlobalStyle, ThemeProvider } from 'styled-components'
+
+const ToggleVisible = styled.div`
+  display: ${props => (props.visible ? 'block' : 'none')};
+`
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css?family=DM+Sans:400,700&display=swap');
@@ -33,28 +37,36 @@ const theme = {
   }
 }
 
-function Routes() {
+function Routes(props) {
   return (
     <Route
       path="/"
       render={props => {
         return (
-          <Flipper flipKey={props.location.pathname}>
+          <>
             <Route
               path="/"
               exact
               render={() => <Redirect to="/playlists/1" />}
             />
+
             <Route
               path="/playlists/:id/:tracks?"
-              render={props => (
-                <>
-                  <BrowsePlaylists {...props} />
-                  <Playlist {...props} />
-                </>
-              )}
+              render={props => {
+                const showTracks = props.match.params.tracks === 'tracks'
+                return (
+                  <Flipper flipKey={props.location} decisionData={props.match}>
+                    <ToggleVisible visible={!showTracks}>
+                      <BrowsePlaylists {...props} />
+                    </ToggleVisible>
+                    <ToggleVisible visible={showTracks}>
+                      <Playlist {...props} />
+                    </ToggleVisible>
+                  </Flipper>
+                )
+              }}
             />
-          </Flipper>
+          </>
         )
       }}
     />
@@ -66,9 +78,18 @@ function App() {
     <ThemeProvider theme={theme}>
       <>
         <GlobalStyle />
-        <Router>
-          <Routes />
-        </Router>
+        <div
+          style={{
+            maxWidth: '25rem',
+            margin: 'auto',
+            overflow: 'hidden',
+            height: '100vh'
+          }}
+        >
+          <Router>
+            <Routes />
+          </Router>
+        </div>
       </>
     </ThemeProvider>
   )

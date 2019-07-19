@@ -224,13 +224,6 @@ export default ({
       if (!rectInViewport(prevRect) && !rectInViewport(currentRect)) {
         return false
       }
-      // it's never going to be visible, so dont animate it
-      if (
-        (prevRect.width === 0 && currentRect.width === 0) ||
-        (prevRect.height === 0 && currentRect.height === 0)
-      ) {
-        return false
-      }
 
       // this might happen if we are rapidly adding & removing elements(?)
       if (!element) {

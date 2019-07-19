@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components'
-export * from '../components'
+export * from '../styled-components'
 
 export const Header = styled.div`
   background: black;
@@ -53,7 +53,7 @@ export const Img = styled.img`
   top: -4rem;
   left: -4rem;
   user-select: none;
-  will-change: transform;
+  object-fit: cover;
 `
 
 export const List = styled.ul`

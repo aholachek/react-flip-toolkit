@@ -118,7 +118,6 @@ const cancelFlip = ({
     return new Promise(resolve => {
       spring.addOneTimeListener({
         onSpringAtRest: (spring: Spring) => {
-          console.log('cancelFlip onSpringAtRest')
           // if not 0, assume this has been interrupted by subsequent gesture
           if (spring.getCurrentValue() !== 0) {
             return
@@ -236,7 +235,7 @@ class Swipe {
       return
     }
 
-    // TODO: figure out why the typings don't just work
+    // TODO: figure out why the typings don't work :/
     const config = Object.keys(Direction)
       .map(direction => {
         // @ts-ignore

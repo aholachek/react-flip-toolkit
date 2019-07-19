@@ -1,7 +1,7 @@
 import {
   addTupleToObject,
   getAllElements,
-  filterInvisibleDuplicates
+  filterInvisibleElements
 } from '../utilities'
 import * as constants from '../../../constants'
 import { toArray, assign } from '../../../utilities'
@@ -70,7 +70,7 @@ const getFlippedElementPositionsBeforeUpdate = ({
       childIdsToParents[el.dataset.flipId!] = parent
     })
 
-  const filteredFlippedElements = filterInvisibleDuplicates(flippedElements)
+  const filteredFlippedElements = filterInvisibleElements(flippedElements)
 
   const flippedElementPositions: FlippedElementPositionsBeforeUpdate = filteredFlippedElements
     .map(([child, childBCR]) => {

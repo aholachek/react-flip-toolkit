@@ -1,6 +1,6 @@
 import {
   addTupleToObject,
-  filterInvisibleDuplicates,
+  filterInvisibleElements,
   getAllElements
 } from '../utilities'
 import { FlippedElementPositionsAfterUpdate } from './types'
@@ -13,7 +13,7 @@ const getFlippedElementPositionsAfterUpdate = ({
   portalKey?: string
 }): FlippedElementPositionsAfterUpdate => {
   return (
-    filterInvisibleDuplicates(getAllElements(element, portalKey))
+    filterInvisibleElements(getAllElements(element, portalKey))
       .map(([child, childBCR]) => {
         const computedStyle = window.getComputedStyle(child)
         return [
