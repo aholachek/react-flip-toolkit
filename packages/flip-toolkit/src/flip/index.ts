@@ -139,21 +139,6 @@ const onFlipKeyUpdate = ({
   // and returns another function to actually call the flip animation
   const flip = animateFlippedElements(animateFlippedElementsArgs)
 
-  // clear temp markup that was added to facilitate FLIP
-  // namely, in the filterFlipDescendants function
-  const cleanupTempDataAttributes = () => {
-    unflippedIds
-      .filter(id => flippedElementPositionsAfterUpdate[id])
-      .forEach(id => {
-        const element = getElement(id)
-        if (element) {
-          element.removeAttribute(constants.DATA_IS_APPEARING)
-        }
-      })
-  }
-
-  cleanupTempDataAttributes()
-
   if (onStart) onStart(containerEl, decisionData)
 
   if (handleEnterUpdateDelete) {

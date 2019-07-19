@@ -11,10 +11,12 @@ const shouldFlip = index => (prev, current) => {
   return false
 }
 
+const createCardFlipId = index => `listItem-${index}`
+
 const ListItem = ({ index, color, onClick }) => {
   return (
     <Flipped
-      flipId={`listItem-${index}`}
+      flipId={createCardFlipId(index)}
       stagger="card"
       shouldInvert={shouldFlip(index)}
     >
@@ -65,7 +67,7 @@ const ListItem = ({ index, color, onClick }) => {
 const ExpandedListItem = ({ index, color, onClick }) => {
   return (
     <Flipped
-      flipId={`listItem-${index}`}
+      flipId={createCardFlipId(index)}
       stagger="card"
       onSpringUpdate={spring => console.log(spring)}
       onStart={el => {
@@ -122,8 +124,10 @@ export default class AnimatedList extends Component {
         flipKey={this.state.focused}
         className="staggered-list-content"
         spring="gentle"
-        onComplete={args => console.log('onComplete', args)}
         staggerConfig={{
+          'card-content': {
+            delayUntil: createCardFlipId(this.state.focused)
+          },
           card: {
             reverse: this.state.focused !== null ? true : false,
             speed: 0
