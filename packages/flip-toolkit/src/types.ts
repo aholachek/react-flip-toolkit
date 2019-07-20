@@ -52,7 +52,10 @@ export interface CallbackFlippedProps {
   /** A function provided with the current and previous decisionData props passed down by the Flipper component. Returns a boolean to indicate whether a Flipped component should animate at that particular moment or not. */
   shouldFlip?: (previousDecisionData: any, currentDecisionData: any) => boolean
   /** A function provided with the current and previous decisionData props passed down by the Flipper component. Returns a boolean indicating whether to apply inverted transforms to all Flipped children that request it via an inverseFlipId. */
-  shouldInvert?: (previousDecisionData: any, currentDecisionData: any) => boolean
+  shouldInvert?: (
+    previousDecisionData: any,
+    currentDecisionData: any
+  ) => boolean
 }
 
 export type FlippedProps = CallbackFlippedProps & SerializableFlippedProps
@@ -61,10 +64,16 @@ export type InternalFlippedProps = FlippedProps & {
   isGestureControlled?: boolean
 }
 
+export type DelayUntil = (
+  previousDecisionData: any,
+  currentDecisionData: any
+) => FlipId
+
 export interface StaggerConfigValue {
   reverse?: boolean
   /** A number between 0 (for a slower stagger) and 1 (for a faster stagger) */
   speed?: number
+  delayUntil?: DelayUntil
 }
 
 export interface StaggerConfig {

@@ -126,7 +126,8 @@ export default class AnimatedList extends Component {
         spring="gentle"
         staggerConfig={{
           'card-content': {
-            delayUntil: createCardFlipId(this.state.focused)
+            delayUntil: (prevDecisionData, currDecisionData) =>
+              createCardFlipId(prevDecisionData || currDecisionData)
           },
           card: {
             reverse: this.state.focused !== null ? true : false,

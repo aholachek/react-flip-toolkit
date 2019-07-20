@@ -1,7 +1,7 @@
 import { BaseFlipArgs, FlippedIds } from '../types'
 import { SpringOption, SpringConfig } from '../../springSettings/types'
 import { StaggerConfig, OnFlipperComplete } from '../../types'
-import { SerializableFlippedProps, FlipId } from '../../types'
+import { SerializableFlippedProps } from '../../types'
 import { Spring } from '../../forked-rebound/types'
 
 export type ScopedSelector = (selector: string) => HTMLElement[]
@@ -58,33 +58,15 @@ export interface FlipData {
   id: string
   stagger: string
   springConfig: SpringConfig
-  noOp: boolean
   getOnUpdateFunc: GetOnUpdateFunc
   initializeFlip: InitializeFlip
   onAnimationEnd: () => void
   childIds: ChildIds
-  immediateChildren: FlipDataArray
-  staggeredChildren: StaggeredChildren
   isGestureControlled?: boolean
+  activateNestedStaggers?: () => void
 }
 export type FlipDataArray = FlipData[]
 
 export interface FlipDataDict {
   [flipId: string]: FlipData
-}
-
-export interface LevelToChildren {
-  [level: string]: ChildIds
-}
-
-export type TopLevelChildren = FlipId[]
-
-export type InitiateStaggeredAnimations = (
-  staggered: StaggeredChildren,
-  isGestureControlled?: boolean
-) => void
-
-export interface TreeNode {
-  staggeredChildren: StaggeredChildren
-  immediateChildren: FlipDataArray
 }

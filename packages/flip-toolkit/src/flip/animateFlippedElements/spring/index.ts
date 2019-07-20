@@ -1,7 +1,10 @@
 import { SpringSystem } from '../../../forked-rebound'
 import { StaggerConfigValue } from '../../../types'
 import { FlipData, FlipDataArray } from '../types'
-import { SpringSystemInterface } from '../../../forked-rebound/types'
+import {
+  SpringSystemInterface,
+  AddListenerArgs
+} from '../../../forked-rebound/types'
 
 // this should get created only 1x
 const springSystem: SpringSystemInterface = new SpringSystem()
@@ -9,15 +12,12 @@ const springSystem: SpringSystemInterface = new SpringSystem()
 export const createSuspendedSpring = (flipData: FlipData) => {
   const {
     springConfig: { stiffness, damping, overshootClamping },
-    noOp,
     getOnUpdateFunc,
     onAnimationEnd,
-    isGestureControlled
+    isGestureControlled,
+    activateNestedStaggers
   } = flipData
 
-  if (noOp) {
-    return null
-  }
   const spring = springSystem.createSpring(stiffness!, damping!)
   spring.setOvershootClampingEnabled(!!overshootClamping)
   const onSpringAtRest = () => {
@@ -26,13 +26,19 @@ export const createSuspendedSpring = (flipData: FlipData) => {
     onAnimationEnd()
   }
 
-  spring.addListener({
+  const springConfig: AddListenerArgs = {
     onSpringAtRest: !isGestureControlled ? onSpringAtRest : () => {},
     onSpringUpdate: getOnUpdateFunc({
       spring,
       onAnimationEnd
     })
-  })
+  }
+
+  if (activateNestedStaggers) {
+    springConfig.onSpringActivate = activateNestedStaggers
+  }
+
+  spring.addListener(springConfig)
   return spring
 }
 
@@ -66,7 +72,6 @@ export const createStaggeredSprings = (
   const nextThreshold = 1 / Math.max(Math.min(flippedArray.length, 100), 10)
 
   const setEndValueFuncs = flippedArray
-    .filter(flipped => !flipped.noOp)
     .map((flipped, i) => {
       const cachedGetOnUpdate = flipped.getOnUpdateFunc
 
