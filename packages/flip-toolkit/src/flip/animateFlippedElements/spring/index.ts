@@ -10,7 +10,6 @@ export const createSuspendedSpring = (flipData: FlipData) => {
   const {
     springConfig: { stiffness, damping, overshootClamping },
     noOp,
-    onSpringActivate,
     getOnUpdateFunc,
     onAnimationEnd,
     isGestureControlled
@@ -28,7 +27,6 @@ export const createSuspendedSpring = (flipData: FlipData) => {
   }
 
   spring.addListener({
-    onSpringActivate,
     onSpringAtRest: !isGestureControlled ? onSpringAtRest : () => {},
     onSpringUpdate: getOnUpdateFunc({
       spring,
@@ -38,21 +36,10 @@ export const createSuspendedSpring = (flipData: FlipData) => {
   return spring
 }
 
-export const createSpring = (
-  flipped: FlipData,
-  isGestureControlled?: boolean
-) => {
-  const spring = createSuspendedSpring({ ...flipped, isGestureControlled })
-  if (isGestureControlled) {
-    return flipped.onSpringActivate()
-  }
+export const createSpring = (flipped: FlipData) => {
+  const spring = createSuspendedSpring(flipped)
   if (spring) {
     spring.setEndValue(1)
-  } else {
-    // even if it was a noop,
-    // we still need to call onSpringActivate in case it calls
-    // cascading flip initiation functions
-    flipped.onSpringActivate()
   }
 }
 
@@ -61,7 +48,7 @@ export const normalizeSpeed = (speedConfig: number | undefined) => {
   return 1 + Math.min(Math.max(speedConfig * 5, 0), 5)
 }
 
-export const staggeredSprings = (
+export const createStaggeredSprings = (
   flippedArray: FlipDataArray,
   staggerConfig: StaggerConfigValue = {},
   isGestureControlled?: boolean

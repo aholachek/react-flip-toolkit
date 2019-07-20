@@ -62,11 +62,7 @@ export interface FlipData {
   getOnUpdateFunc: GetOnUpdateFunc
   initializeFlip: InitializeFlip
   onAnimationEnd: () => void
-  // these fields are added by filterFlipDescendants
-  level: number
   childIds: ChildIds
-  // added by initiateAnimations
-  onSpringActivate: () => void
   immediateChildren: FlipDataArray
   staggeredChildren: StaggeredChildren
   isGestureControlled?: boolean

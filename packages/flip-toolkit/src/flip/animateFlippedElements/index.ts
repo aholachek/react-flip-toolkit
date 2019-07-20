@@ -21,8 +21,12 @@ import {
 } from './types'
 import { BoundingClientRect } from '../getFlippedElementPositions/types'
 import { FlippedIds } from '../types'
+import {
+  createSpring,
+  staggeredSprings,
+  createStaggeredSprings
+} from './spring'
 import { IndexableObject } from '../../utilities/types'
-import { createSpring, staggeredSprings } from './spring'
 
 // 3d transforms were causing weird issues in chrome,
 // especially when opacity was also being tweened,
@@ -268,8 +272,7 @@ export default ({
         scaleDifference < 0.5 &&
         opacityDifference < 0.01
       ) {
-        // this element wont be animated, but its children might be
-        return toReturn
+        return false
       }
 
       const currentTransform = Rematrix.parse(
@@ -461,13 +464,26 @@ export default ({
         springConfig,
         getOnUpdateFunc,
         initializeFlip,
-        onAnimationEnd
+        onAnimationEnd,
+        isGestureControlled
       }) as FlipData
     })
     // filter out data for all non-animated elements first
     .filter(Boolean) as FlipDataArray
 
   flipDataArray.forEach(({ initializeFlip }) => initializeFlip())
+
+  const staggerDict = flipDataArray.reduce(
+    (acc, curr) => {
+      if (acc[curr.stagger]) {
+        acc[curr.stagger].push(curr)
+      } else {
+        acc[curr.stagger] = [curr]
+      }
+      return acc
+    },
+    {} as IndexableObject
+  )
 
   if (debug) {
     return () => {}
@@ -479,7 +495,20 @@ export default ({
     if (!flipDataArray.length) {
       closureResolve([])
     }
-    flipDataArray.forEach(createSpring)
+    flipDataArray
+      .filter(flipData => {
+        return !flipData.stagger
+      })
+      .forEach(createSpring)
+    Object.keys(staggerDict)
+      .filter(Boolean)
+      .forEach(staggerKey => {
+        createStaggeredSprings(
+          staggerDict[staggerKey],
+          staggerConfig[staggerKey],
+          isGestureControlled
+        )
+      })
     return flipCompletedPromise
   }
 }
