@@ -2,7 +2,10 @@ import React, { useState, useRef } from 'react'
 import { Flipper, Flipped, Swipe } from 'react-flip-toolkit'
 import playlists from '../playlists'
 import * as Styled from './styled-components'
+import * as Core from '../core-components'
 import { usePrevious } from '../utilities'
+import PlaylistHeader from './Header'
+import playIcon from '../assets/play-icon.svg'
 
 const Drawer = ({ track, setCurrentlyViewed }) => {
   const previousTrack = usePrevious(track)
@@ -91,14 +94,30 @@ const ListItem = ({
             isGettingStarred={isGettingStarred}
             href="#"
           >
-            {track.starred && 'i am starred'}
-            <h3>{track.title}</h3>
-            <p>{track.artist}</p>
+            <Styled.PlayButton>
+              <img src={playIcon} alt="" />
+            </Styled.PlayButton>
+            <div>
+              {track.starred && 'i am starred'}
+              <h3>{track.title}</h3>
+              <p>{track.artist}</p>
+            </div>
           </Styled.CollapsedTrack>
         </Flipped>
       </Swipe>
     </Styled.CollapsedTrackContainer>
   )
+}
+
+const updateSearch = (location, searchObj) => {}
+
+export const updateLocationWithSearchParams = (location, search) => {
+  const searchParams = new URLSearchParams(location.search)
+  Object.keys(search).forEach(key => searchParams.set(key, search[key]))
+  const newLocation = Object.assign({}, location, {
+    search: searchParams.toString()
+  })
+  return newLocation
 }
 
 const Playlist = props => {
@@ -107,6 +126,17 @@ const Playlist = props => {
   )
   const [currentlyViewed, setCurrentlyViewed] = useState(null)
   const [visibleTracks, setVisibleTracks] = useState(playlist.tracks)
+
+  const headerCollapsed =
+    new URLSearchParams(props.location.search).get('headerCollapsed') ===
+    'false'
+  const toggleCollapsed = () => {
+    props.history.push(
+      updateLocationWithSearchParams(props.location, {
+        headerCollapsed
+      })
+    )
+  }
 
   const deleteTrack = id => {
     setVisibleTracks(prevState => {
@@ -126,51 +156,34 @@ const Playlist = props => {
   }
 
   return (
-    <>
-      <Flipped flipId={playlist.id}>
-        <Styled.BackgroundImgContainer>
-          <Flipped inverseFlipId={playlist.id}>
-            <div>
-              <Styled.MetaContainer>
-                <Styled.Title>{playlist.title}</Styled.Title>
-                <Styled.TagList>
-                  {playlist.tags.map(t => {
-                    return (
-                      <Flipped flipId={`${playlist.id}-${t}`} stagger>
-                        <Styled.Tag>{t}</Styled.Tag>
-                      </Flipped>
-                    )
-                  })}
-                </Styled.TagList>
-              </Styled.MetaContainer>
-              <Flipped flipId={`img-${playlist.id}`}>
-                <Styled.BackgroundImg src={playlist.src} alt="" />
-              </Flipped>
-            </div>
-          </Flipped>
-        </Styled.BackgroundImgContainer>
+    <Flipper flipKey={headerCollapsed}>
+      <PlaylistHeader
+        playlist={playlist}
+        collapsed={headerCollapsed}
+        toggleCollapsed={toggleCollapsed}
+      />
+      <Flipped transform>
+        <Styled.Container>
+          <Styled.List currentlyViewed={currentlyViewed}>
+            {playlist.tracks.map(track => (
+              <Styled.Li key={track.id}>
+                {
+                  <ListItem
+                    track={track}
+                    currentlyViewed={currentlyViewed}
+                    setCurrentlyViewed={setCurrentlyViewed}
+                    deleteTrack={deleteTrack}
+                    toggleTrackStarred={toggleTrackStarred}
+                  />
+                }
+              </Styled.Li>
+            ))}
+          </Styled.List>
+        </Styled.Container>
       </Flipped>
-
-      <Styled.Container>
-        <Styled.List currentlyViewed={currentlyViewed}>
-          {playlist.tracks.map(track => (
-            <Styled.Li key={track.id}>
-              {
-                <ListItem
-                  track={track}
-                  currentlyViewed={currentlyViewed}
-                  setCurrentlyViewed={setCurrentlyViewed}
-                  deleteTrack={deleteTrack}
-                  toggleTrackStarred={toggleTrackStarred}
-                />
-              }
-            </Styled.Li>
-          ))}
-        </Styled.List>
-      </Styled.Container>
       <Drawer track={null} setCurrentlyViewed={setCurrentlyViewed} />
-    </>
+    </Flipper>
   )
 }
 
-export default Playlist
+export default React.memo(Playlist)

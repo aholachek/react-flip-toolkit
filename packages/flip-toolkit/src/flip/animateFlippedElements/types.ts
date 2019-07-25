@@ -14,7 +14,6 @@ export interface AnimateFlippedElementsArgs extends BaseFlipArgs {
   staggerConfig: StaggerConfig
   decisionData: any
   scopedSelector: ScopedSelector
-  retainTransform: boolean
   onComplete: OnFlipperComplete
   isGestureControlled?: boolean
   containerEl: HTMLElement

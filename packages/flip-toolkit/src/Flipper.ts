@@ -27,7 +27,6 @@ class Flipper {
     flippedElementPositions: FlippedElementPositionsBeforeUpdate
     cachedOrderedFlipIds: FlippedIds
   }
-  private retainTransform: boolean = false
   private onComplete?: OnFlipperComplete
   private onStart?: OnFlipperStart
 
@@ -38,7 +37,6 @@ class Flipper {
     applyTransformOrigin: boolean
     handleEnterUpdateDelete: HandleEnterUpdateDelete
     debug: boolean
-    retainTransform: boolean
     onComplete: OnFlipperComplete
   }) {
     assign(this, options)
@@ -73,7 +71,6 @@ class Flipper {
         debug: this.debug,
         staggerConfig: this.staggerConfig,
         handleEnterUpdateDelete: this.handleEnterUpdateDelete,
-        retainTransform: this.retainTransform,
         decisionData: {
           previous: prevDecisionData,
           current: currentDecisionData

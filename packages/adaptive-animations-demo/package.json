@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "body-scroll-lock": "^2.6.4",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -10,6 +11,7 @@
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
+    "rebass": "^3.1.2",
     "sanitize.css": "^10.0.0",
     "styled-components": "^4.3.2"
   },

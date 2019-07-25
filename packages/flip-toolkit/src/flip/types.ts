@@ -37,7 +37,6 @@ export interface OnFlipKeyUpdateArgs {
   portalKey?: string
   staggerConfig?: StaggerConfig
   handleEnterUpdateDelete?: HandleEnterUpdateDelete
-  retainTransform?: boolean
   isGestureControlled?: boolean
   onComplete?: OnFlipperComplete
   onStart?: OnFlipperStart

@@ -71,13 +71,11 @@ export const invertTransformsForChildren = ({
 export const createApplyStylesFunc = ({
   element,
   invertedChildren,
-  body,
-  retainTransform
+  body
 }: {
   element: HTMLElement
   invertedChildren: InvertedChildren
   body: HTMLBodyElement
-  retainTransform: boolean
 }) => ({
   matrix,
   opacity,
@@ -100,14 +98,8 @@ export const createApplyStylesFunc = ({
     return
   }
 
-  const identityTransform = 'matrix(1, 0, 0, 1, 0, 0)'
-  const transformWithInvisibleSkew = 'matrix(1, 0.00001, -0.00001, 1, 0, 0)'
-
   let stringTransform = convertMatrix2dArrayToString(matrix)
 
-  if (retainTransform && stringTransform === identityTransform) {
-    stringTransform = transformWithInvisibleSkew
-  }
   // always apply transform, even if identity,
   // because identity might be the starting state in a FLIP
   // transition, if the element's position is controlled by transforms
@@ -153,7 +145,6 @@ export default ({
   debug,
   staggerConfig,
   decisionData = {},
-  retainTransform,
   onComplete,
   containerEl,
   isGestureControlled
@@ -335,8 +326,7 @@ export default ({
       const applyStyles = createApplyStylesFunc({
         element,
         invertedChildren,
-        body,
-        retainTransform
+        body
       })
 
       let onComplete: () => void

@@ -1,32 +1,5 @@
 import styled, { css, keyframes } from 'styled-components'
 import { Flipper } from 'react-flip-toolkit'
-export * from '../styled-components'
-
-export const MetaContainer = styled.div`
-  position: absolute;
-  bottom: 1rem;
-  width: 100%;
-  padding-left: 2rem;
-  padding-right: 2rem;
-  z-index: 1;
-`
-
-export const Title = styled.h1`
-  color: white;
-  font-size: 3rem;
-  max-width: 100vh;
-  letter-spacing: 0.1rem;
-  line-height: 1;
-`
-export const BackgroundImg = styled.img`
-  width: 30rem;
-  height: 50rem;
-  top: -2rem;
-  left: -2.5rem;
-  position: relative;
-  z-index: -1;
-  object-fit: cover;
-`
 
 export const fadeIn = keyframes`
   0% {
@@ -37,29 +10,18 @@ export const fadeIn = keyframes`
   }
 `
 
-export const BackgroundImgContainer = styled.div`
-  border-radius: 4%;
-  width: calc(100% + 2rem);
-  position: relative;
-  height: calc(100vh - 5rem);
-  left: -1rem;
-  right: -1rem;
-  overflow: hidden;
-`
-
 export const Container = styled.div`
-  background-color: #ececec;
-  padding: 0.4rem;
+  padding: 1rem;
   overflow: auto;
-  height: 600px;
+  background-color: ${({ theme }) => theme.colors.light};
+  z-index: 1;
+  position: relative;
 `
 
 export const Li = styled.li`
   position: relative;
   list-style-type: none;
-  height: 10rem;
-  margin-bottom: 0.4rem;
-  min-height: 5rem;
+  margin-bottom: 1rem;
 `
 
 export const actionMixin = props => css`
@@ -86,6 +48,10 @@ export const CollapsedTrackContainer = styled(Flipper)`
 `
 
 export const CollapsedTrack = styled.div`
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+  box-shadow: 0 2px 0 ${({ theme }) => theme.colors.medium};
   z-index: 1;
   width: 100%;
   height: 100%;
@@ -95,7 +61,6 @@ export const CollapsedTrack = styled.div`
   }
   padding: 1rem;
   cursor: pointer;
-  display: block;
   position: relative;
   top: 0;
   bottom: 0;
@@ -103,6 +68,10 @@ export const CollapsedTrack = styled.div`
   height: 100%;
   left: ${props =>
     props.isGettingDeleted ? `110%` : props.isGettingStarred ? '-50%' : 0};
+  h3 {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+  }
 `
 
 export const List = styled.ul`
@@ -126,4 +95,19 @@ export const Drawer = styled.div`
 export const DrawerContent = styled.div`
   user-select: none;
   opacity: ${({ article }) => (article ? 1 : 0)};
+`
+
+export const PlayButton = styled.button`
+  height: 2rem;
+  width: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 2rem;
+  box-shadow: none;
+  appearance: none;
+  border: none;
+  margin-right: 1rem;
+  background-color: ${({ theme }) => theme.colors.light};
+  border: 2px solid ${({ theme }) => theme.colors.dark};
 `

@@ -122,7 +122,6 @@ export interface FlipperProps {
   /** Sometimes, you'll want the animated children of Flipper to behave differently depending on the state transition — maybe only certain Flipped elements should animate in response to a particular change. By providing the decisionData prop to the Flipper component, you'll make that data available to the shouldFlip and shouldInvert methods of each child Flipped component, so they can decided for themselves whether to animate or not. */
   decisionData?: any
   handleEnterUpdateDelete?: HandleEnterUpdateDelete
-  retainTransform?: boolean
   /** This callback prop will be called when all individual FLIP animations have completed. */
   onComplete?: OnFlipperComplete
   /** This callback prop will be called when a FLIP transition begins. */

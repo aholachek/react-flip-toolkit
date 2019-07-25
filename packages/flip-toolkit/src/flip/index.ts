@@ -71,7 +71,6 @@ const onFlipKeyUpdate = ({
   staggerConfig = {},
   decisionData = {},
   handleEnterUpdateDelete,
-  retainTransform,
   isGestureControlled,
   onComplete,
   onStart
@@ -130,7 +129,6 @@ const onFlipKeyUpdate = ({
       debug,
       staggerConfig,
       scopedSelector,
-      retainTransform,
       onComplete
     }
   )

@@ -27,8 +27,7 @@ const styleId = `react-flip-toolkit-${constants.DATA_NO_TOUCH}`
 class Flipper extends Component<FlipperProps> {
   static defaultProps = {
     applyTransformOrigin: true,
-    element: 'div',
-    retainTransform: false
+    element: 'div'
   }
 
   private isGestureControlled: boolean = false
@@ -95,7 +94,6 @@ class Flipper extends Component<FlipperProps> {
         portalKey: this.props.portalKey,
         staggerConfig: this.props.staggerConfig,
         handleEnterUpdateDelete: this.props.handleEnterUpdateDelete,
-        retainTransform: this.props.retainTransform,
         decisionData: {
           previous: prevProps.decisionData,
           current: this.props.decisionData
@@ -154,7 +152,6 @@ Flipper.propTypes = {
   staggerConfig: PropTypes.object,
   decisionData: PropTypes.any,
   handleEnterUpdateDelete: PropTypes.func,
-  retainTransform: PropTypes.bool,
   onComplete: PropTypes.func,
   isGestureControlled: PropTypes.bool,
   onStart: PropTypes.func

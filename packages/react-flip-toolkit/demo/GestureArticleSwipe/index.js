@@ -251,7 +251,6 @@ const App = () => {
 
   return (
     <StyledFlipper
-      retainTransform
       flipKey={`${currentlyViewed}-${visibleArticles.map(a => a.id)}`}
     >
       <StyledContainer>

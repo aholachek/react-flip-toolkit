@@ -62,38 +62,57 @@ const playlists = [
     src: Aussie,
     title: 'Top of the charts',
     id: 1,
-    tags: ['hip hop', 'country', 'pop']
+    tags: ['hip hop', 'country', 'pop'],
+    description:
+      'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'
   },
   {
     src: Golden,
     title: "I'm in Love",
     id: 2,
-    tags: ['pop', 'shoe gaze', 'rock']
+    tags: ['pop', 'broadway', 'rock'],
+    description:
+      'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'
   },
   {
     src: BlackDoodle,
     title: 'Fitness Beats',
     id: 3,
-    tags: ['hip hop', 'rock', 'metal']
+    tags: ['hip hop', 'rock', 'metal'],
+    description:
+      'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'
   },
   {
     src: Friends,
     title: 'Out with the boys',
     id: 4,
-    tags: ['pop', 'jazz', 'rock']
+    tags: ['pop', 'jazz', 'rock'],
+    description:
+      'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'
   },
   {
     src: Samoyed,
     title: 'Deep thoughts',
     id: 5,
-    tags: ['instrumental', 'new age']
+    tags: ['instrumental', 'new age', 'spa'],
+    description:
+      'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'
   },
-  { src: Pug, title: 'Life is pain', id: 6, tags: ['ballads', 'grunge'] },
+  {
+    src: Pug,
+    title: 'Life is pain',
+    id: 6,
+    tags: ['ballads', 'grunge', 'screamo'],
+    description:
+      'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'
+  },
   {
     src: Corgi,
     title: 'Party Time',
     id: 7,
-    tags: ['hip hop', 'country', 'r&b']
+    tags: ['hip hop', 'country', 'r&b'],
+    description:
+      'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'
   }
 ]
 

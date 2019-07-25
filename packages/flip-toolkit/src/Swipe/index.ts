@@ -87,9 +87,7 @@ const finishFlip = ({
       })
     })
     .filter(Boolean)
-  return Promise.all(onFinishedPromises).then(() => {
-    deleteFlipInitiatorData()
-  })
+  return Promise.all(onFinishedPromises).then(deleteFlipInitiatorData)
 }
 
 const cancelFlip = ({
@@ -191,9 +189,10 @@ class Swipe {
       inProgressAnimations,
       onClick,
       setIsGestureInitiated,
-      flipId,
       ...rest
     } = this.props
+
+    const flipId = String(this.props.flipId)
 
     // previous animation was probably cancelled
     if (
@@ -211,18 +210,31 @@ class Swipe {
     const gestureFlipOnThisElementInProgress =
       Boolean(this.flipInitiatorData) && inProgressAnimations[flipId]
 
+    const onFlipCancelled = () => {
+      this.flipInitiatorData &&
+        this.flipInitiatorData.cancelFlip({
+          props: this.props,
+          prevProps: this.prevProps
+        })
+      delete this.flipInitiatorData
+    }
+
     const gestureIsSimpleClick =
-      !gestureFlipOnThisElementInProgress &&
-      down === false &&
-      Math.abs(deltaX) < 3 &&
-      Math.abs(deltaY) < 3
+      down === false && Math.abs(deltaX) < 3 && Math.abs(deltaY) < 3
     if (gestureIsSimpleClick) {
+      if (gestureFlipOnThisElementInProgress) {
+        const animationIsCancelling =
+          this.temporarilyInvalidFlipIds.indexOf(flipId) === -1
+        if (animationIsCancelling) {
+          onFlipCancelled()
+        }
+      }
       if (onClick) return onClick(event)
     }
 
     if (first) {
       this.temporarilyInvalidFlipIds = []
-    } else if (this.temporarilyInvalidFlipIds.indexOf(String(flipId)) > -1) {
+    } else if (this.temporarilyInvalidFlipIds.indexOf(flipId) > -1) {
       // require user to mouseup before doing another action
       return
     }
@@ -241,7 +253,10 @@ class Swipe {
         // @ts-ignore
         if (!rest[direction]) return null
         return Object.assign(
-          { direction, threshold: defaultCompleteThreshhold },
+          {
+            direction,
+            threshold: this.props.threshold || defaultCompleteThreshhold
+          },
           // @ts-ignore
           rest[direction]
         )
@@ -273,9 +288,7 @@ class Swipe {
         }
 
         Object.keys(inProgressAnimations).forEach(inProgressAnimationFlipId => {
-          inProgressAnimations[
-            inProgressAnimationFlipId
-          ].flipInitiator = String(flipId)
+          inProgressAnimations[inProgressAnimationFlipId].flipInitiator = flipId
         })
       }
       setTimeout(afterFLIPHasBeenInitiated, 0)
@@ -299,14 +312,6 @@ class Swipe {
     if (!this.flipInitiatorData) {
       console.warn('flip initiator data missing')
       return
-    }
-    const onFlipCancelled = () => {
-      this.flipInitiatorData &&
-        this.flipInitiatorData.cancelFlip({
-          props: this.props,
-          prevProps: this.prevProps
-        })
-      delete this.flipInitiatorData
     }
 
     const returnToUnFlippedState = () => {

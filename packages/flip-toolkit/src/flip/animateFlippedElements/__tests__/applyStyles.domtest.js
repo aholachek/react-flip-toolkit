@@ -180,24 +180,4 @@ describe('createApplyStylesFunc', () => {
 
     expect(element.style.transform).to.equal('matrix(1, 0, 0, 1, 0, 0)')
   })
-
-  it('should keep a tiny transform on the last tick of the animation if retainTransform = true', () => {
-    const body = document.querySelector('body')
-    const element = document.querySelector('[data-flip-id="id-1"]')
-    const invertedChildren = []
-
-    const applyStyles = createApplyStylesFunc({
-      element,
-      invertedChildren,
-      body,
-      retainTransform: true
-    })
-    applyStyles({
-      matrix: [1, 0, 0, 1, 0, 0]
-    })
-
-    expect(element.style.transform).to.equal(
-      'matrix(1, 1e-05, -1e-05, 1, 0, 0)'
-    )
-  })
 })
