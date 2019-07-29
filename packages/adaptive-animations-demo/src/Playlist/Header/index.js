@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { Flipped, Swipe } from 'react-flip-toolkit'
-import * as Styled from './styled-components'
+import * as Styled from './styled-elements'
 import * as Core from '../../core-components'
-import { Box, Flex } from 'rebass'
 
 const PlaylistHeader = ({ playlist, collapsed, toggleCollapsed }) => {
   const swipeConfig = {
@@ -11,44 +10,37 @@ const PlaylistHeader = ({ playlist, collapsed, toggleCollapsed }) => {
     cancelFlip: toggleCollapsed
   }
   return (
-    <Swipe down={collapsed && swipeConfig} up={!collapsed && swipeConfig}>
-      <Styled.HeaderContainer collapsed={collapsed}>
+    <Styled.HeaderContainer collapsed={collapsed}>
+      <Swipe down={collapsed && swipeConfig} up={!collapsed && swipeConfig}>
         <Flipped flipId={playlist.id}>
           <Styled.BackgroundImgContainer collapsed={collapsed}>
             <Flipped inverseFlipId={playlist.id}>
-              <Flex flexDirection="row" alignItems="center">
-                <Flipped flipId={`img-${playlist.id}`}>
-                  <Styled.BackgroundImg
-                    src={playlist.src}
+              <div>
+                <Flipped flipId={`${playlist.id}-img`}>
+                  <Core.PreloadedImg
+                    id={`img-${playlist.id}`}
                     alt=""
-                    collapsed={collapsed}
                   />
                 </Flipped>
-              </Flex>
+              </div>
             </Flipped>
           </Styled.BackgroundImgContainer>
         </Flipped>
-        <Styled.MetaContainer collapsed={collapsed}>
-          <Box px="1rem" pt="1rem">
-            <Styled.Title collapsed={collapsed}>{playlist.title}</Styled.Title>
-            <Core.TagList hide={collapsed}>
+      </Swipe>
+      <Swipe down={collapsed && swipeConfig} up={!collapsed && swipeConfig}>
+        <Flipped flipId="meta-container">
+          <Styled.MetaContainer collapsed={collapsed}>
+            <Styled.Title>{playlist.title}</Styled.Title>
+            <Core.TagList>
               {playlist.tags.map((t, i) => {
-                return (
-                  <Flipped flipId={`${i}-tag`}>
-                    <Core.Tag>
-                      <Flipped inverseFlipId={`${i}-tag`} scale>
-                        <span>{t}</span>
-                      </Flipped>
-                    </Core.Tag>
-                  </Flipped>
-                )
+                return <Core.Tag>{t}</Core.Tag>
               })}
             </Core.TagList>
             <p>{playlist.description}</p>
-          </Box>
-        </Styled.MetaContainer>
-      </Styled.HeaderContainer>
-    </Swipe>
+          </Styled.MetaContainer>
+        </Flipped>
+      </Swipe>
+    </Styled.HeaderContainer>
   )
 }
 

@@ -15,8 +15,10 @@ const configProps = PropTypes.oneOfType([
 
 const swipePropTypes = {
   children: PropTypes.node.isRequired,
-  mouseEvents: PropTypes.bool,
+  touchOnly: PropTypes.bool,
   onClick: PropTypes.func,
+  onUp: PropTypes.func,
+  onDown: PropTypes.func,
   threshold: PropTypes.number,
   right: configProps,
   left: configProps,
@@ -29,15 +31,7 @@ type SwipeComponentProps = Omit<SwipeProps, 'flipId'> & {
 }
 
 class SwipeComponent extends Component<SwipeComponentProps> {
-  // maintain a list of flip ids that have a mousedown but not a mouseup event
-  // so that once the flip has passed the inflection point, the user needs
-  // to release the gesture before they can do anything else
   static propTypes = swipePropTypes
-
-  static defaultProps = {
-    onClick: () => {},
-    mouseEvents: true
-  }
 
   processProps = (props: SwipeComponentProps) => ({
     ...props,

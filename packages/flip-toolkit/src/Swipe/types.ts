@@ -31,6 +31,9 @@ export type SetIsGestureInitiated = (isGestureInitiated: boolean) => void
 
 interface BasicSwipeProps {
   onClick?: OnNonSwipeClick
+  onUp?: () => void
+  onDown?: () => void
+  touchOnly?: false
   threshold?: number
   flipId: FlipId
   inProgressAnimations: InProgressAnimations

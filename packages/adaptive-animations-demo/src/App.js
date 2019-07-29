@@ -1,57 +1,77 @@
 import React, { useEffect } from 'react'
 import BrowsePlaylists from './BrowsePlaylists'
 import Playlist from './Playlist'
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  Redirect
-} from 'react-router-dom'
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 import { Flipper } from 'react-flip-toolkit'
-import styled, { createGlobalStyle, ThemeProvider } from 'styled-components'
+import { Global, css } from '@emotion/core'
+import styled from '@emotion/styled'
+import playlists from './playlists'
 
-const ToggleVisible = styled.div`
-  display: ${props => (props.visible ? 'block' : 'none')};
+const Hidden = styled.div`
+  display: none;
+`
+
+const RouteContainer = styled.div`
+  position: relative;
+  max-width: 800px;
+  margin: auto;
+  overflow: hidden;
+  height: 100vh;
 `
 
 const breakpoint = 768
 
-const theme = {
-  colors: {
-    light: '#f2f4f6',
-    medium: '#e0e4ea',
-    dark: '#0d3f67'
+const globalStyles = css`
+  :root {
+    --light: #f2f4f6;
+    --dark: #242223;
   }
-}
 
-const GlobalStyle = createGlobalStyle`
-@import url('https://fonts.googleapis.com/css?family=DM+Sans:400,700&display=swap');
-html {
-  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-}
-body {
-  ${'' /* only works in certain browsers */}
-  overscroll-behavior: contain;
-  line-height: 1.4;
-  overflow: hidden;
-  @media(min-width: ${breakpoint}px){
-    overflow: visible;
+  @import url('https://fonts.googleapis.com/css?family=DM+Sans:400,700&display=swap');
+  html {
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+      Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
+      sans-serif;
   }
-  background-color: ${({ theme }) => theme.colors.light};
-  color: ${props => props.theme.colors.dark};
-}
+  body {
+    ${'' /* only works in certain browsers */}
+    overscroll-behavior: contain;
+    line-height: 1.4;
+    overflow: hidden;
+    @media (min-width: ${breakpoint}px) {
+      overflow: visible;
+    }
+    color: var(--dark);
+  }
 
-h1,h2,h3,h4,h5,p{
-  margin-top: 0;
-  margin-bottom: 1rem;
-  color: ${props => props.theme.colors.dark};
-}
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  p {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--dark);
+  }
 
- p{
-   margin-bottom: 0;
- }
-
+  p {
+    margin-bottom: 0;
+  }
 `
+
+const FlippedRouteSwitcher = props => {
+  return (
+    <Flipper
+      flipKey={props.location}
+      spring="gentle"
+      decisionData={props.match}
+    >
+      <Route path="/playlists/:id" exact component={BrowsePlaylists} />
+      <Route path="/playlists/:id/tracks" exact component={Playlist} />
+    </Flipper>
+  )
+}
 
 function Routes(props) {
   useEffect(() => {
@@ -64,6 +84,7 @@ function Routes(props) {
     )
     return () => {}
   }, [])
+
   return (
     <Route
       path="/"
@@ -78,19 +99,7 @@ function Routes(props) {
 
             <Route
               path="/playlists/:id/:tracks?"
-              render={props => {
-                const showTracks = props.match.params.tracks === 'tracks'
-                return (
-                  <Flipper flipKey={props.location} decisionData={props.match}>
-                    <ToggleVisible visible={!showTracks}>
-                      <BrowsePlaylists {...props} />
-                    </ToggleVisible>
-                    <ToggleVisible visible={showTracks}>
-                      <Playlist {...props} />
-                    </ToggleVisible>
-                  </Flipper>
-                )
-              }}
+              component={FlippedRouteSwitcher}
             />
           </>
         )
@@ -101,23 +110,19 @@ function Routes(props) {
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <>
-        <GlobalStyle />
-        <div
-          style={{
-            maxWidth: '25rem',
-            margin: 'auto',
-            overflow: 'hidden',
-            height: '100vh'
-          }}
-        >
-          <Router>
-            <Routes />
-          </Router>
-        </div>
-      </>
-    </ThemeProvider>
+    <>
+      <Global styles={globalStyles} />
+      <RouteContainer>
+        <Router>
+          <Routes />
+        </Router>
+      </RouteContainer>
+      <Hidden>
+        {playlists.map(({ src, id }) => {
+          return <img src={src} id={`img-${id}`} alt="" />
+        })}
+      </Hidden>
+    </>
   )
 }
 

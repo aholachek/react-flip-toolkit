@@ -46,17 +46,15 @@
     "version": "npm run build"
   },
   "dependencies": {
-    "flip-toolkit": "6.6.9",
-    "react": ">= 16.3.0",
-    "react-dom": ">= 16.3.0",
-    "react-icons": "^3.7.0",
-    "styled-components": "^4.3.2"
+    "flip-toolkit": "6.6.9"
   },
   "peerDependencies": {
     "prop-types": "^15.x.x",
-    "react": "16.x"
+    "react": "16.x",
+    "react-dom": ">= 16.x"
   },
   "devDependencies": {
+    "react-icons": "^3.7.0",
     "@babel/core": "^7.5.0",
     "@babel/plugin-proposal-class-properties": "^7.5.0",
     "@babel/plugin-transform-typescript": "^7.4.5",

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import styled, { css } from 'styled-components'
+import styled from '@emotion/styled'
+import { css } from '@emotion/core'
 import PropTypes from 'prop-types'
 import { Flipper, Flipped, Swipe } from '../../src'
 import Aussie from '../assets/dogs/australian-shepard.jpg'

@@ -1,4 +1,5 @@
-import styled, { css } from 'styled-components'
+import React, { useRef, useLayoutEffect } from 'react'
+import styled, { css } from '@emotion/styled'
 
 export const TagList = styled.ul`
   margin: 0 0 1rem 0;
@@ -8,18 +9,33 @@ export const TagList = styled.ul`
 
 export const Tag = styled.li`
   list-style-type: none;
-  background-color: ${({ theme }) => theme.colors.medium};
+  color: white;
+  border: 1px solid white;
+  border-radius: 100px;
   display: inline-block;
   margin-right: 0.5rem;
-  padding: 0.15rem 0.4rem;
+  padding: 0.05rem 0.5rem;
   overflow: hidden;
-  -webkit-font-smoothing: antialiased;
   span {
     display: inline-block;
-    -webkit-font-smoothing: antialiased;
   }
 `
 
 export const ToggleVisibility = styled.div`
   display: ${props => (props.visible ? 'none' : 'block')};
 `
+
+export const PreloadedImg = ({ id, ...rest }) => {
+  const containerRef = useRef(null)
+  useLayoutEffect(() => {
+    const el = document.getElementById(id)
+    const elCopy = el.cloneNode()
+    const elParent = el.parentNode
+    Object.keys(rest).forEach(key => {
+      el.setAttribute(key, rest[key])
+    })
+    containerRef.current.appendChild(el)
+    elParent.appendChild(elCopy)
+  }, [])
+  return <div ref={containerRef}></div>
+}

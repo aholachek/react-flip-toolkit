@@ -132,12 +132,11 @@ const onFlipKeyUpdate = ({
       onComplete
     }
   )
+  if (onStart) onStart(containerEl, decisionData)
 
   // the function handles putting flipped elements back in their original positions
   // and returns another function to actually call the flip animation
   const flip = animateFlippedElements(animateFlippedElementsArgs)
-
-  if (onStart) onStart(containerEl, decisionData)
 
   if (handleEnterUpdateDelete) {
     handleEnterUpdateDelete({

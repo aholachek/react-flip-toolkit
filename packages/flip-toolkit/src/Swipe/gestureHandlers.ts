@@ -1,19 +1,11 @@
 // edited from https://github.com/react-spring/react-use-gesture/blob/v4.0.7/index.js
 // TODO: stop using ts-ignore everywhere
 import { OnAction, SwipeEvent } from './types'
-import { SyntheticEvent } from 'react'
 
 const touchMove = 'touchmove'
 const touchEnd = 'touchend'
 const mouseMove = 'mousemove'
 const mouseUp = 'mouseup'
-
-const cancelEvent = (event: SyntheticEvent | TouchEvent) => {
-  // @ts-ignore
-  const realEvent = event.nativeEvent ? event.nativeEvent : event
-  realEvent.preventDefault()
-  realEvent.stopPropagation()
-}
 
 const initialState = {
   event: undefined,
@@ -36,7 +28,7 @@ const initialState = {
 const defaultProps = {
   window,
   touch: true,
-  mouse: true,
+  mouse: false,
   onAction: undefined,
   onDown: undefined,
   onUp: undefined
@@ -93,7 +85,6 @@ function handlers(set: Set, props: Props) {
     })
   }
   const handleDown = (event: any) => {
-    cancelEvent(event)
     const { target, pageX, pageY, shiftKey } = event.touches
       ? event.touches[0]
       : event
@@ -124,7 +115,6 @@ function handlers(set: Set, props: Props) {
     })
   }
   const handleMove = (event: any) => {
-    cancelEvent(event)
     const { pageX, pageY, shiftKey } = event.touches ? event.touches[0] : event
     // @ts-ignore
     set(state => {
@@ -160,14 +150,14 @@ function handlers(set: Set, props: Props) {
 
   const onDown = (event: SwipeEvent): void => {
     if (props.mouse) {
-      props.window.addEventListener(mouseMove, handleMove, { passive: false })
+      props.window.addEventListener(mouseMove, handleMove, { passive: true })
       // @ts-ignore
-      props.window.addEventListener(mouseUp, onUp, { passive: false })
+      props.window.addEventListener(mouseUp, onUp, { passive: true })
     }
     if (props.touch) {
-      props.window.addEventListener(touchMove, handleMove, { passive: false })
+      props.window.addEventListener(touchMove, handleMove, { passive: true })
       // @ts-ignore
-      props.window.addEventListener(touchEnd, onUp, { passive: false })
+      props.window.addEventListener(touchEnd, onUp, { passive: true })
     }
 
     handleDown(event)
@@ -177,18 +167,18 @@ function handlers(set: Set, props: Props) {
     if (props.mouse) {
       props.window.removeEventListener(mouseMove, handleMove, {
         // @ts-ignore
-        passive: false
+        passive: true
       })
       // @ts-ignore
-      props.window.removeEventListener(mouseUp, onUp, { passive: false })
+      props.window.removeEventListener(mouseUp, onUp, { passive: true })
     }
     if (props.touch) {
       props.window.removeEventListener(touchMove, handleMove, {
         // @ts-ignore
-        passive: false
+        passive: true
       })
-      // @ts-ignore
-      props.window.removeEventListener(touchEnd, onUp, { passive: false })
+      // @ts-ignores
+      props.window.removeEventListener(touchEnd, onUp, { passive: true })
     }
   }
 

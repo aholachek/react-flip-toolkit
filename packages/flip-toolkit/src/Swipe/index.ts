@@ -175,7 +175,10 @@ class Swipe {
   public prevProps = {}
 
   handlers: SwipeEventHandlers = gestureHandlers({
-    onAction: this.onAction.bind(this)
+    onAction: this.onAction.bind(this),
+    onUp: this.props.onUp,
+    onDown: this.props.onDown,
+    mouse: !this.props.touchOnly
   }) as SwipeEventHandlers
 
   onAction({
@@ -238,6 +241,11 @@ class Swipe {
       // require user to mouseup before doing another action
       return
     }
+
+    if (!inProgressAnimations) {
+      // developer probably didn't update the flipKey properly after a gesture
+      return
+    }
     const generalFlipInProgress = Boolean(inProgressAnimations[flipId])
 
     const gestureIsTooSmallToTriggerFLIP =
@@ -283,7 +291,6 @@ class Swipe {
         // maybe gesture occurred but nothing changed position
         if (!inProgressAnimations[flipId]) {
           delete this.flipInitiatorData
-          console.log('nothing changed')
           return
         }
 

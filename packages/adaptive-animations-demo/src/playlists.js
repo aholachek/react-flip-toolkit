@@ -1,9 +1,19 @@
-import Aussie from './assets/australian-shepard.jpg'
-import Corgi from './assets/corgi.jpg'
-import Golden from './assets/golden-with-flower.jpg'
+import BorderColliePrimitive from './assets/border-collie.svg'
+import FrenchPrimitive from './assets/french-bulldog.svg'
+import OceanPrimitive from './assets/ocean.svg'
+import BlackDoodlePrimitive from './assets/black-doodle.svg'
+import PugPrimitive from './assets/pug.svg'
+import Pug2Primitive from './assets/pug-2.svg'
+import HuskyPrimitive from './assets/husky.svg'
+import SamoyedPrimitive from './assets/samoyed.svg'
+
+import BorderCollie from './assets/border-collie.jpg'
+import French from './assets/french-bulldog.jpg'
+import Ocean from './assets/ocean.jpg'
 import BlackDoodle from './assets/black-doodle.jpg'
 import Pug from './assets/pug.jpg'
-import Friends from './assets/friends.jpg'
+import Pug2 from './assets/pug-2.jpg'
+import Husky from './assets/husky.jpg'
 import Samoyed from './assets/samoyed.jpg'
 
 const sampleTracks = [
@@ -21,13 +31,13 @@ const sampleTracks = [
   },
   {
     id: 3,
-    title: 'Livin on a Prayer (for some treats)',
+    title: 'Livin on a Prayer (for a walk)',
     artist: 'Bon Jovi',
     details: ''
   },
   {
     id: 4,
-    title: "Don't you (forget about taking me for a walk)",
+    title: "Don't you forget about treats",
     artist: 'Simple Minds',
     details: ''
   },
@@ -45,13 +55,13 @@ const sampleTracks = [
   },
   {
     id: 7,
-    title: 'Livin on a Prayer (for some treats)',
+    title: 'Livin on a Prayer (for a walk)',
     artist: 'Bon Jovi',
     details: ''
   },
   {
     id: 8,
-    title: "Don't you (forget about taking me for a walk)",
+    title: "Don't you forget about treats",
     artist: 'Simple Minds',
     details: ''
   }
@@ -59,57 +69,65 @@ const sampleTracks = [
 
 const playlists = [
   {
-    src: Aussie,
-    title: 'Top of the charts',
+    src: BorderCollie,
+    primitive: BorderColliePrimitive,
+    title: 'High Energy',
     id: 1,
     tags: ['hip hop', 'country', 'pop'],
     description:
       'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'
   },
   {
-    src: Golden,
-    title: "I'm in Love",
+    src: Ocean,
+    primitive: OceanPrimitive,
+    title: 'Summer fun',
     id: 2,
     tags: ['pop', 'broadway', 'rock'],
     description:
       'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'
   },
+
+  {
+    src: Pug2,
+    primitive: Pug2Primitive,
+    title: 'Who am I',
+    id: 4,
+    tags: ['opera', 'polka', 'classical'],
+    description:
+      'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'
+  },
   {
     src: BlackDoodle,
+    primitive: BlackDoodlePrimitive,
     title: 'Fitness Beats',
-    id: 3,
+    id: 5,
     tags: ['hip hop', 'rock', 'metal'],
     description:
       'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'
   },
   {
-    src: Friends,
-    title: 'Out with the boys',
-    id: 4,
+    src: Husky,
+    primitive: HuskyPrimitive,
+    title: 'Walk in the Park',
+    id: 6,
     tags: ['pop', 'jazz', 'rock'],
     description:
       'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'
   },
   {
     src: Samoyed,
+    primitive: SamoyedPrimitive,
     title: 'Deep thoughts',
-    id: 5,
+    id: 7,
     tags: ['instrumental', 'new age', 'spa'],
     description:
       'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'
   },
   {
-    src: Pug,
-    title: 'Life is pain',
-    id: 6,
-    tags: ['ballads', 'grunge', 'screamo'],
-    description:
-      'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'
-  },
-  {
-    src: Corgi,
-    title: 'Party Time',
-    id: 7,
+    src: French,
+    primitive: FrenchPrimitive,
+    title: 'Wake Me Up',
+    id: 8,
     tags: ['hip hop', 'country', 'r&b'],
     description:
       'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'
