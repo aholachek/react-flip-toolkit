@@ -29,42 +29,26 @@ const getMovementScalar = ({
   return normalized[direction]
 }
 
-// https://github.com/lodash/lodash/blob/master/clamp.js
-function clamp(num: number, lower: number, upper: number) {
-  num = +num
-  lower = +lower
-  upper = +upper
-  lower = lower === lower ? lower : 0
-  upper = upper === upper ? upper : 0
-  if (num === num) {
-    num = num <= upper ? num : upper
-    num = num >= lower ? num : lower
-  }
-  return num
-}
-
 const finishFlip = ({
   inProgressAnimations,
-  velocity,
   deleteFlipInitiatorData,
-  flipInitiator
+  flipInitiator,
+  velocity = 1
 }: {
   inProgressAnimations: InProgressAnimations
-  velocity: number
   deleteFlipInitiatorData: () => void
   flipInitiator: FlipId
+  velocity: number
 }) => {
-  const clampedVelocity = velocity !== undefined && clamp(velocity, 0.025, 15)
   const onFinishedPromises = Object.keys(inProgressAnimations)
     .map(flipId => {
       const { spring, onAnimationEnd } = inProgressAnimations[flipId]
       if (!spring) {
         return
       }
-      if (clampedVelocity) {
-        spring.setVelocity(clampedVelocity)
-      }
-      spring.setEndValue(1)
+      console.log({ velocity })
+      spring.setVelocity(velocity).setEndValue(1)
+
       return new Promise(resolve => {
         spring.addOneTimeListener({
           onSpringAtRest: (spring: Spring) => {
@@ -91,7 +75,7 @@ const finishFlip = ({
 }
 
 const cancelFlip = ({
-  velocity,
+  velocity = 1,
   inProgressAnimations,
   onFlipCancelled
 }: {
@@ -99,8 +83,6 @@ const cancelFlip = ({
   inProgressAnimations: InProgressAnimations
   onFlipCancelled: () => void
 }) => {
-  const clampedVelocity = velocity !== undefined && clamp(velocity, 0.025, 30)
-
   const onCompletePromises: Array<Promise<void>> = Object.keys(
     inProgressAnimations
   ).map(flipId => {
@@ -108,9 +90,8 @@ const cancelFlip = ({
     if (!spring) {
       return Promise.resolve()
     }
-    if (clampedVelocity) {
-      spring.setVelocity(clampedVelocity)
-    }
+
+    spring.setVelocity(velocity)
 
     spring.setEndValue(0)
     return new Promise(resolve => {
@@ -168,17 +149,15 @@ const getDirection = (deltaX: number, deltaY: number) => {
 
 class Swipe {
   constructor(public props: SwipeProps) {}
-
-  private temporarilyInvalidFlipIds: string[] = []
+  // prevent people from using the same gesture to do multiple things
+  private isCompletingFlipIds: string[] = []
   private flipInitiatorData: FlipInitiatorData | undefined = undefined
 
   public prevProps = {}
 
   handlers: SwipeEventHandlers = gestureHandlers({
     onAction: this.onAction.bind(this),
-    onUp: this.props.onUp,
-    onDown: this.props.onDown,
-    mouse: !this.props.touchOnly
+    config: this.props
   }) as SwipeEventHandlers
 
   onAction({
@@ -227,7 +206,7 @@ class Swipe {
     if (gestureIsSimpleClick) {
       if (gestureFlipOnThisElementInProgress) {
         const animationIsCancelling =
-          this.temporarilyInvalidFlipIds.indexOf(flipId) === -1
+          this.isCompletingFlipIds.indexOf(flipId) === -1
         if (animationIsCancelling) {
           onFlipCancelled()
         }
@@ -236,8 +215,8 @@ class Swipe {
     }
 
     if (first) {
-      this.temporarilyInvalidFlipIds = []
-    } else if (this.temporarilyInvalidFlipIds.indexOf(flipId) > -1) {
+      this.isCompletingFlipIds = []
+    } else if (this.isCompletingFlipIds.indexOf(flipId) > -1) {
       // require user to mouseup before doing another action
       return
     }
@@ -370,7 +349,7 @@ class Swipe {
 
     // gesture has gone far enough, animation can complete
     if (percentage > this.flipInitiatorData.threshold) {
-      this.temporarilyInvalidFlipIds.push(String(flipId))
+      this.isCompletingFlipIds.push(String(flipId))
       return finishFlip({
         flipInitiator: flipId,
         velocity,
@@ -378,7 +357,7 @@ class Swipe {
         deleteFlipInitiatorData: () => delete this.flipInitiatorData
       })
     }
-    return updateSprings({
+    updateSprings({
       percentage,
       inProgressAnimations
     })

@@ -139,6 +139,23 @@ class Spring {
     return this
   }
 
+  setCurrentValue(currentValue) {
+    this._startValue = currentValue
+    this._currentState.position = currentValue
+    for (var i = 0, len = this.listeners.length; i < len; i++) {
+      var listener = this.listeners[i]
+      listener.onSpringUpdate && listener.onSpringUpdate(this)
+    }
+    return this
+  }
+
+  setAtRest() {
+    this._endValue = this._currentState.position
+    this._tempState.position = this._currentState.position
+    this._currentState.velocity = 0
+    return this
+  }
+
   /**
    * Enable overshoot clamping. This means that the Spring will stop
    * immediately when it reaches its resting position regardless of

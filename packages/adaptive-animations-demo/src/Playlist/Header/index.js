@@ -20,24 +20,23 @@ const PlaylistHeader = ({ playlist, collapsed, toggleCollapsed }) => {
                   <Core.PreloadedImg
                     id={`img-${playlist.id}`}
                     alt=""
+                    collapsed={collapsed}
                   />
                 </Flipped>
               </div>
             </Flipped>
+            <Flipped flipId="meta-container">
+              <Styled.MetaContainer collapsed={collapsed}>
+                <Styled.Title>{playlist.title}</Styled.Title>
+                <Core.TagList>
+                  {playlist.tags.map((t, i) => {
+                    return <Core.Tag>{t}</Core.Tag>
+                  })}
+                </Core.TagList>
+                <p>{playlist.description}</p>
+              </Styled.MetaContainer>
+            </Flipped>
           </Styled.BackgroundImgContainer>
-        </Flipped>
-      </Swipe>
-      <Swipe down={collapsed && swipeConfig} up={!collapsed && swipeConfig}>
-        <Flipped flipId="meta-container">
-          <Styled.MetaContainer collapsed={collapsed}>
-            <Styled.Title>{playlist.title}</Styled.Title>
-            <Core.TagList>
-              {playlist.tags.map((t, i) => {
-                return <Core.Tag>{t}</Core.Tag>
-              })}
-            </Core.TagList>
-            <p>{playlist.description}</p>
-          </Styled.MetaContainer>
         </Flipped>
       </Swipe>
     </Styled.HeaderContainer>

@@ -29,18 +29,43 @@ type DirectionConfig = Record<Direction, OnSwipeConfigObject>
 
 export type SetIsGestureInitiated = (isGestureInitiated: boolean) => void
 
-interface BasicSwipeProps {
+export interface State {
+  event?: SwipeEvent
+  target: EventTarget | null
+  time: number
+  xy: [number, number]
+  delta: [number, number]
+  initial: [number, number]
+  previous: [number, number]
+  direction: [number, number]
+  local: [number, number]
+  lastLocal: [number, number]
+  velocity: number
+  distance: number
+  down: boolean
+  first: boolean
+  shiftKey: boolean
+}
+
+// config for gestureHandlers function
+export interface Config {
+  onUp?: (state: State) => void
+  onDown?: (state: State) => void
+  touchOnly?: boolean
+  maxWidth: number
+  window: Window
+}
+
+// config for Swipe wrapper
+type BasicSwipeProps = Config & {
   onClick?: OnNonSwipeClick
-  onUp?: () => void
-  onDown?: () => void
-  touchOnly?: false
   threshold?: number
   flipId: FlipId
   inProgressAnimations: InProgressAnimations
   setIsGestureInitiated: SetIsGestureInitiated
 }
 
-export type SwipeProps = BasicSwipeProps & DirectionConfig
+export type SwipeProps = BasicSwipeProps & DirectionConfig & { window: Window }
 
 export interface SwipeEventHandlers {
   onMouseDown: (event: SwipeEvent) => void

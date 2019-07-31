@@ -24,8 +24,6 @@ const linkedCards = playlists
 
 const Card = React.memo(
   ({
-    src,
-    primitive,
     id,
     title,
     tags,
@@ -61,28 +59,35 @@ const Card = React.memo(
           swipeInProgressOnThisCard={swipeInProgressOnThisCard}
           draggable="false"
         >
-          {/* <Flipped inverseFlipId={id}>
-            <Styled.ImgContainer ref={imgContainerRef}>
-              <Flipped flipId={`${id}-img`}>
-                <Core.PreloadedImg id={`img-${id}`} draggable="false" />
-              </Flipped>
-            </Styled.ImgContainer>
-          </Flipped> */}
+          <Flipped inverseFlipId={id}>
+            <div>
+              <Styled.ImgContainer ref={imgContainerRef} draggable="false">
+                <Flipped flipId={`${id}-img`}>
+                  <Core.PreloadedImg id={`img-${id}`} draggable="false" />
+                </Flipped>
+              </Styled.ImgContainer>
 
-          {/* <Flipped inverseFlipId={id} translate>
-            <div> */}
-          <Flipped flipId={`${id}-meta`}>
-            <Styled.Meta isCurrentCard={isCurrentCard}>
-              <Styled.Title>{title}</Styled.Title>
-              <Core.TagList>
-                {tags.map((t, i) => (
-                  <Core.Tag>{t}</Core.Tag>
-                ))}
-              </Core.TagList>
-            </Styled.Meta>
+              <Styled.Meta
+                swipeInProgressOnThisCard={swipeInProgressOnThisCard}
+                isCurrentCard={isCurrentCard}
+              >
+                <Flipped flipId={`${id}-title`}>
+                  <Styled.Title
+                    swipeInProgressOnThisCard={swipeInProgressOnThisCard}
+                  >
+                    {title}
+                  </Styled.Title>
+                </Flipped>
+                <Flipped flipId={`${id}-taglist`}>
+                  <Core.TagList>
+                    {tags.map((t, i) => (
+                      <Core.Tag>{t}</Core.Tag>
+                    ))}
+                  </Core.TagList>
+                </Flipped>
+              </Styled.Meta>
+            </div>
           </Flipped>
-          {/* </div>
-          </Flipped> */}
         </Styled.Card>
       </Flipped>
     )
@@ -143,7 +148,7 @@ const GestureCardSwipe = ({ history, match, renderFlipped }) => {
 
   return (
     <>
-      <Styled.Header>
+      {/* <Styled.Header>
         <svg
           aria-hidden="true"
           focusable="false"
@@ -157,7 +162,7 @@ const GestureCardSwipe = ({ history, match, renderFlipped }) => {
           ></path>
         </svg>
         Playlists for Dogs
-      </Styled.Header>
+      </Styled.Header> */}
       <Styled.Container>
         <Styled.List>
           {cardsToRender.map((card, i) => {

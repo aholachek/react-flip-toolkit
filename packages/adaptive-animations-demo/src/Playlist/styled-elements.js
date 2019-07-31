@@ -1,4 +1,5 @@
 import styled from '@emotion/styled'
+import { keyframes } from '@emotion/core'
 import { Flipper } from 'react-flip-toolkit'
 
 export const Li = styled.li`
@@ -48,6 +49,16 @@ export const List = styled.ul`
   background-color: white;
 `
 
+const pulse = keyframes`
+ from {
+  transform: scale(1);
+  opacity: .8;
+ } to {
+   transform: scale(2);
+   opacity:0;
+ }
+`
+
 export const PlayButton = styled.button`
   height: 2.5rem;
   width: 2.5rem;
@@ -55,8 +66,24 @@ export const PlayButton = styled.button`
   box-shadow: none;
   appearance: none;
   border: none;
-  margin-right: 1rem;
+  margin-right: 1.5rem;
   background-color: var(--light);
+  position: relative;
+  &:focus {
+    outline: none;
+  }
+  &::after {
+    z-index: -1;
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background-color: var(--light);
+    animation: ${props => (props.isPlaying ? pulse : '')} 1.25s infinite;
+    border-radius: 2.5rem;
+  }
 `
 
 export const TrashIconContainer = styled.div`
@@ -69,8 +96,8 @@ export const TrashIconContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  svg {
-    width: 100%;
-    height: 100%;
+  img {
+    width: 2rem;
+    height: auto;
   }
 `

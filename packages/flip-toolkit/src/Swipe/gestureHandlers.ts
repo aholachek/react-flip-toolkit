@@ -1,6 +1,6 @@
-// edited from https://github.com/react-spring/react-use-gesture/blob/v4.0.7/index.js
-// TODO: stop using ts-ignore everywhere
-import { OnAction, SwipeEvent } from './types'
+// modified from from https://github.com/react-spring/react-use-gesture/blob/v4.0.7/index.js
+// TODO: figure out how to stop using ts-ignore everywhere
+import { OnAction, SwipeEvent, Config, State } from './types'
 
 const touchMove = 'touchmove'
 const touchEnd = 'touchend'
@@ -25,56 +25,28 @@ const initialState = {
   shiftKey: false
 }
 
-const defaultProps = {
+const defaultConfig = {
   window,
-  touch: true,
-  mouse: false,
-  onAction: undefined,
+  touchOnly: true,
   onDown: undefined,
   onUp: undefined
 }
 
-interface State {
-  event?: SwipeEvent
-  target: EventTarget | null
-  time: number
-  xy: [number, number]
-  delta: [number, number]
-  initial: [number, number]
-  previous: [number, number]
-  direction: [number, number]
-  local: [number, number]
-  lastLocal: [number, number]
-  velocity: number
-  distance: number
-  down: boolean
-  first: boolean
-  shiftKey: boolean
-}
-
-interface Props {
+interface HandlerProps {
   onAction: OnAction
-  onUp?: (state: State) => void
-  onDown?: (state: State) => void
-  window: Window
-  touch: boolean
-  mouse: boolean
-}
-
-type PropsArgs = Partial<Props> & {
-  onAction: OnAction
+  config: Config
 }
 
 type SetCallback = (state: State) => State
 type Set = (cb: SetCallback) => void
 
-function handlers(set: Set, props: Props) {
+function handlers(set: Set, { onAction, config }: HandlerProps) {
   const handleUp = (event: SwipeEvent) => {
     set(state => {
       const newState = { ...state, down: false, first: false }
       // @ts-ignore
-      if (props.onAction) props.onAction(newState)
-      if (props.onUp) props.onUp(newState)
+      if (onAction) onAction(newState)
+      if (config.onUp) config.onUp(newState)
       return {
         ...newState,
         event,
@@ -108,9 +80,9 @@ function handlers(set: Set, props: Props) {
           requestAnimationFrame(() => handleUp(event))
         }
       }
-      props.onAction!(newState)
+      onAction!(newState)
       // @ts-ignore
-      if (props.onDown) props.onDown(newState)
+      if (config.onDown) config.onDown(newState)
       return { ...newState }
     })
   }
@@ -143,43 +115,46 @@ function handlers(set: Set, props: Props) {
         previous: state.xy,
         first: false
       }
-      props.onAction && props.onAction!(newState)
+      onAction && onAction!(newState)
       return { ...newState }
     })
   }
 
   const onDown = (event: SwipeEvent): void => {
-    if (props.mouse) {
-      props.window.addEventListener(mouseMove, handleMove, { passive: true })
+    // @ts-ignore
+    if (event.targetTouches.length > 1) return
+    if (
+      config.maxWidth &&
+      !window.matchMedia(`screen and (max-width: ${config.maxWidth}px)`)
+    )
+      return
+    if (!config.touchOnly) {
+      config.window.addEventListener(mouseMove, handleMove, { passive: true })
       // @ts-ignore
-      props.window.addEventListener(mouseUp, onUp, { passive: true })
+      config.window.addEventListener(mouseUp, onUp, { passive: true })
     }
-    if (props.touch) {
-      props.window.addEventListener(touchMove, handleMove, { passive: true })
-      // @ts-ignore
-      props.window.addEventListener(touchEnd, onUp, { passive: true })
-    }
+    config.window.addEventListener(touchMove, handleMove, { passive: true })
+    // @ts-ignore
+    config.window.addEventListener(touchEnd, onUp, { passive: true })
 
     handleDown(event)
   }
 
   const stop = () => {
-    if (props.mouse) {
-      props.window.removeEventListener(mouseMove, handleMove, {
+    if (!config.touchOnly) {
+      config.window.removeEventListener(mouseMove, handleMove, {
         // @ts-ignore
         passive: true
       })
       // @ts-ignore
-      props.window.removeEventListener(mouseUp, onUp, { passive: true })
+      config.window.removeEventListener(mouseUp, onUp, { passive: true })
     }
-    if (props.touch) {
-      props.window.removeEventListener(touchMove, handleMove, {
-        // @ts-ignore
-        passive: true
-      })
-      // @ts-ignores
-      props.window.removeEventListener(touchEnd, onUp, { passive: true })
-    }
+    config.window.removeEventListener(touchMove, handleMove, {
+      // @ts-ignore
+      passive: true
+    })
+    // @ts-ignores
+    config.window.removeEventListener(touchEnd, onUp, { passive: true })
   }
 
   const onUp = (e: SwipeEvent) => {
@@ -191,22 +166,25 @@ function handlers(set: Set, props: Props) {
     onTouchStart?: (e: SwipeEvent) => void
   } = {}
 
-  if (props.mouse) {
+  if (!config.touchOnly) {
     output[`onMouseDown`] = onDown
   }
 
-  if (props.touch) {
-    output[`onTouchStart`] = onDown
-  }
+  output[`onTouchStart`] = onDown
+
   return output
 }
 
-function Gesture(props: PropsArgs) {
-  const propsWithDefaults = Object.assign({}, defaultProps, props) as Props
+function Gesture(props: HandlerProps) {
   let _state = initialState
   // @ts-ignore
   const set: Set = (cb: SetCallback) => (_state = cb(_state))
-  return handlers(set, propsWithDefaults)
+  return handlers(set, {
+    onAction: props.onAction,
+    // passing in an object so that we can automatically get updated settings without
+    // rebinding the handlers
+    config: Object.assign(defaultConfig, props.config)
+  })
 }
 
 export default Gesture

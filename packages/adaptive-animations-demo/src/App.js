@@ -21,6 +21,8 @@ const RouteContainer = styled.div`
 
 const breakpoint = 768
 
+export const spring = { stiffness: 80, damping: 11 }
+
 const globalStyles = css`
   :root {
     --light: #f2f4f6;
@@ -64,8 +66,8 @@ const FlippedRouteSwitcher = props => {
   return (
     <Flipper
       flipKey={props.location}
-      spring="gentle"
       decisionData={props.match}
+      spring={spring}
     >
       <Route path="/playlists/:id" exact component={BrowsePlaylists} />
       <Route path="/playlists/:id/tracks" exact component={Playlist} />

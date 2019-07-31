@@ -24,19 +24,19 @@ export const Container = styled.div`
 `
 
 export const Title = styled.h2`
-  font-size: 2.25rem;
-  text-align: center;
-  line-height: 1.2;
-  margin-bottom: 0.5rem;
+  font-size: 3.25rem;
+  line-height: 1;
+  margin-bottom: 1rem;
   color: white;
   -webkit-font-smoothing: antialiased;
 `
 
 export const Card = styled.div`
+  user-select: none;
   will-change: transform;
   position: relative;
-  /* overflow: hidden; */
-  border-radius: 2%;
+  overflow: hidden;
+  border-radius: 4%;
   transition: box-shadow 0.25s;
   box-shadow: ${props =>
     props.swipeInProgressOnThisCard
@@ -47,23 +47,12 @@ export const Card = styled.div`
     props.isCurrentCard
       ? css`
           height: 23rem;
-          width: 100%;
         `
       : css`
           height: 10rem;
-          width: 100%;
         `};
-  &::after {
-    content: '';
-    position: absolute;
-    background-image: linear-gradient(
-      hsla(0, 0%, 0%, 0) 30%,
-      hsla(0, 0%, 0%, 0.5)
-    );
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+  > div {
+    height: 100%;
   }
 `
 
@@ -71,10 +60,17 @@ export const ImgContainer = styled.div`
   width: 35rem;
   height: 50rem;
   background-color: var(--medium);
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   will-change: transform;
+  user-select: none;
+  z-index: -2;
   img {
     will-change: transform;
+    user-select: none;
     height: 100%;
     width: 100%;
     display: block;
@@ -117,14 +113,12 @@ export const PlayButton = styled.button`
 `
 
 export const Meta = styled.div`
-  margin-top: 1rem;
-  text-align: center;
+  padding: 1rem;
+  z-index: 12;
+  width: 100%;
   position: absolute;
   bottom: 0;
-  z-index: 1;
-  left: 50%;
-  width: 100%;
-  /* opacity: ${props => (props.isCurrentCard ? 1 : 0)}; */
-   transform: ${props =>
-    props.isCurrentCard ? 'translateX(-50%)' : 'translateX(-50%)'};
+  width: 20rem;
+  opacity: ${props =>
+    props.isCurrentCard ? (!props.swipeInProgressOnThisCard ? 1 : 0) : 0};
 `

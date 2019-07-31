@@ -1,14 +1,20 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Flipper, Flipped, Swipe } from 'react-flip-toolkit'
 import playlists from '../playlists'
 import * as Styled from './styled-elements'
 import PlaylistHeader from './Header'
-import TrashIcon from '../assets/trashIcon'
-import PlayIcon from '../assets/playIcon'
-import PauseIcon from '../assets/pauseIcon'
+import trashIcon from '../assets/trashIcon.svg'
+import playIcon from '../assets/playIcon.svg'
+import pauseIcon from '../assets/pauseIcon.svg'
 import { usePrevious } from '../utilities'
-
-const ListItem = ({ setIsPlaying, track, currentlyViewed, deleteTrack }) => {
+import { spring } from '../App'
+const ListItem = ({
+  setIsPlaying,
+  isPlaying,
+  track,
+  currentlyViewed,
+  deleteTrack
+}) => {
   const [isGettingDeleted, setIsGettingDeleted] = useState(false)
 
   const callOnce = (func, threshold) => {
@@ -21,10 +27,10 @@ const ListItem = ({ setIsPlaying, track, currentlyViewed, deleteTrack }) => {
     }
   }
   return (
-    <Styled.CollapsedTrackContainer flipKey={isGettingDeleted} spring="wobbly">
+    <Styled.CollapsedTrackContainer flipKey={isGettingDeleted} spring={spring}>
       <Flipped flipId={`${track.id}-trash`}>
         <Styled.TrashIconContainer isGettingDeleted={isGettingDeleted}>
-          <TrashIcon />
+          <img src={trashIcon} alt="remove song" />
         </Styled.TrashIconContainer>
       </Flipped>
 
@@ -55,7 +61,9 @@ const ListItem = ({ setIsPlaying, track, currentlyViewed, deleteTrack }) => {
               }
             }}
           >
-            <Styled.PlayButton></Styled.PlayButton>
+            <Styled.PlayButton isPlaying={isPlaying}>
+              <img src={isPlaying ? pauseIcon : playIcon} />{' '}
+            </Styled.PlayButton>
             <div>
               <h3>{track.title}</h3>
               <p>{track.artist}</p>
@@ -85,15 +93,14 @@ const Playlist = props => {
 
   const prevIsPlaying = usePrevious(isPlaying)
 
-  useEffect(() => {
-    if (prevIsPlaying !== isPlaying) {
-    } else if (prevIsPlaying && !isPlaying) {
-    } else if (!prevIsPlaying && isPlaying) {
-    }
-    return () => {
-      // cleanup
-    }
-  }, [input])
+  // useEffect(() => {
+  //   if (prevIsPlaying === isPlaying) return
+  //   if (prevIsPlaying !== isPlaying) {
+  //   } else if (prevIsPlaying && !isPlaying) {
+  //   } else if (!prevIsPlaying && isPlaying) {
+  //   }
+
+  // }, [prevIsPlaying, isPlaying])
 
   const headerCollapsed =
     new URLSearchParams(props.location.search).get('headerCollapsed') === 'true'
@@ -113,7 +120,7 @@ const Playlist = props => {
   }
 
   return (
-    <Flipper flipKey={`${JSON.stringify(visibleTracks)}`}>
+    <Flipper flipKey={`${JSON.stringify(visibleTracks)}`} spring={spring}>
       <PlaylistHeader
         playlist={playlist}
         collapsed={headerCollapsed}

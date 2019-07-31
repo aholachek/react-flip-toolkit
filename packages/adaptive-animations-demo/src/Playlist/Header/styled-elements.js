@@ -9,19 +9,10 @@ export const BackgroundImgContainer = styled.div`
   right: -2rem;
   overflow: hidden;
   will-change: transform;
-  &::after {
-    content: '';
+  img {
     position: absolute;
-    ${props =>
-      props.collapsed
-        ? ' background-image: linear-gradient(   hsla(0, 0%, 0%, 0),   hsla(0, 0%, 0%, 0.2))'
-        : ' background-image: linear-gradient(   hsla(0, 0%, 0%, 0) 40%,   hsla(0, 0%, 0%, 0.7))'};
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-  }
-  img {
     height: 50rem;
     width: 35rem;
     object-fit: cover;
@@ -39,13 +30,17 @@ export const HeaderContainer = styled.div`
 `
 
 export const Title = styled.h1`
+  font-size: 2.75rem;
   line-height: 1;
 `
 
 export const MetaContainer = styled.div`
   position: absolute;
-  padding: 1rem;
-  bottom: ${props => (props.collapsed ? '-4rem' : '4rem')};
+  left: 0;
+  right: 0;
+  padding-left: 3rem;
+  padding-right: 3rem;
+  bottom: ${props => (props.collapsed ? '-4rem' : '6rem')};
   opacity: ${props => (props.collapsed ? 0 : 1)};
   height: 10rem;
   > div {
