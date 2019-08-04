@@ -28,7 +28,7 @@ const ListItem = ({
   }
   return (
     <Styled.CollapsedTrackContainer flipKey={isGettingDeleted} spring={spring}>
-      <Flipped flipId={`${track.id}-trash`}>
+      <Flipped flipId={`${track.id}-trash`} >
         <Styled.TrashIconContainer isGettingDeleted={isGettingDeleted}>
           <img src={trashIcon} alt="remove song" />
         </Styled.TrashIconContainer>
@@ -42,6 +42,7 @@ const ListItem = ({
         threshold={0.4}
       >
         <Flipped
+          stagger
           flipId={`track-${track.id}`}
           onSpringUpdate={callOnce(() => {
             if (isGettingDeleted) {
@@ -90,17 +91,6 @@ const Playlist = props => {
   )
   const [visibleTracks, setVisibleTracks] = useState(playlist.tracks)
   const [isPlaying, setIsPlaying] = useState(null)
-
-  const prevIsPlaying = usePrevious(isPlaying)
-
-  // useEffect(() => {
-  //   if (prevIsPlaying === isPlaying) return
-  //   if (prevIsPlaying !== isPlaying) {
-  //   } else if (prevIsPlaying && !isPlaying) {
-  //   } else if (!prevIsPlaying && isPlaying) {
-  //   }
-
-  // }, [prevIsPlaying, isPlaying])
 
   const headerCollapsed =
     new URLSearchParams(props.location.search).get('headerCollapsed') === 'true'

@@ -3,9 +3,10 @@ import French from './assets/french-bulldog.jpg'
 import Serious from './assets/serious.jpg'
 import BlackDoodle from './assets/black-doodle.jpg'
 import Pug2 from './assets/pug-2.jpg'
+import Pug from './assets/pug.jpg'
 import Puppy from './assets/puppy.jpg'
 import Samoyed from './assets/samoyed.jpg'
-
+import Corgi from './assets/corgi.jpg'
 const sampleTracks = [
   {
     id: 1,
@@ -76,9 +77,26 @@ const playlists = [
   },
 
   {
+    src: Corgi,
+    title: 'Dreamy Feelings',
+    id: 3,
+    tags: ['piano', 'ballads', 'instrumental'],
+    description:
+      'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'
+  },
+  {
+    src: Pug,
+    title: 'Life is Pain',
+    id: 4,
+    tags: ['emo', 'gregorian', 'dubstep'],
+    description:
+      'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'
+  },
+
+  {
     src: Pug2,
     title: 'Who am I',
-    id: 4,
+    id: 5,
     tags: ['opera', 'polka', 'classical'],
     description:
       'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'
@@ -86,7 +104,7 @@ const playlists = [
   {
     src: BlackDoodle,
     title: 'Fitness Beats',
-    id: 5,
+    id: 6,
     tags: ['hip hop', 'rock', 'metal'],
     description:
       'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'
@@ -94,7 +112,7 @@ const playlists = [
   {
     src: Puppy,
     title: 'Fun in the Sun',
-    id: 6,
+    id: 7,
     tags: ['pop', 'jazz', 'rock'],
     description:
       'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'
@@ -102,7 +120,7 @@ const playlists = [
   {
     src: Samoyed,
     title: 'Deep thoughts',
-    id: 7,
+    id: 8,
     tags: ['instrumental', 'new age', 'spa'],
     description:
       'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'
@@ -110,7 +128,7 @@ const playlists = [
   {
     src: French,
     title: 'Wake Me Up',
-    id: 8,
+    id: 9,
     tags: ['hip hop', 'country', 'r&b'],
     description:
       'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'

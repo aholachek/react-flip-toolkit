@@ -145,5 +145,6 @@ export const FlippedWithContext: FunctionComponent<FlippedProps> = ({
 }
 // @ts-ignore
 FlippedWithContext.propTypes = propTypes
+FlippedWithContext.displayName = 'Flipped'
 
 export default FlippedWithContext

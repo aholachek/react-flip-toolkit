@@ -1,12 +1,7 @@
 import { FlipId, InProgressAnimations } from '../types'
 import { SyntheticEvent } from 'react'
 
-export enum Direction {
-  right = 'right',
-  left = 'left',
-  down = 'down',
-  up = 'up'
-}
+export type Direction = 'right' | 'left' | 'down' | 'up'
 
 export interface SwipeDecisionData {
   props: Record<string, any>
@@ -22,8 +17,6 @@ export interface OnSwipeConfigObject {
 }
 
 export type FlipInitiatorData = OnSwipeConfigObject & { direction: Direction }
-
-export type OnNonSwipeClick = (event: SwipeEvent) => void
 
 type DirectionConfig = Record<Direction, OnSwipeConfigObject>
 
@@ -58,14 +51,14 @@ export interface Config {
 
 // config for Swipe wrapper
 type BasicSwipeProps = Config & {
-  onClick?: OnNonSwipeClick
   threshold?: number
   flipId: FlipId
   inProgressAnimations: InProgressAnimations
   setIsGestureInitiated: SetIsGestureInitiated
 }
 
-export type SwipeProps = BasicSwipeProps & DirectionConfig & { window: Window }
+export type SwipeProps = BasicSwipeProps &
+  DirectionConfig & { window: Window; children?: React.ReactNode }
 
 export interface SwipeEventHandlers {
   onMouseDown: (event: SwipeEvent) => void
@@ -80,3 +73,6 @@ export interface OnActionArgs {
   event: SwipeEvent
 }
 export type OnAction = (args: OnActionArgs) => void
+
+export type SetCallback = (state: State) => State
+export type Set = (cb: SetCallback) => void

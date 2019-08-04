@@ -1,9 +1,8 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React from 'react'
 import { Flipped, Swipe } from 'react-flip-toolkit'
 import * as Styled from './styled-elements'
 import * as Core from '../core-components'
 import playlists from '../playlists'
-
 const linkedCards = playlists
   .map((card, index) => {
     return Object.assign(card, {
@@ -23,22 +22,7 @@ const linkedCards = playlists
   )
 
 const Card = React.memo(
-  ({
-    id,
-    title,
-    tags,
-    setNextCardId,
-    prevCardId,
-    nextCardId,
-    isCurrentCard,
-    history
-  }) => {
-    const imgContainerRef = useRef(null)
-
-    const [swipeInProgressOnThisCard, setSwipeInProgressOnThisCard] = useState(
-      false
-    )
-
+  ({ id, title, src, tags, setNextCardId, prev, next, isCurrentCard }) => {
     const card = (
       <Flipped
         flipId={id}
@@ -56,27 +40,20 @@ const Card = React.memo(
       >
         <Styled.Card
           isCurrentCard={isCurrentCard}
-          swipeInProgressOnThisCard={swipeInProgressOnThisCard}
           draggable="false"
+          to={`/playlists/${id}/tracks`}
         >
           <Flipped inverseFlipId={id}>
             <div>
-              <Styled.ImgContainer ref={imgContainerRef} draggable="false">
+              <Styled.ImgContainer draggable="false">
                 <Flipped flipId={`${id}-img`}>
                   <Core.PreloadedImg id={`img-${id}`} draggable="false" />
                 </Flipped>
               </Styled.ImgContainer>
 
-              <Styled.Meta
-                swipeInProgressOnThisCard={swipeInProgressOnThisCard}
-                isCurrentCard={isCurrentCard}
-              >
+              <Styled.Meta isCurrentCard={isCurrentCard}>
                 <Flipped flipId={`${id}-title`}>
-                  <Styled.Title
-                    swipeInProgressOnThisCard={swipeInProgressOnThisCard}
-                  >
-                    {title}
-                  </Styled.Title>
+                  <Styled.Title>{title}</Styled.Title>
                 </Flipped>
                 <Flipped flipId={`${id}-taglist`}>
                   <Core.TagList>
@@ -91,56 +68,25 @@ const Card = React.memo(
         </Styled.Card>
       </Flipped>
     )
-    return (
-      <li>
-        <Swipe
-          threshold={0.4}
-          onClick={() => history.push(`/playlists/${id}/tracks`)}
-          onDown={() => {
-            setSwipeInProgressOnThisCard(true)
-          }}
-          onUp={() => {
-            setSwipeInProgressOnThisCard(false)
-          }}
-          right={
-            isCurrentCard && {
-              initFlip: () => {
-                return setNextCardId(prevCardId)
-              },
-              cancelFlip: () => {
-                return setNextCardId(id)
-              }
-            }
-          }
-          left={
-            isCurrentCard && {
-              initFlip: () => {
-                setNextCardId(nextCardId)
-              },
-              cancelFlip: () => {
-                setNextCardId(id)
-              }
-            }
-          }
-        >
-          {card}
-        </Swipe>
-      </li>
-    )
+    return card
   }
 )
 
-const GestureCardSwipe = ({ history, match, renderFlipped }) => {
+const GestureCardSwipe = ({ history, match }) => {
+  const [swipeInProgress, setSwipeInProgress] = React.useState(false)
   const currentCardId = parseInt(match.params.id, 10) || playlists[0].id
   const currentCard = linkedCards[currentCardId]
-  const cardsToRender = [
-    currentCard.prev.prev,
-    currentCard.prev,
-    currentCard,
-    currentCard.next,
-    currentCard.next.next
-  ]
+  const cardsToRender = playlists
 
+  // only relavent for mobile
+  const currentCardIndex = Math.floor(playlists.length / 2)
+  const swipeOrder = {
+    [currentCard.prev.prev.id]: currentCardIndex - 2,
+    [currentCard.prev.id]: currentCardIndex - 1,
+    [currentCard.id]: currentCardIndex,
+    [currentCard.next.id]: currentCardIndex + 1,
+    [currentCard.next.next.id]: currentCardIndex + 2
+  }
   const setNextCardId = React.useCallback(
     id => history.push(`/playlists/${id}`),
     []
@@ -148,7 +94,7 @@ const GestureCardSwipe = ({ history, match, renderFlipped }) => {
 
   return (
     <>
-      {/* <Styled.Header>
+      <Styled.Header>
         <svg
           aria-hidden="true"
           focusable="false"
@@ -162,24 +108,54 @@ const GestureCardSwipe = ({ history, match, renderFlipped }) => {
           ></path>
         </svg>
         Playlists for Dogs
-      </Styled.Header> */}
+      </Styled.Header>
       <Styled.Container>
-        <Styled.List>
-          {cardsToRender.map((card, i) => {
-            return (
-              <Card
-                {...card}
-                key={card.id}
-                currentCardId={currentCardId}
-                setNextCardId={setNextCardId}
-                prevCardId={card.prev.id}
-                nextCardId={card.next.id}
-                isCurrentCard={card.id === currentCardId}
-                history={history}
-              />
-            )
-          })}
-        </Styled.List>
+        <Swipe
+          onDown={state => {
+            setSwipeInProgress(true)
+          }}
+          onUp={state => {
+            setSwipeInProgress(false)
+          }}
+          threshold={25}
+          right={{
+            initFlip: () => {
+              return setNextCardId(currentCard.prev.id)
+            },
+            cancelFlip: () => {
+              return setNextCardId(currentCard.id)
+            }
+          }}
+          left={{
+            initFlip: () => {
+              setNextCardId(currentCard.next.id)
+            },
+            cancelFlip: () => {
+              setNextCardId(currentCard.id)
+            }
+          }}
+        >
+          <Styled.List
+            length={playlists.length}
+            swipeInProgress={swipeInProgress}
+          >
+            {cardsToRender.map((card, i) => {
+              return (
+                <Styled.ListItem
+                  key={card.id}
+                  order={swipeOrder[card.id] || -1}
+                >
+                  <Card
+                    {...card}
+                    setNextCardId={setNextCardId}
+                    isCurrentCard={card.id === currentCardId}
+                    history={history}
+                  />
+                </Styled.ListItem>
+              )
+            })}
+          </Styled.List>
+        </Swipe>
       </Styled.Container>
     </>
   )

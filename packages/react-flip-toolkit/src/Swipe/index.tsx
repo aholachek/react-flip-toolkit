@@ -47,9 +47,13 @@ class SwipeComponent extends Component<SwipeComponentProps> {
 
   render() {
     React.Children.only(this.props.children)
-    return cloneElement(this.props.children, {
-      gestureHandlers: this.swipe.handlers
-    })
+    // @ts-ignore
+    if (this.props.children.type.displayName === 'Flipped') {
+      return cloneElement(this.props.children, {
+        gestureHandlers: this.swipe.handlers
+      })
+    }
+    return cloneElement(this.props.children, this.swipe.handlers)
   }
 }
 

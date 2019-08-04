@@ -1,6 +1,7 @@
 import { SpringOption } from './springSettings/types'
 import Spring from './forked-rebound/Spring'
 import { SwipeEventHandlers } from './Swipe/types'
+import { BoundingClientRect } from './flip/getFlippedElementPositions/types';
 
 export type FlipId = string | number
 
@@ -131,8 +132,8 @@ export interface FlipperProps {
 interface Difference {
   translateXDifference: number
   translateYDifference: number
-  scaleXDifference: number
-  scaleYDifference: number
+  prevRect: BoundingClientRect,
+  currentRect: BoundingClientRect
 }
 
 export interface InProgressAnimations {

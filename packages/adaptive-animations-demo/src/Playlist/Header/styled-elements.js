@@ -1,4 +1,5 @@
 import styled from '@emotion/styled'
+import { breakpoint } from '../../App/styles'
 
 export const BackgroundImgContainer = styled.div`
   border-radius: 5%;
@@ -9,18 +10,17 @@ export const BackgroundImgContainer = styled.div`
   right: -2rem;
   overflow: hidden;
   will-change: transform;
+
+  @media (min-width: ${breakpoint}px) {
+    width: 20rem;
+  }
+
   img {
     position: absolute;
     top: 0;
     left: 0;
-    height: 50rem;
-    width: 35rem;
-    object-fit: cover;
     z-index: -1;
     will-change: transform;
-    position: relative;
-    top: ${props => (props.collapsed ? '-21rem' : '-6rem')};
-    left: ${props => (props.collapsed ? '0' : '-3rem')};
   }
 `
 

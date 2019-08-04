@@ -371,7 +371,6 @@ export default ({
 
       const getOnUpdateFunc: GetOnUpdateFunc = ({ spring, onAnimationEnd }) => {
         inProgressAnimations[id] = {
-          destroy: spring.destroy.bind(spring),
           // only for gesture control
           // @ts-ignore
           spring,
@@ -379,8 +378,8 @@ export default ({
           difference: {
             translateXDifference,
             translateYDifference,
-            scaleXDifference,
-            scaleYDifference
+            prevRect,
+            currentRect
           }
         }
         const onUpdate: OnUpdate = spring => {

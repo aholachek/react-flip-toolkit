@@ -15,14 +15,19 @@ import {
 } from './types'
 import { InProgressAnimations } from '../../../types'
 
-const cancelInProgressAnimations = (
-  inProgressAnimations: InProgressAnimations
+export const cancelInProgressAnimations = (
+  inProgressAnimations: InProgressAnimations,
+  animatingElements: HTMLElement[]
 ) => {
   Object.keys(inProgressAnimations).forEach(id => {
-    if (inProgressAnimations[id].destroy) {
-      inProgressAnimations[id].destroy()
+    if (inProgressAnimations[id].spring) {
+      inProgressAnimations[id].spring.destroy()
     }
     delete inProgressAnimations[id]
+  })
+  animatingElements.forEach(el => {
+    el.style.transform = ''
+    el.style.opacity = ''
   })
 }
 
@@ -110,11 +115,12 @@ const getFlippedElementPositionsBeforeUpdate = ({
     .reduce(addTupleToObject, {})
   // do this at the very end since we want to cache positions of elements
   // while they are mid-transition
-  cancelInProgressAnimations(inProgressAnimations)
-  flippedElements.concat(inverseFlippedElements).forEach(el => {
-    el.style.transform = ''
-    el.style.opacity = ''
-  })
+  cancelInProgressAnimations(
+    inProgressAnimations,
+    flippedElements.concat(inverseFlippedElements)
+  )
+
+  console.log({ flippedElementPositions })
 
   return {
     flippedElementPositions,

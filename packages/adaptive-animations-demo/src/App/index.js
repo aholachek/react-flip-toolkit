@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react'
-import BrowsePlaylists from './BrowsePlaylists'
-import Playlist from './Playlist'
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 import { Flipper } from 'react-flip-toolkit'
 import { Global, css } from '@emotion/core'
 import styled from '@emotion/styled'
-import playlists from './playlists'
+import BrowsePlaylists from '../BrowsePlaylists'
+import Playlist from '../Playlist'
+import playlists from '../playlists'
+import { globalStyles } from './styles'
 
 const Hidden = styled.div`
   display: none;
@@ -13,61 +14,25 @@ const Hidden = styled.div`
 
 const RouteContainer = styled.div`
   position: relative;
-  max-width: 800px;
+  max-width: 990px;
   margin: auto;
-  overflow: hidden;
-  height: 100vh;
+  min-height: 100vh;
 `
 
-const breakpoint = 768
-
-export const spring = { stiffness: 80, damping: 11 }
-
-const globalStyles = css`
-  :root {
-    --light: #f2f4f6;
-    --dark: #242223;
-  }
-
-  @import url('https://fonts.googleapis.com/css?family=DM+Sans:400,700&display=swap');
-  html {
-    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-      Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
-      sans-serif;
-  }
-  body {
-    ${'' /* only works in certain browsers */}
-    overscroll-behavior: contain;
-    line-height: 1.4;
-    overflow: hidden;
-    @media (min-width: ${breakpoint}px) {
-      overflow: visible;
-    }
-    color: var(--dark);
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  p {
-    margin-top: 0;
-    margin-bottom: 1rem;
-    color: var(--dark);
-  }
-
-  p {
-    margin-bottom: 0;
-  }
-`
+export const spring = 'gentle'
 
 const FlippedRouteSwitcher = props => {
   return (
     <Flipper
-      flipKey={props.location}
+      flipKey={`${props.location.pathname}-${props.location.search}`}
       decisionData={props.match}
       spring={spring}
+      staggerConfig={{
+        default: {
+          speed: 1,
+          direction: 'reverse'
+        }
+      }}
     >
       <Route path="/playlists/:id" exact component={BrowsePlaylists} />
       <Route path="/playlists/:id/tracks" exact component={Playlist} />

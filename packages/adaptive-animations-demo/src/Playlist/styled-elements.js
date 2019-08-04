@@ -51,10 +51,10 @@ export const List = styled.ul`
 
 const pulse = keyframes`
  from {
-  transform: scale(1);
+  transform: scale(.9);
   opacity: .8;
  } to {
-   transform: scale(2);
+   transform: scale(1.5);
    opacity:0;
  }
 `
@@ -67,12 +67,15 @@ export const PlayButton = styled.button`
   appearance: none;
   border: none;
   margin-right: 1.5rem;
-  background-color: var(--light);
+  transition: background-color 0.3s;
+  background-color: ${props =>
+    props.isPlaying ? 'var(--dark)' : 'var(--light)'};
   position: relative;
   &:focus {
     outline: none;
   }
   &::after {
+    display: ${props => (props.isPlaying ? 'block' : 'none')};
     z-index: -1;
     content: '';
     position: absolute;
@@ -80,7 +83,7 @@ export const PlayButton = styled.button`
     top: 0;
     bottom: 0;
     right: 0;
-    background-color: var(--light);
+    background-color: var(--dark);
     animation: ${props => (props.isPlaying ? pulse : '')} 1.25s infinite;
     border-radius: 2.5rem;
   }
@@ -96,6 +99,7 @@ export const TrashIconContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  display: ${props => (props.isGettingDeleted ? 'block' : 'none')};
   img {
     width: 2rem;
     height: auto;

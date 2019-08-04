@@ -141,7 +141,7 @@ class Flipper extends Component<FlipperProps> {
 }
 // @ts-ignore
 Flipper.propTypes = {
-  flipKey: PropTypes.any,
+  flipKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   children: PropTypes.node.isRequired,
   spring: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   applyTransformOrigin: PropTypes.bool,

@@ -1,6 +1,13 @@
 // modified from from https://github.com/react-spring/react-use-gesture/blob/v4.0.7/index.js
 // TODO: figure out how to stop using ts-ignore everywhere
-import { OnAction, SwipeEvent, Config, State } from './types'
+import {
+  OnAction,
+  SwipeEvent,
+  Config,
+  SetCallback,
+  Set,
+  SwipeEventHandlers
+} from './types'
 
 const touchMove = 'touchmove'
 const touchEnd = 'touchend'
@@ -36,9 +43,6 @@ interface HandlerProps {
   onAction: OnAction
   config: Config
 }
-
-type SetCallback = (state: State) => State
-type Set = (cb: SetCallback) => void
 
 function handlers(set: Set, { onAction, config }: HandlerProps) {
   const handleUp = (event: SwipeEvent) => {
@@ -121,8 +125,9 @@ function handlers(set: Set, { onAction, config }: HandlerProps) {
   }
 
   const onDown = (event: SwipeEvent): void => {
+    // it's a touch event with multiple fingers down but we only allow single finger swipes
     // @ts-ignore
-    if (event.targetTouches.length > 1) return
+    if (event.targetTouches && event.targetTouches.length > 1) return
     if (
       config.maxWidth &&
       !window.matchMedia(`screen and (max-width: ${config.maxWidth}px)`)
@@ -172,10 +177,10 @@ function handlers(set: Set, { onAction, config }: HandlerProps) {
 
   output[`onTouchStart`] = onDown
 
-  return output
+  return { handlers: output as SwipeEventHandlers, set }
 }
 
-function Gesture(props: HandlerProps) {
+function gestureHandlers(props: HandlerProps) {
   let _state = initialState
   // @ts-ignore
   const set: Set = (cb: SetCallback) => (_state = cb(_state))
@@ -187,4 +192,4 @@ function Gesture(props: HandlerProps) {
   })
 }
 
-export default Gesture
+export default gestureHandlers
