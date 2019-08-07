@@ -13,13 +13,16 @@ export const globalStyles = css`
     font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI',
       Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
       sans-serif;
+    @media (min-width: ${breakpoint}px) {
+      font-size: 120%;
+    }
   }
   body {
     ${'' /* only works in certain browsers */}
     overscroll-behavior: contain;
     line-height: 1.4;
     color: var(--dark);
-    overflow: hidden;
+    height: 100vh;
     @media (min-width: ${breakpoint}px) {
       overflow: visible;
     }

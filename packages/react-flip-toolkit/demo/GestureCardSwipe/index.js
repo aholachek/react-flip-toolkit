@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import styled from '@emotion/styled'
+import styled from '@emotion/styled/macro'
 import { css } from '@emotion/core'
 import PropTypes from 'prop-types'
 import { Flipper, Flipped, Swipe } from '../../src'

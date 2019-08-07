@@ -2,7 +2,7 @@
 // https://uxplanet.org/animation-in-ui-design-from-concept-to-reality-85c49907b19d
 import React, { useState } from 'react'
 import { Flipper, Flipped } from '../../src'
-import styled from '@emotion/styled'
+import styled from '@emotion/styled/macro'
 import {
   FaEgg,
   FaCookieBite,

@@ -9,49 +9,49 @@ import Samoyed from './assets/samoyed.jpg'
 import Corgi from './assets/corgi.jpg'
 const sampleTracks = [
   {
-    id: 1,
-    title: 'Total Eclipse of the Bark',
+    id: '1',
+    title: 'Total Eclipse of the Bork',
     artist: 'Bonnie Tyler',
     details: ''
   },
   {
-    id: 2,
+    id: '2',
     title: 'Hungry like the Wolf',
     artist: 'Duran Duran',
     details: ''
   },
   {
-    id: 3,
+    id: '3',
     title: 'Livin on a Prayer (for a walk)',
     artist: 'Bon Jovi',
     details: ''
   },
   {
-    id: 4,
+    id: '4',
     title: "Don't you forget about treats",
     artist: 'Simple Minds',
     details: ''
   },
   {
-    id: 5,
-    title: 'Total Eclipse of the Bark',
+    id: '5',
+    title: 'Total Eclipse of the Bork',
     artist: 'Bonnie Tyler',
     details: ''
   },
   {
-    id: 6,
+    id: '6',
     title: 'Hungry like the Wolf',
     artist: 'Duran Duran',
     details: ''
   },
   {
-    id: 7,
+    id: '7',
     title: 'Livin on a Prayer (for a walk)',
     artist: 'Bon Jovi',
     details: ''
   },
   {
-    id: 8,
+    id: '8',
     title: "Don't you forget about treats",
     artist: 'Simple Minds',
     details: ''
@@ -62,7 +62,7 @@ const playlists = [
   {
     src: BorderCollie,
     title: 'High Energy',
-    id: 1,
+    id: '1',
     tags: ['hip hop', 'country', 'pop'],
     description:
       'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'
@@ -70,7 +70,7 @@ const playlists = [
   {
     src: Serious,
     title: 'Afternoon Mood',
-    id: 2,
+    id: '2',
     tags: ['pop', 'broadway', 'rock'],
     description:
       'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'
@@ -79,7 +79,7 @@ const playlists = [
   {
     src: Corgi,
     title: 'Dreamy Feelings',
-    id: 3,
+    id: '3',
     tags: ['piano', 'ballads', 'instrumental'],
     description:
       'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'
@@ -87,7 +87,7 @@ const playlists = [
   {
     src: Pug,
     title: 'Life is Pain',
-    id: 4,
+    id: '4',
     tags: ['emo', 'gregorian', 'dubstep'],
     description:
       'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'
@@ -96,7 +96,7 @@ const playlists = [
   {
     src: Pug2,
     title: 'Who am I',
-    id: 5,
+    id: '5',
     tags: ['opera', 'polka', 'classical'],
     description:
       'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'
@@ -104,7 +104,7 @@ const playlists = [
   {
     src: BlackDoodle,
     title: 'Fitness Beats',
-    id: 6,
+    id: '6',
     tags: ['hip hop', 'rock', 'metal'],
     description:
       'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'
@@ -112,7 +112,7 @@ const playlists = [
   {
     src: Puppy,
     title: 'Fun in the Sun',
-    id: 7,
+    id: '7',
     tags: ['pop', 'jazz', 'rock'],
     description:
       'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'
@@ -120,7 +120,7 @@ const playlists = [
   {
     src: Samoyed,
     title: 'Deep thoughts',
-    id: 8,
+    id: '8',
     tags: ['instrumental', 'new age', 'spa'],
     description:
       'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'
@@ -128,7 +128,7 @@ const playlists = [
   {
     src: French,
     title: 'Wake Me Up',
-    id: 9,
+    id: '9',
     tags: ['hip hop', 'country', 'r&b'],
     description:
       'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'

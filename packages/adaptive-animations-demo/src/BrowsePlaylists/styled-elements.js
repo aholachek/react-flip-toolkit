@@ -1,40 +1,22 @@
-import styled from '@emotion/styled'
-import { css } from '@emotion/core'
+import styled from '@emotion/styled/macro'
+import { css, keyframes } from '@emotion/core'
 import { Link } from 'react-router-dom'
 import { breakpoint } from '../App/styles'
-
-export const Header = styled.header`
-  padding-top: 1.5rem;
-  font-weight: bold;
-  text-align: center;
-  @media (min-width: ${breakpoint}px) {
-    font-size: 1.5rem;
-    text-align: left;
-
-  }
-  svg {
-    height: 0.8rem;
-    position: relative;
-    top: -0.1rem;
-    margin-right: 0.5rem;
-    @media (min-width: ${breakpoint}px) {
-      height: 1rem;
-  }
-`
 
 export const Container = styled.div`
   width: 100%;
   min-height: 100vh;
   margin: 0 auto 2rem auto;
-  padding: 3rem 0 2rem 0;
+  padding: 2rem 0;
   position: relative;
   @media (min-width: ${breakpoint}px) {
     overflow: visible;
+    padding: 0;
   }
 `
 
 export const Title = styled.h2`
-  font-size: 3.25rem;
+  font-size: 3.2rem;
   line-height: 1;
   margin-bottom: 1rem;
   color: white;
@@ -84,7 +66,6 @@ export const ImgContainer = styled.div`
   user-select: none;
   z-index: -2;
   img {
-    display: none;
     will-change: transform;
     backface-visibility: hidden;
     pointer-events: none;
@@ -94,6 +75,39 @@ export const ImgContainer = styled.div`
     position: relative;
     top: -6rem;
     left: -3rem;
+  }
+`
+
+const fadeIn = keyframes`
+  from {
+  opacity: 0;
+  } to {
+    opacity: 1;
+  }
+`
+
+const fadeOut = keyframes`
+from {
+  opacity: 1;
+}
+  to {
+    opacity: 0;
+  }
+`
+
+export const Meta = styled.div`
+  padding: 1rem;
+  z-index: 12;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  width: 20rem;
+  transition: opacity 0.2s;
+  opacity: ${props => (props.isCurrentCard ? 1 : 0)};
+  backface-visibility: hidden;
+@media (min-width: ${breakpoint}px) {
+    opacity: 1;
+    width: auto;
   }
 `
 
@@ -110,11 +124,23 @@ export const List = styled.ul`
   position: absolute;
   left: 50%;
 
-  a {
+  ${Meta} {
+    ${props => props.swipeInProgress && 'opacity: 0'};
+  }
+
+  ${Card} {
     box-shadow: ${props =>
       props.swipeInProgress
         ? '0 1px 4px hsla(0, 0%, 0%, 0.1);'
         : '0 10px 20px hsla(0, 0%, 0%, 0.4);'};
+
+    &.animate-in {
+      animation: ${fadeIn} 0.2s forwards;
+    }
+
+    &.animate-out {
+      animation: ${fadeOut} 0.2s forwards;
+    }
   }
 
   @media (min-width: ${breakpoint}px) {
@@ -131,20 +157,6 @@ export const ListItem = styled.li`
   ${props => (props.order === -1 ? 'display: none;' : `order: ${props.order}`)};
   @media (min-width: ${breakpoint}px) {
     display: block !important;
-  }
-`
-
-export const Meta = styled.div`
-  padding: 1rem;
-  z-index: 12;
-  width: 100%;
-  position: absolute;
-  bottom: 0;
-  width: 20rem;
-  transition: opacity 0.3s;
-  opacity: ${props => (props.isCurrentCard ? 1 : 0)};
-  backface-visibility: hidden;
-  @media (min-width: ${breakpoint}px) {
-    opacity: 1;
+    order: 1;
   }
 `

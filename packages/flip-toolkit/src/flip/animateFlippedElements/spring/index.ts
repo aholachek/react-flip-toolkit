@@ -19,6 +19,7 @@ export const createSuspendedSpring = (flipData: FlipData) => {
   } = flipData
 
   const spring = springSystem.createSpring(stiffness!, damping!)
+  if (!isGestureControlled) spring.setEndValue(1)
   spring.setOvershootClampingEnabled(!!overshootClamping)
   const onSpringAtRest = () => {
     // prevent SpringSystem from caching unused springs
@@ -43,10 +44,7 @@ export const createSuspendedSpring = (flipData: FlipData) => {
 }
 
 export const createSpring = (flipped: FlipData) => {
-  const spring = createSuspendedSpring(flipped)
-  if (spring) {
-    spring.setEndValue(1)
-  }
+  return createSuspendedSpring(flipped)
 }
 
 export const normalizeSpeed = (speedConfig: number | undefined) => {

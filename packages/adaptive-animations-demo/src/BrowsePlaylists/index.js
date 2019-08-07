@@ -1,8 +1,10 @@
 import React from 'react'
-import { Flipped, Swipe } from 'react-flip-toolkit'
+import { Flipped, Swipe, spring } from 'react-flip-toolkit'
 import * as Styled from './styled-elements'
 import * as Core from '../core-components'
 import playlists from '../playlists'
+import { callOnDesktop } from '../utilities'
+
 const linkedCards = playlists
   .map((card, index) => {
     return Object.assign(card, {
@@ -21,64 +23,55 @@ const linkedCards = playlists
     {}
   )
 
-const Card = React.memo(
-  ({ id, title, src, tags, setNextCardId, prev, next, isCurrentCard }) => {
-    const card = (
-      <Flipped
-        flipId={id}
-        onStart={(element, decisionData) => {
-          if (
-            decisionData.previous.tracks === 'tracks' &&
-            decisionData.current.tracks !== 'tracks'
-          ) {
-            element.style.zIndex = 1
-          }
-        }}
-        onComplete={element => {
-          element.style.zIndex = ''
-        }}
+const Card = React.memo(({ id, title, tags, isCurrentCard, onCardClick }) => {
+  const card = (
+    <Flipped flipId={id} spring="gentle">
+      <Styled.Card
+        isCurrentCard={isCurrentCard}
+        draggable="false"
+        to={`/playlists/${id}/tracks`}
+        onClick={onCardClick(id)}
+        data-card={id}
       >
-        <Styled.Card
-          isCurrentCard={isCurrentCard}
-          draggable="false"
-          to={`/playlists/${id}/tracks`}
-        >
-          <Flipped inverseFlipId={id}>
-            <div>
-              <Styled.ImgContainer draggable="false">
-                <Flipped flipId={`${id}-img`}>
-                  <Core.PreloadedImg id={`img-${id}`} draggable="false" />
-                </Flipped>
-              </Styled.ImgContainer>
+        <Flipped inverseFlipId={id}>
+          <div>
+            <Styled.ImgContainer draggable="false">
+              <Flipped flipId={`${id}-img`}>
+                <Core.PreloadedImg id={`img-${id}`} draggable="false" />
+              </Flipped>
+            </Styled.ImgContainer>
 
-              <Styled.Meta isCurrentCard={isCurrentCard}>
-                <Flipped flipId={`${id}-title`}>
-                  <Styled.Title>{title}</Styled.Title>
-                </Flipped>
-                <Flipped flipId={`${id}-taglist`}>
-                  <Core.TagList>
-                    {tags.map((t, i) => (
-                      <Core.Tag>{t}</Core.Tag>
-                    ))}
-                  </Core.TagList>
-                </Flipped>
-              </Styled.Meta>
-            </div>
-          </Flipped>
-        </Styled.Card>
-      </Flipped>
-    )
-    return card
-  }
-)
+            <Styled.Meta isCurrentCard={isCurrentCard}>
+              <Styled.Title>{title}</Styled.Title>
+              <Core.TagList>
+                {tags.map((t, i) => (
+                  <Core.Tag>{t}</Core.Tag>
+                ))}
+              </Core.TagList>
+            </Styled.Meta>
+          </div>
+        </Flipped>
+      </Styled.Card>
+    </Flipped>
+  )
+  return card
+})
 
-const GestureCardSwipe = ({ history, match }) => {
+const GestureCardSwipe = props => {
+  const { history, match, previousPath } = props
+  const previousPageWasTracksPage =
+    previousPath && previousPath.match(/\/playlists\/(\d+)\/tracks/)
+
+  const previousTrackId =
+    previousPageWasTracksPage && previousPageWasTracksPage[1]
+
   const [swipeInProgress, setSwipeInProgress] = React.useState(false)
-  const currentCardId = parseInt(match.params.id, 10) || playlists[0].id
+  const listRef = React.useRef(null)
+  const currentCardId = match.params.id || playlists[0].id
   const currentCard = linkedCards[currentCardId]
   const cardsToRender = playlists
 
-  // only relavent for mobile
+  // only relevant for mobile
   const currentCardIndex = Math.floor(playlists.length / 2)
   const swipeOrder = {
     [currentCard.prev.prev.id]: currentCardIndex - 2,
@@ -87,37 +80,54 @@ const GestureCardSwipe = ({ history, match }) => {
     [currentCard.next.id]: currentCardIndex + 1,
     [currentCard.next.next.id]: currentCardIndex + 2
   }
-  const setNextCardId = React.useCallback(
-    id => history.push(`/playlists/${id}`),
-    []
-  )
+  const setNextCardId = id => history.push(`/playlists/${id}`)
+
+  const onCardClick = React.useCallback(id => {
+    return callOnDesktop(event => {
+      event.preventDefault()
+      event.persist()
+      const cardsToFade = [
+        ...listRef.current.querySelectorAll('[data-card]')
+      ].filter(card => {
+        return card.dataset.flipId !== id
+      })
+
+      cardsToFade.forEach((card, i) => {
+        card.classList.add('animate-out')
+      })
+
+      setTimeout(() => {
+        history.push(event.target.href.replace(event.target.origin, ''))
+      }, 200)
+    })
+  })
+
+  React.useLayoutEffect(() => {
+    callOnDesktop(() => {
+      const cardsToFade = [
+        ...listRef.current.querySelectorAll('[data-card]')
+      ].filter(card => card.dataset.flipId !== previousTrackId)
+      cardsToFade.forEach((card, i) => {
+        card.style.opacity = 0
+        setTimeout(() => {
+          card.classList.add('animate-in')
+        }, i * 50 + (previousPageWasTracksPage ? 150 : 0))
+      })
+    })()
+  }, [])
 
   return (
     <>
-      <Styled.Header>
-        <svg
-          aria-hidden="true"
-          focusable="false"
-          role="img"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 512 512"
-        >
-          <path
-            fill="currentColor"
-            d="M511.99 32.01c0-21.71-21.1-37.01-41.6-30.51L150.4 96c-13.3 4.2-22.4 16.5-22.4 30.5v261.42c-10.05-2.38-20.72-3.92-32-3.92-53.02 0-96 28.65-96 64s42.98 64 96 64 96-28.65 96-64V214.31l256-75.02v184.63c-10.05-2.38-20.72-3.92-32-3.92-53.02 0-96 28.65-96 64s42.98 64 96 64 96-28.65 96-64l-.01-351.99z"
-          ></path>
-        </svg>
-        Playlists for Dogs
-      </Styled.Header>
+      <Core.Header />
       <Styled.Container>
         <Swipe
+          flipId={currentCard.id}
           onDown={state => {
             setSwipeInProgress(true)
           }}
           onUp={state => {
             setSwipeInProgress(false)
           }}
-          threshold={25}
           right={{
             initFlip: () => {
               return setNextCardId(currentCard.prev.id)
@@ -138,6 +148,7 @@ const GestureCardSwipe = ({ history, match }) => {
           <Styled.List
             length={playlists.length}
             swipeInProgress={swipeInProgress}
+            ref={listRef}
           >
             {cardsToRender.map((card, i) => {
               return (
@@ -147,9 +158,8 @@ const GestureCardSwipe = ({ history, match }) => {
                 >
                   <Card
                     {...card}
-                    setNextCardId={setNextCardId}
+                    onCardClick={onCardClick}
                     isCurrentCard={card.id === currentCardId}
-                    history={history}
                   />
                 </Styled.ListItem>
               )

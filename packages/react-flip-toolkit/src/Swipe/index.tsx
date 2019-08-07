@@ -15,6 +15,7 @@ const configProps = PropTypes.oneOfType([
 
 const swipePropTypes = {
   children: PropTypes.node.isRequired,
+  flipId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   touchOnly: PropTypes.bool,
   onClick: PropTypes.func,
   onUp: PropTypes.func,
@@ -26,17 +27,21 @@ const swipePropTypes = {
   bottom: configProps
 }
 
-type SwipeComponentProps = Omit<SwipeProps, 'flipId'> & {
+type SwipeComponentProps = SwipeProps & {
   children: React.ReactElement
 }
 
 class SwipeComponent extends Component<SwipeComponentProps> {
   static propTypes = swipePropTypes
 
-  processProps = (props: SwipeComponentProps) => ({
-    ...props,
-    flipId: String(props.children.props.flipId)
-  })
+  processProps = (props: SwipeComponentProps) => {
+    return {
+      ...props,
+      flipId: props.flipId
+        ? String(props.flipId)
+        : String(props.children.props.flipId)
+    }
+  }
 
   componentDidUpdate(prevProps: SwipeComponentProps) {
     this.swipe.props = this.processProps(this.props)

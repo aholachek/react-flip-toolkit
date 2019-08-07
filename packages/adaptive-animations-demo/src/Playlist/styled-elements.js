@@ -1,6 +1,7 @@
-import styled from '@emotion/styled'
+import styled from '@emotion/styled/macro'
 import { keyframes } from '@emotion/core'
 import { Flipper } from 'react-flip-toolkit'
+import { breakpoint } from '../App/styles'
 
 export const Li = styled.li`
   position: relative;
@@ -15,9 +16,22 @@ export const CollapsedTrackContainer = styled(Flipper)`
   height: 5rem;
   display: flex;
   align-items: center;
+  z-index: 10;
 `
 
 export const CollapsedTrack = styled.div`
+  @media (min-width: ${breakpoint}px) {
+    ${props =>
+      props.animateIn
+        ? `
+  opacity: 1;
+  transform: translateY(0);
+  `
+        : `
+  opacity: 0;
+  transform: translateY(120px);
+  `};
+  }
   display: flex;
   align-items: center;
   border-radius: 8px;
@@ -39,6 +53,7 @@ export const CollapsedTrack = styled.div`
   left: ${props => (props.isGettingDeleted ? `100%` : 0)};
   h3 {
     font-size: 1rem;
+
     margin-bottom: 0.25rem;
   }
 `
@@ -90,18 +105,50 @@ export const PlayButton = styled.button`
 `
 
 export const TrashIconContainer = styled.div`
-  width: ${props => (props.isGettingDeleted ? '3.5rem' : '2rem')};
-  height: ${props => (props.isGettingDeleted ? '3.5rem' : '2rem')};
-  color: var(--light);
+  opacity: 0.2;
   margin-left: 2.5rem;
   padding: 0.5rem;
   border-radius: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  display: ${props => (props.isGettingDeleted ? 'block' : 'none')};
   img {
-    width: 2rem;
-    height: auto;
+    width: ${props => (props.isGettingDeleted ? '2rem' : '.5rem')};
+    height: ${props => (props.isGettingDeleted ? '2rem' : '.5rem')};
+  }
+  @media (min-width: ${breakpoint}px) {
+    display: none;
+  }
+`
+
+export const DeleteButton = styled.button`
+  appearance: none;
+  outline: 0;
+  background: transparent;
+  border: none;
+  display: none;
+  height: 1.5rem;
+  width: 1.5rem;
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.25s;
+  &:hover,
+  &:focus {
+    opacity: 1;
+  }
+  @media (min-width: ${breakpoint}px) {
+    display: block;
+  }
+`
+
+export const Container = styled.div`
+  max-width: 40rem;
+  min-width: 100vw;
+  margin: 0 auto 0 auto;
+  @media (min-width: ${breakpoint}px) {
+    min-width: 0;
   }
 `

@@ -2252,13 +2252,6 @@
     "@parcel/utils" "^1.11.0"
     physical-cpu-count "^2.0.0"
 
-"@rebass/emotion@^3.1.1":
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/@rebass/emotion/-/emotion-3.1.1.tgz#909346c831be978dcabd5ae9724fc52ddd3d1109"
-  integrity sha512-6Wz73cL/Sb5tL/c9yDd7HcwaPQs5fAcuU6yTiaUhoWgiJAGnR6GCHoaU5Lf6YfEJXEzXJRBj7I+G8VpRlX9vpg==
-  dependencies:
-    styled-system "^4.0.8"
-
 "@sentry/browser@^5.5.0":
   version "5.5.0"
   resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-5.5.0.tgz#ec99ea6897d23affc46d58e6ada32016b27721b5"
@@ -2339,6 +2332,90 @@
   version "0.7.1"
   resolved "https://registry.yarnpkg.com/@sinonjs/text-encoding/-/text-encoding-0.7.1.tgz#8da5c6530915653f3a1f38fd5f101d8c3f8079c5"
   integrity sha512-+iTbntw2IZPb/anVDbypzfQa+ay64MW0Zo8aJ8gZPWMMK6/OubMVb6lUPMagqjOPnmtauXnFCACVl3O7ogjeqQ==
+
+"@styled-system/background@^5.0.18":
+  version "5.0.18"
+  resolved "https://registry.yarnpkg.com/@styled-system/background/-/background-5.0.18.tgz#9c43dbd3dc3e1049e2e47d30d7c5fb39160d13cf"
+  integrity sha512-NtbQxxosMn4NIHKhmifz0GKAekIklrO3ZIfKwzmUKgq6w+ePx6VYiy1zH6s3SNbb01WXhncHZfB9SE+Xnp954A==
+  dependencies:
+    "@styled-system/core" "^5.0.18"
+
+"@styled-system/border@^5.0.18":
+  version "5.0.18"
+  resolved "https://registry.yarnpkg.com/@styled-system/border/-/border-5.0.18.tgz#9514f82130511d95fa6228790bb4210b7fa95630"
+  integrity sha512-he4+ERq9yjvCvrDFkAlpHJ5gVTjq3zx02queFMqCbkFvKrsOOFh3lfsJp+zFYRs3qQMadhDL9CNNyLTj/LufrQ==
+  dependencies:
+    "@styled-system/core" "^5.0.18"
+
+"@styled-system/color@^5.0.18":
+  version "5.0.18"
+  resolved "https://registry.yarnpkg.com/@styled-system/color/-/color-5.0.18.tgz#d97c898a8f0ed7e64a561650df065a728a9426ce"
+  integrity sha512-34xIp5HD6pulf3OSD8oM+T+qltTt17HsL2fF2QcgZtKverGv8Nys8F2e0Hzmk17G+L3xpUeeZy6wjiit+Oz0SA==
+  dependencies:
+    "@styled-system/core" "^5.0.18"
+
+"@styled-system/core@^5.0.18":
+  version "5.0.18"
+  resolved "https://registry.yarnpkg.com/@styled-system/core/-/core-5.0.18.tgz#e1ad047c87378cc982393e394761c2d35ccc7633"
+  integrity sha512-vqDZ083t2tekP3+DJga9YbG3NFYKcVk7rYrGrY39GJSIP0c+HROYbHQhHMPUaHvKE2wgiBrQGLrH1tT97rlgJw==
+  dependencies:
+    object-assign "^4.1.1"
+
+"@styled-system/flexbox@^5.0.18":
+  version "5.0.18"
+  resolved "https://registry.yarnpkg.com/@styled-system/flexbox/-/flexbox-5.0.18.tgz#6cfd87e72b40d4a8b1500ee877ad6cbd6e111029"
+  integrity sha512-/jF7UvAKDn4YfNYnSvCQkGTzGsTmzn0Vq5Iwc6MzVe9euTEHFAuKeMTxA5QkALHO0eMw+dzOhn+ZNwW9S7vjIg==
+  dependencies:
+    "@styled-system/core" "^5.0.18"
+
+"@styled-system/grid@^5.0.18":
+  version "5.0.18"
+  resolved "https://registry.yarnpkg.com/@styled-system/grid/-/grid-5.0.18.tgz#5eaf124d247c0d6ec14da64cc65c220d9453ed71"
+  integrity sha512-prWWviXdfkvqDS78tobJ73mbxAjV6viPPtMR0v1twlYZwIC7IBzyR8ldDrN0tFuGoJE4jAcb0EIANjzBjCMg5A==
+  dependencies:
+    "@styled-system/core" "^5.0.18"
+
+"@styled-system/layout@^5.0.18":
+  version "5.0.18"
+  resolved "https://registry.yarnpkg.com/@styled-system/layout/-/layout-5.0.18.tgz#b7dcd8b5eab99cf9e731f68b589587638d1bfe25"
+  integrity sha512-r6HSVD8e6/gHVmuG32mqYnZfAjwY/7XZnEQku03yvFxficcZO3mEOOyXQmYe297Zcr1Y6K9mVrLk3aCeXpG2tg==
+  dependencies:
+    "@styled-system/core" "^5.0.18"
+
+"@styled-system/position@^5.0.18":
+  version "5.0.18"
+  resolved "https://registry.yarnpkg.com/@styled-system/position/-/position-5.0.18.tgz#d4f2d9fe4ed70d52c8c044652dde19d1519cac95"
+  integrity sha512-5TD8vgZsi6FBWqiRj+q+qVpAgQTy+DG7SNDJY3YOZCA6zvqoiWFzGoiX5SUR9PLA+FX9DIvcvRzcmnWC1+URZA==
+  dependencies:
+    "@styled-system/core" "^5.0.18"
+
+"@styled-system/shadow@^5.0.18":
+  version "5.0.18"
+  resolved "https://registry.yarnpkg.com/@styled-system/shadow/-/shadow-5.0.18.tgz#1098c8da31e85525c80e5a5f7deb9dec360be2ed"
+  integrity sha512-ITc9NezoBZCC4dFjAZuDrDqvYHoAULK5vZVyMbnIJMaUH0Rkz/qiXY+UuGHDilR4ITmily2oZ9rSwc2AmYNiFw==
+  dependencies:
+    "@styled-system/core" "^5.0.18"
+
+"@styled-system/space@^5.0.18":
+  version "5.0.18"
+  resolved "https://registry.yarnpkg.com/@styled-system/space/-/space-5.0.18.tgz#30b66600d36afd33d2e33e1325356dff423e0c82"
+  integrity sha512-NNs9Ocph8Inp5QSeEEKOZKjg34VfqPfjRq6C7bBY2XidAYhH+f4k8elMT0YTA0uGNGqC5kmbkuYbyy5NNwvwFA==
+  dependencies:
+    "@styled-system/core" "^5.0.18"
+
+"@styled-system/typography@^5.0.18":
+  version "5.0.18"
+  resolved "https://registry.yarnpkg.com/@styled-system/typography/-/typography-5.0.18.tgz#92146759ef4610b22a3dceb740395a308fb7ddcd"
+  integrity sha512-qVwOIYvQxC78qoli5DGmqCmBnyb+Y/QYBl8zyHs+RAq2B9gdzvArAFiXs+IYJpRtPtwBhXwvQ/+V/zIJqkviOA==
+  dependencies:
+    "@styled-system/core" "^5.0.18"
+
+"@styled-system/variant@^5.0.18":
+  version "5.0.18"
+  resolved "https://registry.yarnpkg.com/@styled-system/variant/-/variant-5.0.18.tgz#24771ca13ffaff4ccd52b77c2287d335a8d968e3"
+  integrity sha512-6UgV0u2RfTR3AON0PeNgcKMc9AutBmnfIrn9z1CmMU3fR4nE6LB4OJ5m0+cSK6SuIEI7NvaFjx05w44nIjx9+Q==
+  dependencies:
+    "@styled-system/core" "^5.0.18"
 
 "@svgr/babel-plugin-add-jsx-attribute@^4.2.0":
   version "4.2.0"
@@ -11903,6 +11980,11 @@ react-dom@^16.8.6:
     prop-types "^15.6.2"
     scheduler "^0.13.6"
 
+react-emotion@^10.0.0:
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/react-emotion/-/react-emotion-10.0.0.tgz#03adf5a93f9dc41396401551566adf9668a2418e"
+  integrity sha512-HMEH1I0m4AxJzG31ii/g227WhR0RBlRdr2M4C0n7yg9s3SiAPGB7lxvc/EoE8ixU9PLeOlBOb/n0wo42tGu99Q==
+
 react-error-overlay@^5.1.6:
   version "5.1.6"
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-5.1.6.tgz#0cd73407c5d141f9638ae1e0c63e7b2bf7e9929d"
@@ -13572,13 +13654,24 @@ style-loader@0.23.1:
     loader-utils "^1.1.0"
     schema-utils "^1.0.0"
 
-styled-system@^4.0.8:
-  version "4.2.4"
-  resolved "https://registry.yarnpkg.com/styled-system/-/styled-system-4.2.4.tgz#8909f91396c30b92295b4eddec5f7b89f8c8d767"
-  integrity sha512-44X7n09gDvwx7yjquEXsjiNALK0dxGgAJdpO5cb/PdL+D4mhSLKWig4/EhH4vHJLbwu/kumURHyvKxygaBfg0A==
+styled-system@^5.0.18:
+  version "5.0.18"
+  resolved "https://registry.yarnpkg.com/styled-system/-/styled-system-5.0.18.tgz#4cdd15de7fe5ae1ab43c87ed4338c11a6d011514"
+  integrity sha512-hOQu0/rPXktT12rjimQnWcvMm+xWVmTWvKMTMNkM4FQcXdS9NwlGXM5hu4LOWpIFhuqM+S6UDqqhy6IjPF5BlQ==
   dependencies:
-    "@babel/runtime" "^7.4.2"
-    prop-types "^15.7.2"
+    "@styled-system/background" "^5.0.18"
+    "@styled-system/border" "^5.0.18"
+    "@styled-system/color" "^5.0.18"
+    "@styled-system/core" "^5.0.18"
+    "@styled-system/flexbox" "^5.0.18"
+    "@styled-system/grid" "^5.0.18"
+    "@styled-system/layout" "^5.0.18"
+    "@styled-system/position" "^5.0.18"
+    "@styled-system/shadow" "^5.0.18"
+    "@styled-system/space" "^5.0.18"
+    "@styled-system/typography" "^5.0.18"
+    "@styled-system/variant" "^5.0.18"
+    object-assign "^4.1.1"
 
 stylehacks@^4.0.0:
   version "4.0.3"

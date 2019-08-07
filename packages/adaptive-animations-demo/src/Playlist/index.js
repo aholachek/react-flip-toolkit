@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Flipper, Flipped, Swipe } from 'react-flip-toolkit'
 import playlists from '../playlists'
 import * as Styled from './styled-elements'
@@ -6,14 +6,16 @@ import PlaylistHeader from './Header'
 import trashIcon from '../assets/trashIcon.svg'
 import playIcon from '../assets/playIcon.svg'
 import pauseIcon from '../assets/pauseIcon.svg'
-import { usePrevious } from '../utilities'
-import { spring } from '../App'
+import { callOnDesktop } from '../utilities'
+import * as Core from '../core-components'
+
 const ListItem = ({
   setIsPlaying,
   isPlaying,
   track,
   currentlyViewed,
-  deleteTrack
+  deleteTrack,
+  animateIn
 }) => {
   const [isGettingDeleted, setIsGettingDeleted] = useState(false)
 
@@ -27,8 +29,8 @@ const ListItem = ({
     }
   }
   return (
-    <Styled.CollapsedTrackContainer flipKey={isGettingDeleted} spring={spring}>
-      <Flipped flipId={`${track.id}-trash`} >
+    <Styled.CollapsedTrackContainer flipKey={isGettingDeleted}>
+      <Flipped flipId={`${track.id}-trash`}>
         <Styled.TrashIconContainer isGettingDeleted={isGettingDeleted}>
           <img src={trashIcon} alt="remove song" />
         </Styled.TrashIconContainer>
@@ -42,7 +44,7 @@ const ListItem = ({
         threshold={0.4}
       >
         <Flipped
-          stagger
+          stagger={animateIn}
           flipId={`track-${track.id}`}
           onSpringUpdate={callOnce(() => {
             if (isGettingDeleted) {
@@ -51,6 +53,7 @@ const ListItem = ({
           }, 0.85)}
         >
           <Styled.CollapsedTrack
+            animateIn={animateIn}
             currentlyViewed={currentlyViewed}
             isGettingDeleted={isGettingDeleted}
             href="#"
@@ -69,6 +72,15 @@ const ListItem = ({
               <h3>{track.title}</h3>
               <p>{track.artist}</p>
             </div>
+            <div>
+              <Styled.DeleteButton
+                onClick={() => {
+                  setIsGettingDeleted(true)
+                }}
+              >
+                <img src={trashIcon} alt="remove song" />
+              </Styled.DeleteButton>
+            </div>
           </Styled.CollapsedTrack>
         </Flipped>
       </Swipe>
@@ -86,11 +98,25 @@ export const updateLocationWithSearchParams = (location, search) => {
 }
 
 const Playlist = props => {
+  const headerIsCollapsing = new URLSearchParams(props.previousSearch)
   const playlist = playlists.find(
-    playlist => playlist.id === parseInt(props.match.params.id, 10)
+    playlist => playlist.id === props.match.params.id
   )
   const [visibleTracks, setVisibleTracks] = useState(playlist.tracks)
   const [isPlaying, setIsPlaying] = useState(null)
+  const [animateListIn, setAnimateListIn] = useState(false)
+
+  React.useLayoutEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
+  React.useEffect(() => {
+    callOnDesktop(() => {
+      setTimeout(() => {
+        setAnimateListIn(true)
+      }, 300)
+    })()
+  }, [])
 
   const headerCollapsed =
     new URLSearchParams(props.location.search).get('headerCollapsed') === 'true'
@@ -110,25 +136,31 @@ const Playlist = props => {
   }
 
   return (
-    <Flipper flipKey={`${JSON.stringify(visibleTracks)}`} spring={spring}>
+    <Styled.Container>
+      <Core.VisibleOnDesktop>
+        <Core.Header />
+      </Core.VisibleOnDesktop>
       <PlaylistHeader
         playlist={playlist}
         collapsed={headerCollapsed}
         toggleCollapsed={toggleCollapsed}
       />
-      <Styled.List collapsed={headerCollapsed}>
-        {visibleTracks.map(track => (
-          <Styled.Li key={track.id}>
-            <ListItem
-              track={track}
-              deleteTrack={deleteTrack}
-              setIsPlaying={setIsPlaying}
-              isPlaying={isPlaying === track.id}
-            />
-          </Styled.Li>
-        ))}
-      </Styled.List>
-    </Flipper>
+      <Flipper flipKey={`${JSON.stringify(visibleTracks)} ${animateListIn}`}>
+        <Styled.List collapsed={headerCollapsed}>
+          {visibleTracks.map(track => (
+            <Styled.Li key={track.id} data-li="true">
+              <ListItem
+                track={track}
+                deleteTrack={deleteTrack}
+                setIsPlaying={setIsPlaying}
+                isPlaying={isPlaying === track.id}
+                animateIn={animateListIn}
+              />
+            </Styled.Li>
+          ))}
+        </Styled.List>
+      </Flipper>
+    </Styled.Container>
   )
 }
 

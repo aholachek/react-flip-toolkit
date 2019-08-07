@@ -10,6 +10,7 @@
  */
 
 import { removeFirst } from './util'
+import SpringConfig from './SpringConfig'
 
 class PhysicsState {
   constructor() {
@@ -53,6 +54,7 @@ class Spring {
     this._wasAtRest = true
     // hack from alex -- only call 1x
     this._onActivateCalled
+    this._cachedSpringConfig = {}
   }
 
   getId() {

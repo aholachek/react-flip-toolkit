@@ -120,8 +120,6 @@ const getFlippedElementPositionsBeforeUpdate = ({
     flippedElements.concat(inverseFlippedElements)
   )
 
-  console.log({ flippedElementPositions })
-
   return {
     flippedElementPositions,
     cachedOrderedFlipIds: filteredFlippedElements.map(
