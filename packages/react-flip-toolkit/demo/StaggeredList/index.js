@@ -142,7 +142,7 @@ export default class AnimatedList extends Component {
         <ul className="list">
           {listData.map(index => {
             return (
-              <li>
+              <li key={index}>
                 {index === this.state.focused ? (
                   <ExpandedListItem
                     index={this.state.focused}
@@ -162,14 +162,14 @@ export default class AnimatedList extends Component {
               </li>
             )
           })}
-          <div style={{ display: 'none' }}>
+          {/* <div style={{ display: 'none' }}>
             <ListItem
               index={0}
               key={0}
               color={colors[0 % colors.length]}
               onClick={this.onClick}
             />
-          </div>
+          </div> */}
         </ul>
       </Flipper>
     )
