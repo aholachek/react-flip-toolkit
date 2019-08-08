@@ -271,13 +271,6 @@ class Swipe {
 
     const percentage = absoluteMovement / difference
 
-    console.log({
-      percentage,
-      absoluteMovement,
-      difference,
-      configMatchingCurrentDirection
-    })
-
     // cancel flip -- this is interruptible if user
     // tries to drag before animation is completed
     if (!down && percentage < this.flipInitiatorData.threshold) {

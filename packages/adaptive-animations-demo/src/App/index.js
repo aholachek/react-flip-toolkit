@@ -37,9 +37,11 @@ const FlippedRouteSwitcher = props => {
       }}
     >
       <Route
-        path="/playlists/:id"
+        path="/playlists/:id?"
         exact
         render={props => {
+          console.log('foo')
+          if (!props.match.params.id) return <Redirect to="/playlists/1" />
           return (
             <BrowsePlaylists
               {...props}

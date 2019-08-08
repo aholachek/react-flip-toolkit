@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Flipped, Swipe } from 'react-flip-toolkit'
 import * as Styled from './styled-elements'
 import * as Core from '../../core-components'
@@ -10,6 +10,17 @@ const PlaylistHeader = ({ playlist, collapsed, toggleCollapsed }) => {
   }
   return (
     <Styled.HeaderContainer collapsed={collapsed}>
+      <Styled.BackButton aria-label="back" to={`/playlists/${playlist.id}`}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+        >
+          <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+          <path d="M0 0h24v24H0z" fill="none" />
+        </svg>
+      </Styled.BackButton>
       <Swipe down={collapsed && swipeConfig} up={!collapsed && swipeConfig}>
         <Flipped flipId={playlist.id} spring="veryGentle">
           <Styled.BackgroundImgContainer collapsed={collapsed}>

@@ -1,5 +1,6 @@
 import styled from '@emotion/styled/macro'
 import { breakpoint } from '../../App/styles'
+import { Link } from 'react-router-dom'
 
 export const BackgroundImgContainer = styled.div`
   border-radius: 5%;
@@ -11,6 +12,12 @@ export const BackgroundImgContainer = styled.div`
   overflow: hidden;
   will-change: transform;
   z-index: 10;
+  > div:first-of-type {
+    height: 100%;
+    >div: first-of-type {
+      height: 100%;
+    }
+  }
 
   @media (min-width: ${breakpoint}px) {
     width: 20rem;
@@ -87,5 +94,23 @@ export const DesktopOnly = styled.div`
   display: none;
   @media (min-width: ${breakpoint}px) {
     display: block;
+  }
+`
+
+export const BackButton = styled(Link)`
+  appearance: none;
+  border: 0;
+  background: transparent;
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  color: white;
+  z-index: 15;
+  svg {
+    height: 2.5rem;
+    width: 2.5rem;
+  }
+  @media (min-width: ${breakpoint}px) {
+    display: none;
   }
 `
