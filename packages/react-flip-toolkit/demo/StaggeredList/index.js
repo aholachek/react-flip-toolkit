@@ -65,16 +65,16 @@ const ListItem = ({ index, color, onClick }) => {
 }
 
 const ExpandedListItem = ({ index, color, onClick }) => {
+  console.log(index, color, onClick)
   return (
     <Flipped
       flipId={createCardFlipId(index)}
       stagger="card"
-      onSpringUpdate={spring => console.log(spring)}
       onStart={el => {
         console.log('regular')
       }}
       onStartImmediate={el => {
-        console.log('immediate')
+        console.log('immediate', el)
         setTimeout(() => {
           el.classList.add('animated-in')
         }, 400)
@@ -126,12 +126,15 @@ export default class AnimatedList extends Component {
         spring="gentle"
         staggerConfig={{
           'card-content': {
-            delayUntil: (prevDecisionData, currDecisionData) =>
-              createCardFlipId(prevDecisionData || currDecisionData)
+            delayUntil: (prevDecisionData, currDecisionData) => {
+              const flipId = createCardFlipId(
+                prevDecisionData === null ? currDecisionData : prevDecisionData
+              )
+              return flipId
+            }
           },
           card: {
-            reverse: this.state.focused !== null ? true : false,
-            speed: 0
+            reverse: this.state.focused !== null
           }
         }}
         decisionData={this.state.focused}
@@ -143,7 +146,7 @@ export default class AnimatedList extends Component {
                 {index === this.state.focused ? (
                   <ExpandedListItem
                     index={this.state.focused}
-                    color={colors[this.state.focused % colors.length]}
+                    color={colors[index % colors.length]}
                     onClick={this.onClick}
                   />
                 ) : (

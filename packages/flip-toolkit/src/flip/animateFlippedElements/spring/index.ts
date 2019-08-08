@@ -19,7 +19,6 @@ export const createSuspendedSpring = (flipData: FlipData) => {
   } = flipData
 
   const spring = springSystem.createSpring(stiffness!, damping!)
-  if (!isGestureControlled) spring.setEndValue(1)
   spring.setOvershootClampingEnabled(!!overshootClamping)
   const onSpringAtRest = () => {
     // prevent SpringSystem from caching unused springs
@@ -44,7 +43,9 @@ export const createSuspendedSpring = (flipData: FlipData) => {
 }
 
 export const createSpring = (flipped: FlipData) => {
-  return createSuspendedSpring(flipped)
+  const spring = createSuspendedSpring(flipped)
+  spring.setEndValue(1)
+  return spring
 }
 
 export const normalizeSpeed = (speedConfig: number | undefined) => {
@@ -64,6 +65,8 @@ export const createStaggeredSprings = (
   if (staggerConfig.reverse) {
     flippedArray.reverse()
   }
+
+  console.log({ flippedArray: flippedArray.map(f => f.id).join(' ') })
 
   const normalizedSpeed = normalizeSpeed(staggerConfig.speed)
 
@@ -85,7 +88,7 @@ export const createStaggeredSprings = (
 
           // direction is 0 when animation is gesture controlled and user has released before the threshold
           const updateTrailingAnimation =
-            currentValue > nextThreshold || isGestureControlled
+            currentValue >= nextThreshold || isGestureControlled
           if (updateTrailingAnimation) {
             if (setEndValueFuncs[i + 1]) {
               setEndValueFuncs[i + 1]!(
