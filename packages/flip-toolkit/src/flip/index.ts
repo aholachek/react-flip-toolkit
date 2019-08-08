@@ -75,6 +75,7 @@ const onFlipKeyUpdate = ({
   onComplete,
   onStart
 }: OnFlipKeyUpdateArgs) => {
+  debugger
   const flippedElementPositionsAfterUpdate = getFlippedElementPositionsAfterUpdate(
     {
       element: containerEl,

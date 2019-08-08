@@ -204,6 +204,8 @@ export default ({
       const needsForcedMinVals = currentRect.width < 1 || currentRect.height < 1
       const element = flippedElementPositionsAfterUpdate[id].element
 
+      console.log({ needsForcedMinVals, currentRect })
+
       // don't animate elements outside of the user's viewport
       if (!rectInViewport(prevRect) && !rectInViewport(currentRect)) {
         return false

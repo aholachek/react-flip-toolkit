@@ -17,18 +17,9 @@ export const getAllElements = (
     return toArray(element!.querySelectorAll(`[${constants.DATA_FLIP_ID}]`))
   }
 }
-// if there are duplicate flipIds but some are display:none, we can safely ignore them
-// this enables some optimizations and more complex animations
-export const filterInvisibleElements = (flippedElements: HTMLElement[]) => {
-  return (
-    flippedElements
-      .map((child: HTMLElement): [HTMLElement, BoundingClientRect] => [
-        child,
-        child.getBoundingClientRect()
-      ])
-      // @ts-ignore
-      .filter(data => {
-        return data[1].width + data[1].height !== 0
-      })
-  )
+export const getRects = (flippedElements: HTMLElement[]) => {
+  return flippedElements.map((child: HTMLElement): [
+    HTMLElement,
+    BoundingClientRect
+  ] => [child, child.getBoundingClientRect()])
 }
