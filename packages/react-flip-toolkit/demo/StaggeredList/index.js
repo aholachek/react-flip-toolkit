@@ -65,16 +65,14 @@ const ListItem = ({ index, color, onClick }) => {
 }
 
 const ExpandedListItem = ({ index, color, onClick }) => {
-  console.log(index, color, onClick)
   return (
     <Flipped
       flipId={createCardFlipId(index)}
       stagger="card"
-      onStart={el => {
-        console.log('regular')
-      }}
       onStartImmediate={el => {
-        console.log('immediate', el)
+        console.log('immediate')
+      }}
+      onStart={el => {
         setTimeout(() => {
           el.classList.add('animated-in')
         }, 400)
