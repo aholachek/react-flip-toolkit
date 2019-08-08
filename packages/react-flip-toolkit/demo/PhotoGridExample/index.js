@@ -52,7 +52,7 @@ class PhotoGrid extends Component {
     return (
       <Flipper
         flipKey={focused}
-        onComplete={flipIds => console.log('complete', JSON.stringify(flipIds))}
+        onComplete={flipIds => console.log('complete', flipIds)}
       >
         <div className="photoGridExample" ref={el => (this.el = el)}>
           <div className="photoGrid">

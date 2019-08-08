@@ -52,7 +52,7 @@ const createSimpleSpring = ({
   } else {
     spring.setEndValue(1)
   }
-  return spring.destroy.bind(spring)
+  return spring
 }
 
 export default createSimpleSpring

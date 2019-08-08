@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Flipper, Flipped, Swipe } from '../../src'
-import styled from '@emotion/styled/macro'
+import styled from 'styled-components'
 import { css } from '@emotion/core'
 
 const StyledFlipper = styled(Flipper)`

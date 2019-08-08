@@ -46,7 +46,8 @@
     "version": "npm run build"
   },
   "dependencies": {
-    "flip-toolkit": "6.6.9"
+    "flip-toolkit": "6.6.9",
+    "styled-components": "^4.3.2"
   },
   "peerDependencies": {
     "prop-types": "^15.x.x",
@@ -54,7 +55,6 @@
     "react-dom": ">= 16.x"
   },
   "devDependencies": {
-    "react-icons": "^3.7.0",
     "@babel/core": "^7.5.0",
     "@babel/plugin-proposal-class-properties": "^7.5.0",
     "@babel/plugin-transform-typescript": "^7.4.5",
@@ -83,6 +83,7 @@
     "prettier": "1.18.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-icons": "^3.7.0",
     "react-scripts": "^3.0.1",
     "react-test-renderer": "^16.8.6",
     "regenerator-runtime": "^0.13.2",
