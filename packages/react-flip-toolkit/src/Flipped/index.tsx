@@ -6,7 +6,7 @@ import React, {
 } from 'react'
 import PropTypes from 'prop-types'
 import { utilities, constants } from 'flip-toolkit'
-import { FlippedProps, SerializableFlippedProps } from 'flip-toolkit/dist/types'
+import { FlippedProps, SerializableFlippedProps } from 'flip-toolkit/lib/types'
 import { FlipContext, PortalContext } from '../Flipper'
 
 const propTypes = {

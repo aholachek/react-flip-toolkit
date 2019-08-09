@@ -6,7 +6,3 @@ export {
 } from './flip/getFlippedElementPositions/getFlippedElementPositionsBeforeUpdate'
 export { default as onFlipKeyUpdate } from './flip'
 export { utilities, constants }
-export { default as Swipe } from './Swipe'
-export {
-  default as spring
-} from './flip/animateFlippedElements/spring/SimpleSpring'

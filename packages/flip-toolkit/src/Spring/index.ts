@@ -1,10 +1,10 @@
 // this is exclusively for users of the library to create their own enter + exit animations
-import { SpringSystem } from '../../../forked-rebound'
-import { SpringSystemInterface } from '../../../forked-rebound/types'
-import { tweenProp, assign } from '../../../utilities'
-import { normalizeSpring, springPresets } from '../../../springSettings'
+import { SpringSystem } from '../forked-rebound'
+import { SpringSystemInterface } from '../forked-rebound/types'
+import { tweenProp, assign } from '../utilities'
+import { normalizeSpring, springPresets } from '../springSettings'
 import { SimpleSpringOptions } from './types'
-import { SpringConfig } from '../../../springSettings/types'
+import { SpringConfig } from '../springSettings/types'
 
 // this should get created only 1x
 const springSystem: SpringSystemInterface = new SpringSystem()

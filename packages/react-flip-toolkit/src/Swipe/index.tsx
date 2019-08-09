@@ -1,8 +1,8 @@
 import React, { Component, cloneElement } from 'react'
 import { GestureContext, GestureContextProps } from '../Flipper'
 import PropTypes from 'prop-types'
-import { Swipe } from 'flip-toolkit'
-import { SwipeProps } from 'flip-toolkit/dist/Swipe/types'
+import Swipe from 'flip-toolkit/lib/Swipe'
+import { SwipeProps } from 'flip-toolkit/lib/Swipe/types'
 
 const configProps = PropTypes.oneOfType([
   PropTypes.shape({

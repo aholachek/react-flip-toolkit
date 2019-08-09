@@ -9,9 +9,9 @@ import {
   FlipperProps,
   InProgressAnimations,
   FlipCallbacks
-} from 'flip-toolkit/dist/types'
-import { FlippedElementPositionsBeforeUpdateReturnVals } from 'flip-toolkit/dist/flip/getFlippedElementPositions/getFlippedElementPositionsBeforeUpdate/types'
-import { SetIsGestureInitiated } from 'flip-toolkit/dist/Swipe/types'
+} from 'flip-toolkit/lib/types'
+import { FlippedElementPositionsBeforeUpdateReturnVals } from 'flip-toolkit/lib/flip/getFlippedElementPositions/getFlippedElementPositionsBeforeUpdate/types'
+import { SetIsGestureInitiated } from 'flip-toolkit/lib/Swipe/types'
 
 export interface GestureContextProps {
   inProgressAnimations: InProgressAnimations
@@ -141,7 +141,11 @@ class Flipper extends Component<FlipperProps> {
 }
 // @ts-ignore
 Flipper.propTypes = {
-  flipKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]).isRequired,
+  flipKey: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.bool
+  ]).isRequired,
   children: PropTypes.node.isRequired,
   spring: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   applyTransformOrigin: PropTypes.bool,

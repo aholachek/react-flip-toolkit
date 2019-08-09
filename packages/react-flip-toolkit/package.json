@@ -4,16 +4,16 @@
   "description": "Configurable FLIP animation helpers for React",
   "license": "MIT",
   "source": "src/index.ts",
-  "main": "dist/index.js",
-  "umd:main": "dist/index.umd.js",
-  "module": "dist/index.es.js",
-  "types": "dist/react-flip-toolkit/types.d.ts",
+  "main": "lib/index.js",
+  "umd:main": "lib/index.umd.js",
+  "module": "lib/index.es.js",
+  "types": "lib/react-flip-toolkit/lib/Swipetypes.d.ts",
   "amdName": "ReactFlipToolkit",
   "repository": {
     "type": "git",
     "url": "https://github.com/aholachek/react-flip-toolkit"
   },
-  "bugs": "https://github.com/aholachek/react-flip-toolkit/issues",
+  "bugs": "https://github.com/aholachek/react-flip-toolkit/lib/Swipeissues",
   "author": "Alex Holachek",
   "keywords": [
     "react-component",
@@ -26,20 +26,21 @@
     "npm": ">=5"
   },
   "scripts": {
-    "start": "parcel --no-cache demo/index.html --out-dir demo/dist",
-    "deploy-demo": "parcel build demo/index.html --out-dir demo/dist; cp demo/dist/index.html demo/dist/200.html; surge demo/dist --domain react-flip-toolkit-demos.surge.sh",
-    "build": "microbundle --name=ReactFlipToolkit --globals react=React,prop-types=PropTypes,flip-toolkit=FlipToolkit",
+    "microbundle": "microbundle",
+    "start": "parcel --no-cache demo/index.html --out-dir demo/lib",
+    "deploy-demo": "parcel build demo/index.html --out-dir demo/lib; cp demo/lib/index.html demo/lib/200.html; surge demo/lib --domain react-flip-toolkit-demos.surge.sh",
+    "build": "microbundle --name=ReactFlipToolkit --globals react=React,prop-types=PropTypes,flip-toolkit=FlipToolkit --define process.env.NODE_ENV=production && node customEntryPoint.js",
     "watch": "microbundle watch --no-compress",
     "check-types": "tsc --noEmit",
     "prepare": "yarn run build",
     "predeploy": "cd example && yarn install && yarn run build",
-    "inspect": "npx source-map-explorer dist/",
+    "inspect": "npx source-map-explorer lib/",
     "lint": "eslint src/**/*.{ts,tsx}",
     "format": "prettier --write 'src/**/*.{ts,tsx}",
     "format-and-fix": "npm-run-all format eslint-fix",
     "fix": "eslint src/**/*.{ts,tsx} --fix",
     "test:dom": "parcel mocha/testrunner.html",
-    "test": "jest --testPathIgnorePatterns \"dist\"",
+    "test": "jest --testPathIgnorePatterns \"lib\"",
     "test:all": "npm-run-all test test:dom",
     "preversion": "npm test",
     "postpublish": "git push origin master; git push origin --tags",
@@ -54,7 +55,6 @@
     "react-dom": ">= 16.x"
   },
   "devDependencies": {
-    "styled-components": "^4.3.2",
     "@babel/core": "^7.5.0",
     "@babel/plugin-proposal-class-properties": "^7.5.0",
     "@babel/plugin-transform-typescript": "^7.4.5",
@@ -78,6 +78,7 @@
     "microbundle": "^0.11.0",
     "mocha": "^6.1.4",
     "normalize.css": "^8.0.1",
+    "npm": "^6.10.3",
     "npm-run-all": "^4.1.5",
     "parcel": "^1.12.3",
     "prettier": "1.18.2",
@@ -88,13 +89,12 @@
     "react-test-renderer": "^16.8.6",
     "regenerator-runtime": "^0.13.2",
     "sinon": "^7.3.2",
+    "styled-components": "^4.3.2",
     "ts-jest": "^24.0.2",
     "typescript": "^3.5.2"
   },
   "files": [
-    "dist",
-    "core",
-    "es"
+    "lib"
   ],
   "browserslist": [
     "> 1%",
