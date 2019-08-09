@@ -6365,10 +6365,8 @@ flatten@^1.0.2:
   resolved "https://registry.yarnpkg.com/flatten/-/flatten-1.0.2.tgz#dae46a9d78fbe25292258cc1e780a41d95c03782"
   integrity sha1-2uRqnXj74lKSJYzB54CkHZXAN4I=
 
-flip-toolkit@6.6.9:
-  version "6.6.8"
-  resolved "https://registry.yarnpkg.com/flip-toolkit/-/flip-toolkit-6.6.8.tgz#b95ef695dfc80887669d5d1f81fc1349998119f6"
-  integrity sha512-t3ducSFSOGfLMjGUVjq40edG6ZxtNFoeBndkokFvvCBeqMIbQzIjItNVv07Bpy6e6k70EhHOKeui56YZnYKnxA==
+flip-toolkit@7.0.0-alpha.11:
+  version "7.0.0-alpha.1"
   dependencies:
     rematrix "0.2.2"
 
