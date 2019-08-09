@@ -1,6 +1,6 @@
 {
   "name": "adaptive-animations-demo",
-  "version": "0.1.0",
+  "version": "7.0.0-alpha.0",
   "private": true,
   "dependencies": {
     "@emotion/core": "^10.0.15",
@@ -9,7 +9,7 @@
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-flip-toolkit": "6.6.9",
+    "react-flip-toolkit": "^7.0.0-alpha.0",
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
@@ -36,6 +36,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {}
+  }
 }

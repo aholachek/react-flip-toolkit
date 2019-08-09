@@ -1,6 +1,8 @@
 {
-  "version": "6.6.9",
+  "version": "7.0.0-alpha.0",
   "npmClient": "yarn",
   "useWorkspaces": true,
-  "packages": ["packages/*"]
+  "packages": [
+    "packages/*"
+  ]
 }
