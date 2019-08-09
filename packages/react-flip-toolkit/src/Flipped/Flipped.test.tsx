@@ -94,12 +94,27 @@ describe('Flipped Component', () => {
 
   it('passes props if it receives a function as a child', () => {
     const testRenderer = TestRenderer.create(
-      <Flipped flipId="foo" inverseFlipId="bar">
+      <Flipped flipId="foo">
         {(flippedProps: any) => <div {...flippedProps} />}
       </Flipped>
     )
     expect(testRenderer.toJSON()!.props).toEqual({
       'data-flip-id': 'foo',
+      'data-flip-config': JSON.stringify({
+        translate: true,
+        scale: true,
+        opacity: true
+      })
+    })
+  })
+
+  it('passes props if it receives a function as a child take 2', () => {
+    const testRenderer = TestRenderer.create(
+      <Flipped inverseFlipId="bar">
+        {(flippedProps: any) => <div {...flippedProps} />}
+      </Flipped>
+    )
+    expect(testRenderer.toJSON()!.props).toEqual({
       'data-inverse-flip-id': 'bar',
       'data-flip-config': JSON.stringify({
         translate: true,

@@ -5,7 +5,6 @@
   "dependencies": {
     "@emotion/core": "^10.0.15",
     "@emotion/styled": "^10.0.15",
-    "@sentry/browser": "^5.5.0",
     "emotion-theming": "^10.0.14",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
