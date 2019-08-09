@@ -1,1 +1,86 @@
-{"name":"flip-toolkit","version":"7.0.0-alpha.1","description":"Configurable FLIP animation helpers","license":"MIT","source":"src/Spring/index.ts","main":"temp/Spring/index.js","umd:main":"temp/${bundleName}/index.umd.js","module":"temp/Spring/index.es.js","types":"lib/index.d.ts","repository":{"type":"git","url":"https://github.com/aholachek/react-flip-toolkit"},"bugs":"https://github.com/aholachek/react-flip-toolkit/lib/Swipeissues","author":"Alex Holachek","keywords":["vanillajs","FLIP","transition","animation"],"engines":{"node":">=8","npm":">=5"},"scripts":{"microbundle":"microbundle","start":"parcel 'core-test/index.html' --out-dir build","test":"jest --testPathIgnorePatterns \"(lib|domtest)\"","build":"microbundle --name=FlipToolkit --globals rematrix=Rematrix && node customEntryPoint.js","watch":"microbundle watch --no-compress","check-types":"tsc --noEmit","prepare":"yarn run build","predeploy":"cd example && yarn install && yarn run build","inspect":"npx source-map-explorer lib/index.es.*","lint":"eslint src/**/*.ts","format":"prettier --write src/**/*.{ts,tsx}","format-and-fix":"npm-run-all format eslint-fix","fix":"eslint src/**/*.ts --fix","test:dom":"parcel mocha/testrunner.html --out-dir build","test:all":"npm-run-all test test:dom","preversion":"npm test","postpublish":"git push origin master; git push origin --tags","version":"npm run build"},"dependencies":{"rematrix":"0.2.2"},"devDependencies":{"@babel/core":"^7.4.5","@babel/plugin-proposal-class-properties":"^7.5.0","@babel/plugin-transform-typescript":"^7.4.5","@babel/preset-env":"^7.5.0","@babel/preset-react":"^7.0.0","@babel/preset-typescript":"^7.3.3","@babel/runtime":"^7.4.5","@types/jest":"^24.0.15","@typescript-eslint/eslint-plugin":"^1.10.2","@typescript-eslint/parser":"^1.10.2","babel-jest":"^24.8.0","babel-polyfill":"^6.26.0","babel-preset-react-app":"^9.0.0","chai":"^4.2.0","eslint":"^5.16.0","eslint-plugin-react":"^7.13.0","jest":"^24.7.1","microbundle":"^0.11.0","mocha":"^6.1.4","npm-run-all":"^4.1.5","parcel":"^1.12.3","prettier":"1.18.2","regenerator-runtime":"^0.13.2","sinon":"^7.3.2","ts-jest":"^24.0.2","typescript":"^3.5.2"},"files":["lib"],"browserslist":["> 1%","last 2 versions","IE 11"]}
+{
+  "name": "flip-toolkit",
+  "version": "7.0.0-alpha.1",
+  "description": "Configurable FLIP animation helpers",
+  "license": "MIT",
+  "source": "src/index.ts",
+  "main": "lib/index.js",
+  "umd:main": "lib/index.umd.js",
+  "module": "lib/index.es.js",
+  "types": "lib/flip-toolkit/lib/types.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aholachek/react-flip-toolkit"
+  },
+  "bugs": "https://github.com/aholachek/react-flip-toolkit/lib/Swipeissues",
+  "author": "Alex Holachek",
+  "keywords": [
+    "vanillajs",
+    "FLIP",
+    "transition",
+    "animation"
+  ],
+  "engines": {
+    "node": ">=8",
+    "npm": ">=5"
+  },
+  "scripts": {
+    "microbundle": "microbundle",
+    "start": "parcel 'core-test/index.html' --out-dir build",
+    "test": "jest --testPathIgnorePatterns \"(lib|domtest)\"",
+    "build": "microbundle --name=FlipToolkit --globals rematrix=Rematrix && node customEntryPoint.js",
+    "watch": "microbundle watch --no-compress",
+    "check-types": "tsc --noEmit",
+    "prepare": "yarn run build",
+    "predeploy": "cd example && yarn install && yarn run build",
+    "inspect": "npx source-map-explorer lib/index.es.*",
+    "lint": "eslint src/**/*.ts",
+    "format": "prettier --write src/**/*.{ts,tsx}",
+    "format-and-fix": "npm-run-all format eslint-fix",
+    "fix": "eslint src/**/*.ts --fix",
+    "test:dom": "parcel mocha/testrunner.html --out-dir build",
+    "test:all": "npm-run-all test test:dom",
+    "preversion": "npm test",
+    "postpublish": "git push origin master; git push origin --tags",
+    "version": "npm run build"
+  },
+  "dependencies": {
+    "rematrix": "0.2.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/plugin-proposal-class-properties": "^7.5.0",
+    "@babel/plugin-transform-typescript": "^7.4.5",
+    "@babel/preset-env": "^7.5.0",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/preset-typescript": "^7.3.3",
+    "@babel/runtime": "^7.4.5",
+    "@types/jest": "^24.0.15",
+    "@typescript-eslint/eslint-plugin": "^1.10.2",
+    "@typescript-eslint/parser": "^1.10.2",
+    "babel-jest": "^24.8.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-react-app": "^9.0.0",
+    "chai": "^4.2.0",
+    "eslint": "^5.16.0",
+    "eslint-plugin-react": "^7.13.0",
+    "jest": "^24.7.1",
+    "microbundle": "^0.11.0",
+    "mocha": "^6.1.4",
+    "npm-run-all": "^4.1.5",
+    "parcel": "^1.12.3",
+    "prettier": "1.18.2",
+    "regenerator-runtime": "^0.13.2",
+    "sinon": "^7.3.2",
+    "ts-jest": "^24.0.2",
+    "typescript": "^3.5.2"
+  },
+  "files": [
+    "lib"
+  ],
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "IE 11"
+  ]
+}

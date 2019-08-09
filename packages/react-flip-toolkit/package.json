@@ -7,7 +7,7 @@
   "main": "lib/index.js",
   "umd:main": "lib/index.umd.js",
   "module": "lib/index.es.js",
-  "types": "lib/react-flip-toolkit/lib/Swipetypes.d.ts",
+  "types": "lib/react-flip-toolkit/lib/types.d.ts",
   "amdName": "ReactFlipToolkit",
   "repository": {
     "type": "git",
