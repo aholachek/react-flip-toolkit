@@ -46,8 +46,7 @@
     "version": "npm run build"
   },
   "dependencies": {
-    "flip-toolkit": "6.6.9",
-    "styled-components": "^4.3.2"
+    "flip-toolkit": "7.0.0-alpha.11"
   },
   "peerDependencies": {
     "prop-types": "^15.x.x",
@@ -55,6 +54,7 @@
     "react-dom": ">= 16.x"
   },
   "devDependencies": {
+    "styled-components": "^4.3.2",
     "@babel/core": "^7.5.0",
     "@babel/plugin-proposal-class-properties": "^7.5.0",
     "@babel/plugin-transform-typescript": "^7.4.5",
