@@ -7,13 +7,13 @@
   "main": "lib/index.js",
   "umd:main": "lib/index.umd.js",
   "module": "lib/index.es.js",
-  "types": "lib/react-flip-toolkit/lib/types.d.ts",
+  "types": "lib/types.d.ts",
   "amdName": "ReactFlipToolkit",
   "repository": {
     "type": "git",
     "url": "https://github.com/aholachek/react-flip-toolkit"
   },
-  "bugs": "https://github.com/aholachek/react-flip-toolkit/lib/Swipeissues",
+  "bugs": "https://github.com/aholachek/react-flip-toolkit/issues",
   "author": "Alex Holachek",
   "keywords": [
     "react-component",

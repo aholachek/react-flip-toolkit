@@ -7,12 +7,12 @@
   "main": "lib/index.js",
   "umd:main": "lib/index.umd.js",
   "module": "lib/index.es.js",
-  "types": "lib/flip-toolkit/lib/types.d.ts",
+  "types": "lib/types.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/aholachek/react-flip-toolkit"
   },
-  "bugs": "https://github.com/aholachek/react-flip-toolkit/lib/Swipeissues",
+  "bugs": "https://github.com/aholachek/react-flip-toolkit/issues",
   "author": "Alex Holachek",
   "keywords": [
     "vanillajs",

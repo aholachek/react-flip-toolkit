@@ -48,8 +48,13 @@ bundles.reduce((acc, bundle) => {
       })
       const commands = files.map(f => `mv temp/${f} lib/${bundleName}/`)
 
-      exec(`${commands.join('; ')}; rm -rf temp`, function(err, stdout) {
-        if (err) console.error(err)
+      return new Promise((resolve, reject) => {
+        exec(`${commands.join('; ')}; rm -rf temp`, function(err, stdout) {
+          if (err) {
+            console.error(err)
+            reject()
+          } else resolve()
+        })
       })
     })
   })
@@ -67,9 +72,4 @@ buildBundle(bundles[0])
       `${__dirname}/package.json`,
       JSON.stringify(package, null, 2)
     )
-  })
-  .then(() => {
-    // exec(`rm -rf temp`, function(err, stdout) {
-    //   if (err) console.error(err)
-    // })
   })
