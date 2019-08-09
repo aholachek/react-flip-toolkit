@@ -12,7 +12,9 @@
     "check-types": "yarn workspaces run check-types",
     "build": "yarn workspaces run build",
     "demo": "yarn workspace react-flip-toolkit start",
-    "watch": "yarn workspaces run watch"
+    "watch": "yarn workspaces run watch",
+    "alpha-release": "lerna publish --dist-tag alpha",
+    "beta-release": "lerna publish --dist-tag beta"
   },
   "devDependencies": {
     "lerna": "^3.15.0"
