@@ -46,7 +46,7 @@
     "version": "npm run build"
   },
   "dependencies": {
-    "flip-toolkit": "7.0.0-alpha.11"
+    "flip-toolkit": "7.0.0-alpha.1"
   },
   "peerDependencies": {
     "prop-types": "^15.x.x",
