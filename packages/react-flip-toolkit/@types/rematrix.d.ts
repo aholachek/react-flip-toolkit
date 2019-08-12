@@ -6,3 +6,4 @@ declare module 'rematrix' {
   export function scaleY(num: number): number[]
   export function multiply(arr1: number[], arr2: number[]): number[]
 }
+

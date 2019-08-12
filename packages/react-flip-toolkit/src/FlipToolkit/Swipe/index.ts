@@ -133,10 +133,23 @@ class Swipe {
 
   onAction({ velocity, delta: [deltaX, deltaY], down, first }: OnActionArgs) {
     if (this.isFinishing) return
+    if (first && deltaX + deltaY === 0) return
 
     const { inProgressAnimations, setIsGestureInitiated, ...rest } = this.props
 
     const flipId = String(this.props.flipId)
+
+    // probably not inside Flipper, which provides a GestureContext
+    if (process.env.NODE_ENV !== 'production') {
+      if (!inProgressAnimations || !setIsGestureInitiated) {
+        debugger
+        // eslint-disable-next-line no-console
+        console.error(
+          '[react-flip-toolkit] Swipe components need to be contained within Flipper components'
+        )
+        return
+      }
+    }
 
     const generalFlipInProgress = Boolean(
       Object.keys(inProgressAnimations).length

@@ -4,14 +4,14 @@ import {
   getFlippedElementPositionsBeforeUpdate,
   onFlipKeyUpdate,
   constants
-} from 'flip-toolkit'
+} from '../FlipToolkit'
 import {
   FlipperProps,
   InProgressAnimations,
   FlipCallbacks
-} from 'flip-toolkit/lib/types'
-import { FlippedElementPositionsBeforeUpdateReturnVals } from 'flip-toolkit/lib/flip/getFlippedElementPositions/getFlippedElementPositionsBeforeUpdate/types'
-import { SetIsGestureInitiated } from 'flip-toolkit/lib/Swipe/types'
+} from '../FlipToolkit/types'
+import { FlippedElementPositionsBeforeUpdateReturnVals } from '../FlipToolkit/flip/getFlippedElementPositions/getFlippedElementPositionsBeforeUpdate/types'
+import { SetIsGestureInitiated } from '../FlipToolkit/Swipe/types'
 
 export interface GestureContextProps {
   inProgressAnimations: InProgressAnimations

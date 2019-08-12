@@ -1,8 +1,8 @@
 import React, { Component, cloneElement } from 'react'
 import { GestureContext, GestureContextProps } from '../Flipper'
 import PropTypes from 'prop-types'
-import Swipe from 'flip-toolkit/lib/Swipe'
-import { SwipeProps } from 'flip-toolkit/lib/Swipe/types'
+import Swipe from '../FlipToolkit/Swipe'
+import { SwipeProps } from '../FlipToolkit/Swipe/types'
 
 const configProps = PropTypes.oneOfType([
   PropTypes.shape({
@@ -68,13 +68,16 @@ export default function SwipeWrapper(props: SwipeComponentProps) {
       {({
         inProgressAnimations,
         setIsGestureInitiated
-      }: GestureContextProps) => (
-        <SwipeComponent
-          inProgressAnimations={inProgressAnimations}
-          setIsGestureInitiated={setIsGestureInitiated}
-          {...props}
-        />
-      )}
+      }: GestureContextProps) => {
+        console.log({ inProgressAnimations, setIsGestureInitiated })
+        return (
+          <SwipeComponent
+            inProgressAnimations={inProgressAnimations}
+            setIsGestureInitiated={setIsGestureInitiated}
+            {...props}
+          />
+        )
+      }}
     </GestureContext.Consumer>
   )
 }

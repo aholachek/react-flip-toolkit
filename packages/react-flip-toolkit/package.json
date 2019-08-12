@@ -3,10 +3,10 @@
   "version": "7.0.0-alpha.1",
   "description": "Configurable FLIP animation helpers for React",
   "license": "MIT",
-  "source": "src/index.ts",
-  "main": "lib/index.js",
-  "umd:main": "lib/index.umd.js",
-  "module": "lib/index.es.js",
+  "source": "src/FlipToolkit/index.ts",
+  "main": "temp/FlipToolkit/index.js",
+  "umd:main": "temp/${bundleName}/index.umd.js",
+  "module": "temp/FlipToolkit/index.es.js",
   "types": "lib/types.d.ts",
   "amdName": "ReactFlipToolkit",
   "repository": {
@@ -26,11 +26,13 @@
     "npm": ">=5"
   },
   "scripts": {
-    "microbundle": "microbundle",
+    "microbundle": "microbundle --define process.env.NODE_ENV=production",
+    "microbundle:no-compress": "microbundle --no-compress",
     "start": "parcel --no-cache demo/index.html --out-dir demo/lib",
     "deploy-demo": "parcel build demo/index.html --out-dir demo/lib; cp demo/lib/index.html demo/lib/200.html; surge demo/lib --domain react-flip-toolkit-demos.surge.sh",
     "build": "microbundle --name=ReactFlipToolkit --globals react=React,prop-types=PropTypes,flip-toolkit=FlipToolkit --define process.env.NODE_ENV=production && node customEntryPoint.js",
-    "watch": "microbundle watch --no-compress",
+    "watch": "watch 'npm run build:no-compress' ./src",
+    "build:no-compress": "microbundle --name=ReactFlipToolkit --globals react=React,prop-types=PropTypes,flip-toolkit=FlipToolkit --define process.env.NODE_ENV=production && node customEntryPoint.js no-compress",
     "check-types": "tsc --noEmit",
     "prepare": "yarn run build",
     "predeploy": "cd example && yarn install && yarn run build",
@@ -47,7 +49,7 @@
     "version": "npm run build"
   },
   "dependencies": {
-    "flip-toolkit": "7.0.0-alpha.1"
+    "rematrix": "0.2.2"
   },
   "peerDependencies": {
     "prop-types": "^15.x.x",
@@ -80,10 +82,11 @@
     "normalize.css": "^8.0.1",
     "npm": "^6.10.3",
     "npm-run-all": "^4.1.5",
+    "npm-watch": "^0.6.0",
     "parcel": "^1.12.3",
     "prettier": "1.18.2",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
     "react-icons": "^3.7.0",
     "react-scripts": "^3.0.1",
     "react-test-renderer": "^16.8.6",
@@ -91,7 +94,8 @@
     "sinon": "^7.3.2",
     "styled-components": "^4.3.2",
     "ts-jest": "^24.0.2",
-    "typescript": "^3.5.2"
+    "typescript": "^3.5.2",
+    "watch": "^1.0.2"
   },
   "files": [
     "lib"
