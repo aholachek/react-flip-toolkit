@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
-import { Flipper } from 'react-flip-toolkit'
-import { Global, css } from '@emotion/core'
+import { Flipper, Flipped } from 'react-flip-toolkit'
+import { Global } from '@emotion/core'
 import styled from '@emotion/styled/macro'
 import BrowsePlaylists from '../BrowsePlaylists'
 import Playlist from '../Playlist'
@@ -36,33 +36,37 @@ const FlippedRouteSwitcher = props => {
         }
       }}
     >
-      <Route
-        path="/playlists/:id?"
-        exact
-        render={props => {
-          if (!props.match.params.id) return <Redirect to="/playlists/1" />
-          return (
-            <BrowsePlaylists
-              {...props}
-              previousPath={previousPath}
-              previousSearch={previousSearch}
-            />
-          )
-        }}
-      />
-      <Route
-        path="/playlists/:id/tracks"
-        exact
-        render={props => {
-          return (
-            <Playlist
-              {...props}
-              previousPath={previousPath}
-              previousSearch={previousSearch}
-            />
-          )
-        }}
-      />
+      <Flipped>
+        <div>
+          <Route
+            path="/playlists/:id?"
+            exact
+            render={props => {
+              if (!props.match.params.id) return <Redirect to="/playlists/1" />
+              return (
+                <BrowsePlaylists
+                  {...props}
+                  previousPath={previousPath}
+                  previousSearch={previousSearch}
+                />
+              )
+            }}
+          />
+          <Route
+            path="/playlists/:id/tracks"
+            exact
+            render={props => {
+              return (
+                <Playlist
+                  {...props}
+                  previousPath={previousPath}
+                  previousSearch={previousSearch}
+                />
+              )
+            }}
+          />
+        </div>
+      </Flipped>
     </Flipper>
   )
 }

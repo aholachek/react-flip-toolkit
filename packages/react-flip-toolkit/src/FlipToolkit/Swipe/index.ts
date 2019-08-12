@@ -139,13 +139,11 @@ class Swipe {
 
     const flipId = String(this.props.flipId)
 
-    // probably not inside Flipper, which provides a GestureContext
     if (process.env.NODE_ENV !== 'production') {
       if (!inProgressAnimations || !setIsGestureInitiated) {
-        debugger
         // eslint-disable-next-line no-console
         console.error(
-          '[react-flip-toolkit] Swipe components need to be contained within Flipper components'
+          '[react-flip-toolkit] No parent Flipper component detected for this Swipe component'
         )
         return
       }

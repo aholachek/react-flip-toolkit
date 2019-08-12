@@ -7,7 +7,7 @@ import React, {
 import PropTypes from 'prop-types'
 import { utilities, constants } from '../FlipToolkit'
 import { FlippedProps, SerializableFlippedProps } from '../FlipToolkit/types'
-import { FlipContext, PortalContext } from '../Flipper'
+import { FlipContext, PortalContext } from '../Flipper/context'
 
 const propTypes = {
   children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
@@ -112,6 +112,7 @@ export const FlippedWithContext: FunctionComponent<FlippedProps> = ({
       {portalKey => (
         <FlipContext.Consumer>
           {data => {
+            console.log({ flipped: data })
             // if there is no surrounding Flipper component,
             // we don't want to throw an error, so check
             // that data exists and is not the default string

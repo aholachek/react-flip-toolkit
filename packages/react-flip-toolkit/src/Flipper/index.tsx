@@ -1,4 +1,4 @@
-import React, { Component, createContext } from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import {
   getFlippedElementPositionsBeforeUpdate,
@@ -11,16 +11,7 @@ import {
   FlipCallbacks
 } from '../FlipToolkit/types'
 import { FlippedElementPositionsBeforeUpdateReturnVals } from '../FlipToolkit/flip/getFlippedElementPositions/getFlippedElementPositionsBeforeUpdate/types'
-import { SetIsGestureInitiated } from '../FlipToolkit/Swipe/types'
-
-export interface GestureContextProps {
-  inProgressAnimations: InProgressAnimations
-  setIsGestureInitiated: SetIsGestureInitiated
-}
-
-export const FlipContext = createContext({} as FlipCallbacks)
-export const PortalContext = createContext('portal')
-export const GestureContext = createContext({} as GestureContextProps)
+import { FlipContext, PortalContext, GestureContext } from './context'
 
 const styleId = `react-flip-toolkit-${constants.DATA_NO_TOUCH}`
 
@@ -107,6 +98,10 @@ class Flipper extends Component<FlipperProps> {
   public render() {
     const { element, className, portalKey } = this.props
     const Element = element
+
+    console.log('rendering!!!', {
+      inProgressAnimations: this.inProgressAnimations
+    })
 
     let flipperMarkup = (
       <GestureContext.Provider
