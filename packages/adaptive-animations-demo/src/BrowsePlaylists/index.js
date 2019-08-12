@@ -1,6 +1,6 @@
 import React from 'react'
 import { Flipped } from 'react-flip-toolkit'
-import Swipe from 'react-flip-toolkit/lib/Swipe'
+import { Swipe } from 'react-flip-toolkit'
 import * as Styled from './styled-elements'
 import * as Core from '../core-components'
 import playlists from '../playlists'
@@ -115,7 +115,7 @@ const GestureCardSwipe = props => {
         }, i * 50 + (previousPageWasTracksPage ? 150 : 0))
       })
     })()
-  }, [])
+  }, [previousPageWasTracksPage, previousTrackId])
 
   return (
     <>

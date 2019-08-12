@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Flipper, Flipped } from 'react-flip-toolkit'
-import Swipe from 'react-flip-toolkit/lib/Swipe'
+import { Swipe } from 'react-flip-toolkit'
 import playlists from '../playlists'
 import * as Styled from './styled-elements'
 import PlaylistHeader from './Header'
@@ -67,7 +67,10 @@ const ListItem = ({
             }}
           >
             <Styled.PlayButton isPlaying={isPlaying}>
-              <img src={isPlaying ? pauseIcon : playIcon} />{' '}
+              <img
+                src={isPlaying ? pauseIcon : playIcon}
+                alt={isPlaying ? 'pause' : 'play'}
+              />{' '}
             </Styled.PlayButton>
             <div>
               <h3>{track.title}</h3>
@@ -99,7 +102,6 @@ export const updateLocationWithSearchParams = (location, search) => {
 }
 
 const Playlist = props => {
-  const headerIsCollapsing = new URLSearchParams(props.previousSearch)
   const playlist = playlists.find(
     playlist => playlist.id === props.match.params.id
   )
@@ -112,11 +114,9 @@ const Playlist = props => {
   }, [])
 
   React.useEffect(() => {
-    callOnDesktop(() => {
-      setTimeout(() => {
-        setAnimateListIn(true)
-      }, 300)
-    })()
+    setTimeout(() => {
+      setAnimateListIn(true)
+    })
   }, [])
 
   const headerCollapsed =

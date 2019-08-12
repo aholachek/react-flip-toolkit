@@ -1,6 +1,6 @@
 import React from 'react'
 import { Flipped } from 'react-flip-toolkit'
-import Swipe from 'react-flip-toolkit/lib/Swipe'
+import { Swipe } from 'react-flip-toolkit'
 import * as Styled from './styled-elements'
 import * as Core from '../../core-components'
 
