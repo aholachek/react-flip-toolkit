@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import {
   getFlippedElementPositionsBeforeUpdate,
-  onFlipKeyUpdate,
-  constants
+  onFlipKeyUpdate
 } from '../FlipToolkit'
 import {
   FlipperProps,
@@ -12,8 +11,6 @@ import {
 } from '../FlipToolkit/types'
 import { FlippedElementPositionsBeforeUpdateReturnVals } from '../FlipToolkit/flip/getFlippedElementPositions/getFlippedElementPositionsBeforeUpdate/types'
 import { FlipContext, PortalContext, GestureContext } from './context'
-
-const styleId = `react-flip-toolkit-${constants.DATA_NO_TOUCH}`
 
 class Flipper extends Component<FlipperProps> {
   static defaultProps = {
@@ -30,20 +27,6 @@ class Flipper extends Component<FlipperProps> {
 
   setIsGestureInitiated = () => {
     this.isGestureInitiated = true
-  }
-
-  componentDidMount() {
-    try {
-      if (document.getElementById(styleId)) return
-      const css = `[${constants.DATA_NO_TOUCH}] { touch-action: none; }`
-      const style = document.createElement('style')
-      style.appendChild(document.createTextNode(css))
-      style.type = 'text/css'
-      style.id = styleId
-      document.head.appendChild(style)
-    } catch (e) {
-      // if this errors, gestures aren't gonna work great on mobile
-    }
   }
 
   getSnapshotBeforeUpdate(prevProps: FlipperProps) {

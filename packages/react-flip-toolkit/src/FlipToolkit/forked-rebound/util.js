@@ -9,16 +9,11 @@
  *
  */
 
-import onFrame from "./onFrame"
-
-// Cross browser/node timer functions.
-export function onFrame(func) {
-  return _onFrame(func)
-}
+export { default as onFrame } from './onFrame'
 
 const start = Date.now()
 export const performanceNow =
-  typeof performance === "object" && typeof performance.now === "function"
+  typeof performance === 'object' && typeof performance.now === 'function'
     ? () => performance.now()
     : () => Date.now() - start
 
