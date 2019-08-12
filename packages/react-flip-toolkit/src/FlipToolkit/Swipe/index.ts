@@ -139,14 +139,14 @@ class Swipe {
 
     const flipId = String(this.props.flipId)
 
-    if (process.env.NODE_ENV !== 'production') {
-      if (!inProgressAnimations || !setIsGestureInitiated) {
+    if (!inProgressAnimations || !setIsGestureInitiated) {
+      if (process.env.NODE_ENV !== 'production') {
         // eslint-disable-next-line no-console
         console.error(
           '[react-flip-toolkit] No parent Flipper component detected for this Swipe component'
         )
-        return
       }
+      return
     }
 
     const generalFlipInProgress = Boolean(
@@ -203,7 +203,6 @@ class Swipe {
       const afterFLIPHasBeenInitiated = () => {
         // maybe gesture occurred but component didn't change posiition
         if (!inProgressAnimations[flipId]) {
-          console.log('nothing changed')
           delete this.flipInitiatorData
           return
         }
@@ -216,7 +215,6 @@ class Swipe {
             ].flipInitiator = flipId
           }
         })
-        console.log('afterFLIP hasBeen initialized', this.flipInitiatorData)
       }
 
       setTimeout(afterFLIPHasBeenInitiated, 0)
@@ -251,7 +249,6 @@ class Swipe {
     if (this.flipInitiatorData!.direction !== currentDirection) {
       // user might have done a mouseup while moving in another direction
       if (generalFlipInProgress && !down) {
-        console.warn('return to unflipped')
         return returnToUnFlippedState()
       }
     }

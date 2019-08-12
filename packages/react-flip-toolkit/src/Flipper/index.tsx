@@ -99,10 +99,6 @@ class Flipper extends Component<FlipperProps> {
     const { element, className, portalKey } = this.props
     const Element = element
 
-    console.log('rendering!!!', {
-      inProgressAnimations: this.inProgressAnimations
-    })
-
     let flipperMarkup = (
       <GestureContext.Provider
         value={{
@@ -135,25 +131,29 @@ class Flipper extends Component<FlipperProps> {
   }
 }
 // @ts-ignore
-Flipper.propTypes = {
-  flipKey: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-    PropTypes.bool
-  ]).isRequired,
-  children: PropTypes.node.isRequired,
-  spring: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  applyTransformOrigin: PropTypes.bool,
-  debug: PropTypes.bool,
-  element: PropTypes.string,
-  className: PropTypes.string,
-  portalKey: PropTypes.string,
-  staggerConfig: PropTypes.object,
-  decisionData: PropTypes.any,
-  handleEnterUpdateDelete: PropTypes.func,
-  onComplete: PropTypes.func,
-  isGestureControlled: PropTypes.bool,
-  onStart: PropTypes.func
+
+if (process.env.NODE_ENV !== 'production') {
+  // @ts-ignore
+  Flipper.propTypes = {
+    flipKey: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+      PropTypes.bool
+    ]).isRequired,
+    children: PropTypes.node.isRequired,
+    spring: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    applyTransformOrigin: PropTypes.bool,
+    debug: PropTypes.bool,
+    element: PropTypes.string,
+    className: PropTypes.string,
+    portalKey: PropTypes.string,
+    staggerConfig: PropTypes.object,
+    decisionData: PropTypes.any,
+    handleEnterUpdateDelete: PropTypes.func,
+    onComplete: PropTypes.func,
+    isGestureControlled: PropTypes.bool,
+    onStart: PropTypes.func
+  }
 }
 
 export default Flipper

@@ -8,6 +8,8 @@ import {
   Set,
   SwipeEventHandlers
 } from './types'
+// @ts-ignore
+import onFrame from '../forked-rebound/onFrame'
 
 const touchMove = 'touchmove'
 const touchEnd = 'touchend'
@@ -81,7 +83,8 @@ function handlers(set: Set, { onAction, config }: HandlerProps) {
         time: Date.now(),
         cancel: () => {
           stop()
-          requestAnimationFrame(() => handleUp(event))
+          // @ts-ignore
+          onFrame(() => handleUp(event))
         }
       }
       onAction!(newState)

@@ -9,7 +9,7 @@
  *
  */
 
-import _onFrame from "./onFrame"
+import onFrame from "./onFrame"
 
 // Cross browser/node timer functions.
 export function onFrame(func) {

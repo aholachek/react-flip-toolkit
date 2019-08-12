@@ -1,1 +1,1 @@
-export { Flipper, Spring, Swipe } from 'react-flip-toolkit'
+export { Flipper, Spring, Swipe } from 'react-flip-toolkit/FlipToolkit'

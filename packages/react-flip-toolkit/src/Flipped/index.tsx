@@ -9,27 +9,6 @@ import { utilities, constants } from '../FlipToolkit'
 import { FlippedProps, SerializableFlippedProps } from '../FlipToolkit/types'
 import { FlipContext, PortalContext } from '../Flipper/context'
 
-const propTypes = {
-  children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
-  inverseFlipId: PropTypes.string,
-  flipId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  opacity: PropTypes.bool,
-  translate: PropTypes.bool,
-  scale: PropTypes.bool,
-  transformOrigin: PropTypes.string,
-  spring: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  onStart: PropTypes.func,
-  onStartImmediate: PropTypes.func,
-  onComplete: PropTypes.func,
-  onAppear: PropTypes.func,
-  onSpringUpdate: PropTypes.func,
-  shouldFlip: PropTypes.func,
-  shouldInvert: PropTypes.func,
-  onExit: PropTypes.func,
-  portalKey: PropTypes.string,
-  stagger: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
-}
-
 function isFunction(child: any): child is Function {
   return typeof child === 'function'
 }
@@ -112,7 +91,6 @@ export const FlippedWithContext: FunctionComponent<FlippedProps> = ({
       {portalKey => (
         <FlipContext.Consumer>
           {data => {
-            console.log({ flipped: data })
             // if there is no surrounding Flipper component,
             // we don't want to throw an error, so check
             // that data exists and is not the default string
@@ -145,7 +123,29 @@ export const FlippedWithContext: FunctionComponent<FlippedProps> = ({
   )
 }
 // @ts-ignore
-FlippedWithContext.propTypes = propTypes
+if (process.env.NODE_ENV !== 'production') {
+  FlippedWithContext.propTypes = {
+    children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
+    inverseFlipId: PropTypes.string,
+    flipId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    opacity: PropTypes.bool,
+    translate: PropTypes.bool,
+    scale: PropTypes.bool,
+    transformOrigin: PropTypes.string,
+    spring: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    onStart: PropTypes.func,
+    onStartImmediate: PropTypes.func,
+    onComplete: PropTypes.func,
+    onAppear: PropTypes.func,
+    onSpringUpdate: PropTypes.func,
+    shouldFlip: PropTypes.func,
+    shouldInvert: PropTypes.func,
+    onExit: PropTypes.func,
+    portalKey: PropTypes.string,
+    stagger: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
+  }
+}
+
 FlippedWithContext.displayName = 'Flipped'
 
 export default FlippedWithContext

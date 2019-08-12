@@ -4,36 +4,11 @@ import PropTypes from 'prop-types'
 import Swipe from '../FlipToolkit/Swipe'
 import { SwipeProps } from '../FlipToolkit/Swipe/types'
 
-const configProps = PropTypes.oneOfType([
-  PropTypes.shape({
-    initFlip: PropTypes.func,
-    cancelFlip: PropTypes.func,
-    threshold: PropTypes.number
-  }),
-  PropTypes.bool
-])
-
-const swipePropTypes = {
-  children: PropTypes.node.isRequired,
-  flipId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  touchOnly: PropTypes.bool,
-  onClick: PropTypes.func,
-  onUp: PropTypes.func,
-  onDown: PropTypes.func,
-  threshold: PropTypes.number,
-  right: configProps,
-  left: configProps,
-  top: configProps,
-  bottom: configProps
-}
-
 type SwipeComponentProps = SwipeProps & {
   children: React.ReactElement
 }
 
 class SwipeComponent extends Component<SwipeComponentProps> {
-  static propTypes = swipePropTypes
-
   processProps = (props: SwipeComponentProps) => {
     return {
       ...props,
@@ -66,8 +41,6 @@ export default function SwipeWrapper(props: SwipeComponentProps) {
   return (
     <GestureContext.Consumer>
       {(p: GestureContextProps) => {
-        console.log(p)
-        debugger
         return (
           // @ts-ignore
           <SwipeComponent
@@ -81,4 +54,27 @@ export default function SwipeWrapper(props: SwipeComponentProps) {
   )
 }
 
-SwipeWrapper.propTypes = swipePropTypes
+if (process.env.NODE_ENV !== 'production') {
+  const configPropTypes = PropTypes.oneOfType([
+    PropTypes.shape({
+      initFlip: PropTypes.func,
+      cancelFlip: PropTypes.func,
+      threshold: PropTypes.number
+    }),
+    PropTypes.bool
+  ])
+
+  SwipeWrapper.propTypes = {
+    children: PropTypes.node.isRequired,
+    flipId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    touchOnly: PropTypes.bool,
+    onClick: PropTypes.func,
+    onUp: PropTypes.func,
+    onDown: PropTypes.func,
+    threshold: PropTypes.number,
+    right: configPropTypes,
+    left: configPropTypes,
+    top: configPropTypes,
+    bottom: configPropTypes
+  }
+}

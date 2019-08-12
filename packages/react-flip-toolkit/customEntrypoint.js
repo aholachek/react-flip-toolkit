@@ -3,9 +3,7 @@ const npm = require('npm')
 const package = require('./package.json')
 const { exec } = require('child_process')
 
-const bundles = ['Swipe/index.tsx', 'Spring/index.ts', 'FlipToolkit/index.ts']
-
-const noCompress = process.argv[2] === 'no-compress'
+const bundles = ['FlipToolkit/index.ts']
 
 const getConfig = bundle => {
   const bundleName = bundle.split('/')[0]
@@ -29,15 +27,12 @@ const buildBundle = bundle => {
 
   return new Promise((resolve, reject) => {
     npm.load(function(err) {
-      npm.commands['run-script'](
-        [noCompress ? 'microbundle:no-compress' : 'microbundle'],
-        function(er) {
-          if (er) {
-            reject(er)
-          }
-          resolve()
+      npm.commands['run-script'](['microbundle'], function(er) {
+        if (er) {
+          reject(er)
         }
-      )
+        resolve()
+      })
     })
   })
 }
