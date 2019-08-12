@@ -29,7 +29,7 @@
     "microbundle": "microbundle --define process.env.NODE_ENV=production",
     "start": "parcel --no-cache demo/index.html --out-dir demo/lib",
     "deploy-demo": "parcel build demo/index.html --out-dir demo/lib; cp demo/lib/index.html demo/lib/200.html; surge demo/lib --domain react-flip-toolkit-demos.surge.sh",
-    "build": "microbundle --define process.env.NODE_ENV=production --name=ReactFlipToolkit --globals react=React,prop-types=PropTypes,flip-toolkit=FlipToolkitå && node customEntrypoint.js",
+    "build": "microbundle --define process.env.NODE_ENV=production --name=ReactFlipToolkit --globals react=React,prop-types=PropTypes,flip-toolkit=FlipToolkit && node customEntrypoint.js",
     "watch": "watch 'npm run build:no-compress' ./src",
     "build:no-compress": "microbundle no-compress",
     "check-types": "tsc --noEmit",

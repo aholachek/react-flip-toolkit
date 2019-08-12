@@ -7,7 +7,6 @@ import PlaylistHeader from './Header'
 import trashIcon from '../assets/trashIcon.svg'
 import playIcon from '../assets/playIcon.svg'
 import pauseIcon from '../assets/pauseIcon.svg'
-import { callOnDesktop } from '../utilities'
 import * as Core from '../core-components'
 
 const ListItem = ({

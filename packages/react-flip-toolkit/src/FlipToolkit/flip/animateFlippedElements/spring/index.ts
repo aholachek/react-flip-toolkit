@@ -66,8 +66,6 @@ export const createStaggeredSprings = (
     flippedArray.reverse()
   }
 
-  console.log({ flippedArray: flippedArray.map(f => f.id).join(' ') })
-
   const normalizedSpeed = normalizeSpeed(staggerConfig.speed)
 
   const nextThreshold = 1 / Math.max(Math.min(flippedArray.length, 100), 10)

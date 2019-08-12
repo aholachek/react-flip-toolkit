@@ -24,14 +24,12 @@ const initialState = {
   delta: [0, 0],
   initial: [0, 0],
   previous: [0, 0],
-  direction: [0, 0],
   local: [0, 0],
   lastLocal: [0, 0],
   velocity: 0,
   distance: 0,
   down: false,
-  first: true,
-  shiftKey: false
+  first: true
 }
 
 const defaultConfig = {
@@ -57,15 +55,12 @@ function handlers(set: Set, { onAction, config }: HandlerProps) {
         ...newState,
         event,
         // @ts-ignore
-        shiftKey: event.shiftKey,
         lastLocal: state.local
       }
     })
   }
   const handleDown = (event: any) => {
-    const { target, pageX, pageY, shiftKey } = event.touches
-      ? event.touches[0]
-      : event
+    const { target, pageX, pageY } = event.touches ? event.touches[0] : event
     // @ts-ignore
     set(state => {
       const lastLocal = state.lastLocal || initialState.lastLocal
@@ -74,7 +69,6 @@ function handlers(set: Set, { onAction, config }: HandlerProps) {
         event,
         target,
         lastLocal,
-        shiftKey,
         local: lastLocal,
         xy: [pageX, pageY],
         initial: [pageX, pageY],
@@ -94,7 +88,7 @@ function handlers(set: Set, { onAction, config }: HandlerProps) {
     })
   }
   const handleMove = (event: any) => {
-    const { pageX, pageY, shiftKey } = event.touches ? event.touches[0] : event
+    const { pageX, pageY } = event.touches ? event.touches[0] : event
     // @ts-ignore
     set(state => {
       const time = Date.now()
@@ -104,12 +98,10 @@ function handlers(set: Set, { onAction, config }: HandlerProps) {
       const delta_y = pageY - state.initial[1]
       const distance = Math.sqrt(delta_x * delta_x + delta_y * delta_y)
       const len = Math.sqrt(x_dist * x_dist + y_dist * y_dist)
-      const scalar = 1 / (len || 1)
       const newState = {
         ...state,
         event,
         time,
-        shiftKey,
         xy: [pageX, pageY],
         delta: [delta_x, delta_y],
         local: [
@@ -118,7 +110,6 @@ function handlers(set: Set, { onAction, config }: HandlerProps) {
         ],
         velocity: len / (time - state.time),
         distance: distance,
-        direction: [x_dist * scalar, y_dist * scalar],
         previous: state.xy,
         first: false
       }

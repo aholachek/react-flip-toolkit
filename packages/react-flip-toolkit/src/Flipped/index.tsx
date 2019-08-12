@@ -50,12 +50,6 @@ export const Flipped: FunctionComponent<SerializableFlippedProps> = ({
   else if (inverseFlipId)
     dataAttributes[constants.DATA_INVERSE_FLIP_ID] = String(inverseFlipId)
 
-  if (gestureHandlers) {
-    Object.assign(dataAttributes, gestureHandlers, {
-      [constants.DATA_NO_TOUCH]: true
-    })
-  }
-
   if (portalKey) {
     dataAttributes[constants.DATA_PORTAL_KEY] = portalKey
   }

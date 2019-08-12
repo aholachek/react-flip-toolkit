@@ -20,7 +20,7 @@
     "npm": ">=5"
   },
   "scripts": {
-    "build": "echo 'no op'"
+    "build": "echo 'noop'"
   },
   "dependencies": {
     "react-flip-toolkit": "7.0.0-alpha.1"

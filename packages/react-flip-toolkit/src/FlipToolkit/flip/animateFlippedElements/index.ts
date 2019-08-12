@@ -175,11 +175,13 @@ export default ({
     ? firstElement.ownerDocument!.querySelector('body')!
     : document.querySelector('body')!
 
-  if (debug) {
-    // eslint-disable-next-line no-console
-    console.error(
-      '[react-flip-toolkit]\nThe "debug" prop is set to true. All FLIP animations will return at the beginning of the transition.'
-    )
+  if (process.env.NODE_ENV !== 'production') {
+    if (debug) {
+      // eslint-disable-next-line no-console
+      console.error(
+        '[react-flip-toolkit]\nThe "debug" prop is set to true. All FLIP animations will return at the beginning of the transition.'
+      )
+    }
   }
 
   const duplicateFlipIds = getDuplicateValsAsStrings(flippedIds)

@@ -7,4 +7,4 @@ export {
 export { default as onFlipKeyUpdate } from './flip'
 export { utilities, constants }
 export { default as Swipe } from './Swipe'
-export { default as Spring } from './Spring'
+
