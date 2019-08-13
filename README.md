@@ -5,30 +5,46 @@
 </p>
 
 [![Build Status](https://travis-ci.com/aholachek/react-flip-toolkit.svg?branch=master)](https://travis-ci.com/aholachek/react-flip-toolkit)
-[![Minified & Gzipped size](https://badgen.net/bundlephobia/minzip/react-flip-toolkit)](https://bundlephobia.com/result?p=react-flip-toolkit)
-[![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
-[![npm version](http://img.shields.io/npm/v/react-flip-toolkit.svg?style=flat)](https://npmjs.org/package/react-flip-toolkit 'View this project on npm')
+[![Minified & Gzipped size](https://badgen.net/bundlephobia/minzip/react-flip-toolkit)](https://bundlephobia.com/result?p=flip-toolkit)
+[![MIT license](https://badgen.net/npm/license/react-flip-toolkit)](http://opensource.org/licenses/MIT)
+[![npm version](https://badgen.net/npm/v/react-flip-toolkit)](https://npmjs.org/package/react-flip-toolkit 'View this project on npm')
 
 **Comparison with other React FLIP libraries**
 
-| Feature                                                                                          | [`react-flip-move`](https://github.com/joshwcomeau/react-flip-move) | [`react-overdrive`](https://github.com/berzniz/react-overdrive) | `react-flip-toolkit` |
-| ------------------------------------------------------------------------------------------------ | :-----------------------------------------------------------------: | :-------------------------------------------------------------: | :------------------: |
-| Animate position                                                                                 |                                 ✅                                  |                               ✅                                |          ✅          |
-| Animate scale                                                                                    |                                 ❌                                  |                               ✅                                |          ✅          |
-| Animate opacity                                                                                  |                                 ❌                                  |                               ✅                                |          ✅          |
-| [Animate parent's size without warping children](#practical-scale-transitions)                   |                                 ❌                                  |                               ❌                                |          ✅          |
-| Use real FLIP instead of cloning & crossfading                                                   |                                 ✅                                  |                               ❌                                |          ✅          |
-| Use springs for animations                                                                       |                                 ❌                                  |                               ❌                                |          ✅          |
-| Support spring-based stagger effects                                                             |                                 ❌                                  |                               ❌                                |          ✅          |
-| [Usable with frameworks other than React](#usage-with-vanilla-js-or-other-frameworks-like-vuejs) |                                 ❌                                  |                               ❌                                |          ✅          |
+| Feature                                                                        | [`react-flip-move`](https://github.com/joshwcomeau/react-flip-move) | [`react-overdrive`](https://github.com/berzniz/react-overdrive) | `react-flip-toolkit` |
+| ------------------------------------------------------------------------------ | :-----------------------------------------------------------------: | :-------------------------------------------------------------: | :------------------: |
+| Animate position                                                               |                                 ✅                                  |                               ✅                                |          ✅          |
+| Animate scale                                                                  |                                 ❌                                  |                               ✅                                |          ✅          |
+| Animate opacity                                                                |                                 ❌                                  |                               ✅                                |          ✅          |
+| [Animate parent's size without warping children](#practical-scale-transitions) |                                 ❌                                  |                               ❌                                |          ✅          |
+| Use real FLIP instead of cloning & crossfading                                 |                                 ✅                                  |                               ❌                                |          ✅          |
+| Use springs for animations                                                     |                                 ❌                                  |                               ❌                                |          ✅          |
+| Support spring-based stagger effects                                           |                                 ❌                                  |                               ❌                                |          ✅          |
+| [Usable with frameworks other than React](packages/flip-toolkit)               |                                 ❌                                  |                               ❌                                |          ✅          |
+
+## Quick start
+
+`npm install react-flip-toolkit` or `yarn add react-flip-toolkit`
+
+1. Wrap your animations with a single `Flipper` component that has a `flipKey` prop that changes every time animations should happen.
+
+2. Wrap elements that should be animated with `Flipped` components that have a `flipId` prop matching them across renders.
+
 
 ## Table of Contents
 
-- [Quick start](#quick-start)
-  - [Example 1: Expanding Div (Fork on Code Sandbox)](#example-1-expanding-div-fork-on-code-sandbox)
-  - [Example 2: Two Divs (Fork on Code Sandbox)](#example-2-two-divs-fork-on-code-sandbox)
-  - [Example 3: List Shuffle (Fork on Code Sandbox)](#example-3-list-shuffle-fork-on-code-sandbox)
-- [Demos](#demos)
+- [Forkable Examples](#forkable-examples)
+  - [A Single Expanding Div](#a-single-expanding-div)
+  - [Two Divs](#two-divs)
+  - [List Shuffle](#list-shuffle)
+  - [Complex List Transitions](#complex-list-transitions)
+  - [Nested Staggers](#nested-staggers)
+  - [Explore Spring Configurations](#explore-spring-configurations)
+  - [Nested Scale Transforms](#nested-scale-transforms)
+  - [Stripe Inspired Menu](#stripe-inspired-menu)
+  - [Route-based Animations With React Router](#route-based-animations-with-react-router)
+  - [Responsive, Swipe-Driven Animations](#responsive-swipe-driven-animations)
+  - [More examples](#more-examples)
 - [The Components](#the-components)
   - [1. `Flipper`](#1-flipper)
     - [Basic Props](#basic-props)
@@ -39,28 +55,21 @@
     - [Callback props](#callback-props)
     - [Transform props](#transform-props)
     - [Advanced props](#advanced-props)
-- [Intermediate Tutorial](#intermediate-tutorial)
-- [Practical scale transitions](#practical-scale-transitions)
-- [Usage with Vanilla JS or Other Frameworks Like Vue.js](#usage-with-vanilla-js-or-other-frameworks-like-vuejs)
-  - [Expanding Div (Fork on Code Sandbox)](#expanding-div-fork-on-code-sandbox)
+  - [`Swipe`](#swipe)
 - [Library details](#library-details)
 - [Troubleshooting](#troubleshooting)
   - [Problem #1: Nothing is happening](#problem-1-nothing-is-happening)
-  - [Problem #2: Things look weird](#problem-2-things-look-weird)
+  - [Problem #2: Things look weird / animations aren't behaving](#problem-2-things-look-weird--animations-arent-behaving)
   - [Problem #3: It's still not working](#problem-3-its-still-not-working)
 - [Performance](#performance)
-  - [1. `PureComponent`](#1-purecomponent)
+  - [1. `Memoization`](#1-memoization)
   - [2. `will-change:transform`](#2-will-changetransform)
 
-## Quick start
+## Forkable Examples
 
-`npm install react-flip-toolkit` or `yarn add react-flip-toolkit`
+### A Single Expanding Div
 
-1. Wrap your animations with a single `Flipper` component that has a `flipKey` prop that changes every time animations should happen.
-
-2. Wrap elements that should be animated with `Flipped` components that have a `flipId` prop matching them across renders.
-
-### Example 1: Expanding Div ([Fork on Code Sandbox](https://codesandbox.io/s/8130rn9q2))
+[Fork on Code Sandbox](https://codesandbox.io/s/8130rn9q2)
 
 ```jsx
 import React, { useState } from 'react'
@@ -83,7 +92,9 @@ const AnimatedSquare = () => {
 }
 ```
 
-### Example 2: Two Divs ([Fork on Code Sandbox](https://codesandbox.io/s/74q85nq1qq))
+### Two Divs
+
+[Fork on Code Sandbox](https://codesandbox.io/s/74q85nq1qq)
 
 ```jsx
 import React, { useState } from 'react'
@@ -117,7 +128,9 @@ const AnimatedSquare = () => {
 }
 ```
 
-### Example 3: List Shuffle ([Fork on Code Sandbox](https://codesandbox.io/s/14v8o5xy44))
+### List Shuffle
+
+[Fork on Code Sandbox](https://codesandbox.io/s/14v8o5xy44)
 
 ```jsx
 import React, { useState } from 'react'
@@ -143,58 +156,68 @@ const ListShuffler = () => {
 }
 ```
 
-## Demos
+### Complex List Transitions
 
-<p>
-<a href="https://react-flip-toolkit-demos.surge.sh/photos">
-<h4>Image Transitions</h4>
+### Nested Staggers
 
-  <img src="./example-assets/photogrid.gif" width='600px' alt='an animation showing click to expand a photo' />
-</a>
-</p>
+<img src="./example-assets/list-transition.gif" height="300px" alt='animation for the selected state of a list item' />
 
-<p>
-<a href="https://github.com/aholachek/react-flip-toolkit-router-example">
-<h4>Usage with React Router</h4>
-
-  <img src="./example-assets/compressed-demo.gif" width='600px' alt='React-flip-toolkit with React-Router' />
-</a>
-</p>
-
-<p>
-<a href="https://codepen.io/aholachek/pen/KeevYN">
-<h4>Stripe-Inspired Menu</h4>
-
-  <img src="./example-assets/dropdown.gif" width='600px' alt='a smoothly transitioning menu dropdown' />
-</a>
-</p>
-
-<p>
-<a href="https://codesandbox.io/s/q787wz5lx4">
-<h4>Control the sequence of entering, updating, and exiting elements</h4>
-  <img src="./example-assets/enter-update-delete.gif" height="300px" alt='animation of a sentence transforming into another sentence' />
-</a>
-</p>
-
-<p>
-<a href="https://codepen.io/aholachek/pen/jvvarq?editors=0110">
-<h4>List Transition</h4>
-
-  <img src="./example-assets/list-transition.gif" height="300px" alt='animation for the selected state of a list item' />
-</a>
-</p>
-
-<p>
-<a href="https://codepen.io/aholachek/full/bKmZbV/">
-<h4>Spring Options Explorer</h4>
+### Explore Spring Configurations
 
   <img src="./example-assets/spring-options.gif" width='600px' alt='spring easing explorer' />
-</a>
-</p>
 
-- [Animated List (`react-flip-move` clone)](https://react-flip-toolkit-demos.surge.sh/flip-move)
+### Nested Scale Transforms
+
+```jsx
+<Flipped flipId={id}>
+  <div>
+    <Flipped inverseFlipId={id} scale>
+      <div>some text that will not be warped</div>
+    </Flipped>
+  </div>
+</Flipped>
+```
+
+Some other FLIP libraries just allow you to animate position changes, but things get more interesting once you can animate scale changes as well.
+
+<a href="https://codepen.io/aholachek/pen/mKXBJR?editors=0110">
+<img src="./example-assets/nested-example.gif" height="400px" alt="an animation demoing nested scale transforms" />
+</a>
+
+[view on Codepen](https://codepen.io/aholachek/pen/mKXBJR)
+
+The problem with scale animations has to do with children &mdash; if you scale a div up 2x, you will warp any children it has by scaling them up too, creating a weird-looking animation. That's why this library allows you to wrap the child with a `Flipped` component that has an `inverseFlipId` to counteract the transforms of the parent.
+
+By default, both the scale and the translation transforms of the parent will be counteracted (this allows children components to make their own FLIP animations without being affected by the parent).
+But for many use cases, you'll want to additionally specify the `scale` prop to limit the adjustment to the scale and allow the positioning to move with the parent.
+
+**The DOM element with the inverse transform should lie flush against its parent container for the most seamless animation.**
+
+That means any layout styles &mdash; padding, flexbox, etc&mdash;should be applied to the inverted container (the element wrapped with a `Flipped` component with an `inverseFlipId`) rather than the parent `Flipped` container.
+
+### Stripe Inspired Menu
+
+[Fork on Code Sandbox](https://codesandbox.io/s/74q85nq1qq)
+
+This example makes use of the `nested scale transforms` method introduced above.
+
+
+
+### Route-based Animations With React Router
+
+[Fork on Code Sandbox](https://codesandbox.io/s/74q85nq1qq)
+
+  <img src="./example-assets/compressed-demo.gif" width='600px' alt='React-flip-toolkit with React-Router' />
+
+### Responsive, Swipe-Driven Animations
+
+[Fork on Code Sandbox](https://codesandbox.io/s/74q85nq1qq)
+
+
+
+### More examples
+
 - [Guitar shop](https://react-flip-toolkit-demos.surge.sh/guitar)
-- [Overly complex, nested cards example](https://react-flip-toolkit-demos.surge.sh/cards)
 - [React-flip-toolkit logo](https://codepen.io/aholachek/pen/ERRpEj)
 - [Using Portals](https://react-flip-toolkit-demos.surge.sh/portal)
 
@@ -362,53 +385,20 @@ Functions to control when FLIP happens
 | shouldFlip   | `previousDecisionData`, `currentDecisionData` | A function provided with the current and previous `decisionData` props passed down by the `Flipper` component. Returns a `boolean` to indicate whether a `Flipped` component should animate at that particular moment or not.                        |
 | shouldInvert | `previousDecisionData`, `currentDecisionData` | A function provided with the current and previous `decisionData` props passed down by the `Flipper` component. Returns a `boolean` indicating whether to apply inverted transforms to all `Flipped` children that request it via an `inverseFlipId`. |
 
-### Swipe
+### `Swipe`
 
 Track FLIP animations with swipe gestures.
 
 A `Swipe` component must be provided a `Flipped` component as its only child.
 
-| prop                    |  default   | type                      | details                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| ----------------------- | :--------: | :------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| children **(required)** |     -      | one `Flipped` component   | A `Swipe` component must wrap a `Flipped` component as its only child.                                                                                                                                                                                                                                                                                                                                                                                  |
-| threshold               |    0.2     | 0 < x < 1  | After what percent change of a swipe should the swipe gesture "take over" and complete the `FLIP` animation?                                                                                                                                                                                                                                                                                                                                            |
-| touchOnly           |     false      | `string`                  | Refer to the id of the parent `Flipped` container whose transform you want to cancel out. If this prop is provided, the `Flipped` component will become a limited version of itself that is only responsible for cancelling out its parent transform. It will read from any provided `transform` props and will ignore all other props (besides `inverseFlipId`.) [Read more about canceling out parent transforms here.](#practical-scale-transitions) |
-| transformOrigin         |  `"0 0"`   | `string`                  | This is a convenience method to apply the proper CSS `transform-origin` to the element being FLIP-ped. This will override `react-flip-toolkit`'s default application of `transform-origin: 0 0;` if it is provided as a prop.                                                                                                                                                                                                                           |
-| spring                  | `noWobble` | `string` or `object`      | Provide a string referencing one of the spring presets &mdash; (default), `veryGentle`, `gentle`, `wobbly`, or `stiff`, OR provide an object with stiffness and damping parameters. [Explore the spring setting options here.](https://codepen.io/aholachek/full/bKmZbV/)                                                                                                                                                                               |
-| stagger                 |  `false`   | `boolean` or `string`     | Provide a natural, spring-based staggering effect in which the spring easing of each item is pinned to the previous one's movement. Provide `true` to stagger the element with all other staggered elements. If you want to get more granular, you can provide a string key and the element will be staggered with other elements with the same key.                                                                                                    |
-
-## Intermediate Tutorial
-
-[Learn how to easily set up an elegant animation with this step-by-step tutorial.](https://alex.holachek.com/rft-tutorial/)
-
-## Practical scale transitions
-
-Some other FLIP libraries just allow you to animate position changes, but things get more interesting [once you can animate scale changes as well](#demos).
-
-<a href="https://codepen.io/aholachek/pen/mKXBJR?editors=0110">
-<img src="./example-assets/nested-example.gif" height="400px" alt="an animation demoing nested scale transforms" />
-</a>
-
-[view on Codepen](https://codepen.io/aholachek/pen/mKXBJR)
-
-The problem with scale animations has to do with children &mdash; if you scale a div up 2x, you will warp any children it has by scaling them up too, creating a weird-looking animation. That's why this library allows you to wrap the child with a `Flipped` component that has an `inverseFlipId` to counteract the transforms of the parent:
-
-```jsx
-<Flipped flipId={id}>
-  <div>
-    <Flipped inverseFlipId={id} scale>
-      <div>some text that will not be warped</div>
-    </Flipped>
-  </div>
-</Flipped>
-```
-
-By default, both the scale and the translation transforms of the parent will be counteracted (this allows children components to make their own FLIP animations without being affected by the parent).
-But for many use cases, you'll want to additionally specify the `scale` prop to limit the adjustment to the scale and allow the positioning to move with the parent.
-
-**The DOM element with the inverse transform should lie flush against its parent container for the most seamless animation.**
-
-That means any layout styles &mdash; padding, flexbox, etc&mdash;should be applied to the inverted container (the element wrapped with a `Flipped` component with an `inverseFlipId`) rather than the parent `Flipped` container.
+| prop                    |  default   | type                    | details                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| ----------------------- | :--------: | :---------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| children **(required)** |     -      | one `Flipped` component | A `Swipe` component must wrap a `Flipped` component as its only child.                                                                                                                                                                                                                                                                                                                                                                                  |
+| threshold               |    0.2     | 0 < x < 1               | After what percent change of a swipe should the swipe gesture "take over" and complete the `FLIP` animation?                                                                                                                                                                                                                                                                                                                                            |
+| touchOnly               |   false    | `string`                | Refer to the id of the parent `Flipped` container whose transform you want to cancel out. If this prop is provided, the `Flipped` component will become a limited version of itself that is only responsible for cancelling out its parent transform. It will read from any provided `transform` props and will ignore all other props (besides `inverseFlipId`.) [Read more about canceling out parent transforms here.](#practical-scale-transitions) |
+| transformOrigin         |  `"0 0"`   | `string`                | This is a convenience method to apply the proper CSS `transform-origin` to the element being FLIP-ped. This will override `react-flip-toolkit`'s default application of `transform-origin: 0 0;` if it is provided as a prop.                                                                                                                                                                                                                           |
+| spring                  | `noWobble` | `string` or `object`    | Provide a string referencing one of the spring presets &mdash; (default), `veryGentle`, `gentle`, `wobbly`, or `stiff`, OR provide an object with stiffness and damping parameters. [Explore the spring setting options here.](https://codepen.io/aholachek/full/bKmZbV/)                                                                                                                                                                               |
+| stagger                 |  `false`   | `boolean` or `string`   | Provide a natural, spring-based staggering effect in which the spring easing of each item is pinned to the previous one's movement. Provide `true` to stagger the element with all other staggered elements. If you want to get more granular, you can provide a string key and the element will be staggered with other elements with the same key.                                                                                                    |
 
 ## Library details
 
@@ -447,44 +437,16 @@ That means any layout styles &mdash; padding, flexbox, etc&mdash;should be appli
 `React-flip-toolkit` does a lot of work under the hood to try to maximize the performance of your animations &mdash; for instance, off-screen elements won't be animated, and style updates are batched to prevent [layout thrashing](https://developers.google.com/web/fundamentals/performance/rendering/avoid-large-complex-layouts-and-layout-thrashing).
 However, if you are building particularly complex animations&mdash;ones that involve dozens of elements or large images&mdash; there are some additional strategies you can use to ensure performant animations.
 
-### 1. `PureComponent`
+### 1. `Memoization`
 
-When you trigger a complex FLIP animation with `react-flip-toolkit`, React could be spending vital milliseconds doing unnecessary reconciliation work before allowing the animation to start. If you notice a slight delay between when the animation is triggered, and when it begins, this is probably the culprit. To short-circuit this possibly unnecessary work, try using [`PureComponent`](https://reactjs.org/docs/react-api.html#reactpurecomponent) for your animated elements, and seeing if you can refactor your code to minimize prop updates to animated children when an animation is about to occur.
-
-For example, in a hypothetical UI where you are animating the positions of several cards at once, you might want to update a `Card` component that looks like this:
-
-```jsx
-import React, { Component } from 'react'
-
-class Card extends Component {
-  render() {
-    return (
-      <Flipped flipId={this.props.id}>
-        <div>{/* card content goes here */}</div>
-      </Flipped>
-    )
-  }
-}
-```
-
-to this:
-
-```jsx
-import React, { PureComponent } from 'react'
-
-class Card extends PureComponent {
-  // everything  else is the same
-}
-```
-
-Remember [to always provide `key` props as appropriate to your elements](https://reactjs.org/docs/lists-and-keys.html), and check [the React docs](https://reactjs.org/docs/react-api.html#reactpurecomponent) for some caveats on when to not use `PureComponent`. But if you have complex animations with noticeable lag, think about giving `PureComponent` a try.
+When you trigger a complex FLIP animation with `react-flip-toolkit`, `React` could be spending vital milliseconds doing unnecessary reconciliation work before allowing the animation to start. If you notice a slight delay between when the animation is triggered, and when it begins, this is probably the culprit. To short-circuit this possibly unnecessary work, try memoizing your component by using [`React.memo`](https://reactjs.org/docs/react-api.html#reactmemo) or [`PureComponent`](https://reactjs.org/docs/react-api.html#reactpurecomponent) for your animated elements, and seeing if you can refactor your code to minimize prop updates to animated children when an animation is about to occur.
 
 ### 2. `will-change:transform`
 
 ```css
-.image {
+.box {
   will-change: transform;
 }
 ```
 
-This [somewhat mysterious CSS property](https://dev.opera.com/articles/css-will-change-property/) tells the browser to anticipate changes to an element. It should be used with caution, because it can increase browser resource usage. If you are animating images (`svg`, `jpg`, etc), I would recommend trying it out and seeing if it increases the performance of the animation. In my tests, when animating one or two large images, `will-change:transform` increased animation frame rate. However, trying to apply it to too many components at once (20+) actually decreased performance considerably.
+This [CSS property](https://dev.opera.com/articles/css-will-change-property/) tells the browser to anticipate changes to an element. It should be used with caution, because it can increase browser resource usage. If you notice rendering issues in your animation, I would recommend trying it out and seeing if it increases the performance of the animation.
