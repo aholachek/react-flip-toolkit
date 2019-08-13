@@ -1,6 +1,6 @@
 {
   "name": "flip-toolkit",
-  "version": "7.0.0-alpha.4",
+  "version": "7.0.0-beta.0",
   "description": "Configurable FLIP animation helpers",
   "license": "MIT",
   "src": "index.js",
