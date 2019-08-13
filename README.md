@@ -197,15 +197,16 @@ That means any layout styles &mdash; padding, flexbox, etc&mdash;should be appli
 
 ### Stripe Inspired Menu
 
-[Fork on Code Sandbox](https://codesandbox.io/s/74q85nq1qq)
-
+- [Fork on Code Sandbox](https://codesandbox.io/s/github/aholachek/react-stripe-menu)
+- [Fork Github repo]()
+- 
 This example makes use of the `nested scale transforms` method introduced above.
 
 
 
 ### Route-based Animations With React Router
 
-[Fork on Code Sandbox](https://codesandbox.io/s/74q85nq1qq)
+[Fork Github repo]()
 
   <img src="./example-assets/compressed-demo.gif" width='600px' alt='React-flip-toolkit with React-Router' />
 

@@ -4,7 +4,7 @@
 
 ## Basic Example
 
-### [Fork this example on CodeSandbox](https://codesandbox.io/s/5v1k1nwz8l)
+[**Fork this example on CodeSandbox**](https://codesandbox.io/s/5v1k1nwz8l)
 
 ```js
 import { Flipper } from 'flip-toolkit'
@@ -49,25 +49,29 @@ To learn more about which configuration options are available, [check out the co
 
 `flip-toolkit` also exports a utility function, `spring`, that can be used to orchestrate non-FLIP animations.
 
+[**Fork this example on CodeSandbox**](https://codesandbox.io/s/spring-example-6xw5p)
+
 ```js
 import { spring } from "flip-toolkit";
 
-const fadeInElements = [...this.el.querySelectorAll('*[data-fade-in]')]
+const container = document.querySelector(".container");
+const squares = [...container.querySelectorAll(".square")];
 
-fadeInElements.forEach((el, i) => {
+squares.forEach((el, i) => {
   spring({
+    config: "wobbly",
     values: {
       translateY: [-15, 0],
       opacity: [0, 1]
     },
     onUpdate: ({ translateY, opacity }) => {
-      el.style.opacity = opacity
-      el.style.transform = `translateY(${translateY}px)`
+      el.style.opacity = opacity;
+      el.style.transform = `translateY(${translateY}px)`;
     },
-    delay: i * 75,
-    onComplete: ()=>{
-      console.log('animation completed!')
+    delay: i * 25,
+    onComplete: () => {
+      // add callback logic here if necessary
     }
-  })
-})
+  });
+});
 ```
