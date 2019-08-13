@@ -1,6 +1,6 @@
 {
   "name": "flip-toolkit",
-  "version": "7.0.0-beta.1",
+  "version": "7.0.0-beta.2",
   "description": "Configurable FLIP animation helpers",
   "license": "MIT",
   "src": "index.js",
@@ -26,7 +26,7 @@
     "build": "microbundle"
   },
   "dependencies": {
-    "react-flip-toolkit": "^7.0.0-beta.1"
+    "react-flip-toolkit": "^7.0.0-beta.2"
   },
   "devDependencies": {
     "microbundle": "^0.11.0"
