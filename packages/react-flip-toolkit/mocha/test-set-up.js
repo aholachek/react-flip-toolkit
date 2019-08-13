@@ -1,4 +1,3 @@
-import "../node_modules/mocha/mocha.css"
 // mocha will be global
 require("mocha")
 const chai = require("chai")

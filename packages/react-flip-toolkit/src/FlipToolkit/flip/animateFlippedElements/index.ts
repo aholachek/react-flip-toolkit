@@ -143,7 +143,7 @@ export default ({
   spring,
   getElement,
   debug,
-  staggerConfig,
+  staggerConfig = {},
   decisionData = {},
   onComplete,
   containerEl,

@@ -9830,7 +9830,7 @@ methods@~1.1.2:
   resolved "https://registry.yarnpkg.com/methods/-/methods-1.1.2.tgz#5529a4d67654134edcc5266656835b0f851afcee"
   integrity sha1-VSmk1nZUE07cxSZmVoNbD4Ua/O4=
 
-microbundle@0.11.0:
+microbundle@0.11.0, microbundle@^0.11.0:
   version "0.11.0"
   resolved "https://registry.yarnpkg.com/microbundle/-/microbundle-0.11.0.tgz#266bcf4210192698c23fe3bf3581ab81d31a14d0"
   integrity sha512-Lt2f8OhC2y2uKyJ5zA8lEEiDsIAbk6yllBuoAWLIdYVIXYqOdN9mO3DI7VW7x/fw87gdnCLIJdVtpP6kaI99LA==

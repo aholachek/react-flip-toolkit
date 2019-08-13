@@ -38,6 +38,7 @@ describe('animateFlippedElements', () => {
       },
       flippedElementPositionsAfterUpdate: {
         'id-1': {
+          element: getElement('id-1'),
           rect: {
             top: 100,
             left: 100,
@@ -98,10 +99,15 @@ describe('animateFlippedElements', () => {
       },
       flippedElementPositionsAfterUpdate: {
         'id-1': {
+          element: getElement('id-1'),
+
           rect: getElement('id-1').getBoundingClientRect(),
           transform: firstElementTransform
         },
-        'id-2': { rect: getElement('id-2').getBoundingClientRect() }
+        'id-2': {
+          element: getElement('id-2'),
+          rect: getElement('id-2').getBoundingClientRect()
+        }
       },
       getElement,
       scopedSelector
@@ -159,6 +165,7 @@ describe('animateFlippedElements', () => {
       },
       flippedElementPositionsAfterUpdate: {
         'id-1': {
+          element: getElement('id-1'),
           rect: {
             top: 100,
             left: 100,
@@ -199,7 +206,10 @@ describe('animateFlippedElements', () => {
         }
       },
       flippedElementPositionsAfterUpdate: {
+        element: getElement('id-1'),
+
         'id-1': {
+          element: getElement('id-1'),
           rect: {
             top: 100,
             left: 100,
@@ -246,6 +256,7 @@ describe('animateFlippedElements', () => {
       },
       flippedElementPositionsAfterUpdate: {
         'id-1': {
+          element: getElement('id-1'),
           rect: {
             top: 100,
             left: 100,
@@ -262,8 +273,12 @@ describe('animateFlippedElements', () => {
 
     flip()
 
-    expect(typeof inProgressAnimations['id-1'].stop).to.equal('function')
-    expect(typeof inProgressAnimations['id-1'].onComplete).to.equal('function')
+    expect(typeof inProgressAnimations['id-1'].spring.destroy).to.equal(
+      'function'
+    )
+    expect(typeof inProgressAnimations['id-1'].onAnimationEnd).to.equal(
+      'function'
+    )
   })
 
   it('should return a function that, when called, returns a promise resolved with all flip ids', done => {
@@ -294,6 +309,7 @@ describe('animateFlippedElements', () => {
       },
       flippedElementPositionsAfterUpdate: {
         'id-1': {
+          element: getElement('id-1'),
           rect: {
             top: 100,
             left: 100,

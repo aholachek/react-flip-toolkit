@@ -113,7 +113,7 @@ describe('getFlippedElementPositionsBeforeUpdate', () => {
 
     expect(
       flippedElementPositions['id-2'].domDataForExitAnimations.element
-    ).to.equal(testEl.querySelector('div[data-flip-id=\'id-2\']'))
+    ).to.equal(testEl.querySelector("div[data-flip-id='id-2']"))
 
     expect(
       flippedElementPositions['id-2'].domDataForExitAnimations.parent
@@ -135,11 +135,15 @@ describe('getFlippedElementPositionsBeforeUpdate', () => {
     const fakeStop = sinon.fake()
     const inProgressAnimations = {
       'id-1': {},
-      'id-2': { stop: fakeStop }
+      'id-2': {
+        spring: {
+          destroy: fakeStop
+        }
+      }
     }
 
     expect(
-      testEl.querySelector('div[data-flip-id=\'id-2\']').style.transform
+      testEl.querySelector("div[data-flip-id='id-2']").style.transform
     ).to.equal('rotate(30deg)')
 
     const { flippedElementPositions } = getFlippedElementPositionsBeforeUpdate({
@@ -152,7 +156,7 @@ describe('getFlippedElementPositionsBeforeUpdate', () => {
     expect(flippedElementPositions['id-2'].rect.height).to.equal(223.205078125)
 
     expect(
-      testEl.querySelector('div[data-flip-id=\'id-2\']').style.transform
+      testEl.querySelector("div[data-flip-id='id-2']").style.transform
     ).to.equal('')
 
     expect(fakeStop.callCount).to.equal(1)
