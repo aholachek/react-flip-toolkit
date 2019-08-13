@@ -22,7 +22,7 @@
     "animation"
   ],
   "engines": {
-    "node": ">=10.16.0",
+    "node": ">=8",
     "npm": ">=5"
   },
   "scripts": {
