@@ -14,15 +14,16 @@ const springSystem: SpringSystemInterface = new SpringSystem()
  * Returns a function that will immediately cancel the in-progress animation.
  * */
 const createSimpleSpring = ({
-  springConfig,
+  config,
   values,
   onUpdate,
   delay = 0,
   onComplete
 }: SimpleSpringOptions) => {
   const { stiffness, damping, overshootClamping } = assign(
+    {},
     springPresets.noWobble,
-    normalizeSpring(springConfig)
+    normalizeSpring(config)
   ) as SpringConfig
   const spring = springSystem.createSpring(stiffness!, damping!)
   spring.setOvershootClampingEnabled(!!overshootClamping)

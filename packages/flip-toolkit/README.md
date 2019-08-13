@@ -47,7 +47,7 @@ To learn more about which configuration options are available, [check out the co
 
 ## Spring
 
-`flip-toolkit` also exports a utility function, `Spring`, that can be used to orchestrate non-FLIP animations.
+`flip-toolkit` also exports a utility function, `spring`, that can be used to orchestrate non-FLIP animations.
 
 ```js
 import { spring } from "flip-toolkit";
