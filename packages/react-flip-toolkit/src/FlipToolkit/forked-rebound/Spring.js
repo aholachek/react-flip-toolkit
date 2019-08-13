@@ -19,6 +19,10 @@ class PhysicsState {
   }
 }
 
+let ID = 0
+const MAX_DELTA_TIME_SEC = 0.064
+const SOLVER_TIMESTEP_SEC = 0.001
+
 /**
  * Provides a model of a classical spring acting to
  * resolve a body to equilibrium. Springs have configurable
@@ -36,7 +40,7 @@ class PhysicsState {
  */
 class Spring {
   constructor(springSystem) {
-    this._id = 's' + Spring._ID++
+    this._id = `s${ID++}`
     this._springSystem = springSystem
 
     this.listeners = []
@@ -203,8 +207,8 @@ class Spring {
     }
 
     let adjustedDeltaTime = realDeltaTime
-    if (realDeltaTime > Spring.MAX_DELTA_TIME_SEC) {
-      adjustedDeltaTime = Spring.MAX_DELTA_TIME_SEC
+    if (realDeltaTime > MAX_DELTA_TIME_SEC) {
+      adjustedDeltaTime = MAX_DELTA_TIME_SEC
     }
 
     this._timeAccumulator += adjustedDeltaTime
@@ -226,10 +230,10 @@ class Spring {
     let dxdt
     let dvdt
 
-    while (this._timeAccumulator >= Spring.SOLVER_TIMESTEP_SEC) {
-      this._timeAccumulator -= Spring.SOLVER_TIMESTEP_SEC
+    while (this._timeAccumulator >= SOLVER_TIMESTEP_SEC) {
+      this._timeAccumulator -= SOLVER_TIMESTEP_SEC
 
-      if (this._timeAccumulator < Spring.SOLVER_TIMESTEP_SEC) {
+      if (this._timeAccumulator < SOLVER_TIMESTEP_SEC) {
         this._previousState.position = position
         this._previousState.velocity = velocity
       }
@@ -238,20 +242,20 @@ class Spring {
       aAcceleration =
         tension * (this._endValue - tempPosition) - friction * velocity
 
-      tempPosition = position + aVelocity * Spring.SOLVER_TIMESTEP_SEC * 0.5
-      tempVelocity = velocity + aAcceleration * Spring.SOLVER_TIMESTEP_SEC * 0.5
+      tempPosition = position + aVelocity * SOLVER_TIMESTEP_SEC * 0.5
+      tempVelocity = velocity + aAcceleration * SOLVER_TIMESTEP_SEC * 0.5
       bVelocity = tempVelocity
       bAcceleration =
         tension * (this._endValue - tempPosition) - friction * tempVelocity
 
-      tempPosition = position + bVelocity * Spring.SOLVER_TIMESTEP_SEC * 0.5
-      tempVelocity = velocity + bAcceleration * Spring.SOLVER_TIMESTEP_SEC * 0.5
+      tempPosition = position + bVelocity * SOLVER_TIMESTEP_SEC * 0.5
+      tempVelocity = velocity + bAcceleration * SOLVER_TIMESTEP_SEC * 0.5
       cVelocity = tempVelocity
       cAcceleration =
         tension * (this._endValue - tempPosition) - friction * tempVelocity
 
-      tempPosition = position + cVelocity * Spring.SOLVER_TIMESTEP_SEC
-      tempVelocity = velocity + cAcceleration * Spring.SOLVER_TIMESTEP_SEC
+      tempPosition = position + cVelocity * SOLVER_TIMESTEP_SEC
+      tempVelocity = velocity + cAcceleration * SOLVER_TIMESTEP_SEC
       dVelocity = tempVelocity
       dAcceleration =
         tension * (this._endValue - tempPosition) - friction * tempVelocity
@@ -262,8 +266,8 @@ class Spring {
         (1.0 / 6.0) *
         (aAcceleration + 2.0 * (bAcceleration + cAcceleration) + dAcceleration)
 
-      position += dxdt * Spring.SOLVER_TIMESTEP_SEC
-      velocity += dvdt * Spring.SOLVER_TIMESTEP_SEC
+      position += dxdt * SOLVER_TIMESTEP_SEC
+      velocity += dvdt * SOLVER_TIMESTEP_SEC
     }
 
     this._tempState.position = tempPosition
@@ -273,7 +277,7 @@ class Spring {
     this._currentState.velocity = velocity
 
     if (this._timeAccumulator > 0) {
-      this._interpolate(this._timeAccumulator / Spring.SOLVER_TIMESTEP_SEC)
+      this._interpolate(this._timeAccumulator / SOLVER_TIMESTEP_SEC)
     }
 
     if (
@@ -391,9 +395,5 @@ class Spring {
     return this
   }
 }
-
-Spring._ID = 0
-Spring.MAX_DELTA_TIME_SEC = 0.064
-Spring.SOLVER_TIMESTEP_SEC = 0.001
 
 export default Spring
