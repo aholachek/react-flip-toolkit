@@ -67,9 +67,9 @@
 
 ## Forkable Examples
 
-### A Single Expanding Div
+### Simple Example 1: An Expanding Div
 
-[Fork on Code Sandbox](https://codesandbox.io/s/8130rn9q2)
+[Fork this example on Code Sandbox](https://codesandbox.io/s/8130rn9q2)
 
 ```jsx
 import React, { useState } from 'react'
@@ -92,9 +92,11 @@ const AnimatedSquare = () => {
 }
 ```
 
-### Two Divs
+<img src="./example-assets/square.gif" height="200px" alt="animated square" />
 
-[Fork on Code Sandbox](https://codesandbox.io/s/74q85nq1qq)
+### Simple Example 2: Two Divs
+
+[Fork this example on Code Sandbox](https://codesandbox.io/s/74q85nq1qq)
 
 ```jsx
 import React, { useState } from 'react'
@@ -128,9 +130,11 @@ const AnimatedSquare = () => {
 }
 ```
 
-### List Shuffle
+<img src="./example-assets/2squares.gif" height="200px" alt="2 animated squares" />
 
-[Fork on Code Sandbox](https://codesandbox.io/s/14v8o5xy44)
+### Simple Example 3: List Shuffle
+
+[Fork this example on Code Sandbox](https://codesandbox.io/s/14v8o5xy44)
 
 ```jsx
 import React, { useState } from 'react'
@@ -156,17 +160,58 @@ const ListShuffler = () => {
 }
 ```
 
+<img src="./example-assets/listshuffle.gif" height="60px" alt="shuffling a list" />
+
 ### Complex List Transitions
 
-### Nested Staggers
+### Stagger Effects
+
+The `react-flip-toolkit` library offers spring-driven stagger configurations so that you can achieve complex sequenced effects.
+
+For the most basic stagger effect, you can simply add a `stagger` key to your `Flipped` element:
+
+```jsx
+<Flipped flipId={`element-${i}`} stagger>
+  <AnimatedListItem/>
+</Flipped>
+```
+
+
+[Fork this example on Code Sandbox](https://codesandbox.io/s/wnnxl223n8)
 
 <img src="./example-assets/list-transition.gif" height="300px" alt='animation for the selected state of a list item' />
 
-### Explore Spring Configurations
+### Spring Customizations
 
-  <img src="./example-assets/spring-options.gif" width='600px' alt='spring easing explorer' />
+`react-flip-toolkit` uses springs for animations. To customize the spring, you can pass in a preset name:
+
+```jsx
+<Flipper flipKey='foo' spring='wobbly'>
+  {/* Flipped components go here...*/}
+</Flipper>
+```
+
+or a custom spring config:
+
+```jsx
+<Flipper flipKey='foo' spring={{ stiffness: 280, damping: 22 }} >
+  {/* Flipped components go here...*/}
+</Flipper>
+```
+[View all spring options in the interactive explorer](https://codepen.io/aholachek/pen/bKmZbV)
+
 
 ### Nested Scale Transforms
+
+<a href="https://codesandbox.io/s/github/aholachek/react-stripe-menu">
+<img src="./example-assets/stripe-menu.gif" height="300px" alt="stripe menu" />
+</a>
+
+- [Fork this example on Code Sandbox](https://codesandbox.io/s/github/aholachek/react-stripe-menu)
+- [Fork Github repo](https://github.com/aholachek/react-stripe-menu)
+
+
+The problem with scale animations has to do with children &mdash; if you scale a div up 2x, you will warp any children it has by scaling them up too, creating a weird-looking animation. That's why this library allows you to wrap the child with a `Flipped` component that has an `inverseFlipId` to counteract the transforms of the parent:
 
 ```jsx
 <Flipped flipId={id}>
@@ -178,41 +223,42 @@ const ListShuffler = () => {
 </Flipped>
 ```
 
-Some other FLIP libraries just allow you to animate position changes, but things get more interesting once you can animate scale changes as well.
-
-<a href="https://codepen.io/aholachek/pen/mKXBJR?editors=0110">
-<img src="./example-assets/nested-example.gif" height="400px" alt="an animation demoing nested scale transforms" />
-</a>
-
-[view on Codepen](https://codepen.io/aholachek/pen/mKXBJR)
-
-The problem with scale animations has to do with children &mdash; if you scale a div up 2x, you will warp any children it has by scaling them up too, creating a weird-looking animation. That's why this library allows you to wrap the child with a `Flipped` component that has an `inverseFlipId` to counteract the transforms of the parent.
-
 By default, both the scale and the translation transforms of the parent will be counteracted (this allows children components to make their own FLIP animations without being affected by the parent).
 But for many use cases, you'll want to additionally specify the `scale` prop to limit the adjustment to the scale and allow the positioning to move with the parent.
 
-**The DOM element with the inverse transform should lie flush against its parent container for the most seamless animation.**
+Note: the DOM element with the inverse transform should lie flush against its parent container for the most seamless animation.
 
 That means any layout styles &mdash; padding, flexbox, etc&mdash;should be applied to the inverted container (the element wrapped with a `Flipped` component with an `inverseFlipId`) rather than the parent `Flipped` container.
-
-### Stripe Inspired Menu
-
-- [Fork on Code Sandbox](https://codesandbox.io/s/github/aholachek/react-stripe-menu)
-- [Fork Github repo]()
-- 
-This example makes use of the `nested scale transforms` method introduced above.
 
 
 
 ### Route-based Animations With React Router
 
-[Fork Github repo]()
+`react-flip-toolkit` works great with client-side routers to provide route-driven transitions:
 
-  <img src="./example-assets/compressed-demo.gif" width='600px' alt='React-flip-toolkit with React-Router' />
+```jsx
+<Route
+  render={({ location, search }) => {
+    return (
+      <Flipper
+        flipKey={`${location.pathname}-${location.search}`}
+      >
+      {/* Child routes that contain Flipped components go here...*/}
+      </Flipper>
+    )
+  }}
+/>
+```
+
+[Fork Github repo](https://github.com/aholachek/react-flip-toolkit-router-example)
+
+<a href="https://github.com/aholachek/react-flip-toolkit-router-example">
+  <img src="./example-assets/compressed-demo.gif" width='500px' alt='React-flip-toolkit with React-Router' />
+</a>
 
 ### Responsive, Swipe-Driven Animations
 
-[Fork on Code Sandbox](https://codesandbox.io/s/74q85nq1qq)
+[Fork this example on Code Sandbox](https://codesandbox.io/s/74q85nq1qq)
 
 
 
@@ -345,7 +391,7 @@ const MyCoolComponent = ({ knownProp, ...rest }) => <div {...rest} />
 | flipId **(required unless inverseFlipId is provided)** |     -      | `string`              | Use this to tell `react-flip-toolkit` how elements should be matched across renders so they can be animated.                                                                                                                                                                                                                                                                                                                                            |
 | inverseFlipId                                          |     -      | `string`              | Refer to the id of the parent `Flipped` container whose transform you want to cancel out. If this prop is provided, the `Flipped` component will become a limited version of itself that is only responsible for cancelling out its parent transform. It will read from any provided `transform` props and will ignore all other props (besides `inverseFlipId`.) [Read more about canceling out parent transforms here.](#practical-scale-transitions) |
 | transformOrigin                                        |  `"0 0"`   | `string`              | This is a convenience method to apply the proper CSS `transform-origin` to the element being FLIP-ped. This will override `react-flip-toolkit`'s default application of `transform-origin: 0 0;` if it is provided as a prop.                                                                                                                                                                                                                           |
-| spring                                                 | `noWobble` | `string` or `object`  | Provide a string referencing one of the spring presets &mdash; (default), `veryGentle`, `gentle`, `wobbly`, or `stiff`, OR provide an object with stiffness and damping parameters. [Explore the spring setting options here.](https://codepen.io/aholachek/full/bKmZbV/)                                                                                                                                                                               |
+| spring                                                 | `noWobble` | `string` or `object`  | Provide a string referencing one of the spring presets &mdash; `noWobble` (default), `veryGentle`, `gentle`, `wobbly`, or `stiff`, OR provide an object with stiffness and damping parameters. [Explore the spring setting options here.](https://codepen.io/aholachek/full/bKmZbV/)                                                                                                                                                                               |
 | stagger                                                |  `false`   | `boolean` or `string` | Provide a natural, spring-based staggering effect in which the spring easing of each item is pinned to the previous one's movement. Provide `true` to stagger the element with all other staggered elements. If you want to get more granular, you can provide a string key and the element will be staggered with other elements with the same key.                                                                                                    |
 
 #### Callback props
@@ -388,18 +434,16 @@ Functions to control when FLIP happens
 
 ### `Swipe`
 
-Track FLIP animations with swipe gestures.
+Easy gesture-driven FLIP animations. (Only single touch swipe gestures are supported at this time).
 
-A `Swipe` component must be provided a `Flipped` component as its only child.
+A `Swipe` component can either be provided a `Flipped` component as its only child, or with a `flipId` prop representing the `Flipped` component that it controls.
 
 | prop                    |  default   | type                    | details                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | ----------------------- | :--------: | :---------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| children **(required)** |     -      | one `Flipped` component | A `Swipe` component must wrap a `Flipped` component as its only child.                                                                                                                                                                                                                                                                                                                                                                                  |
+| children  |     -      | one `Flipped` component | A `Swipe` component must wrap a `Flipped` component as its only child.                                                                                                                                                                                                                                                                                                                                                                                  |
 | threshold               |    0.2     | 0 < x < 1               | After what percent change of a swipe should the swipe gesture "take over" and complete the `FLIP` animation?                                                                                                                                                                                                                                                                                                                                            |
 | touchOnly               |   false    | `string`                | Refer to the id of the parent `Flipped` container whose transform you want to cancel out. If this prop is provided, the `Flipped` component will become a limited version of itself that is only responsible for cancelling out its parent transform. It will read from any provided `transform` props and will ignore all other props (besides `inverseFlipId`.) [Read more about canceling out parent transforms here.](#practical-scale-transitions) |
 | transformOrigin         |  `"0 0"`   | `string`                | This is a convenience method to apply the proper CSS `transform-origin` to the element being FLIP-ped. This will override `react-flip-toolkit`'s default application of `transform-origin: 0 0;` if it is provided as a prop.                                                                                                                                                                                                                           |
-| spring                  | `noWobble` | `string` or `object`    | Provide a string referencing one of the spring presets &mdash; (default), `veryGentle`, `gentle`, `wobbly`, or `stiff`, OR provide an object with stiffness and damping parameters. [Explore the spring setting options here.](https://codepen.io/aholachek/full/bKmZbV/)                                                                                                                                                                               |
-| stagger                 |  `false`   | `boolean` or `string`   | Provide a natural, spring-based staggering effect in which the spring easing of each item is pinned to the previous one's movement. Provide `true` to stagger the element with all other staggered elements. If you want to get more granular, you can provide a string key and the element will be staggered with other elements with the same key.                                                                                                    |
 
 ## Library details
 

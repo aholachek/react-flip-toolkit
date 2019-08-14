@@ -15,7 +15,7 @@ export const createSuspendedSpring = (flipData: FlipData) => {
     getOnUpdateFunc,
     onAnimationEnd,
     isGestureControlled,
-    activateNestedStaggers
+    onSpringActivate
   } = flipData
 
   const spring = springSystem.createSpring(stiffness!, damping!)
@@ -27,15 +27,12 @@ export const createSuspendedSpring = (flipData: FlipData) => {
   }
 
   const springConfig: AddListenerArgs = {
+    onSpringActivate,
     onSpringAtRest: !isGestureControlled ? onSpringAtRest : () => {},
     onSpringUpdate: getOnUpdateFunc({
       spring,
       onAnimationEnd
     })
-  }
-
-  if (activateNestedStaggers) {
-    springConfig.onSpringActivate = activateNestedStaggers
   }
 
   spring.addListener(springConfig)

@@ -46,6 +46,7 @@ class Card extends PureComponent {
         key={flipId}
         stagger={stagger}
         shouldInvert={this.shouldFlip}
+        
       >
         <li className="fm-item">
           <Flipped inverseFlipId={flipId}>
@@ -54,6 +55,7 @@ class Card extends PureComponent {
                 flipId={`${flipId}-content`}
                 translate
                 shouldFlip={this.shouldFlip}
+                delayUntil={flipId}
               >
                 <div>
                   <h3>{title}</h3>
@@ -61,7 +63,11 @@ class Card extends PureComponent {
                 </div>
               </Flipped>
 
-              <Flipped flipId={`${flipId}-button`} shouldFlip={this.shouldFlip}>
+              <Flipped
+                flipId={`${flipId}-button`}
+                shouldFlip={this.shouldFlip}
+                delayUntil={flipId}
+              >
                 <button
                   className="fm-remove"
                   onClick={() => addToFilteredIds(id)}

@@ -24,6 +24,7 @@ import { BoundingClientRect } from '../getFlippedElementPositions/types'
 import { FlippedIds } from '../types'
 import { createSpring, createStaggeredSprings } from './spring'
 import { IndexableObject } from '../../utilities/types'
+import { FlipId } from '../../types'
 
 // 3d transforms were causing weird issues in chrome,
 // especially when opacity was also being tweened,
@@ -455,7 +456,8 @@ export default ({
         getOnUpdateFunc,
         initializeFlip,
         onAnimationEnd,
-        isGestureControlled
+        isGestureControlled,
+        delayUntil: flipConfig.delayUntil
       }) as FlipData
     })
     // filter out data for all non-animated elements first
@@ -463,46 +465,41 @@ export default ({
 
   flipDataArray.forEach(({ initializeFlip }) => initializeFlip())
 
-  // which staggers are delayed until another element starts animating?
-  const delayedStaggerKeys = Object.keys(staggerConfig).filter(staggerKey => {
-    return staggerConfig[staggerKey].delayUntil
-  })
+  if (debug) {
+    return () => {}
+  }
 
-  const indexedByDelayUntil = delayedStaggerKeys
-    .map(key => [
-      staggerConfig[key].delayUntil!(
-        decisionData.previous,
-        decisionData.current
-      ),
-      key
-    ])
-    .reduce(
-      (acc, curr) => {
-        if (acc[curr[0]]) {
-          acc[curr[0]].push(curr[1])
-        } else {
-          acc[curr[0]] = [curr[1]]
-        }
-        return acc
-      },
-      {} as IndexableObject
-    )
+  const elementIsFlipped = (flipId: FlipId) =>
+    flipDataArray.filter(f => f.id === flipId).length
+
+  const delayedFlip = flipDataArray.filter(
+    f => f.delayUntil && elementIsFlipped(f.delayUntil)
+  )
+
+  // key: flipId value: flip to delay until key is called
+  const delayUntilSprings = {} as IndexableObject
+  // key: flipId value: stagger to delay until key is called
+  const delayUntilStaggers = {} as IndexableObject
+  // key: stagger value: true
+  const delayedStaggerKeys = {} as IndexableObject
+
+  delayedFlip.forEach(flip => {
+    if (flip.stagger) {
+      delayedStaggerKeys[flip.stagger] = true
+      if (delayUntilStaggers[flip.delayUntil!])
+        delayUntilStaggers[flip.delayUntil!].push(flip.stagger)
+      else delayUntilStaggers[flip.delayUntil!] = [flip.stagger]
+    } else {
+      if (delayUntilSprings[flip.delayUntil!])
+        delayUntilSprings[flip.delayUntil!].push(flip)
+      else delayUntilSprings[flip.delayUntil!] = [flip]
+    }
+  })
 
   const staggerDict = flipDataArray
     .filter(flipData => flipData.stagger)
     .reduce(
       (acc, curr) => {
-        if (indexedByDelayUntil[curr.id]) {
-          curr.activateNestedStaggers = () => {
-            indexedByDelayUntil[curr.id].forEach((staggerKey: string) => {
-              createStaggeredSprings(
-                staggerDict[staggerKey],
-                staggerConfig[staggerKey],
-                isGestureControlled
-              )
-            })
-          }
-        }
         if (acc[curr.stagger]) {
           acc[curr.stagger].push(curr)
         } else {
@@ -513,9 +510,31 @@ export default ({
       {} as IndexableObject
     )
 
-  if (debug) {
-    return () => {}
-  }
+  const immediateFlip = flipDataArray.filter(f => delayedFlip.indexOf(f) === -1)
+
+  immediateFlip.forEach(flipData => {
+    flipData.onSpringActivate = () => {
+      if (delayUntilSprings[flipData.id]) {
+        delayUntilSprings[flipData.id].forEach(createSpring)
+      }
+      if (delayUntilStaggers[flipData.id]) {
+        const uniqueStaggerKeys = Object.keys(
+          delayUntilStaggers[flipData.id].reduce(
+            (acc: IndexableObject, curr: string) =>
+              assign(acc, { [curr]: true }),
+            {}
+          )
+        )
+        uniqueStaggerKeys.forEach((staggerKey: string) => {
+          createStaggeredSprings(
+            staggerDict[staggerKey],
+            staggerConfig[staggerKey],
+            isGestureControlled
+          )
+        })
+      }
+    }
+  })
 
   return () => {
     // if there are no active FLIP animations, immediately resolve the
@@ -524,24 +543,21 @@ export default ({
       closureResolve([])
     }
     // animate non-staggered elements
-    flipDataArray
+    immediateFlip
       .filter(flipData => {
         return !flipData.stagger
       })
       .forEach(createSpring)
 
     // animate staggered elements
-    Object.keys(staggerDict)
-      .filter(staggerKey => {
-        return staggerKey && delayedStaggerKeys.indexOf(staggerKey) === -1
-      })
-      .forEach(staggerKey => {
-        createStaggeredSprings(
-          staggerDict[staggerKey],
-          staggerConfig[staggerKey],
-          isGestureControlled
-        )
-      })
+    Object.keys(staggerDict).forEach(staggerKey => {
+      if (delayedStaggerKeys[staggerKey]) return
+      createStaggeredSprings(
+        staggerDict[staggerKey],
+        staggerConfig[staggerKey],
+        isGestureControlled
+      )
+    })
     return flipCompletedPromise
   }
 }

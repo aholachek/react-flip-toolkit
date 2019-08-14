@@ -31,6 +31,7 @@ const ListItem = ({ index, color, onClick }) => {
               flipId={`avatar-${index}`}
               stagger="card-content"
               shouldFlip={shouldFlip(index)}
+              delayUntil={createCardFlipId(index)}
             >
               <div className="avatar" />
             </Flipped>
@@ -39,6 +40,7 @@ const ListItem = ({ index, color, onClick }) => {
                 flipId={`description-${index}-1`}
                 stagger="card-content"
                 shouldFlip={shouldFlip(index)}
+                delayUntil={createCardFlipId(index)}
               >
                 <div />
               </Flipped>
@@ -46,6 +48,7 @@ const ListItem = ({ index, color, onClick }) => {
                 flipId={`description-${index}-2`}
                 stagger="card-content"
                 shouldFlip={shouldFlip(index)}
+                delayUntil={createCardFlipId(index)}
               >
                 <div />
               </Flipped>
@@ -53,6 +56,7 @@ const ListItem = ({ index, color, onClick }) => {
                 flipId={`description-${index}-3`}
                 stagger="card-content"
                 shouldFlip={shouldFlip(index)}
+                delayUntil={createCardFlipId(index)}
               >
                 <div />
               </Flipped>
@@ -85,17 +89,33 @@ const ExpandedListItem = ({ index, color, onClick }) => {
       >
         <Flipped inverseFlipId={`listItem-${index}`}>
           <div className="expandedListItemContent">
-            <Flipped flipId={`avatar-${index}`} stagger="card-content">
+            <Flipped
+              flipId={`avatar-${index}`}
+              stagger="card-content"
+              delayUntil={createCardFlipId(index)}
+            >
               <div className="avatar avatarExpanded" />
             </Flipped>
             <div className="description">
-              <Flipped flipId={`description-${index}-1`} stagger="card-content">
+              <Flipped
+                flipId={`description-${index}-1`}
+                stagger="card-content"
+                delayUntil={createCardFlipId(index)}
+              >
                 <div />
               </Flipped>
-              <Flipped flipId={`description-${index}-2`} stagger="card-content">
+              <Flipped
+                flipId={`description-${index}-2`}
+                stagger="card-content"
+                delayUntil={createCardFlipId(index)}
+              >
                 <div />
               </Flipped>
-              <Flipped flipId={`description-${index}-3`} stagger="card-content">
+              <Flipped
+                flipId={`description-${index}-3`}
+                stagger="card-content"
+                delayUntil={createCardFlipId(index)}
+              >
                 <div />
               </Flipped>
             </div>
@@ -123,14 +143,6 @@ export default class AnimatedList extends Component {
         className="staggered-list-content"
         spring="gentle"
         staggerConfig={{
-          'card-content': {
-            delayUntil: (prevDecisionData, currDecisionData) => {
-              const flipId = createCardFlipId(
-                prevDecisionData === null ? currDecisionData : prevDecisionData
-              )
-              return flipId
-            }
-          },
           card: {
             reverse: this.state.focused !== null
           }

@@ -1,6 +1,6 @@
 import { BaseFlipArgs, FlippedIds } from '../types'
 import { SpringOption, SpringConfig } from '../../springSettings/types'
-import { StaggerConfig, OnFlipperComplete } from '../../types'
+import { StaggerConfig, OnFlipperComplete, FlipId } from '../../types'
 import { SerializableFlippedProps } from '../../types'
 import { Spring } from '../../forked-rebound/types'
 
@@ -62,7 +62,8 @@ export interface FlipData {
   onAnimationEnd: () => void
   childIds: ChildIds
   isGestureControlled?: boolean
-  activateNestedStaggers?: () => void
+  delayUntil?: FlipId
+  onSpringActivate?: () => void
 }
 export type FlipDataArray = FlipData[]
 

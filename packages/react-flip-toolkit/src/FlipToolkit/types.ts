@@ -25,6 +25,8 @@ export interface SerializableFlippedProps {
   stagger?: string | boolean
   flipId?: FlipId
   inverseFlipId?: string
+  /** Prevent this element from animating until the Flipped element with the provided flipId has started its animation, useful for nested animations  */
+  delayUntil?: FlipId
   /** Internal use only */
   gestureHandlers?: SwipeEventHandlers
 }
