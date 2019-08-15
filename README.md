@@ -181,14 +181,6 @@ Add some interest to a dynamic list of cards by animating changes to cards' size
 
 ### Stagger Effects
 
-
-<a href="https://codesandbox.io/s/wnnxl223n8">
-<img src="./example-assets/list-transition.gif" height="300px" alt='animation for the selected state of a list item' />
-</a>
-
-[Fork this example on Code Sandbox](https://codesandbox.io/s/wnnxl223n8)
-
-
 The `react-flip-toolkit` library offers spring-driven stagger configurations so that you can achieve complex sequenced effects.
 
 For the most basic stagger effect, you can simply add a `stagger` key to your `Flipped` element:
@@ -198,6 +190,12 @@ For the most basic stagger effect, you can simply add a `stagger` key to your `F
   <AnimatedListItem/>
 </Flipped>
 ```
+
+<a href="https://codesandbox.io/s/wnnxl223n8">
+<img src="./example-assets/list-transition.gif" height="300px" alt='animation for the selected state of a list item' />
+</a>
+
+[Fork this example on Code Sandbox](https://codesandbox.io/s/wnnxl223n8)
 
 
 ### Spring Customizations
