@@ -543,11 +543,11 @@ spring({
 `React-flip-toolkit` does a lot of work under the hood to try to maximize the performance of your animations &mdash; for instance, off-screen elements won't be animated, and style updates are batched to prevent [layout thrashing](https://developers.google.com/web/fundamentals/performance/rendering/avoid-large-complex-layouts-and-layout-thrashing).
 However, if you are building particularly complex animations&mdash;ones that involve dozens of elements or large images&mdash; there are some additional strategies you can use to ensure performant animations.
 
-### 1. `Memoization`
+### `Memoization`
 
 When you trigger a complex FLIP animation with `react-flip-toolkit`, `React` could be spending vital milliseconds doing unnecessary reconciliation work before allowing the animation to start. If you notice a slight delay between when the animation is triggered, and when it begins, this is probably the culprit. To short-circuit this possibly unnecessary work, try memoizing your component by using [`React.memo`](https://reactjs.org/docs/react-api.html#reactmemo) or [`PureComponent`](https://reactjs.org/docs/react-api.html#reactpurecomponent) for your animated elements, and seeing if you can refactor your code to minimize prop updates to animated children when an animation is about to occur.
 
-### 2. `will-change:transform`
+### `will-change:transform`
 
 ```css
 .box {
