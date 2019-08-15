@@ -387,7 +387,7 @@ The `Flipped` component produces no markup, it simply passes some props down to 
 If you want to wrap a React component rather than a JSX element like a `div`, you can provide a render prop and then apply the `flippedProps` directly to the wrapped element in your component:
 
 ```jsx
-;<Flipped>
+<Flipped>
   {flippedProps => <MyCoolComponent flippedProps={flippedProps} />}
 </Flipped>
 
@@ -397,7 +397,7 @@ const MyCoolComponent = ({ flippedProps }) => <div {...flippedProps} />
 You can also simply provide a regular React component as long as that component spreads unrecognized props directly onto the wrapped element (this technique works well for wrapping styled components):
 
 ```jsx
-;<Flipped>
+<Flipped>
   <MyCoolComponent />
 </Flipped>
 
