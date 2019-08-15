@@ -265,7 +265,7 @@ That means any layout styles &mdash; padding, flexbox, etc&mdash;should be appli
 
 [Fork the repo](./packages/adaptive-animations-demo)
 
-  <img src="./example-assets/swipe.gif" width='500px' alt='swipe-driven FLIP' />
+  <img src="./example-assets/swipe.gif" width='250px' alt='swipe-driven FLIP' />
 
 ### More examples
 
@@ -440,21 +440,55 @@ Functions to control when FLIP happens
 
 ### `Swipe`
 
-Easy gesture-driven FLIP animations. (Only single touch swipe gestures are supported at this time).
+**Experimental**
 
-A `Swipe` component can either be provided a `Flipped` component as its only child, or with a `flipId` prop representing the `Flipped` component that it controls.
+Easy gesture-driven FLIP animations. (Only single-touch swipe gestures are supported).
+
+[Fork a basic example on CodeSandbox](https://codesandbox.io/s/swipe-basic-example-xq146)
+
+Until this feature has stabilized, if you are using the `Swipe` feature, please import exclusively from `react-flip-toolkit/lib/Swipe` instead of `react-flip-toolkit`, e.g.:
+
+`import {Flipper, Flipped, Swipe} from 'react-flip-toolkit/lib/Swipe'`.
+
+A `Swipe` component can either 1) be provided a `Flipped` component as its only child, or 2) with a `flipId` prop representing the `Flipped` component that it controls.
 
 | prop                    |  default   | type                    | details                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | ----------------------- | :--------: | :---------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| children  |     -      | one `Flipped` component | A `Swipe` component must either wrap a `Flipped` component as its only child **OR** refer to a flipped component with the prop `flipId="[flipId]"`                                                                                                                                                                                                                              |
-| up               |         | { initFlip: func, cancelFlip: func}               | Initiate a FLIP animation when the user swipes up.                                                                                                                                                                                                |
-| down               |         |  { initFlip: func, cancelFlip: func}              | Initiate a FLIP animation when the user swipes down.                                                                                                                                                                                                |
-| left               |         | { initFlip: func, cancelFlip: func}               | Initiate a FLIP animation when the user swipes left.                                                                                                                                                                                               |
-| right               |         | { initFlip: func, cancelFlip: func}               | Initiate a FLIP animation when the user swipes right.                                                                                                                                                                                                 |
-| threshold               |    0.2     | 0 < x < 1               | After what percent change of a swipe should the swipe gesture "take over" and complete the `FLIP` animation?                                                                                                                                                                                                                                                                                                                                            |
+| children  |     -      | one `Flipped` component | The `Flipped` component's transition will track the gesture until it reaches the percentage specified in the `threshold` prop.                                                                                                                                                                                                                        |
+| up               |         | { initFlip: func, cancelFlip: func}               | Initiate a FLIP animation when the user swipes up. (You must provide a `cancelFlip` function in the event of gesture cancellation.)                                                                                                                                                                                           |
+| down               |         |  { initFlip: func, cancelFlip: func}              | Initiate a FLIP animation when the user swipes down. (You must provide a `cancelFlip` function in the event of gesture cancellation.)                                                                                                                                                                                               |
+| left               |         | { initFlip: func, cancelFlip: func}               | Initiate a FLIP animation when the user swipes left. (You must provide a `cancelFlip` function in the event of gesture cancellation.)                                                                                                                                                                                               |
+| right               |         | { initFlip: func, cancelFlip: func}               | Initiate a FLIP animation when the user swipes right. (You must provide a `cancelFlip` function in the event of gesture cancellation.)                                                                                                                                                                                                  |
+| threshold               |    0.15     | 0 < x < 1               | After what percent change of a swipe should the swipe gesture "take over" and complete the `FLIP` animation?                                                                                                                                                                                                                                                                                                                                            |
 | touchOnly               |   false    | `string`                | Don't respond to mouse events |
 | onUp         |    | `function`                | Listener to call when user initially presses down
 | onDown        |    | `function`                | Listener to call when user releases gesture                                                                                                                                                                                                                        |
+
+### Spring
+
+As a convenience, `react-flip-toolkit` exports a tiny function to access the same spring system used to create FLIP transitions.
+
+[Fork example on CodeSandbox](https://codesandbox.io/s/react-flip-toolkit-spring-example-e6pyc)
+
+```jsx
+spring({
+  config: "wobbly",
+  values: {
+    translateY: [-15, 0],
+    opacity: [0, 1]
+  },
+  onUpdate: ({ translateY, opacity }) => {
+    el.style.opacity = opacity;
+    el.style.transform = `translateY(${translateY}px)`;
+  },
+  delay: i * 25,
+  onComplete: () => console.log('done')
+});
+```
+
+<a href="https://codesandbox.io/s/react-flip-toolkit-spring-example-e6pyc">
+  <img src="./example-assets/spring.gif" alt="spring example" width="200px"/>
+</a>
 
 ## Library details
 

@@ -10,7 +10,7 @@ import {
   Set
 } from './types'
 
-const defaultCompleteThreshhold = 0.25
+const defaultCompleteThreshhold = 0.15
 
 const getMovementScalar = ({
   deltaX,
