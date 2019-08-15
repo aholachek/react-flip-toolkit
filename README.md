@@ -62,8 +62,8 @@
   - [Problem #2: Things look weird / animations aren't behaving](#problem-2-things-look-weird--animations-arent-behaving)
   - [Problem #3: It's still not working](#problem-3-its-still-not-working)
 - [Performance](#performance)
-  - [1. `Memoization`](#1-memoization)
-  - [2. `will-change:transform`](#2-will-changetransform)
+  - [`Memoization`](#memoization)
+  - [`will-change:transform`](#will-changetransform)
 
 ## Forkable Examples
 
