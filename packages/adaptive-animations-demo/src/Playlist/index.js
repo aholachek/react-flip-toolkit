@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import { Flipper, Flipped } from 'react-flip-toolkit'
-import { Swipe } from 'react-flip-toolkit'
+import { Flipper, Flipped, Swipe } from 'react-flip-toolkit/lib/Swipe'
 import playlists from '../playlists'
 import * as Styled from './styled-elements'
 import PlaylistHeader from './Header'

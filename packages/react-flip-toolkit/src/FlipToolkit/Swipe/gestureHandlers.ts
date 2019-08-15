@@ -34,7 +34,7 @@ const initialState = {
 
 const defaultConfig = {
   window,
-  touchOnly: true,
+  touchOnly: false,
   onDown: undefined,
   onUp: undefined
 }

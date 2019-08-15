@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
-import { Flipper, Flipped } from 'react-flip-toolkit'
+import { Flipper, Flipped } from 'react-flip-toolkit/lib/Swipe'
 import { Global } from '@emotion/core'
 import styled from '@emotion/styled/macro'
 import BrowsePlaylists from '../BrowsePlaylists'

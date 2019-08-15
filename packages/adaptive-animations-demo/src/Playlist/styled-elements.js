@@ -1,6 +1,6 @@
 import styled from '@emotion/styled/macro'
 import { keyframes } from '@emotion/core'
-import { Flipper } from 'react-flip-toolkit'
+import { Flipper } from 'react-flip-toolkit/lib/Swipe'
 import { breakpoint } from '../App/styles'
 
 export const Li = styled.li`
