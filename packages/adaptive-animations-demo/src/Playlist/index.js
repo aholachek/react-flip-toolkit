@@ -113,9 +113,10 @@ const Playlist = props => {
   }, [])
 
   React.useEffect(() => {
+    setAnimateListIn(true)
     setTimeout(() => {
-      setAnimateListIn(true)
-    })
+      setAnimateListIn(false)
+    }, 1000)
   }, [])
 
   const headerCollapsed =

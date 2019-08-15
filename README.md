@@ -162,7 +162,13 @@ const ListShuffler = () => {
 
 <img src="./example-assets/listshuffle.gif" height="60px" alt="shuffling a list" />
 
-### Complex List Transitions
+### List Transitions
+
+Add some interest to a dynamic list of cards by animating changes to cards' sizes and positions.
+
+[Fork this example on Code Sandbox](https://codesandbox.io/s/list-transitions-ju549)
+
+<img src="./example-assets/listanimations.gif" height="300px" alt='animated list' />
 
 ### Stagger Effects
 
@@ -175,7 +181,6 @@ For the most basic stagger effect, you can simply add a `stagger` key to your `F
   <AnimatedListItem/>
 </Flipped>
 ```
-
 
 [Fork this example on Code Sandbox](https://codesandbox.io/s/wnnxl223n8)
 
@@ -211,7 +216,7 @@ or a custom spring config:
 - [Fork Github repo](https://github.com/aholachek/react-stripe-menu)
 
 
-The problem with scale animations has to do with children &mdash; if you scale a div up 2x, you will warp any children it has by scaling them up too, creating a weird-looking animation. That's why this library allows you to wrap the child with a `Flipped` component that has an `inverseFlipId` to counteract the transforms of the parent:
+Interesting animations often involve scale transforms in addition to simple translate transforms. The problem with scale animations has to do with children &mdash; if you scale a div up 2x, you will warp any children it has by scaling them up too, creating a weird-looking animation. That's why this library allows you to wrap the child with a `Flipped` component that has an `inverseFlipId` to counteract the transforms of the parent:
 
 ```jsx
 <Flipped flipId={id}>
@@ -258,9 +263,9 @@ That means any layout styles &mdash; padding, flexbox, etc&mdash;should be appli
 
 ### Responsive, Swipe-Driven Animations
 
-[Fork this example on Code Sandbox](https://codesandbox.io/s/74q85nq1qq)
+[Fork the repo](./packages/adaptive-animations-demo)
 
-
+  <img src="./example-assets/swipe.gif" width='500px' alt='swipe-driven FLIP' />
 
 ### More examples
 
@@ -393,6 +398,7 @@ const MyCoolComponent = ({ knownProp, ...rest }) => <div {...rest} />
 | transformOrigin                                        |  `"0 0"`   | `string`              | This is a convenience method to apply the proper CSS `transform-origin` to the element being FLIP-ped. This will override `react-flip-toolkit`'s default application of `transform-origin: 0 0;` if it is provided as a prop.                                                                                                                                                                                                                           |
 | spring                                                 | `noWobble` | `string` or `object`  | Provide a string referencing one of the spring presets &mdash; `noWobble` (default), `veryGentle`, `gentle`, `wobbly`, or `stiff`, OR provide an object with stiffness and damping parameters. [Explore the spring setting options here.](https://codepen.io/aholachek/full/bKmZbV/)                                                                                                                                                                               |
 | stagger                                                |  `false`   | `boolean` or `string` | Provide a natural, spring-based staggering effect in which the spring easing of each item is pinned to the previous one's movement. Provide `true` to stagger the element with all other staggered elements. If you want to get more granular, you can provide a string key and the element will be staggered with other elements with the same key.                                                                                                    |
+| delayUntil                                               |  `false`   | `string` (flipId) | Delay an animation by providing a reference to another `Flipped` component that it should wait for before animating (the other `Flipped` component should have a stagger delay as that is the only use case in which this prop is necessary.)                                                                                                    |
 
 #### Callback props
 
@@ -440,10 +446,15 @@ A `Swipe` component can either be provided a `Flipped` component as its only chi
 
 | prop                    |  default   | type                    | details                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | ----------------------- | :--------: | :---------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| children  |     -      | one `Flipped` component | A `Swipe` component must wrap a `Flipped` component as its only child.                                                                                                                                                                                                                                                                                                                                                                                  |
+| children  |     -      | one `Flipped` component | A `Swipe` component must either wrap a `Flipped` component as its only child **OR** refer to a flipped component with the prop `flipId="[flipId]"`                                                                                                                                                                                                                              |
+| up               |         | { initFlip: func, cancelFlip: func}               | Initiate a FLIP animation when the user swipes up.                                                                                                                                                                                                |
+| down               |         |  { initFlip: func, cancelFlip: func}              | Initiate a FLIP animation when the user swipes down.                                                                                                                                                                                                |
+| left               |         | { initFlip: func, cancelFlip: func}               | Initiate a FLIP animation when the user swipes left.                                                                                                                                                                                               |
+| right               |         | { initFlip: func, cancelFlip: func}               | Initiate a FLIP animation when the user swipes right.                                                                                                                                                                                                 |
 | threshold               |    0.2     | 0 < x < 1               | After what percent change of a swipe should the swipe gesture "take over" and complete the `FLIP` animation?                                                                                                                                                                                                                                                                                                                                            |
-| touchOnly               |   false    | `string`                | Refer to the id of the parent `Flipped` container whose transform you want to cancel out. If this prop is provided, the `Flipped` component will become a limited version of itself that is only responsible for cancelling out its parent transform. It will read from any provided `transform` props and will ignore all other props (besides `inverseFlipId`.) [Read more about canceling out parent transforms here.](#practical-scale-transitions) |
-| transformOrigin         |  `"0 0"`   | `string`                | This is a convenience method to apply the proper CSS `transform-origin` to the element being FLIP-ped. This will override `react-flip-toolkit`'s default application of `transform-origin: 0 0;` if it is provided as a prop.                                                                                                                                                                                                                           |
+| touchOnly               |   false    | `string`                | Don't respond to mouse events |
+| onUp         |    | `function`                | Listener to call when user initially presses down
+| onDown        |    | `function`                | Listener to call when user releases gesture                                                                                                                                                                                                                        |
 
 ## Library details
 

@@ -8,6 +8,7 @@ import PropTypes from 'prop-types'
 import { utilities, constants } from '../FlipToolkit'
 import { FlippedProps, SerializableFlippedProps } from '../FlipToolkit/types'
 import { FlipContext, PortalContext } from '../Flipper/context'
+import { assign } from '../FlipToolkit/utilities'
 
 function isFunction(child: any): child is Function {
   return typeof child === 'function'
@@ -55,6 +56,9 @@ export const Flipped: FunctionComponent<SerializableFlippedProps> = ({
   }
   if (isFunctionAsChildren) {
     return (child as Function)(dataAttributes)
+  }
+  if (gestureHandlers) {
+    assign(dataAttributes, gestureHandlers)
   }
   return cloneElement(child as ReactElement<any>, dataAttributes)
 }
