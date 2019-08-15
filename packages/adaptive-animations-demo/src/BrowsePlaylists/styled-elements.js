@@ -5,7 +5,7 @@ import { breakpoint } from '../App/styles'
 
 export const Container = styled.div`
   width: 100%;
-  min-height: 100vh;
+  min-height: 25.5rem;
   margin: 0 auto 2rem auto;
   padding: 2rem 0;
   position: relative;
@@ -33,15 +33,7 @@ export const Card = styled(Link)`
   overflow: hidden;
   border-radius: 4%;
   transition: box-shadow 0.5s;
-
-  ${props =>
-    props.isCurrentCard
-      ? css`
-          height: 23rem;
-        `
-      : css`
-          height: 10rem;
-        `};
+  height: 20rem;
   > div {
     height: 100%;
     pointer-events: none;
@@ -103,9 +95,10 @@ export const Meta = styled.div`
   bottom: 0;
   width: 20rem;
   transition: opacity 0.2s;
-  opacity: ${props => (props.isCurrentCard ? 1 : 0)};
   backface-visibility: hidden;
-@media (min-width: ${breakpoint}px) {
+  display: none;
+  @media (min-width: ${breakpoint}px) {
+    display: block;
     opacity: 1;
     width: auto;
   }
@@ -118,7 +111,7 @@ export const List = styled.ul`
   list-style: none;
   display: grid;
   grid-gap: 1.25rem;
-  grid-template-columns: 10rem 10rem 20rem 10rem 10rem;
+  grid-template-columns: 20rem 20rem 20rem 20rem 20rem;
   align-items: center;
   transform: translateX(-50%);
   position: absolute;
@@ -158,5 +151,13 @@ export const ListItem = styled.li`
   @media (min-width: ${breakpoint}px) {
     display: block !important;
     order: 1;
+  }
+`
+
+export const MobileTitle = styled.div`
+  display: flex;
+  justify-content: center;
+  @media (min-width: ${breakpoint}px) {
+    display: none;
   }
 `

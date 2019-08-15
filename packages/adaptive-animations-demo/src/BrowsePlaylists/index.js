@@ -41,7 +41,6 @@ const Card = React.memo(({ id, title, tags, isCurrentCard, onCardClick }) => {
                 <Core.PreloadedImg id={`img-${id}`} draggable="false" />
               </Flipped>
             </Styled.ImgContainer>
-
             <Styled.Meta isCurrentCard={isCurrentCard}>
               <Styled.Title>{title}</Styled.Title>
               <Core.TagList>
@@ -83,25 +82,28 @@ const GestureCardSwipe = props => {
   }
   const setNextCardId = id => history.push(`/playlists/${id}`)
 
-  const onCardClick = React.useCallback(id => {
-    return callOnDesktop(event => {
-      event.preventDefault()
-      event.persist()
-      const cardsToFade = [
-        ...listRef.current.querySelectorAll('[data-card]')
-      ].filter(card => {
-        return card.dataset.flipId !== id
-      })
+  const onCardClick = React.useCallback(
+    id => {
+      return callOnDesktop(event => {
+        event.preventDefault()
+        event.persist()
+        const cardsToFade = [
+          ...listRef.current.querySelectorAll('[data-card]')
+        ].filter(card => {
+          return card.dataset.flipId !== id
+        })
 
-      cardsToFade.forEach((card, i) => {
-        card.classList.add('animate-out')
-      })
+        cardsToFade.forEach((card, i) => {
+          card.classList.add('animate-out')
+        })
 
-      setTimeout(() => {
-        history.push(event.target.href.replace(event.target.origin, ''))
-      }, 200)
-    })
-  })
+        setTimeout(() => {
+          history.push(event.target.href.replace(event.target.origin, ''))
+        }, 200)
+      })
+    },
+    [history]
+  )
 
   React.useLayoutEffect(() => {
     callOnDesktop(() => {
@@ -168,6 +170,7 @@ const GestureCardSwipe = props => {
           </Styled.List>
         </Swipe>
       </Styled.Container>
+      <Styled.MobileTitle>{currentCard.title}</Styled.MobileTitle>
     </>
   )
 }

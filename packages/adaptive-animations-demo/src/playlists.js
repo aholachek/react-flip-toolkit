@@ -65,7 +65,7 @@ const playlists = [
     id: '1',
     tags: ['hip hop', 'country', 'pop'],
     description:
-      'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'
+      'Time to up the energy with a mix that will amp you up for your next game of fetch.'
   },
   {
     src: Serious,
@@ -73,7 +73,7 @@ const playlists = [
     id: '2',
     tags: ['pop', 'broadway', 'rock'],
     description:
-      'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'
+      'It\'ts 3 hours until dinner, so try to keep the mood positive by listening to these pick-me-up hits'
   },
 
   {
@@ -82,7 +82,7 @@ const playlists = [
     id: '3',
     tags: ['piano', 'ballads', 'instrumental'],
     description:
-      'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'
+      'Can\'t get that intriguing shnauzer you met at the dog park out of your head? This romantic playlist is for you.'
   },
   {
     src: Pug,
@@ -90,7 +90,7 @@ const playlists = [
     id: '4',
     tags: ['emo', 'gregorian', 'dubstep'],
     description:
-      'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'
+      'Everyone\'s eating dinner but all you get is dog food. Revel in the misery of it all with these bangers.'
   },
 
   {
@@ -99,7 +99,7 @@ const playlists = [
     id: '5',
     tags: ['opera', 'polka', 'classical'],
     description:
-      'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'
+      'Old-style songs to remind you of your wolf ancestors whenever life gets you down.'
   },
   {
     src: BlackDoodle,
@@ -107,7 +107,7 @@ const playlists = [
     id: '6',
     tags: ['hip hop', 'rock', 'metal'],
     description:
-      'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'
+      'Time to get out and burn some cals with the help of some funky tunes.'
   },
   {
     src: Puppy,
@@ -115,7 +115,7 @@ const playlists = [
     id: '7',
     tags: ['pop', 'jazz', 'rock'],
     description:
-      'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'
+      'When life is good, put on these tunes to help keep the party going strong.'
   },
   {
     src: Samoyed,
@@ -123,7 +123,7 @@ const playlists = [
     id: '8',
     tags: ['instrumental', 'new age', 'spa'],
     description:
-      'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'
+      'Bliss out to this calming playlist of low-key ambient music.'
   },
   {
     src: French,
@@ -131,7 +131,7 @@ const playlists = [
     id: '9',
     tags: ['hip hop', 'country', 'r&b'],
     description:
-      'Lorem ipsum dolor sit amet, id legere accumsan patrioque quo. Dicant quidam has ex. Cu alia fuisset theophrastus sea.'
+      'You want to nap, but it\'ts time to get up and go for your morning walk. These songs will help you get there.'
   }
 ]
 

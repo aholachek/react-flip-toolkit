@@ -30,12 +30,11 @@ const ListItem = ({
   }
   return (
     <Styled.CollapsedTrackContainer flipKey={isGettingDeleted}>
-      <Flipped flipId={`${track.id}-trash`}>
+      {isGettingDeleted && (
         <Styled.TrashIconContainer isGettingDeleted={isGettingDeleted}>
           <img src={trashIcon} alt="remove song" />
         </Styled.TrashIconContainer>
-      </Flipped>
-
+      )}
       <Swipe
         right={{
           initFlip: () => setIsGettingDeleted(true),
@@ -106,17 +105,9 @@ const Playlist = props => {
   )
   const [visibleTracks, setVisibleTracks] = useState(playlist.tracks)
   const [isPlaying, setIsPlaying] = useState(null)
-  const [animateListIn, setAnimateListIn] = useState(false)
 
   React.useLayoutEffect(() => {
     window.scrollTo(0, 0)
-  }, [])
-
-  React.useEffect(() => {
-    setAnimateListIn(true)
-    setTimeout(() => {
-      setAnimateListIn(false)
-    }, 1000)
   }, [])
 
   const headerCollapsed =
@@ -146,7 +137,7 @@ const Playlist = props => {
         collapsed={headerCollapsed}
         toggleCollapsed={toggleCollapsed}
       />
-      <Flipper flipKey={`${JSON.stringify(visibleTracks)} ${animateListIn}`}>
+      <Flipper flipKey={`${JSON.stringify(visibleTracks)}`}>
         <Styled.List collapsed={headerCollapsed}>
           {visibleTracks.map(track => (
             <Styled.Li key={track.id} data-li="true">
@@ -155,7 +146,6 @@ const Playlist = props => {
                 deleteTrack={deleteTrack}
                 setIsPlaying={setIsPlaying}
                 isPlaying={isPlaying === track.id}
-                animateIn={animateListIn}
               />
             </Styled.Li>
           ))}

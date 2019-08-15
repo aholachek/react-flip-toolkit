@@ -20,18 +20,6 @@ export const CollapsedTrackContainer = styled(Flipper)`
 `
 
 export const CollapsedTrack = styled.div`
-  @media (min-width: ${breakpoint}px) {
-    ${props =>
-      props.animateIn
-        ? `
-  opacity: 1;
-  transform: translateY(0);
-  `
-        : `
-  opacity: 0;
-  transform: translateY(120px);
-  `};
-  }
   display: flex;
   align-items: center;
   border-radius: 8px;
@@ -113,8 +101,8 @@ export const TrashIconContainer = styled.div`
   justify-content: center;
   align-items: center;
   img {
-    width: ${props => (props.isGettingDeleted ? '2rem' : '.5rem')};
-    height: ${props => (props.isGettingDeleted ? '2rem' : '.5rem')};
+    width: 2rem;
+    height: 5rem;
   }
   @media (min-width: ${breakpoint}px) {
     display: none;

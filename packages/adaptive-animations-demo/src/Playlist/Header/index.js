@@ -9,6 +9,7 @@ const PlaylistHeader = ({ playlist, collapsed, toggleCollapsed }) => {
     initFlip: toggleCollapsed,
     cancelFlip: toggleCollapsed
   }
+  const [showMeta, setShowMeta] = React.useState(true)
   return (
     <Styled.HeaderContainer collapsed={collapsed}>
       <Styled.BackButton aria-label="back" to={`/playlists/${playlist.id}`}>
@@ -23,7 +24,16 @@ const PlaylistHeader = ({ playlist, collapsed, toggleCollapsed }) => {
         </svg>
       </Styled.BackButton>
       <Swipe down={collapsed && swipeConfig} up={!collapsed && swipeConfig}>
-        <Flipped flipId={playlist.id} spring="veryGentle">
+        <Flipped
+          flipId={playlist.id}
+          spring="veryGentle"
+          onComplete={() => {
+            setShowMeta(true)
+          }}
+          onStart={() => {
+            setShowMeta(false)
+          }}
+        >
           <Styled.BackgroundImgContainer collapsed={collapsed}>
             <Flipped inverseFlipId={playlist.id}>
               <div>
@@ -32,17 +42,15 @@ const PlaylistHeader = ({ playlist, collapsed, toggleCollapsed }) => {
                 </Flipped>
               </div>
             </Flipped>
-            <Flipped flipId="meta-container">
-              <Styled.MetaContainer collapsed={collapsed}>
-                <Styled.Title>{playlist.title}</Styled.Title>
-                <Core.TagList mb="1rem">
-                  {playlist.tags.map((t, i) => {
-                    return <Core.Tag>{t}</Core.Tag>
-                  })}
-                </Core.TagList>
-                <p>{playlist.description}</p>
-              </Styled.MetaContainer>
-            </Flipped>
+            <Styled.MetaContainer display={collapsed ? false : showMeta}>
+              <Styled.Title>{playlist.title}</Styled.Title>
+              <Core.TagList mb="1rem">
+                {playlist.tags.map((t, i) => {
+                  return <Core.Tag>{t}</Core.Tag>
+                })}
+              </Core.TagList>
+              <p>{playlist.description}</p>
+            </Styled.MetaContainer>
           </Styled.BackgroundImgContainer>
         </Flipped>
       </Swipe>

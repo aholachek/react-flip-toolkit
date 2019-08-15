@@ -69,13 +69,14 @@ export const Title = styled.h1`
 `
 
 export const MetaContainer = styled.div`
+  opacity: ${props => (props.display ? 1 : 0)};
   position: absolute;
   left: 0;
   right: 0;
   padding-left: 3rem;
   padding-right: 3rem;
+  transition: ${props => (props.display ? 'opacity 0.25s;' : '')};
   bottom: ${props => (props.collapsed ? '-4rem' : '4rem')};
-  opacity: ${props => (props.collapsed ? 0 : 1)};
   height: 10rem;
   > div {
     padding: 1rem;
