@@ -477,8 +477,8 @@ A `Swipe` component can either 1) be provided a `Flipped` component as its only 
 | right               |         | { initFlip: func, cancelFlip: func}               | Initiate a FLIP animation when the user swipes right. (You must provide a `cancelFlip` function in the event of gesture cancellation.)                                                                                                                                                                                                  |
 | threshold               |    0.15     | 0 < x < 1               | After what percent change of a swipe should the swipe gesture "take over" and complete the `FLIP` animation?                                                                                                                                                                                                                                                                                                                                            |
 | touchOnly               |   false    | `string`                | Don't respond to mouse events |
-| onUp         |    | `function`                | Listener to call when user initially presses down
-| onDown        |    | `function`                | Listener to call when user releases gesture                                                                                                                                                                                                                        |
+| onDown        |    | `function`                | Listener to call when user initially presses down
+| onUp       |    | `function`                | Listener to call when user releases gesture                                                                                                                                                                                                                        |
 
 ### 4. Spring
 
