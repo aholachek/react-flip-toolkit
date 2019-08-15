@@ -480,7 +480,7 @@ A `Swipe` component can either 1) be provided a `Flipped` component as its only 
 | onDown        |    | `function`                | Listener to call when user initially presses down
 | onUp       |    | `function`                | Listener to call when user releases gesture                                                                                                                                                                                                                        |
 
-### 4. Spring
+### 4. `Spring`
 
 As a convenience, `react-flip-toolkit` exports a tiny function to access the same spring system used to create FLIP transitions.
 
