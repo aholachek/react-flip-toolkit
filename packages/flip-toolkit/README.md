@@ -1,3 +1,5 @@
+# flip-toolkit
+
 [![Minified & Gzipped size](https://badgen.net/bundlephobia/minzip/flip-toolkit)](https://bundlephobia.com/result?p=flip-toolkit)
 [![MIT license](https://badgen.net/npm/license/react-flip-toolkit)](http://opensource.org/licenses/MIT)
 [![npm version](https://badgen.net/npm/v/flip-toolkit)](https://npmjs.org/package/flip-toolkit 'View this project on npm')
@@ -43,7 +45,7 @@ square.addEventListener('click', () => {
 })
 ```
 
-To learn more about which configuration options are available, [check out the code for the `Flipper` class here](../react-flip-toolkit/src/FlipToolkit/Flipper.ts).
+To learn more about which configuration options are available, [check out the code for the `Flipper` class here](../react-flip-toolkit/src/FlipToolkit/Flipper.ts) or [read the docs for `react-flip-toolkit`](../react-flip-toolkit/README.md)
 
 ## Spring
 

@@ -69,7 +69,12 @@
 
 ### Simple Example 1: An Expanding Div
 
+<a href="https://codesandbox.io/s/8130rn9q2">
+<img src="./example-assets/square.gif" height="200px" alt="animated square" />
+</a>
+
 [Fork this example on Code Sandbox](https://codesandbox.io/s/8130rn9q2)
+
 
 ```jsx
 import React, { useState } from 'react'
@@ -92,9 +97,11 @@ const AnimatedSquare = () => {
 }
 ```
 
-<img src="./example-assets/square.gif" height="200px" alt="animated square" />
-
 ### Simple Example 2: Two Divs
+
+<a href="https://codesandbox.io/s/74q85nq1qq">
+<img src="./example-assets/2squares.gif" height="200px" alt="2 animated squares" />
+</a>
 
 [Fork this example on Code Sandbox](https://codesandbox.io/s/74q85nq1qq)
 
@@ -130,9 +137,11 @@ const AnimatedSquare = () => {
 }
 ```
 
-<img src="./example-assets/2squares.gif" height="200px" alt="2 animated squares" />
-
 ### Simple Example 3: List Shuffle
+
+<a href="https://codesandbox.io/s/14v8o5xy44">
+<img src="./example-assets/listshuffle.gif" height="60px" alt="shuffling a list" />
+</a>
 
 [Fork this example on Code Sandbox](https://codesandbox.io/s/14v8o5xy44)
 
@@ -160,17 +169,25 @@ const ListShuffler = () => {
 }
 ```
 
-<img src="./example-assets/listshuffle.gif" height="60px" alt="shuffling a list" />
-
 ### List Transitions
 
 Add some interest to a dynamic list of cards by animating changes to cards' sizes and positions.
 
+<a href="https://codesandbox.io/s/list-transitions-ju549">
+<img src="./example-assets/listanimations.gif" height="200px" alt='animated list' />
+</a>
+
 [Fork this example on Code Sandbox](https://codesandbox.io/s/list-transitions-ju549)
 
-<img src="./example-assets/listanimations.gif" height="300px" alt='animated list' />
-
 ### Stagger Effects
+
+
+<a href="https://codesandbox.io/s/wnnxl223n8">
+<img src="./example-assets/list-transition.gif" height="300px" alt='animation for the selected state of a list item' />
+</a>
+
+[Fork this example on Code Sandbox](https://codesandbox.io/s/wnnxl223n8)
+
 
 The `react-flip-toolkit` library offers spring-driven stagger configurations so that you can achieve complex sequenced effects.
 
@@ -182,15 +199,13 @@ For the most basic stagger effect, you can simply add a `stagger` key to your `F
 </Flipped>
 ```
 
-[Fork this example on Code Sandbox](https://codesandbox.io/s/wnnxl223n8)
-
-<img src="./example-assets/list-transition.gif" height="300px" alt='animation for the selected state of a list item' />
 
 ### Spring Customizations
 
 `react-flip-toolkit` uses springs for animations. To customize the spring, you can pass in a preset name:
 
 ```jsx
+// spring preset can be one of: "stiff", "noWobble", "gentle", "veryGentle", or "wobbly"
 <Flipper flipKey='foo' spring='wobbly'>
   {/* Flipped components go here...*/}
 </Flipper>
@@ -239,6 +254,13 @@ That means any layout styles &mdash; padding, flexbox, etc&mdash;should be appli
 
 ### Route-based Animations With React Router
 
+<a href="https://github.com/aholachek/react-flip-toolkit-router-example">
+  <img src="./example-assets/compressed-demo.gif" width='500px' alt='React-flip-toolkit with React-Router' />
+</a>
+
+[Fork Github repo](https://github.com/aholachek/react-flip-toolkit-router-example)
+
+
 `react-flip-toolkit` works great with client-side routers to provide route-driven transitions:
 
 ```jsx
@@ -254,12 +276,6 @@ That means any layout styles &mdash; padding, flexbox, etc&mdash;should be appli
   }}
 />
 ```
-
-[Fork Github repo](https://github.com/aholachek/react-flip-toolkit-router-example)
-
-<a href="https://github.com/aholachek/react-flip-toolkit-router-example">
-  <img src="./example-assets/compressed-demo.gif" width='500px' alt='React-flip-toolkit with React-Router' />
-</a>
 
 ### Responsive, Swipe-Driven Animations
 
