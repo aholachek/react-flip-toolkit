@@ -460,7 +460,7 @@ Easy gesture-driven FLIP animations. (Only single-touch swipe gestures are suppo
 
 [Fork a basic example on CodeSandbox](https://codesandbox.io/s/swipe-basic-example-xq146)
 
-Until this feature has stabilized, if you are using the `Swipe` feature, please import exclusively from `react-flip-toolkit/lib/Swipe` instead of `react-flip-toolkit`, e.g.:
+Until this feature has stabilized, if you are using `Swipe`, please import *all flip components* exclusively from `react-flip-toolkit/lib/Swipe` instead of `react-flip-toolkit`, e.g.:
 
 `import {Flipper, Flipped, Swipe} from 'react-flip-toolkit/lib/Swipe'`.
 
