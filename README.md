@@ -16,7 +16,7 @@
 | Animate position                                                               |                                 ✅                                  |                               ✅                                |          ✅          |
 | Animate scale                                                                  |                                 ❌                                  |                               ✅                                |          ✅          |
 | Animate opacity                                                                |                                 ❌                                  |                               ✅                                |          ✅          |
-| [Animate parent's size without warping children](#practical-scale-transitions) |                                 ❌                                  |                               ❌                                |          ✅          |
+| [Animate parent's size without warping children](#nested-scale-transforms) |                                 ❌                                  |                               ❌                                |          ✅          |
 | Use real FLIP instead of cloning & crossfading                                 |                                 ✅                                  |                               ❌                                |          ✅          |
 | Use springs for animations                                                     |                                 ❌                                  |                               ❌                                |          ✅          |
 | Support spring-based stagger effects                                           |                                 ❌                                  |                               ❌                                |          ✅          |
@@ -34,14 +34,13 @@
 ## Table of Contents
 
 - [Forkable Examples](#forkable-examples)
-  - [A Single Expanding Div](#a-single-expanding-div)
-  - [Two Divs](#two-divs)
-  - [List Shuffle](#list-shuffle)
-  - [Complex List Transitions](#complex-list-transitions)
-  - [Nested Staggers](#nested-staggers)
-  - [Explore Spring Configurations](#explore-spring-configurations)
+  - [Simple Example 1: An Expanding Div](#simple-example-1-an-expanding-div)
+  - [Simple Example 2: Two Divs](#simple-example-2-two-divs)
+  - [Simple Example 3: List Shuffle](#simple-example-3-list-shuffle)
+  - [List Transitions](#list-transitions)
+  - [Stagger Effects](#stagger-effects)
+  - [Spring Customizations](#spring-customizations)
   - [Nested Scale Transforms](#nested-scale-transforms)
-  - [Stripe Inspired Menu](#stripe-inspired-menu)
   - [Route-based Animations With React Router](#route-based-animations-with-react-router)
   - [Responsive, Swipe-Driven Animations](#responsive-swipe-driven-animations)
   - [More examples](#more-examples)
@@ -55,7 +54,8 @@
     - [Callback props](#callback-props)
     - [Transform props](#transform-props)
     - [Advanced props](#advanced-props)
-  - [`Swipe`](#swipe)
+  - [3. `Swipe`](#3-swipe)
+  - [4. Spring](#4-spring)
 - [Library details](#library-details)
 - [Troubleshooting](#troubleshooting)
   - [Problem #1: Nothing is happening](#problem-1-nothing-is-happening)
@@ -454,7 +454,7 @@ Functions to control when FLIP happens
 | shouldFlip   | `previousDecisionData`, `currentDecisionData` | A function provided with the current and previous `decisionData` props passed down by the `Flipper` component. Returns a `boolean` to indicate whether a `Flipped` component should animate at that particular moment or not.                        |
 | shouldInvert | `previousDecisionData`, `currentDecisionData` | A function provided with the current and previous `decisionData` props passed down by the `Flipper` component. Returns a `boolean` indicating whether to apply inverted transforms to all `Flipped` children that request it via an `inverseFlipId`. |
 
-### `Swipe`
+### 3. `Swipe`
 
 **Experimental**
 
@@ -480,7 +480,7 @@ A `Swipe` component can either 1) be provided a `Flipped` component as its only 
 | onUp         |    | `function`                | Listener to call when user initially presses down
 | onDown        |    | `function`                | Listener to call when user releases gesture                                                                                                                                                                                                                        |
 
-### Spring
+### 4. Spring
 
 As a convenience, `react-flip-toolkit` exports a tiny function to access the same spring system used to create FLIP transitions.
 
