@@ -277,9 +277,9 @@ That means any layout styles &mdash; padding, flexbox, etc&mdash;should be appli
 />
 ```
 
-### Responsive, Swipe-Driven Animations
+### Swipe-Driven FLIP Animations
 
-[Fork the repo](./packages/adaptive-animations-demo)
+[Fork the repo](./packages/adaptive-animations-demo) or [learn more below](#3-swipe)
 
   <img src="./example-assets/swipe.gif" width='250px' alt='swipe-driven FLIP' />
 
