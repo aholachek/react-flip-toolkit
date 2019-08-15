@@ -487,6 +487,8 @@ As a convenience, `react-flip-toolkit` exports a tiny function to access the sam
 [Fork example on CodeSandbox](https://codesandbox.io/s/react-flip-toolkit-spring-example-e6pyc)
 
 ```jsx
+import { spring } from 'react-flip-toolkit'
+
 spring({
   config: "wobbly",
   values: {
