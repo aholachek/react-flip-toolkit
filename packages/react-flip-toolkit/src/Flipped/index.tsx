@@ -62,7 +62,7 @@ export const Flipped: FunctionComponent<SerializableFlippedProps> = ({
   }
   return cloneElement(child as ReactElement<any>, dataAttributes)
 }
-
+// @ts-ignore
 export const FlippedWithContext: FunctionComponent<FlippedProps> = ({
   children,
   flipId,
@@ -120,8 +120,8 @@ export const FlippedWithContext: FunctionComponent<FlippedProps> = ({
     </PortalContext.Consumer>
   )
 }
-// @ts-ignore
 if (process.env.NODE_ENV !== 'production') {
+  // @ts-ignore
   FlippedWithContext.propTypes = {
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
     inverseFlipId: PropTypes.string,
@@ -141,7 +141,7 @@ if (process.env.NODE_ENV !== 'production') {
     onExit: PropTypes.func,
     portalKey: PropTypes.string,
     stagger: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-    gestureHandlers: PropTypes.object,
+    gestureHandlers: PropTypes.object
   }
 }
 
