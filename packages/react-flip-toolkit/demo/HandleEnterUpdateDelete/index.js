@@ -69,10 +69,9 @@ class EnterUpdateDeleteDemo extends Component {
     el.style.color = 'red'
     this.currentAnimations.push(
       spring({
-        startValue: 1,
-        endValue: 0,
+
         onUpdate: value => {
-          el.style.opacity = value
+          el.style.opacity = 1-value
         },
         delay: i * 20,
         onComplete
@@ -135,7 +134,7 @@ class EnterUpdateDeleteDemo extends Component {
         </div>
         <Flipper
           onComplete={flipIds =>
-            console.log('complete', JSON.stringify(flipIds))
+            console.log('complete', flipIds)
           }
           flipKey={this.state.list.join('')}
           element="ul"
