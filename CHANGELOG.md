@@ -1,5 +1,19 @@
 # Changelog
 
+## 7.0.0 Release
+
+** Summary ** This release adds swipe-enabled FLIP, a spring utility, and reduces the size of the main library by a bit.
+
+## Breaking changes
+- Stagger delays for nested `Flipped` components are now no longer automatically handled. If you want a `Flipped` animation to wait for another (staggered) `Flipped` animation to begin, you need to explicitly provide a prop that references the `flipId` of the `Flipped` component to wait until: `delayUntil="flipId"`. Getting rid of auttomatically handled nested staggers reduced the complexity of the code and made the library a bit smaller and a lot more maintainable.
+
+## Added
+- `spring`, a function to handle spring tweening of style attributes for you.
+- `Swipe`, a component which allows for swipe-driven FLIP.
+
+## Improved
+- `flip-toolkit`, the base of the library without any React, is now [its own package on npm](https://www.npmjs.com/package/flip-toolkit)
+
 ## 6.0.0 Release
 
 **Summary:** A small release with only one breaking change: streamlining animation sequencing by removing the option to provide `onDelayedAppear` callbacks to `Flipped` components, and adding a new optional callback to the `Flipper` component, `handleEnterUpdateDelete`, that allows for complete control of animation sequencing.
