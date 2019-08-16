@@ -26,7 +26,7 @@
 
 `npm install react-flip-toolkit` or `yarn add react-flip-toolkit`
 
-1. Wrap your animations with a single `Flipper` component that has a `flipKey` prop that changes every time animations should happen.
+1. Wrap all animated children with a single `Flipper` component that has a `flipKey` prop that changes every time animations should happen.
 
 2. Wrap elements that should be animated with `Flipped` components that have a `flipId` prop matching them across renders.
 
