@@ -29,7 +29,7 @@
     "microbundle": "microbundle --define process.env.NODE_ENV=production",
     "start": "parcel --no-cache demo/index.html --out-dir demo/lib",
     "deploy-demo": "parcel build demo/index.html --out-dir demo/lib; cp demo/lib/index.html demo/lib/200.html; surge demo/lib --domain react-flip-toolkit-demos.surge.sh",
-    "build": "microbundle --define process.env.NODE_ENV=production --name=ReactFlipToolkit --globals react=React,prop-types=PropTypes,flip-toolkit=FlipToolkit,rematrix=Rematrix && node customEntrypoint.js",
+    "build": "cp ../../README.md ./README.md; microbundle --define process.env.NODE_ENV=production --name=ReactFlipToolkit --globals react=React,prop-types=PropTypes,flip-toolkit=FlipToolkit,rematrix=Rematrix && node customEntrypoint.js",
     "watch": "watch 'npm run build:no-compress' ./src",
     "build:no-compress": "microbundle --no-compress",
     "check-types": "tsc --noEmit",
@@ -44,7 +44,7 @@
     "test": "jest --testPathIgnorePatterns \"lib|domtest\"",
     "test:all": "npm-run-all test test:dom",
     "preversion": "npm test",
-    "postpublish": "git push origin master; git push origin --tags",
+    "postpublish": "git push origin master; git push origin --tags; rm ./README.MD",
     "version": "npm run build"
   },
   "dependencies": {
