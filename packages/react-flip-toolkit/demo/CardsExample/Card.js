@@ -2,13 +2,13 @@ import React, { PureComponent } from 'react'
 import { Flipped, spring } from '../../src'
 
 class Card extends PureComponent {
-  hideElements = (el, prev) => {
+  hideElements = (el, { previous: prev, current: curr }) => {
     if (prev !== this.props.i) return
     const elements = [].slice.apply(el.querySelectorAll('*[data-fade-in]'))
     elements.forEach(el => (el.style.opacity = '0'))
-    el.style.zIndex = 2
+    el.style.zIndex = 20
   }
-  animateIn = (el, prev) => {
+  animateIn = (el, { previous: prev, current: curr }) => {
     if (prev !== this.props.i) return
     const elements = [...el.querySelectorAll('*[data-fade-in]')]
     elements.forEach((el, i) => {
