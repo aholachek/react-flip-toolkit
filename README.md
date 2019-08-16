@@ -317,11 +317,6 @@ staggerConfig={{
         reverse: true,
         // default is .1, 0 < n < 1
         speed: .5
-        // delay this stagger until another animation has begun
-        // (this function should return the flipId of the element to wait for)
-        delayUntil: (prevDecisionData, currDecisionData) =>
-              createCardFlipId(prevDecisionData || currDecisionData)
-        }
       },
   // this will apply to Flipped elements with the prop stagger='namedStagger'
     namedStagger : { speed: .2 }

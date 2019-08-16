@@ -1,31 +1,24 @@
 // inspired by this animated demo:
 // https://uxplanet.org/animation-in-ui-design-from-concept-to-reality-85c49907b19d
 import React, { Component } from 'react'
-import { Flipper, Flipped } from '../../lib/index'
+import { Flipper, Flipped } from '../../src/index'
 import './styles.css'
-const listData = [0, 1, 2, 3, 4, 5, 6, 7]
-const colors = ['#ff4f66', '#7971ea', '#5900d8']
 
-const shouldFlip = index => (prev, current) => {
-  if (index === prev || index === current) return true
-  return false
-}
+const listData = [...Array(7).keys()];
+const createCardFlipId = index => `listItem-${index}`;
 
-const createCardFlipId = index => `listItem-${index}`
+const shouldFlip = index => (prev, current) =>
+  index === prev || index === current;
 
-const ListItem = ({ index, color, onClick }) => {
+const ListItem = ({ index, onClick }) => {
   return (
     <Flipped
       flipId={createCardFlipId(index)}
       stagger="card"
       shouldInvert={shouldFlip(index)}
     >
-      <div
-        className="listItem"
-        style={{ backgroundColor: color }}
-        onClick={() => onClick(index)}
-      >
-        <Flipped inverseFlipId={`listItem-${index}`}>
+      <div className="listItem" onClick={() => onClick(index)}>
+        <Flipped inverseFlipId={createCardFlipId(index)}>
           <div className="listItemContent">
             <Flipped
               flipId={`avatar-${index}`}
@@ -36,58 +29,37 @@ const ListItem = ({ index, color, onClick }) => {
               <div className="avatar" />
             </Flipped>
             <div className="description">
-              <Flipped
-                flipId={`description-${index}-1`}
-                stagger="card-content"
-                shouldFlip={shouldFlip(index)}
-                delayUntil={createCardFlipId(index)}
-              >
-                <div />
-              </Flipped>
-              <Flipped
-                flipId={`description-${index}-2`}
-                stagger="card-content"
-                shouldFlip={shouldFlip(index)}
-                delayUntil={createCardFlipId(index)}
-              >
-                <div />
-              </Flipped>
-              <Flipped
-                flipId={`description-${index}-3`}
-                stagger="card-content"
-                shouldFlip={shouldFlip(index)}
-                delayUntil={createCardFlipId(index)}
-              >
-                <div />
-              </Flipped>
+              {listData.slice(0, 3).map(i => (
+                <Flipped
+                  flipId={`description-${index}-${i}`}
+                  stagger="card-content"
+                  shouldFlip={shouldFlip(index)}
+                  delayUntil={createCardFlipId(index)}
+                >
+                  <div />
+                </Flipped>
+              ))}
             </div>
           </div>
         </Flipped>
       </div>
     </Flipped>
-  )
-}
+  );
+};
 
-const ExpandedListItem = ({ index, color, onClick }) => {
+const ExpandedListItem = ({ index, onClick }) => {
   return (
     <Flipped
       flipId={createCardFlipId(index)}
       stagger="card"
-      onStartImmediate={el => {
-        console.log('immediate')
-      }}
       onStart={el => {
         setTimeout(() => {
-          el.classList.add('animated-in')
-        }, 400)
+          el.classList.add("animated-in");
+        }, 400);
       }}
     >
-      <div
-        className="expandedListItem"
-        style={{ backgroundColor: color }}
-        onClick={() => onClick(index)}
-      >
-        <Flipped inverseFlipId={`listItem-${index}`}>
+      <div className="expandedListItem" onClick={() => onClick(index)}>
+        <Flipped inverseFlipId={createCardFlipId(index)}>
           <div className="expandedListItemContent">
             <Flipped
               flipId={`avatar-${index}`}
@@ -97,45 +69,34 @@ const ExpandedListItem = ({ index, color, onClick }) => {
               <div className="avatar avatarExpanded" />
             </Flipped>
             <div className="description">
-              <Flipped
-                flipId={`description-${index}-1`}
-                stagger="card-content"
-                delayUntil={createCardFlipId(index)}
-              >
-                <div />
-              </Flipped>
-              <Flipped
-                flipId={`description-${index}-2`}
-                stagger="card-content"
-                delayUntil={createCardFlipId(index)}
-              >
-                <div />
-              </Flipped>
-              <Flipped
-                flipId={`description-${index}-3`}
-                stagger="card-content"
-                delayUntil={createCardFlipId(index)}
-              >
-                <div />
-              </Flipped>
+              {listData.slice(0, 3).map(i => (
+                <Flipped
+                  flipId={`description-${index}-${i}`}
+                  stagger="card-content"
+                  delayUntil={createCardFlipId(index)}
+                >
+                  <div />
+                </Flipped>
+              ))}
             </div>
             <div className="additional-content">
-              <div />
-              <div />
-              <div />
+              {listData.slice(0, 3).map(i => (
+                <div />
+              ))}
             </div>
           </div>
         </Flipped>
       </div>
     </Flipped>
-  )
-}
+  );
+};
+
 export default class AnimatedList extends Component {
-  state = { focused: null }
+  state = { focused: null };
   onClick = index =>
     this.setState({
       focused: this.state.focused === index ? null : index
-    })
+    });
   render() {
     return (
       <Flipper
@@ -152,36 +113,21 @@ export default class AnimatedList extends Component {
         <ul className="list">
           {listData.map(index => {
             return (
-              <li key={index}>
+              <li>
                 {index === this.state.focused ? (
                   <ExpandedListItem
                     index={this.state.focused}
-                    color={colors[index % colors.length]}
                     onClick={this.onClick}
                   />
                 ) : (
-                  <div>
-                    <ListItem
-                      index={index}
-                      key={index}
-                      color={colors[index % colors.length]}
-                      onClick={this.onClick}
-                    />
-                  </div>
+                  <ListItem index={index} key={index} onClick={this.onClick} />
                 )}
               </li>
-            )
+            );
           })}
-          {/* <div style={{ display: 'none' }}>
-            <ListItem
-              index={0}
-              key={0}
-              color={colors[0 % colors.length]}
-              onClick={this.onClick}
-            />
-          </div> */}
         </ul>
       </Flipper>
-    )
+    );
   }
 }
+

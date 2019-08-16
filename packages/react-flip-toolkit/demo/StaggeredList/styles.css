@@ -16,9 +16,9 @@
   margin-top: 1rem;
 }
 .listItem {
-  background-color: #7ab3ef;
   width: 100%;
   cursor: pointer;
+  background-color: #d0d0d0;
   overflow: hidden;
 }
 .listItemContent {
@@ -31,7 +31,7 @@
   width: 4rem;
   height: 4rem;
   border-radius: 100px;
-  background-color: hsla(0, 0%, 100%, 0.3);
+  background-color: grey;
   margin-right: 2rem;
 }
 .avatarExpanded {
@@ -41,7 +41,7 @@
   margin-bottom: 1rem;
 }
 .description > div {
-  background-color: hsla(0, 0%, 100%, 0.3);
+  background-color: grey;
   width: 14rem;
   border-radius: 6px;
   height: 0.5rem;
@@ -62,21 +62,13 @@
 }
 .expandedListItem {
   cursor: pointer;
+  background-color: #d0d0d0;
 }
 .expandedListItemContent {
   padding: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  100% {
-    opacity: 1;
-  }
 }
 .additional-content {
   width: 100%;
@@ -86,8 +78,19 @@
 .additional-content > div {
   opacity: 0;
   border-radius: 3px;
-  background-color: hsla(0, 0%, 100%, 0.3);
+  background-color: grey;
   height: 5rem;
+}
+
+/* content fade in animations */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .animated-in .additional-content > div {
