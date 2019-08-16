@@ -23,7 +23,8 @@
     "npm": ">=5"
   },
   "scripts": {
-    "build": "microbundle"
+    "build": "microbundle --name=ReactFlipToolkit",
+    "lint": "echo \"noop\""
   },
   "dependencies": {
     "react-flip-toolkit": "^7.0.0"
