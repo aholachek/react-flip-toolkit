@@ -74,7 +74,7 @@
     "babel-preset-react-app": "^9.0.0",
     "chai": "^4.2.0",
     "eslint": "^5.16.0",
-    "eslint-plugin-react": "^7.13.0",
+    "eslint-plugin-react": "^7.14.3",
     "jest": "^24.7.1",
     "microbundle": "0.11.0",
     "mocha": "^6.2.0",

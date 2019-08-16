@@ -140,7 +140,8 @@ if (process.env.NODE_ENV !== 'production') {
     shouldInvert: PropTypes.func,
     onExit: PropTypes.func,
     portalKey: PropTypes.string,
-    stagger: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
+    stagger: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    gestureHandlers: PropTypes.object,
   }
 }
 
