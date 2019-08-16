@@ -34,15 +34,15 @@
 ## Table of Contents
 
 - [Forkable Examples](#forkable-examples)
-  - [1. Simple Example: An Expanding Div](#1-simple-example-an-expanding-div)
-  - [2. Simple Example: Two Divs](#2-simple-example-two-divs)
-  - [3. Simple Example: List Shuffle](#3-simple-example-list-shuffle)
-  - [4. List Transitions](#4-list-transitions)
-  - [5. Stagger Effects](#5-stagger-effects)
-  - [6. Spring Customizations](#6-spring-customizations)
-  - [7. Nested Scale Transforms](#7-nested-scale-transforms)
-  - [8. Route-based Animations With React Router](#8-route-based-animations-with-react-router)
-  - [9. Swipe-Driven FLIP Animations](#9-swipe-driven-flip-animations)
+  - [Simple Example: An Expanding Div](#simple-example-an-expanding-div)
+  - [Simple Example: Two Divs](#simple-example-two-divs)
+  - [Simple Example: List Shuffle](#simple-example-list-shuffle)
+  - [List Transitions](#list-transitions)
+  - [Stagger Effects](#stagger-effects)
+  - [Spring Customizations](#spring-customizations)
+  - [Nested Scale Transforms](#nested-scale-transforms)
+  - [Route-based Animations With React Router](#route-based-animations-with-react-router)
+  - [Swipe-Driven FLIP Animations](#swipe-driven-flip-animations)
   - [More examples](#more-examples)
 - [The Components](#the-components)
   - [1. `Flipper`](#1-flipper)
@@ -67,7 +67,7 @@
 
 ## Forkable Examples
 
-### 1. Simple Example: An Expanding Div
+### Simple Example: An Expanding Div
 
 <a href="https://codesandbox.io/s/8130rn9q2">
 <img src="./example-assets/square.gif" height="200px" alt="animated square" />
@@ -97,7 +97,7 @@ const AnimatedSquare = () => {
 }
 ```
 
-### 2. Simple Example: Two Divs
+### Simple Example: Two Divs
 
 <a href="https://codesandbox.io/s/74q85nq1qq">
 <img src="./example-assets/2squares.gif" height="200px" alt="2 animated squares" />
@@ -137,7 +137,7 @@ const AnimatedSquare = () => {
 }
 ```
 
-### 3. Simple Example: List Shuffle
+### Simple Example: List Shuffle
 
 <a href="https://codesandbox.io/s/14v8o5xy44">
 <img src="./example-assets/listshuffle.gif" height="60px" alt="shuffling a list" />
@@ -169,7 +169,7 @@ const ListShuffler = () => {
 }
 ```
 
-### 4. List Transitions
+### List Transitions
 
 Add some interest to a dynamic list of cards by animating changes to cards' sizes and positions.
 
@@ -179,7 +179,7 @@ Add some interest to a dynamic list of cards by animating changes to cards' size
 
 [Fork this example on Code Sandbox](https://codesandbox.io/s/list-transitions-ju549)
 
-### 5. Stagger Effects
+### Stagger Effects
 
 The `react-flip-toolkit` library offers spring-driven stagger configurations so that you can achieve complex sequenced effects.
 
@@ -198,7 +198,7 @@ For the most basic stagger effect, you can simply add a `stagger` boolean prop t
 [Fork this example on Code Sandbox](https://codesandbox.io/s/wnnxl223n8)
 
 
-### 6. Spring Customizations
+### Spring Customizations
 
 `react-flip-toolkit` uses springs for animations. To customize the spring, you can pass in a preset name:
 
@@ -219,7 +219,7 @@ or a custom spring config:
 [View all spring options in the interactive explorer](https://codepen.io/aholachek/pen/bKmZbV)
 
 
-### 7. Nested Scale Transforms
+### Nested Scale Transforms
 
 <a href="https://codesandbox.io/s/github/aholachek/react-stripe-menu">
 <img src="./example-assets/stripe-menu.gif" height="300px" alt="stripe menu" />
@@ -250,7 +250,7 @@ That means any layout styles &mdash; padding, flexbox, etc&mdash;should be appli
 
 
 
-### 8. Route-based Animations With React Router
+### Route-based Animations With React Router
 
 <a href="https://github.com/aholachek/react-flip-toolkit-router-example">
   <img src="./example-assets/compressed-demo.gif" width='500px' alt='React-flip-toolkit with React-Router' />
@@ -275,7 +275,7 @@ That means any layout styles &mdash; padding, flexbox, etc&mdash;should be appli
 />
 ```
 
-### 9. Swipe-Driven FLIP Animations
+### Swipe-Driven FLIP Animations
 
 [Fork the repo](./packages/adaptive-animations-demo) or [learn more](#3-swipe)
 
