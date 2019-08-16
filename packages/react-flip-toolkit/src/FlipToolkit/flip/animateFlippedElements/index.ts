@@ -99,7 +99,7 @@ export const createApplyStylesFunc = ({
     return
   }
 
-  let stringTransform = convertMatrix2dArrayToString(matrix)
+  const stringTransform = convertMatrix2dArrayToString(matrix)
 
   // always apply transform, even if identity,
   // because identity might be the starting state in a FLIP
