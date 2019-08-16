@@ -22,7 +22,8 @@
     "deploy": "yarn run build:demo; netlify deploy --dir=build --prod",
     "build": "echo 'noop'",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "echo \"noop\""
   },
   "eslintConfig": {
     "extends": "react-app"
