@@ -6,7 +6,7 @@
   "source": "src/index.ts",
   "main": "lib/index.js",
   "module": "lib/index.es.js",
-  "types": "lib/types.d.ts",
+  "types": "lib/index.d.ts",
   "amdName": "ReactFlipToolkit",
   "repository": {
     "type": "git",
