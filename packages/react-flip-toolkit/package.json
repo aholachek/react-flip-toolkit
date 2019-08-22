@@ -7,7 +7,7 @@
   "main": "lib/index.js",
   "umd:main": "lib/${bundleName}/index.umd.js",
   "module": "lib/index.es.js",
-  "types": "lib/types.d.ts",
+  "types": "lib/index.d.ts",
   "amdName": "ReactFlipToolkit",
   "repository": {
     "type": "git",
