@@ -42,7 +42,6 @@
   - [Spring Customizations](#spring-customizations)
   - [Nested Scale Transforms](#nested-scale-transforms)
   - [Route-based Animations With React Router](#route-based-animations-with-react-router)
-  - [Swipe-Driven FLIP Animations](#swipe-driven-flip-animations)
   - [More examples](#more-examples)
 - [The Components](#the-components)
   - [1. `Flipper`](#1-flipper)
@@ -54,7 +53,6 @@
     - [Callback props](#callback-props)
     - [Transform props](#transform-props)
     - [Advanced props](#advanced-props)
-  - [3. `Swipe`](#3-swipe)
   - [4. `Spring`](#4-spring)
 - [Library details](#library-details)
 - [Troubleshooting](#troubleshooting)
@@ -275,12 +273,6 @@ That means any layout styles &mdash; padding, flexbox, etc&mdash;should be appli
 />
 ```
 
-### Swipe-Driven FLIP Animations
-
-[Fork the repo](./packages/adaptive-animations-demo) or [learn more](#3-swipe)
-
-  <img src="./example-assets/swipe.gif" width='250px' alt='swipe-driven FLIP' />
-
 ### More examples
 
 - [Guitar shop](https://react-flip-toolkit-demos.surge.sh/guitar)
@@ -446,31 +438,6 @@ Functions to control when FLIP happens
 | shouldFlip   | `previousDecisionData`, `currentDecisionData` | A function provided with the current and previous `decisionData` props passed down by the `Flipper` component. Returns a `boolean` to indicate whether a `Flipped` component should animate at that particular moment or not.                        |
 | shouldInvert | `previousDecisionData`, `currentDecisionData` | A function provided with the current and previous `decisionData` props passed down by the `Flipper` component. Returns a `boolean` indicating whether to apply inverted transforms to all `Flipped` children that request it via an `inverseFlipId`. |
 
-### 3. `Swipe`
-
-**Experimental**
-
-Easy gesture-driven FLIP animations. (Only single-touch swipe gestures are supported).
-
-[Fork a basic example on CodeSandbox](https://codesandbox.io/s/swipe-basic-example-xq146)
-
-Until this feature has stabilized, if you are using `Swipe`, please import *all flip components* exclusively from `react-flip-toolkit/lib/Swipe` instead of `react-flip-toolkit`, e.g.:
-
-`import {Flipper, Flipped, Swipe} from 'react-flip-toolkit/lib/Swipe'`.
-
-A `Swipe` component can either 1) be provided a `Flipped` component as its only child, or 2) with a `flipId` prop representing the `Flipped` component that it controls.
-
-| prop                    |  default   | type                    | details                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| ----------------------- | :--------: | :---------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| children  |     -      | one `Flipped` component | The `Flipped` component's transition will track the gesture until it reaches the percentage specified in the `threshold` prop.                                                                                                                                                                                                                        |
-| up               |         | { initFlip: func, cancelFlip: func}               | Initiate a FLIP animation when the user swipes up. (You must provide a `cancelFlip` function in the event of gesture cancellation.)                                                                                                                                                                                           |
-| down               |         |  { initFlip: func, cancelFlip: func}              | Initiate a FLIP animation when the user swipes down. (You must provide a `cancelFlip` function in the event of gesture cancellation.)                                                                                                                                                                                               |
-| left               |         | { initFlip: func, cancelFlip: func}               | Initiate a FLIP animation when the user swipes left. (You must provide a `cancelFlip` function in the event of gesture cancellation.)                                                                                                                                                                                               |
-| right               |         | { initFlip: func, cancelFlip: func}               | Initiate a FLIP animation when the user swipes right. (You must provide a `cancelFlip` function in the event of gesture cancellation.)                                                                                                                                                                                                  |
-| threshold               |    0.15     | 0 < x < 1               | After what percent change of a swipe should the swipe gesture "take over" and complete the `FLIP` animation?                                                                                                                                                                                                                                                                                                                                            |
-| touchOnly               |   false    | `string`                | Don't respond to mouse events |
-| onDown        |    | `function`                | Listener to call when user initially presses down
-| onUp       |    | `function`                | Listener to call when user releases gesture                                                                                                                                                                                                                        |
 
 ### 4. `Spring`
 
