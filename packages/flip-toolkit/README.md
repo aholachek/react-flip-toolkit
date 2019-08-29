@@ -4,6 +4,8 @@
 [![MIT license](https://badgen.net/npm/license/react-flip-toolkit)](http://opensource.org/licenses/MIT)
 [![npm version](https://badgen.net/npm/v/flip-toolkit)](https://npmjs.org/package/flip-toolkit 'View this project on npm')
 
+Using `Vue.js` ? Try [vue-flip-toolkit](https://github.com/mattrothenberg/vue-flip-toolkit).
+
 ## Basic Example
 
 [**Fork this example on CodeSandbox**](https://codesandbox.io/s/5v1k1nwz8l)
