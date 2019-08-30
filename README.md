@@ -44,16 +44,16 @@
   - [Route-based Animations With React Router](#route-based-animations-with-react-router)
   - [More examples](#more-examples)
 - [The Components](#the-components)
-  - [1. `Flipper`](#1-flipper)
+  - [`Flipper`](#1-flipper)
     - [Basic Props](#basic-props)
     - [Advanced Props](#advanced-props)
-  - [2. `Flipped`](#2-flipped)
+  - [`Flipped`](#2-flipped)
     - [Wrapping a React Component](#wrapping-a-react-component)
     - [Basic props](#basic-props)
     - [Callback props](#callback-props)
     - [Transform props](#transform-props)
     - [Advanced props](#advanced-props)
-  - [4. `Spring`](#4-spring)
+  - [`Spring`](#4-spring)
 - [Library details](#library-details)
 - [Troubleshooting](#troubleshooting)
   - [Problem #1: Nothing is happening](#problem-1-nothing-is-happening)
@@ -281,7 +281,7 @@ That means any layout styles &mdash; padding, flexbox, etc&mdash;should be appli
 
 ## The Components
 
-### 1. `Flipper`
+### `Flipper`
 
 The parent wrapper component that contains all the elements to be animated. You'll often need only one of these per page, but sometimes it will be more convenient to have multiple `Flipper` regions of your page concerned with different transitions.
 
@@ -342,7 +342,7 @@ handleEnterUpdateDelete({
 })
 ```
 
-### 2. `Flipped`
+### `Flipped`
 
 Wraps an element that should be animated.
 
@@ -439,7 +439,7 @@ Functions to control when FLIP happens
 | shouldInvert | `previousDecisionData`, `currentDecisionData` | A function provided with the current and previous `decisionData` props passed down by the `Flipper` component. Returns a `boolean` indicating whether to apply inverted transforms to all `Flipped` children that request it via an `inverseFlipId`. |
 
 
-### 4. `Spring`
+### `Spring`
 
 As a convenience, `react-flip-toolkit` exports a tiny function to access the same spring system used to create FLIP transitions.
 
