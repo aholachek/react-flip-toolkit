@@ -1,6 +1,5 @@
 import { SpringOption } from './springSettings/types'
 import Spring from './forked-rebound/Spring'
-import { SwipeEventHandlers } from './Swipe/types'
 import { BoundingClientRect } from './flip/getFlippedElementPositions/types';
 
 export type FlipId = string | number
@@ -27,8 +26,7 @@ export interface SerializableFlippedProps {
   inverseFlipId?: string
   /** Prevent this element from animating until the Flipped element with the provided flipId has started its animation, useful for nested animations  */
   delayUntil?: FlipId
-  /** Internal use only */
-  gestureHandlers?: SwipeEventHandlers
+
 }
 export interface CallbackFlippedProps {
   /** Called when the FLIP animation for the element starts. It is provided a reference to the DOM element being transitioned as the first argument. */

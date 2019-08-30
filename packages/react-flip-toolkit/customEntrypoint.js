@@ -3,7 +3,7 @@ const npm = require('npm')
 const package = require('./package.json')
 const { exec } = require('child_process')
 
-const bundles = ['FlipToolkit/index.ts', 'Swipe/index.ts']
+const bundles = ['FlipToolkit/index.ts']
 
 const getConfig = bundle => {
   const bundleName = bundle.split('/')[0]
