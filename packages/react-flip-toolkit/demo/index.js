@@ -109,28 +109,6 @@ class Demo extends Component {
               <a href="/nested-flipper">Nested Flipper</a>
             </li>
           </ul>
-
-          <h3>Gesture</h3>
-          <ul>
-            <li>
-              <a href="/gesture-sidebar">Sidebar</a>
-            </li>
-            <li>
-              <a href="/gesture-staggered-list">Staggered List</a>
-            </li>
-            <li>
-              <a href="/gesture-article-swipe">Gesture Article Swipe </a>
-            </li>
-            <li>
-              <a href="/gesture-email-swipe">Gesture Email Swipe</a>
-            </li>
-            <li>
-              <a href="/gesture-card-swipe">Gesture Card Swipe</a>
-            </li>
-            <li>
-              <a href="/gesture-sidebar-right">Gesture Sidebar Right</a>
-            </li>
-          </ul>
         </nav>
       )
   }

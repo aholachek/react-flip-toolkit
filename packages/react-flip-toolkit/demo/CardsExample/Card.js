@@ -10,6 +10,7 @@ class Card extends PureComponent {
   }
   animateIn = (el, { previous: prev, current: curr }) => {
     if (prev !== this.props.i) return
+    el.style.zIndex = ''
     const elements = [...el.querySelectorAll('*[data-fade-in]')]
     elements.forEach((el, i) => {
       spring({
