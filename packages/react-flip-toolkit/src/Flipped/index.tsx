@@ -8,7 +8,6 @@ import PropTypes from 'prop-types'
 import { utilities, constants } from '../FlipToolkit'
 import { FlippedProps, SerializableFlippedProps } from '../FlipToolkit/types'
 import { FlipContext, PortalContext } from '../Flipper/context'
-import { assign } from '../FlipToolkit/utilities'
 
 function isFunction(child: any): child is Function {
   return typeof child === 'function'
@@ -20,7 +19,6 @@ export const Flipped: FunctionComponent<SerializableFlippedProps> = ({
   flipId,
   inverseFlipId,
   portalKey,
-  gestureHandlers,
   ...rest
 }) => {
   let child = children
@@ -57,9 +55,6 @@ export const Flipped: FunctionComponent<SerializableFlippedProps> = ({
   if (isFunctionAsChildren) {
     return (child as Function)(dataAttributes)
   }
-  if (gestureHandlers) {
-    assign(dataAttributes, gestureHandlers)
-  }
   return cloneElement(child as ReactElement<any>, dataAttributes)
 }
 // @ts-ignore
@@ -74,7 +69,6 @@ export const FlippedWithContext: FunctionComponent<FlippedProps> = ({
   onComplete,
   onExit,
   onSpringUpdate,
-  gestureHandlers,
   ...rest
 }) => {
   if (!children) {
@@ -105,12 +99,7 @@ export const FlippedWithContext: FunctionComponent<FlippedProps> = ({
               }
             }
             return (
-              <Flipped
-                flipId={flipId}
-                {...rest}
-                portalKey={portalKey}
-                gestureHandlers={gestureHandlers}
-              >
+              <Flipped flipId={flipId} {...rest} portalKey={portalKey}>
                 {children}
               </Flipped>
             )
@@ -140,8 +129,7 @@ if (process.env.NODE_ENV !== 'production') {
     shouldInvert: PropTypes.func,
     onExit: PropTypes.func,
     portalKey: PropTypes.string,
-    stagger: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-    gestureHandlers: PropTypes.object
+    stagger: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
   }
 }
 

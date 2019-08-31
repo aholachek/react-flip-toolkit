@@ -1,6 +1,6 @@
 import { SpringOption } from './springSettings/types'
 import Spring from './forked-rebound/Spring'
-import { BoundingClientRect } from './flip/getFlippedElementPositions/types';
+import { BoundingClientRect } from './flip/getFlippedElementPositions/types'
 
 export type FlipId = string | number
 
@@ -26,7 +26,6 @@ export interface SerializableFlippedProps {
   inverseFlipId?: string
   /** Prevent this element from animating until the Flipped element with the provided flipId has started its animation, useful for nested animations  */
   delayUntil?: FlipId
-
 }
 export interface CallbackFlippedProps {
   /** Called when the FLIP animation for the element starts. It is provided a reference to the DOM element being transitioned as the first argument. */
@@ -60,10 +59,6 @@ export interface CallbackFlippedProps {
 }
 
 export type FlippedProps = CallbackFlippedProps & SerializableFlippedProps
-
-export type InternalFlippedProps = FlippedProps & {
-  isGestureControlled?: boolean
-}
 
 export type DelayUntil = (
   previousDecisionData: any,
@@ -132,7 +127,7 @@ export interface FlipperProps {
 interface Difference {
   translateXDifference: number
   translateYDifference: number
-  prevRect: BoundingClientRect,
+  prevRect: BoundingClientRect
   currentRect: BoundingClientRect
 }
 

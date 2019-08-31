@@ -71,7 +71,6 @@ const onFlipKeyUpdate = ({
   staggerConfig = {},
   decisionData = {},
   handleEnterUpdateDelete,
-  isGestureControlled,
   onComplete,
   onStart
 }: OnFlipKeyUpdateArgs) => {
@@ -123,7 +122,6 @@ const onFlipKeyUpdate = ({
     baseArgs,
     {
       containerEl,
-      isGestureControlled,
       flippedIds,
       applyTransformOrigin,
       spring,

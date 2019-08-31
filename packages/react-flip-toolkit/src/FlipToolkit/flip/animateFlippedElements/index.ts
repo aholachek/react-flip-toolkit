@@ -148,7 +148,6 @@ export default ({
   decisionData = {},
   onComplete,
   containerEl,
-  isGestureControlled
 }: AnimateFlippedElementsArgs) => {
   // the stuff below is used so we can return a promise that resolves when all FLIP animations have
   // completed
@@ -376,7 +375,6 @@ export default ({
 
       const getOnUpdateFunc: GetOnUpdateFunc = ({ spring, onAnimationEnd }) => {
         inProgressAnimations[id] = {
-          // only for gesture control
           // @ts-ignore
           spring,
           onAnimationEnd,
@@ -456,7 +454,6 @@ export default ({
         getOnUpdateFunc,
         initializeFlip,
         onAnimationEnd,
-        isGestureControlled,
         delayUntil: flipConfig.delayUntil
       }) as FlipData
     })
@@ -529,7 +526,6 @@ export default ({
           createStaggeredSprings(
             staggerDict[staggerKey],
             staggerConfig[staggerKey],
-            isGestureControlled
           )
         })
       }
@@ -555,7 +551,6 @@ export default ({
       createStaggeredSprings(
         staggerDict[staggerKey],
         staggerConfig[staggerKey],
-        isGestureControlled
       )
     })
     return flipCompletedPromise

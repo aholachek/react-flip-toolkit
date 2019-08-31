@@ -15,7 +15,6 @@ export interface AnimateFlippedElementsArgs extends BaseFlipArgs {
   decisionData: any
   scopedSelector: ScopedSelector
   onComplete: OnFlipperComplete
-  isGestureControlled?: boolean
   containerEl: HTMLElement
 }
 
@@ -61,7 +60,6 @@ export interface FlipData {
   initializeFlip: InitializeFlip
   onAnimationEnd: () => void
   childIds: ChildIds
-  isGestureControlled?: boolean
   delayUntil?: FlipId
   onSpringActivate?: () => void
 }

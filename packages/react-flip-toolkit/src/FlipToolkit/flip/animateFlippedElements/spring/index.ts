@@ -14,7 +14,6 @@ export const createSuspendedSpring = (flipData: FlipData) => {
     springConfig: { stiffness, damping, overshootClamping },
     getOnUpdateFunc,
     onAnimationEnd,
-    isGestureControlled,
     onSpringActivate
   } = flipData
 
@@ -28,7 +27,7 @@ export const createSuspendedSpring = (flipData: FlipData) => {
 
   const springConfig: AddListenerArgs = {
     onSpringActivate,
-    onSpringAtRest: !isGestureControlled ? onSpringAtRest : () => {},
+    onSpringAtRest,
     onSpringUpdate: getOnUpdateFunc({
       spring,
       onAnimationEnd
@@ -52,8 +51,7 @@ export const normalizeSpeed = (speedConfig: number | undefined) => {
 
 export const createStaggeredSprings = (
   flippedArray: FlipDataArray,
-  staggerConfig: StaggerConfigValue = {},
-  isGestureControlled?: boolean
+  staggerConfig: StaggerConfigValue = {}
 ) => {
   if (!flippedArray || !flippedArray.length) {
     return
@@ -81,9 +79,7 @@ export const createStaggeredSprings = (
           currentValue =
             currentValue < 0.01 ? 0 : currentValue > 0.99 ? 1 : currentValue
 
-          // direction is 0 when animation is gesture controlled and user has released before the threshold
-          const updateTrailingAnimation =
-            currentValue >= nextThreshold || isGestureControlled
+          const updateTrailingAnimation = currentValue >= nextThreshold
           if (updateTrailingAnimation) {
             if (setEndValueFuncs[i + 1]) {
               setEndValueFuncs[i + 1]!(
@@ -98,7 +94,7 @@ export const createStaggeredSprings = (
       return flipped
     })
     .map(flipped => {
-      const spring = createSuspendedSpring({ ...flipped, isGestureControlled })
+      const spring = createSuspendedSpring(flipped)
       if (!spring) {
         return
       }
@@ -106,7 +102,7 @@ export const createStaggeredSprings = (
     })
     .filter(Boolean)
 
-  if (setEndValueFuncs[0] && !isGestureControlled) {
+  if (setEndValueFuncs[0]) {
     setEndValueFuncs[0]!(1)
   }
 }
