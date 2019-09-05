@@ -127,7 +127,6 @@ export interface InProgressAnimations {
   [key: string]: {
     destroy: () => void
     onComplete?: () => void
-    flipInitiator?: string
     onAnimationEnd: () => void
   }
 }
