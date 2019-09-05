@@ -1,6 +1,4 @@
 import { SpringOption } from './springSettings/types'
-import Spring from './forked-rebound/Spring'
-import { BoundingClientRect } from './flip/getFlippedElementPositions/types'
 
 export type FlipId = string | number
 
@@ -124,19 +122,11 @@ export interface FlipperProps {
   onStart?: OnFlipperStart
 }
 
-interface Difference {
-  translateXDifference: number
-  translateYDifference: number
-  prevRect: BoundingClientRect
-  currentRect: BoundingClientRect
-}
 
 export interface InProgressAnimations {
   [key: string]: {
-    spring: Spring
     destroy: () => void
     onComplete?: () => void
-    difference: Difference
     flipInitiator?: string
     onAnimationEnd: () => void
   }

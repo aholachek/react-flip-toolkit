@@ -1,6 +1,6 @@
 // this is exclusively for users of the library to create their own enter + exit animations
 import { SpringSystem } from '../forked-rebound'
-import { SpringSystemInterface } from '../forked-rebound/types'
+import { SpringSystemInterface } from '../forked-rebound/types.d'
 import { tweenProp, assign } from '../utilities'
 import { normalizeSpring, springPresets } from '../springSettings'
 import { SimpleSpringOptions } from './types'

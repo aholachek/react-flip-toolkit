@@ -273,7 +273,7 @@ describe('animateFlippedElements', () => {
 
     flip()
 
-    expect(typeof inProgressAnimations['id-1'].spring.destroy).to.equal(
+    expect(typeof inProgressAnimations['id-1'].destroy).to.equal(
       'function'
     )
     expect(typeof inProgressAnimations['id-1'].onAnimationEnd).to.equal(

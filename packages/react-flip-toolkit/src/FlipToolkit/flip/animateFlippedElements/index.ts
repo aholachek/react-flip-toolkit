@@ -147,7 +147,7 @@ export default ({
   staggerConfig = {},
   decisionData = {},
   onComplete,
-  containerEl,
+  containerEl
 }: AnimateFlippedElementsArgs) => {
   // the stuff below is used so we can return a promise that resolves when all FLIP animations have
   // completed
@@ -375,15 +375,8 @@ export default ({
 
       const getOnUpdateFunc: GetOnUpdateFunc = ({ spring, onAnimationEnd }) => {
         inProgressAnimations[id] = {
-          // @ts-ignore
-          spring,
-          onAnimationEnd,
-          difference: {
-            translateXDifference,
-            translateYDifference,
-            prevRect,
-            currentRect
-          }
+          destroy: spring.destroy.bind(spring),
+          onAnimationEnd
         }
         const onUpdate: OnUpdate = spring => {
           if (flipCallbacks[id] && flipCallbacks[id].onSpringUpdate) {
@@ -525,7 +518,7 @@ export default ({
         uniqueStaggerKeys.forEach((staggerKey: string) => {
           createStaggeredSprings(
             staggerDict[staggerKey],
-            staggerConfig[staggerKey],
+            staggerConfig[staggerKey]
           )
         })
       }
@@ -548,10 +541,7 @@ export default ({
     // animate staggered elements
     Object.keys(staggerDict).forEach(staggerKey => {
       if (delayedStaggerKeys[staggerKey]) return
-      createStaggeredSprings(
-        staggerDict[staggerKey],
-        staggerConfig[staggerKey],
-      )
+      createStaggeredSprings(staggerDict[staggerKey], staggerConfig[staggerKey])
     })
     return flipCompletedPromise
   }

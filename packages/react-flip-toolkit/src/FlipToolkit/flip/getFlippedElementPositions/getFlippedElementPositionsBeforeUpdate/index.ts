@@ -1,8 +1,4 @@
-import {
-  addTupleToObject,
-  getAllElements,
-  getRects
-} from '../utilities'
+import { addTupleToObject, getAllElements, getRects } from '../utilities'
 import * as constants from '../../../constants'
 import { toArray, assign } from '../../../utilities'
 import {
@@ -20,8 +16,8 @@ export const cancelInProgressAnimations = (
   animatingElements: HTMLElement[]
 ) => {
   Object.keys(inProgressAnimations).forEach(id => {
-    if (inProgressAnimations[id].spring) {
-      inProgressAnimations[id].spring.destroy()
+    if (inProgressAnimations[id].destroy) {
+      inProgressAnimations[id].destroy()
     }
     delete inProgressAnimations[id]
   })

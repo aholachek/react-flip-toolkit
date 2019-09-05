@@ -10,7 +10,6 @@
  */
 
 import { removeFirst } from './util'
-import SpringConfig from './SpringConfig'
 
 class PhysicsState {
   constructor() {

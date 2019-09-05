@@ -136,9 +136,7 @@ describe('getFlippedElementPositionsBeforeUpdate', () => {
     const inProgressAnimations = {
       'id-1': {},
       'id-2': {
-        spring: {
-          destroy: fakeStop
-        }
+        destroy: fakeStop
       }
     }
 
