@@ -23,6 +23,7 @@ class PhotoGrid extends Component {
     el.style.zIndex = 4
   }
   removeZIndex = el => {
+    console.log('onComplete called')
     el.style.zIndex = ''
   }
 

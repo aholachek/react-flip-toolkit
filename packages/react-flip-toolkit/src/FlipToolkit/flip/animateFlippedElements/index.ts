@@ -343,7 +343,7 @@ export default ({
       // this should be called when animation ends naturally
       // but also when it is interrupted
       // when it is called, the animation has already been cancelled
-      const onAnimationEnd = () => {
+      const onAnimationEnd = (isCancellation: boolean) => {
         delete inProgressAnimations[id]
         if (isFunction(onComplete)) {
           onComplete()
@@ -357,6 +357,8 @@ export default ({
           element.style.minHeight = ''
           element.style.minWidth = ''
         }
+        if (isCancellation) return
+        
         completedAnimationIds.push(id)
 
         if (completedAnimationIds.length >= flipDataArray.length) {

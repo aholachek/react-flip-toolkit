@@ -19,6 +19,9 @@ export const cancelInProgressAnimations = (
     if (inProgressAnimations[id].destroy) {
       inProgressAnimations[id].destroy()
     }
+    if (inProgressAnimations[id].onAnimationEnd) {
+      inProgressAnimations[id].onAnimationEnd(true)
+    }
     delete inProgressAnimations[id]
   })
   animatingElements.forEach(el => {

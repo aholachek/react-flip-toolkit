@@ -122,12 +122,10 @@ export interface FlipperProps {
   onStart?: OnFlipperStart
 }
 
-
 export interface InProgressAnimations {
   [key: string]: {
     destroy: () => void
-    onComplete?: () => void
-    onAnimationEnd: () => void
+    onAnimationEnd: (isCancellation?: boolean) => void
   }
 }
 
