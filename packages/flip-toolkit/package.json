@@ -25,12 +25,14 @@
   "scripts": {
     "build": "microbundle --name=ReactFlipToolkit",
     "lint": "echo \"noop\"",
-    "test": "echo \"noop\""
+    "test": "echo \"noop\"",
+    "start": "parcel test/index.html"
   },
   "dependencies": {
     "react-flip-toolkit": "^7.0.6"
   },
   "devDependencies": {
-    "microbundle": "^0.11.0"
+    "microbundle": "^0.11.0",
+    "parcel": "^1.12.4"
   }
 }

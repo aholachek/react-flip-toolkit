@@ -1,0 +1,104 @@
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Vanilla Test</title>
+  <script defer src="./index.js"></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    .box {
+      width: 2rem;
+      height: 2rem;
+      background-color: orange;
+    }
+
+    .big-box {
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .container-2 {
+      display: flex;
+      font-size: 2rem;
+      list-style: none;
+    }
+
+    .container-2 li {
+      border: 2px solid slateblue;
+      height: 6rem;
+      width: 6rem;
+      background-color: wheat;
+    }
+
+
+    .container-2 li .inner {
+      background-color: slateblue;
+      width: 1rem;
+      height: 1rem;
+    }
+
+    .container-2 li .inverted > div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+    }
+
+    .reversed {
+      flex-direction: row-reverse;
+    }
+
+    .container-2.reversed li {
+      width: 8rem;
+      height: 8rem;
+    }
+
+    .container-2.reversed .inner {
+      width: 4rem;
+      height: 4rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="box">
+      <div class="innerBox">hi there</div>
+    </div>
+  </div>
+
+  <ul class="container-2">
+    <li>
+      <div class="inverted">
+        <div>
+          <div class="inner"></div>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="inverted">
+        <div>
+          <div class="inner"></div>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="inverted">
+        <div>
+          <div class="inner"></div>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="inverted">
+        <div>
+          <div class="inner"></div>
+        </div>
+      </div>
+    </li>
+  </ul>
+</body>
+
+</html>

@@ -91,6 +91,7 @@ class Flipper {
     transformOrigin,
     spring,
     stagger,
+    delayUntil,
     onAppear,
     onStart,
     onSpringUpdate,
@@ -111,7 +112,8 @@ class Flipper {
       opacity,
       transformOrigin,
       spring,
-      stagger
+      stagger,
+      delayUntil
     }
     if (!flipConfig.scale && !flipConfig.translate && !flipConfig.opacity) {
       assign(flipConfig, {
