@@ -26,7 +26,8 @@
     "build": "microbundle --name=ReactFlipToolkit",
     "lint": "echo \"noop\"",
     "test": "echo \"noop\"",
-    "start": "parcel test/index.html"
+    "start": "parcel test/index.html",
+    "prepublish": "npm run build"
   },
   "dependencies": {
     "react-flip-toolkit": "^7.0.7"

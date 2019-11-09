@@ -44,7 +44,8 @@
     "test:all": "npm-run-all test test:dom",
     "preversion": "npm test",
     "postpublish": "git push origin master; git push origin --tags; rm ./README.MD",
-    "version": "npm run build"
+    "version": "npm run build",
+    "prepublish": "npm run build"
   },
   "dependencies": {
     "rematrix": "0.2.2"
