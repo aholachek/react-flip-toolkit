@@ -40,4 +40,5 @@ export interface OnFlipKeyUpdateArgs {
   onComplete?: OnFlipperComplete
   onStart?: OnFlipperStart
   decisionData: DecisionData
+  chainExitingEntering?: boolean
 }
