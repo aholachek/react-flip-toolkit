@@ -79,7 +79,7 @@
     "microbundle": "0.11.0",
     "mocha": "^6.2.0",
     "normalize.css": "^8.0.1",
-    "npm": "^6.10.3",
+    "npm": "^6.13.7",
     "npm-run-all": "^4.1.5",
     "npm-watch": "^0.6.0",
     "parcel": "^1.12.3",
