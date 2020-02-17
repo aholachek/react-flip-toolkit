@@ -14,6 +14,16 @@ import { SpringOption } from './springSettings/types'
 import { FlippedElementPositionsBeforeUpdate } from './flip/getFlippedElementPositions/getFlippedElementPositionsBeforeUpdate/types'
 import { FlippedIds } from './flip/types'
 
+interface Options {
+  element: HTMLElement
+  staggerConfig?: StaggerConfig
+  spring?: SpringOption
+  applyTransformOrigin?: boolean
+  handleEnterUpdateDelete?: HandleEnterUpdateDelete
+  debug?: boolean
+  onComplete?: OnFlipperComplete
+}
+
 class Flipper {
   private element!: HTMLElement
   private staggerConfig!: StaggerConfig
@@ -30,15 +40,7 @@ class Flipper {
   private onComplete?: OnFlipperComplete
   private onStart?: OnFlipperStart
 
-  constructor(options: {
-    element: HTMLElement
-    staggerConfig: StaggerConfig
-    spring: SpringOption
-    applyTransformOrigin: boolean
-    handleEnterUpdateDelete: HandleEnterUpdateDelete
-    debug: boolean
-    onComplete: OnFlipperComplete
-  }) {
+  constructor(options: Options) {
     assign(this, options)
 
     this.inProgressAnimations = {}
