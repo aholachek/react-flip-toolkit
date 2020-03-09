@@ -5,7 +5,7 @@ node_js:
   - node
 
 before_install:
-  - yarn add codecov.io coveralls
+  - yarn add -W codecov.io coveralls
 
 script: yarn run lint && yarn run test
 
