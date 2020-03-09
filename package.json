@@ -1,6 +1,5 @@
 {
   "name": "react-flip-toolkit",
-  "version": "7.0.7",
   "private": true,
   "workspaces": [
     "packages/*"
