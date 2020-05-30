@@ -48,10 +48,10 @@
     "prepublish": "npm run build"
   },
   "dependencies": {
-    "rematrix": "0.2.2"
+    "rematrix": "0.2.2",
+    "prop-types": "^15.5.7"
   },
   "peerDependencies": {
-    "prop-types": "^15.x.x",
     "react": "16.x",
     "react-dom": ">= 16.x"
   },
