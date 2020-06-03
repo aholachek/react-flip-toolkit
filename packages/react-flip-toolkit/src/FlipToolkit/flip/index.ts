@@ -72,7 +72,8 @@ const onFlipKeyUpdate = ({
   decisionData = {},
   handleEnterUpdateDelete,
   onComplete,
-  onStart
+  onStart,
+  chainExitingEntering = true
 }: OnFlipKeyUpdateArgs) => {
 
   const flippedElementPositionsAfterUpdate = getFlippedElementPositionsAfterUpdate(
@@ -146,7 +147,12 @@ const onFlipKeyUpdate = ({
     })
   } else {
     hideEnteringElements()
-    animateExitingElements().then(animateEnteringElements)
+    if (chainExitingEntering) {
+      animateExitingElements().then(animateEnteringElements)
+    } else {
+      animateExitingElements()
+      animateEnteringElements()
+    }
     flip()
   }
 }
