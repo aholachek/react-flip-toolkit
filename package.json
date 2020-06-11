@@ -5,7 +5,7 @@
     "packages/*"
   ],
   "scripts": {
-    "test": "yarn workspaces run test",
+    "test": "yarn workspaces run build && yarn workspaces run test",
     "lint": "yarn workspaces run lint",
     "format": "yarn workspaces run format",
     "format-and-fix": "yarn workspaces run format-and-fix",
