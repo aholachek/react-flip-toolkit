@@ -6950,6 +6950,13 @@ flatten@^1.0.2:
   resolved "https://registry.yarnpkg.com/flatten/-/flatten-1.0.2.tgz#dae46a9d78fbe25292258cc1e780a41d95c03782"
   integrity sha1-2uRqnXj74lKSJYzB54CkHZXAN4I=
 
+flip-toolkit@beta:
+  version "7.0.11-0"
+  resolved "https://registry.yarnpkg.com/flip-toolkit/-/flip-toolkit-7.0.11-0.tgz#b30a51839b92d8d9cc1acd112af6eac1e258dce4"
+  integrity sha512-8pxtqqZMln1Fabmh4xtTkuqUCP8WCr0HLFVA9+3HhfwXQvkQZ1pi0p9PGvzXDdEFKyAn5Zhz7897fiI6P4yhCg==
+  dependencies:
+    rematrix "0.2.2"
+
 flow-remove-types@^1.1.0:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/flow-remove-types/-/flow-remove-types-1.2.3.tgz#6131aefc7da43364bb8b479758c9dec7735d1a18"
@@ -13127,7 +13134,7 @@ promzard@^0.3.0:
   dependencies:
     read "1"
 
-prop-types@^15.5.4, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.5.4, prop-types@^15.5.7, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==

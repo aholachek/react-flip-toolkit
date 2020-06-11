@@ -1,0 +1,26 @@
+/**
+ *  Copyright (c) 2013, Facebook, Inc.
+ *  All rights reserved.
+ *
+ *  This source code is licensed under the BSD-style license found in the
+ *  LICENSE file in the root directory of this source tree. An additional grant
+ *  of patent rights can be found in the PATENTS file in the same directory.
+ *
+ *
+ */
+
+/**
+ * Maintains a set of tension and friction constants
+ * for a Spring. You can use fromOrigamiTensionAndFriction to convert
+ * values from the [Origami](http://facebook.github.io/origami/)
+ * design tool directly to Rebound spring constants.
+ * @public
+ */
+class SpringConfig {
+  constructor(tension, friction) {
+    this.tension = tension
+    this.friction = friction
+  }
+}
+
+export default SpringConfig

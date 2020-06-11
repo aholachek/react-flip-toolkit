@@ -1,9 +1,9 @@
 {
   "name": "flip-toolkit",
-  "version": "7.0.9",
+  "version": "7.0.11-1",
   "description": "Configurable FLIP animation helpers",
   "license": "MIT",
-  "src": "index.js",
+  "src": "src/index.ts",
   "main": "lib/index.js",
   "umd:main": "lib/${bundleName}/index.umd.js",
   "module": "lib/index.es.js",
@@ -23,14 +23,14 @@
     "npm": ">=5"
   },
   "scripts": {
-    "build": "microbundle --name=ReactFlipToolkit",
+    "build": "microbundle --name=FlipToolkit",
     "lint": "echo \"noop\"",
     "test": "echo \"noop\"",
     "start": "parcel test/index.html",
     "prepublish": "npm run build"
   },
   "dependencies": {
-    "react-flip-toolkit": "^7.0.10"
+    "rematrix": "0.2.2"
   },
   "devDependencies": {
     "microbundle": "^0.11.0",

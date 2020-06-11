@@ -1,4 +1,4 @@
-import { Flipper } from '../index.ts'
+import { Flipper } from '../src/index.ts'
 
 const container = document.querySelector('.container')
 const box = document.querySelector('.box')
