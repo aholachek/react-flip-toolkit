@@ -15,9 +15,9 @@
     "esModuleInterop": true,
     "strict": true,
     "resolveJsonModule": true,
-    "isolatedModules": true,
+    "isolatedModules": true
   },
-  "include": ["src", "@types", "../flip-toolkit/FlipToolkit"],
+  "include": ["src", "@types"],
   "exclude": [
     "node_modules",
     "build",

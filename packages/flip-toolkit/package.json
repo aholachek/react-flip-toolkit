@@ -26,6 +26,7 @@
     "build": "microbundle --name=FlipToolkit",
     "lint": "echo \"noop\"",
     "test": "echo \"noop\"",
+    "test:dom": "parcel mocha/testrunner.html",
     "start": "parcel test/index.html",
     "prepublish": "npm run build"
   },
@@ -34,6 +35,7 @@
   },
   "devDependencies": {
     "microbundle": "^0.11.0",
-    "parcel": "^1.12.4"
+    "parcel": "^1.12.4",
+    "mocha": "^8.0.1"
   }
 }

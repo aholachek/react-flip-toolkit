@@ -18,6 +18,6 @@
     "beta-release": "lerna publish --dist-tag beta"
   },
   "devDependencies": {
-    "lerna": "^3.15.0"
+    "lerna": "^3.22.1"
   }
 }
