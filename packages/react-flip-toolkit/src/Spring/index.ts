@@ -1,2 +1,2 @@
-import spring from 'flip-toolkit'
+import { spring } from 'flip-toolkit'
 export default spring
