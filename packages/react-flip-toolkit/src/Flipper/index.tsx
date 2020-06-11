@@ -3,13 +3,13 @@ import PropTypes from 'prop-types'
 import {
   getFlippedElementPositionsBeforeUpdate,
   onFlipKeyUpdate
-} from '../FlipToolkit'
+} from 'flip-toolkit'
 import {
   FlipperProps,
   InProgressAnimations,
   FlipCallbacks
-} from '../FlipToolkit/types'
-import { FlippedElementPositionsBeforeUpdateReturnVals } from '../FlipToolkit/flip/getFlippedElementPositions/getFlippedElementPositionsBeforeUpdate/types'
+} from 'flip-toolkit/lib/types'
+import { FlippedElementPositionsBeforeUpdateReturnVals } from 'flip-toolkit/lib/flip/getFlippedElementPositions/getFlippedElementPositionsBeforeUpdate/types'
 import { FlipContext, PortalContext } from './context'
 
 class Flipper extends Component<FlipperProps> {

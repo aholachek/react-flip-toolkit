@@ -5,8 +5,8 @@ import React, {
   ReactElement
 } from 'react'
 import PropTypes from 'prop-types'
-import { utilities, constants } from '../FlipToolkit'
-import { FlippedProps, SerializableFlippedProps } from '../FlipToolkit/types'
+import { utilities, constants } from 'flip-toolkit'
+import { FlippedProps, SerializableFlippedProps } from 'flip-toolkit/lib/types'
 import { FlipContext, PortalContext } from '../Flipper/context'
 
 function isFunction(child: any): child is Function {
