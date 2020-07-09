@@ -279,10 +279,10 @@ export default ({
       // we're only going to animate the values that the child wants animated
       if (flipConfig.translate) {
         transformsArray.push(
-          Rematrix.translateX(prevRect.left - currentRect.left)
+          Rematrix.translateX(Math.round(prevRect.left - currentRect.left))
         )
         transformsArray.push(
-          Rematrix.translateY(prevRect.top - currentRect.top)
+          Rematrix.translateY(Math.round(prevRect.top - currentRect.top))
         )
       }
       // going any smaller than 1px breaks transitions in Chrome
