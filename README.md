@@ -213,7 +213,7 @@ or a custom spring config:
   {/* Flipped components go here...*/}
 </Flipper>
 ```
-[View all spring options in the interactive explorer](https://codepen.io/aholachek/pen/bKmZbV)
+[View all spring options in the interactive explorer](https://codesandbox.io/s/react-flip-toolkit-spring-settings-explorer-vjrsh)
 
 
 ### Nested Scale Transforms
