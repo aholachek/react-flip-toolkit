@@ -6,6 +6,7 @@
   ],
   "scripts": {
     "test": "yarn workspaces run build && yarn workspaces run test",
+    "test:dom": "yarn workspace flip-toolkit test:dom",
     "lint": "yarn workspaces run lint",
     "format": "yarn workspaces run format",
     "format-and-fix": "yarn workspaces run format-and-fix",
@@ -13,9 +14,7 @@
     "check-types": "yarn workspaces run check-types",
     "build": "yarn workspaces run build",
     "demo": "yarn workspace react-flip-toolkit start",
-    "watch": "yarn workspaces run watch",
-    "alpha-release": "lerna publish --dist-tag alpha",
-    "beta-release": "lerna publish --dist-tag beta"
+    "watch": "yarn workspaces run watch"
   },
   "devDependencies": {
     "lerna": "^3.22.1"

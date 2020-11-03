@@ -2,8 +2,10 @@
 
 Some unfortunately non-automated tasks that need to be done manually:
 
-1. Run test:all and make sure jest + mocha browser tests are passing (you'll need to check mocha tests in the browser)
-2. Make sure readme is up-to-date
+1. Run `yarn test` and `yarn test:dom`  in the top level dir and make sure jest + mocha browser tests are passing (you'll need to check mocha tests in the browser)
+2. Run `yarn format-and-fix` in the top level dir
+3. Make sure readme is up-to-date
+4. Verify that no unintended deps were added to `dependencies` in either package.json.
 
 ### Beta Version
 
