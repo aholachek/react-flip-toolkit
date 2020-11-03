@@ -125,8 +125,8 @@ export interface FlipperProps {
 
 export interface InProgressAnimations {
   [key: string]: {
-    destroy: () => void
-    onAnimationEnd: (isCancellation?: boolean) => void
+    destroy?: () => void
+    onAnimationEnd?: (isCancellation?: boolean) => void
   }
 }
 

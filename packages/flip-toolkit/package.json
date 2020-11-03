@@ -31,7 +31,7 @@
     "start": "parcel test/index.html",
     "prepublish": "npm run build",
     "format": "npx prettier --write 'src/**/*.{ts,tsx}'",
-    "fix": "eslint src/**/*.{ts,tsx} --fix",
+    "fix": "eslint src/**/*.ts --fix",
     "format-and-fix": "npm-run-all format fix"
   },
   "dependencies": {
@@ -40,7 +40,7 @@
   "devDependencies": {
     "@babel/core": "^7.12.3",
     "chai": "^4.2.0",
-    "microbundle": "^0.11.0",
+    "microbundle": "^0.12.4",
     "mocha": "^8.2.1",
     "parcel": "^1.12.4",
     "prettier": "2.1.2"

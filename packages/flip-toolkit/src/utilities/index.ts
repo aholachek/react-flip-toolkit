@@ -20,10 +20,7 @@ export const getDuplicateValsAsStrings = (arr: string[]): string[] => {
 }
 
 // tslint only likes this with a regular function, not an arrow function
-export function assign(
-  target: IndexableObject,
-  ...args: IndexableObject[]
-): object {
+export function assign(target: IndexableObject, ...args: IndexableObject[]) {
   args.forEach(arg => {
     if (!arg) {
       return

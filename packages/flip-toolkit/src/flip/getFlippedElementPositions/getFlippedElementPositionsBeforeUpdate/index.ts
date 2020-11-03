@@ -3,7 +3,7 @@ import * as constants from '../../../constants'
 import { toArray, assign } from '../../../utilities'
 import {
   FlippedElementPositionsBeforeUpdateReturnVals,
-  FlippedElementPositionsBeforeUpdate,
+  FlippedElementPositionDatumBeforeUpdate,
   GetFlippedElementPositionsBeforeUpdateArgs,
   ParentBCRs,
   ChildIdsToParentBCRs,
@@ -17,10 +17,10 @@ export const cancelInProgressAnimations = (
 ) => {
   Object.keys(inProgressAnimations).forEach(id => {
     if (inProgressAnimations[id].destroy) {
-      inProgressAnimations[id].destroy()
+      inProgressAnimations[id].destroy!()
     }
     if (inProgressAnimations[id].onAnimationEnd) {
-      inProgressAnimations[id].onAnimationEnd(true)
+      inProgressAnimations[id].onAnimationEnd!(true)
     }
     delete inProgressAnimations[id]
   })
@@ -76,42 +76,48 @@ const getFlippedElementPositionsBeforeUpdate = ({
 
   const filteredFlippedElements = getRects(flippedElements)
 
-  const flippedElementPositions: FlippedElementPositionsBeforeUpdate = filteredFlippedElements
-    .map(([child, childBCR]) => {
-      const domDataForExitAnimations = {}
+  const flippedElementPositionsTupleArray: [
+    string,
+    FlippedElementPositionDatumBeforeUpdate
+  ][] = filteredFlippedElements.map(([child, childBCR]) => {
+    const domDataForExitAnimations = {}
 
-      // only cache extra data for exit animations
-      // if the element has an onExit listener
-      if (
-        flipCallbacks &&
-        flipCallbacks[child.dataset.flipId!] &&
-        flipCallbacks[child.dataset.flipId!].onExit
-      ) {
-        const parentBCR = childIdsToParentBCRs[child.dataset.flipId!]
+    // only cache extra data for exit animations
+    // if the element has an onExit listener
+    if (
+      flipCallbacks &&
+      flipCallbacks[child.dataset.flipId!] &&
+      flipCallbacks[child.dataset.flipId!].onExit
+    ) {
+      const parentBCR = childIdsToParentBCRs[child.dataset.flipId!]
 
-        assign(domDataForExitAnimations, {
-          element: child,
-          parent: childIdsToParents[child.dataset.flipId!],
-          childPosition: {
-            top: childBCR.top - parentBCR.top,
-            left: childBCR.left - parentBCR.left,
-            width: childBCR.width,
-            height: childBCR.height
-          }
-        })
-      }
-
-      return [
-        child.dataset.flipId,
-        {
-          rect: childBCR,
-          opacity: parseFloat(window.getComputedStyle(child).opacity || '1'),
-          domDataForExitAnimations
+      assign(domDataForExitAnimations, {
+        element: child,
+        parent: childIdsToParents[child.dataset.flipId!],
+        childPosition: {
+          top: childBCR.top - parentBCR.top,
+          left: childBCR.left - parentBCR.left,
+          width: childBCR.width,
+          height: childBCR.height
         }
-      ]
-    })
-    // @ts-ignore
-    .reduce(addTupleToObject, {})
+      })
+    }
+
+    return [
+      child.dataset.flipId!,
+      {
+        rect: childBCR,
+        opacity: parseFloat(window.getComputedStyle(child).opacity || '1'),
+        domDataForExitAnimations
+      }
+    ]
+  }) as [string, FlippedElementPositionDatumBeforeUpdate][]
+
+  const flippedElementPositions = flippedElementPositionsTupleArray.reduce(
+    addTupleToObject,
+    {}
+  )
+
   // do this at the very end since we want to cache positions of elements
   // while they are mid-transition
   cancelInProgressAnimations(
