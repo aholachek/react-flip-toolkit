@@ -15,8 +15,5 @@
     "build": "yarn workspaces run build",
     "demo": "yarn workspace react-flip-toolkit start",
     "watch": "yarn workspaces run watch"
-  },
-  "devDependencies": {
-    "lerna": "^3.22.1"
   }
 }

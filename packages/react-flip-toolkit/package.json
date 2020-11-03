@@ -25,10 +25,10 @@
     "npm": ">=5"
   },
   "scripts": {
-    "microbundle": "microbundle --define process.env.NODE_ENV=production",
+    "microbundle": "microbundle --define process.env.NODE_ENV=production --name=ReactFlipToolkit  --jsx React.createElement --globals react=React,prop-types=PropTypes,flip-toolkit=FlipToolkit,rematrix=Rematrix",
     "start": "parcel --no-cache demo/index.html --out-dir demo/lib",
     "deploy-demo": "parcel build demo/index.html --out-dir demo/lib; cp demo/lib/index.html demo/lib/200.html; surge demo/lib --domain react-flip-toolkit-demos.surge.sh",
-    "build": "cp ../../README.md ./README.md; microbundle --define process.env.NODE_ENV=production --name=ReactFlipToolkit --globals react=React,prop-types=PropTypes,flip-toolkit=FlipToolkit,rematrix=Rematrix",
+    "build": "cp ../../README.md ./README.md; yarn microbundle",
     "watch": "watch 'npm run build:no-compress' ./src",
     "build:no-compress": "microbundle --no-compress",
     "check-types": "tsc --noEmit",
