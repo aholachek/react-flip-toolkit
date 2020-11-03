@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Flipper, Flipped } from "react-flip-toolkit";
 import shuffle from "lodash.shuffle";
 
-export default () => {
+export default function TransformZeroExample  () {
   const [data, setData] = useState([...Array(200).keys()]);
   const shuffleList = () => setData(shuffle(data));
 
@@ -23,4 +23,4 @@ export default () => {
       </div>
     </Flipper>
   );
-};
+}
