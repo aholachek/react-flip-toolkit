@@ -23,9 +23,7 @@ import NestedFlipper from './NestedFlipper'
 import GestureSidebarExample from './GestureSidebarExample'
 import GestureStaggeredList from './GestureStaggeredList'
 import FancyDrawerSwipe from './FancyDrawerSwipe'
-import GestureCardSwipe from './GestureCardSwipe'
-import GestureArticleSwipe from './GestureArticleSwipe'
-// import GestureSidebarRight from './GestureSidebarRightExample'
+import ZeroJumpExample from './ZeroJumpExample'
 
 class Demo extends Component {
   render() {
@@ -49,24 +47,17 @@ class Demo extends Component {
       return <RemountedFlipperExample />
     else if (window.location.pathname === '/enter-update-delete')
       return <HandleEnterUpdateDelete />
-    else if (window.location.pathname === '/gesture-staggered-list')
-      return <GestureStaggeredList />
-    else if (window.location.pathname === '/gesture-sidebar')
-      return <GestureSidebarExample />
-    else if (window.location.pathname === '/gesture-email-swipe')
-      return <FancyDrawerSwipe />
-    else if (window.location.pathname === '/gesture-card-swipe')
-      return <GestureCardSwipe />
-    else if (window.location.pathname === '/gesture-article-swipe')
-      return <GestureArticleSwipe />
-    // else if (window.location.pathname === '/gesture-sidebar-right')
-    //   return <GestureSidebarRight />
+   else if (window.location.pathname === '/zero-jump')
+      return <ZeroJumpExample />
     else if (window.location.pathname === '/nested-flipper')
       return <NestedFlipper />
     else
       return (
         <nav>
           <ul>
+            <li>
+              <a href="/zero-jump">Zero Jump</a>
+            </li>
             <li>
               <a href="/staggered-list">Staggered List</a>
             </li>

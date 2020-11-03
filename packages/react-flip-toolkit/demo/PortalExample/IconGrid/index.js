@@ -1,5 +1,6 @@
 import React, { Component } from "react"
-import { Flipper, Flipped } from "../../../"
+import { Flipper, Flipped } from "../../../src/index";
+
 import Modal from "./Modal"
 
 class PortalExample extends Component {

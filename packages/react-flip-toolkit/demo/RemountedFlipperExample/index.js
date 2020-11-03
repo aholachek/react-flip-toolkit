@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Flipper, Flipped } from "../../";
+import { Flipper, Flipped } from "../../src/index";
 
 export default class AnimatedSquare extends Component {
   state = { showFlip: false };

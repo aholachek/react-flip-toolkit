@@ -2,7 +2,7 @@
 /* eslint-disable no-return-assign */
 
 import React, { Component } from 'react'
-import { Flipper, Flipped } from '../../'
+import { Flipper, Flipped } from "../../src/index"
 import backgroundImg from './assets/nighttime.jpg'
 import './styles.css'
 

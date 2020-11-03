@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Flipper, Flipped } from "../../";
+import { Flipper, Flipped } from "../../src/index";
 import "./index.css";
 
 const color = "#ff4f66";

@@ -1,5 +1,5 @@
 import React, { Component, useState } from 'react'
-import { Flipper, Flipped } from '../../'
+import { Flipper, Flipped } from "../../src/index"
 import './styles.css'
 
 const Square = ({ toggleFullScreen }) => (

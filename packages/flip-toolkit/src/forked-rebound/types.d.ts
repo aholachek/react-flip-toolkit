@@ -3,7 +3,7 @@ type SpringCallback = (spring: Spring) => void
 export interface AddListenerArgs {
   onSpringActivate?: SpringCallback
   onSpringUpdate: SpringCallback
-  onSpringAtRest: SpringCallback 
+  onSpringAtRest: SpringCallback
 }
 
 export interface Spring {

@@ -259,11 +259,15 @@ export default ({
       const scaleDifference = scaleXDifference + scaleYDifference
 
       const opacityDifference = Math.abs(currentOpacity - prevOpacity)
-      if (
+      const differenceTooSmall =
         translateDifference < 0.5 &&
         scaleDifference < 0.5 &&
         opacityDifference < 0.01
-      ) {
+
+      const hiddenDueToDimensions =
+        (prevRect.height === 0 && currentRect.height === 0) ||
+        (prevRect.width === 0 && currentRect.width === 0)
+      if (hiddenDueToDimensions || differenceTooSmall) {
         return false
       }
 
@@ -358,7 +362,7 @@ export default ({
           element.style.minWidth = ''
         }
         if (isCancellation) return
-        
+
         completedAnimationIds.push(id)
 
         if (completedAnimationIds.length >= flipDataArray.length) {
@@ -490,17 +494,14 @@ export default ({
 
   const staggerDict = flipDataArray
     .filter(flipData => flipData.stagger)
-    .reduce(
-      (acc, curr) => {
-        if (acc[curr.stagger]) {
-          acc[curr.stagger].push(curr)
-        } else {
-          acc[curr.stagger] = [curr]
-        }
-        return acc
-      },
-      {} as IndexableObject
-    )
+    .reduce((acc, curr) => {
+      if (acc[curr.stagger]) {
+        acc[curr.stagger].push(curr)
+      } else {
+        acc[curr.stagger] = [curr]
+      }
+      return acc
+    }, {} as IndexableObject)
 
   const immediateFlip = flipDataArray.filter(f => delayedFlip.indexOf(f) === -1)
 

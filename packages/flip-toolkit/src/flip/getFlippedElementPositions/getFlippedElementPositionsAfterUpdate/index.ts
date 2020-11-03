@@ -1,8 +1,4 @@
-import {
-  addTupleToObject,
-  getRects,
-  getAllElements
-} from '../utilities'
+import { addTupleToObject, getRects, getAllElements } from '../utilities'
 import { FlippedElementPositionsAfterUpdate } from './types'
 
 const getFlippedElementPositionsAfterUpdate = ({

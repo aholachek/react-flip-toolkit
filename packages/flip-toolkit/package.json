@@ -28,7 +28,10 @@
     "test": "echo \"noop\"",
     "test:dom": "parcel mocha/testrunner.html",
     "start": "parcel test/index.html",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build",
+    "format": "npx prettier --write 'src/**/*.{ts,tsx}'",
+    "fix": "eslint src/**/*.{ts,tsx} --fix",
+    "format-and-fix": "npm-run-all format fix"
   },
   "dependencies": {
     "rematrix": "0.2.2"
@@ -36,6 +39,8 @@
   "devDependencies": {
     "microbundle": "^0.11.0",
     "parcel": "^1.12.4",
-    "mocha": "^8.0.1"
+    "mocha": "^8.2.1",
+    "prettier": "2.1.2"
+
   }
 }
