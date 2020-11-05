@@ -23,7 +23,7 @@
     "npm": ">=5"
   },
   "scripts": {
-    "build": "microbundle --name=FlipToolkit",
+    "build": "microbundle --name=FlipToolkit --define process.env.NODE_ENV=production",
     "build:debug": "microbundle --name=FlipToolkit --no-compress",
     "lint": "echo \"noop\"",
     "test": "echo \"noop\"",
