@@ -18,7 +18,8 @@ export const Flipped: FunctionComponent<SerializableFlippedProps> = ({
   children,
   flipId,
   inverseFlipId,
-  portalKey
+  portalKey,
+  ...rest
 }) => {
   let child = children
   const isFunctionAsChildren = isFunction(child)
@@ -31,10 +32,12 @@ export const Flipped: FunctionComponent<SerializableFlippedProps> = ({
     }
   }
 
+  const dataAttributes: Record<string, string | undefined> = {
+    [constants.DATA_FLIP_CONFIG]: JSON.stringify(rest)
+  }
 
-  const dataAttributes: Record<string, string | undefined> = {}
-
-  if (flipId !== undefined ) dataAttributes[constants.DATA_FLIP_ID] = String(flipId)
+  if (flipId !== undefined)
+    dataAttributes[constants.DATA_FLIP_ID] = String(flipId)
   else if (inverseFlipId !== undefined)
     dataAttributes[constants.DATA_INVERSE_FLIP_ID] = String(inverseFlipId)
 
@@ -84,12 +87,11 @@ export const FlippedWithContext: FunctionComponent<FlippedProps> = ({
                 onStartImmediate,
                 onComplete,
                 onExit,
-                onSpringUpdate,
-                flipConfig: rest
+                onSpringUpdate
               }
             }
             return (
-              <Flipped flipId={flipId} portalKey={portalKey}>
+              <Flipped flipId={flipId} portalKey={portalKey} {...rest}>
                 {children}
               </Flipped>
             )

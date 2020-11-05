@@ -17,7 +17,7 @@
 | Animate opacity                                                                |                                 ❌                                  |                               ✅                                |          ✅          |
 | [Animate parent's size without warping children](#nested-scale-transforms) |                                 ❌                                  |                               ❌                                |          ✅          |
 | Use real FLIP instead of cloning & crossfading                                 |                                 ✅                                  |                               ❌                                |          ✅          |
-| Use springs for animations                                                     |                                 ❌                                  |                               ❌                                |          ✅          |
+| [Use springs for animations](https://codesandbox.io/s/react-flip-toolkit-spring-settings-explorer-vjrsh)                                                     |                                 ❌                                  |                               ❌                                |          ✅          |
 | Support spring-based stagger effects                                           |                                 ❌                                  |                               ❌                                |          ✅          |
 | [Usable with frameworks other than React](packages/flip-toolkit)               |                                 ❌                                  |                               ❌                                |          ✅          |
 
@@ -213,7 +213,7 @@ or a custom spring config:
   {/* Flipped components go here...*/}
 </Flipper>
 ```
-[View all spring options in the interactive explorer](https://codepen.io/aholachek/pen/bKmZbV)
+[View all spring options in the interactive explorer](https://codesandbox.io/s/react-flip-toolkit-spring-settings-explorer-vjrsh)
 
 
 ### Nested Scale Transforms

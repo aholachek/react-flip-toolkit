@@ -14,7 +14,7 @@ export default function TransformZeroExample  () {
       <button onClick={shuffleList}> shuffle</button>
       <div style={{ fontFamily: "Arial", fontSize: "2.5rem" }}>
         {data.map((d) => (
-          <Flipped key={d} flipId={d} scale>
+          <Flipped key={d} flipId={d} translate>
             <div style={{ height: d % n === 0 ? 50 : 0 }}>
               {d % n === 0 ? d : null}
             </div>

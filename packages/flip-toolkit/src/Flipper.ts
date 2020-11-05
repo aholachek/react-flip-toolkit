@@ -27,7 +27,7 @@ interface Options {
 class Flipper {
   private element!: HTMLElement
   private staggerConfig!: StaggerConfig
-  private applyTransformOrigin: boolean = true
+  private applyTransformOrigin = true
   private handleEnterUpdateDelete!: HandleEnterUpdateDelete
   private debug?: boolean
   private spring!: SpringOption
@@ -117,13 +117,7 @@ class Flipper {
       stagger,
       delayUntil
     }
-    if (!flipConfig.scale && !flipConfig.translate && !flipConfig.opacity) {
-      assign(flipConfig, {
-        translate: true,
-        scale: true,
-        opacity: true
-      })
-    }
+
     if (flipId) {
       element.dataset.flipId = String(flipId)
     }
