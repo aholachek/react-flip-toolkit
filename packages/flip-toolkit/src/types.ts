@@ -102,17 +102,22 @@ export type OnFlipperStart = (
 ) => void
 
 export interface FlipperProps {
+  /** Changing this key will initiate a FLIP animation */
   flipKey: any
   children: React.ReactNode
-  /** Provide a string referencing one of the spring presets — noWobble (default), veryGentle, gentle, wobbly, or stiff, OR provide an object with stiffness and damping parameters.  */
+  /** Provide a string referencing one of the spring presets — noWobble (default), veryGentle, gentle, wobbly, or stiff, OR provide an object with stiffness and damping parameters. Explore all spring options here: https://codesandbox.io/s/react-flip-toolkit-spring-settings-explorer-vjrsh  */
   spring?: SpringOption
+  /** Whether or not react-flip-toolkit should apply a transform-origin of "0 0" to animating children (this is generally desirable for FLIP animations, and is set to true by default). */
   applyTransformOrigin?: boolean
   /** This experimental prop will pause your animation right at the initial application of FLIP-ped styles. That will allow you to inspect the state of the animation at the very beginning, when it should look similar or identical to the UI before the animation began. */
   debug?: boolean
+  /** If you'd like to render an element other than `div`, specify an element string here */
   element?: string
+  /** A classname to pass down to the element rendered by the Flipper component */
   className?: string
   /** In general, the Flipper component will only apply transitions to its descendents. This allows multiple Flipper elements to coexist on the same page, but it will prevent animations from working if you use portals. You can provide a unique portalKey prop to Flipper to tell it to scope element selections to the entire document, not just to its children, so that elements in portals can be transitioned. */
   portalKey?: string
+  /** Configure the stagger settings for elements that will have stagger delays on their animations. More information in the docs: https://github.com/aholachek/react-flip-toolkit#basic-props */
   staggerConfig?: StaggerConfig
   /** Sometimes, you'll want the animated children of Flipper to behave differently depending on the state transition — maybe only certain Flipped elements should animate in response to a particular change. By providing the decisionData prop to the Flipper component, you'll make that data available to the shouldFlip and shouldInvert methods of each child Flipped component, so they can decided for themselves whether to animate or not. */
   decisionData?: any
