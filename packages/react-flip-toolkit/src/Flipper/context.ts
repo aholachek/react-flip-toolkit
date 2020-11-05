@@ -1,5 +1,5 @@
 import { createContext } from 'react'
-import { FlipCallbacks } from 'flip-toolkit/lib/types'
+import { FlipCallbacksAndConfig } from 'flip-toolkit/lib/types'
 
-export const FlipContext = createContext({} as FlipCallbacks)
+export const FlipContext = createContext({} as FlipCallbacksAndConfig)
 export const PortalContext = createContext('portal')

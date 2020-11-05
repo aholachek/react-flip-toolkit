@@ -29,6 +29,7 @@
     "start": "parcel --no-cache demo/index.html --out-dir demo/lib",
     "deploy-demo": "parcel build demo/index.html --out-dir demo/lib; cp demo/lib/index.html demo/lib/200.html; surge demo/lib --domain react-flip-toolkit-demos.surge.sh",
     "build": "cp ../../README.md ./README.md; yarn microbundle",
+    "build:debug": "microbundle --name=ReactFlipToolkit  --jsx React.createElement --no-compress",
     "watch": "watch 'npm run build:no-compress' ./src",
     "build:no-compress": "microbundle --no-compress",
     "check-types": "tsc --noEmit",
@@ -46,7 +47,7 @@
     "prepublish": "npm run build"
   },
   "dependencies": {
-    "flip-toolkit": "7.0.11",
+    "flip-toolkit": "7.0.12-0",
     "prop-types": "^15.5.7"
   },
   "peerDependencies": {

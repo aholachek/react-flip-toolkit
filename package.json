@@ -13,6 +13,7 @@
     "fix": "yarn workspaces run fix",
     "check-types": "yarn workspaces run check-types",
     "build": "yarn workspaces run build",
+    "build:debug": "yarn workspaces run build:debug",
     "demo": "yarn workspace react-flip-toolkit start",
     "watch": "yarn workspaces run watch"
   }
