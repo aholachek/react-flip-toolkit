@@ -29,7 +29,7 @@ class PortalExample extends Component {
   }
 
   render() {
-    const { icons, portalKey, title, type } = this.props
+    const { icons, portalKey, title } = this.props
     return (
       <div className="icon-grid">
         <Flipper flipKey={this.state.focusedIcon} portalKey={portalKey}>

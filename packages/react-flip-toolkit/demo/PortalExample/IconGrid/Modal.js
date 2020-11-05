@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import { createPortal } from "react-dom"
-import { Flipped } from "../../../"
+import  { Flipped } from "../../../src"
 
 class Modal extends Component {
   static propTypes = {}

@@ -100,7 +100,7 @@ if (process.env.NODE_ENV !== 'production') {
       PropTypes.string,
       PropTypes.number,
       PropTypes.bool
-    ]).isRequired,
+    ]),
     children: PropTypes.node.isRequired,
     spring: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     applyTransformOrigin: PropTypes.bool,

@@ -23,9 +23,6 @@ const environmentIcons = [
 ];
 
 class PortalExample extends Component {
-  static propTypes = {};
-
-  state = {};
 
   render() {
     return (

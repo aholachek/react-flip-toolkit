@@ -136,15 +136,6 @@ const getInvertedChildren = (element: HTMLElement, id: string) =>
 
 function extractFlipConfig(element: HTMLElement) {
   const flipConfig = JSON.parse(element.dataset.flipConfig || '{}')
-
-  // if nothing is being animated, assume everything is being animated
-  if (!flipConfig.scale && !flipConfig.translate && !flipConfig.opacity) {
-    assign(flipConfig, {
-      translate: true,
-      scale: true,
-      opacity: true
-    })
-  }
   return flipConfig
 }
 

@@ -45,11 +45,11 @@ export const Flipped: FunctionComponent<SerializableFlippedProps> = ({
     [constants.DATA_FLIP_CONFIG]: JSON.stringify(rest)
   }
 
-  if (flipId) dataAttributes[constants.DATA_FLIP_ID] = String(flipId)
+  if (flipId !== undefined)
+    dataAttributes[constants.DATA_FLIP_ID] = String(flipId)
   else if (inverseFlipId)
     dataAttributes[constants.DATA_INVERSE_FLIP_ID] = String(inverseFlipId)
-
-  if (portalKey) {
+  if (portalKey !== undefined) {
     dataAttributes[constants.DATA_PORTAL_KEY] = portalKey
   }
   if (isFunctionAsChildren) {
