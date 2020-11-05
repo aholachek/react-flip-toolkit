@@ -18,7 +18,5 @@ in both `flip-toolkit` (first), then updating the version of flip-toolkit` in `r
 
 ### Real release
 
-When making an actual release, provide an associated commit message to explain what the release does:
-
-`npm version patch -m "Upgrade to %s for reasons"`
-
+1. Release `flip-toolkit`, wait a bit (30mins+) and ensure it shows up on npm, unpkg, maybe even https://bundlephobia.com/result?p=flip-toolkit@7.0.13 to make sure nothing unexpected changed with the size, and is working on this codesandbox: https://codesandbox.io/s/5v1k1nwz8l?file=/package.json. 
+2. Once everything looks good, release `react-flip-toolkit` after upgrading package.json to the new version of `flip-toolkit`.
