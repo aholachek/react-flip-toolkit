@@ -134,6 +134,20 @@ const getInvertedChildren = (element: HTMLElement, id: string) =>
     element.querySelectorAll(`[${constants.DATA_INVERSE_FLIP_ID}="${id}"]`)
   )
 
+function extractFlipConfig(element: HTMLElement) {
+  const flipConfig = JSON.parse(element.dataset.flipConfig || '{}')
+
+  // if nothing is being animated, assume everything is being animated
+  if (!flipConfig.scale && !flipConfig.translate && !flipConfig.opacity) {
+    assign(flipConfig, {
+      translate: true,
+      scale: true,
+      opacity: true
+    })
+  }
+  return flipConfig
+}
+
 export default ({
   flippedIds,
   flipCallbacks,
@@ -218,16 +232,7 @@ export default ({
         return false
       }
 
-      const flipConfig = JSON.parse(element.dataset.flipConfig!)
-
-      // if nothing is being animated, assume everything is being animated
-      if (!flipConfig.scale && !flipConfig.translate && !flipConfig.opacity) {
-        assign(flipConfig, {
-          translate: true,
-          scale: true,
-          opacity: true
-        })
-      }
+      const flipConfig = extractFlipConfig(element)
 
       const springConfig = getSpringConfig({
         flipperSpring: spring,
@@ -330,7 +335,7 @@ export default ({
         const invertedChildElements = getInvertedChildren(element, id)
         invertedChildren = invertedChildElements.map(c => [
           c,
-          JSON.parse(c.dataset.flipConfig!)
+          extractFlipConfig(c)
         ]) as InvertedChildren
       }
 

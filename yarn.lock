@@ -7069,6 +7069,13 @@ flatten@^1.0.2:
   resolved "https://registry.yarnpkg.com/flatten/-/flatten-1.0.2.tgz#dae46a9d78fbe25292258cc1e780a41d95c03782"
   integrity sha1-2uRqnXj74lKSJYzB54CkHZXAN4I=
 
+flip-toolkit@7.0.12-0:
+  version "7.0.12-0"
+  resolved "https://registry.yarnpkg.com/flip-toolkit/-/flip-toolkit-7.0.12-0.tgz#26cf027ed43ba833444c01896faa2c8190b2a75f"
+  integrity sha512-N2rZrKGHtRyf90Pu6TEEzuRz2sFqkx0fHXDcreULhtaRebTwDKIzSaqsZuV286agqE1NmZDDAoHQ0qWfKcJkLg==
+  dependencies:
+    rematrix "0.2.2"
+
 flush-write-stream@^1.0.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/flush-write-stream/-/flush-write-stream-1.1.1.tgz#8dd7d873a1babc207d94ead0c2e0e44276ebf2e8"

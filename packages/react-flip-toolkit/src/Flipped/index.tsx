@@ -32,16 +32,24 @@ export const Flipped: FunctionComponent<SerializableFlippedProps> = ({
     }
   }
 
+  // if nothing is being animated, assume everything is being animated
+  if (!rest.scale && !rest.translate && !rest.opacity) {
+    utilities.assign(rest, {
+      translate: true,
+      scale: true,
+      opacity: true
+    })
+  }
+
   const dataAttributes: Record<string, string | undefined> = {
     [constants.DATA_FLIP_CONFIG]: JSON.stringify(rest)
   }
 
-  if (flipId !== undefined)
-    dataAttributes[constants.DATA_FLIP_ID] = String(flipId)
-  else if (inverseFlipId !== undefined)
+  if (flipId) dataAttributes[constants.DATA_FLIP_ID] = String(flipId)
+  else if (inverseFlipId)
     dataAttributes[constants.DATA_INVERSE_FLIP_ID] = String(inverseFlipId)
 
-  if (portalKey !== undefined) {
+  if (portalKey) {
     dataAttributes[constants.DATA_PORTAL_KEY] = portalKey
   }
   if (isFunctionAsChildren) {
@@ -91,7 +99,7 @@ export const FlippedWithContext: FunctionComponent<FlippedProps> = ({
               }
             }
             return (
-              <Flipped flipId={flipId} portalKey={portalKey} {...rest}>
+              <Flipped flipId={flipId} {...rest} portalKey={portalKey}>
                 {children}
               </Flipped>
             )

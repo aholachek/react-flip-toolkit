@@ -117,7 +117,13 @@ class Flipper {
       stagger,
       delayUntil
     }
-
+    if (!flipConfig.scale && !flipConfig.translate && !flipConfig.opacity) {
+      assign(flipConfig, {
+        translate: true,
+        scale: true,
+        opacity: true
+      })
+    }
     if (flipId) {
       element.dataset.flipId = String(flipId)
     }
