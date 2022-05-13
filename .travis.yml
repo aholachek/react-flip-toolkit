@@ -1,8 +1,7 @@
 sudo: false
 
 language: node_js
-node_js:
-  - node
+node_js: 18
 
 before_install:
   - yarn add -W codecov.io coveralls
