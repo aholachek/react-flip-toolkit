@@ -5,7 +5,7 @@
   "license": "MIT",
   "src": "src/index.ts",
   "main": "lib/index.js",
-  "umd:main": "lib/${bundleName}/index.umd.js",
+  "umd:main": "lib/index.umd.js",
   "module": "lib/index.es.js",
   "repository": {
     "type": "git",
@@ -23,7 +23,7 @@
     "npm": ">=5"
   },
   "scripts": {
-    "build": "microbundle --name=FlipToolkit --define process.env.NODE_ENV=production",
+    "build": "microbundle --name=FlipToolkit --define process.env.NODE_ENV=production --globals rematrix=Rematrix",
     "build:debug": "microbundle --name=FlipToolkit --no-compress",
     "lint": "echo \"noop\"",
     "test": "echo \"noop\"",
