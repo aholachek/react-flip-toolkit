@@ -16,5 +16,6 @@
     "build:debug": "yarn workspaces run build:debug",
     "demo": "yarn workspace react-flip-toolkit start",
     "watch": "yarn workspaces run watch"
-  }
+  },
+  "version": "0.0.1"
 }
