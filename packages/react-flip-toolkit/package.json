@@ -25,7 +25,7 @@
     "npm": ">=5"
   },
   "scripts": {
-    "microbundle": "microbundle --define process.env.NODE_ENV=production --name=ReactFlipToolkit  --jsx React.createElement --globals react=React,prop-types=PropTypes,flip-toolkit=FlipToolkit,rematrix=Rematrix",
+    "microbundle": "microbundle --define process.env.NODE_ENV=production --name=ReactFlipToolkit  --jsx React.createElement --globals react=React,prop-types=PropTypes,flip-toolkit=FlipToolkit",
     "start": "parcel --no-cache demo/index.html --out-dir demo/lib",
     "deploy-demo": "parcel build demo/index.html --out-dir demo/lib; cp demo/lib/index.html demo/lib/200.html; surge demo/lib --domain react-flip-toolkit-demos.surge.sh",
     "build": "cp ../../README.md ./README.md; yarn microbundle",
