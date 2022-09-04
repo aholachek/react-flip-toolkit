@@ -1,6 +1,6 @@
 {
   "name": "flip-toolkit",
-  "version": "7.0.14",
+  "version": "7.0.15",
   "description": "Configurable FLIP animation helpers",
   "license": "MIT",
   "src": "src/index.ts",
@@ -29,7 +29,7 @@
     "test": "echo \"noop\"",
     "test:dom": "parcel mocha/testrunner.html",
     "start": "parcel test/index.html",
-    "prepublish": "npm run build",
+    "prepare": "npm run build",
     "format": "npx prettier --write 'src/**/*.{ts,tsx}'",
     "fix": "eslint src/**/*.ts --fix",
     "format-and-fix": "npm-run-all format fix"
