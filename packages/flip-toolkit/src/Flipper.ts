@@ -21,7 +21,8 @@ interface Options {
   applyTransformOrigin?: boolean
   handleEnterUpdateDelete?: HandleEnterUpdateDelete
   debug?: boolean
-  onComplete?: OnFlipperComplete
+  onStart?: OnFlipperStart  
+  onComplete?: OnFlipperComplete  
 }
 
 class Flipper {
