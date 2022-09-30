@@ -47,7 +47,7 @@
     "prepublish": "npm run build"
   },
   "dependencies": {
-    "flip-toolkit": "7.0.16",
+    "flip-toolkit": "7.0.17",
     "prop-types": "^15.5.7"
   },
   "peerDependencies": {
