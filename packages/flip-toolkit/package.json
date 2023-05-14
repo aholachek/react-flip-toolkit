@@ -1,6 +1,6 @@
 {
   "name": "flip-toolkit",
-  "version": "7.0.16",
+  "version": "7.1.0",
   "description": "Configurable FLIP animation helpers",
   "license": "MIT",
   "src": "src/index.ts",
