@@ -17,5 +17,5 @@
     "demo": "yarn workspace react-flip-toolkit start",
     "watch": "yarn workspaces run watch"
   },
-  "version": "0.1.0-0"
+  "version": "7.1.0"
 }
