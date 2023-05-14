@@ -74,6 +74,8 @@ const onFlipKeyUpdate = ({
   onComplete,
   onStart
 }: OnFlipKeyUpdateArgs) => {
+  const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
+  if (mediaQuery.matches) return
   const flippedElementPositionsAfterUpdate = getFlippedElementPositionsAfterUpdate(
     {
       element: containerEl,
