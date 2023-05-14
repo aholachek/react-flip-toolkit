@@ -69,51 +69,53 @@ export const invertTransformsForChildren = ({
   })
 }
 
-export const createApplyStylesFunc = ({
-  element,
-  invertedChildren,
-  body
-}: {
-  element: HTMLElement
-  invertedChildren: InvertedChildren
-  body: HTMLBodyElement
-}) => ({
-  matrix,
-  opacity,
-  forceMinVals
-}: {
-  matrix: Matrix
-  opacity?: number
-  forceMinVals?: boolean
-}) => {
-  if (isNumber(opacity)) {
-    element.style.opacity = opacity + ''
+export const createApplyStylesFunc =
+  ({
+    element,
+    invertedChildren,
+    body
+  }: {
+    element: HTMLElement
+    invertedChildren: InvertedChildren
+    body: HTMLBodyElement
+  }) =>
+  ({
+    matrix,
+    opacity,
+    forceMinVals
+  }: {
+    matrix: Matrix
+    opacity?: number
+    forceMinVals?: boolean
+  }) => {
+    if (isNumber(opacity)) {
+      element.style.opacity = opacity + ''
+    }
+
+    if (forceMinVals) {
+      element.style.minHeight = '1px'
+      element.style.minWidth = '1px'
+    }
+
+    if (!matrix) {
+      return
+    }
+
+    const stringTransform = convertMatrix2dArrayToString(matrix)
+
+    // always apply transform, even if identity,
+    // because identity might be the starting state in a FLIP
+    // transition, if the element's position is controlled by transforms
+    element.style.transform = stringTransform
+
+    if (invertedChildren) {
+      invertTransformsForChildren({
+        invertedChildren,
+        matrix,
+        body
+      })
+    }
   }
-
-  if (forceMinVals) {
-    element.style.minHeight = '1px'
-    element.style.minWidth = '1px'
-  }
-
-  if (!matrix) {
-    return
-  }
-
-  const stringTransform = convertMatrix2dArrayToString(matrix)
-
-  // always apply transform, even if identity,
-  // because identity might be the starting state in a FLIP
-  // transition, if the element's position is controlled by transforms
-  element.style.transform = stringTransform
-
-  if (invertedChildren) {
-    invertTransformsForChildren({
-      invertedChildren,
-      matrix,
-      body
-    })
-  }
-}
 
 export const rectInViewport = ({
   top,

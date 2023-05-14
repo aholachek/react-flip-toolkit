@@ -21,8 +21,8 @@ interface Options {
   applyTransformOrigin?: boolean
   handleEnterUpdateDelete?: HandleEnterUpdateDelete
   debug?: boolean
-  onStart?: OnFlipperStart  
-  onComplete?: OnFlipperComplete  
+  onStart?: OnFlipperStart
+  onComplete?: OnFlipperComplete
 }
 
 class Flipper {
@@ -63,8 +63,8 @@ class Flipper {
   update(prevDecisionData: any, currentDecisionData: any) {
     if (this.snapshot) {
       onFlipKeyUpdate({
-        flippedElementPositionsBeforeUpdate: this.snapshot
-          .flippedElementPositions,
+        flippedElementPositionsBeforeUpdate:
+          this.snapshot.flippedElementPositions,
         cachedOrderedFlipIds: this.snapshot.cachedOrderedFlipIds,
         containerEl: this.element,
         inProgressAnimations: this.inProgressAnimations,

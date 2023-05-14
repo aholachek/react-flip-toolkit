@@ -15,15 +15,14 @@ import {
   ScopedSelector
 } from './animateFlippedElements/types'
 
-const createPortalScopedSelector = (portalKey: string) => (
-  selector: string
-) => {
-  return toArray(
-    document.querySelectorAll(
-      `[${constants.DATA_PORTAL_KEY}="${portalKey}"]${selector}`
+const createPortalScopedSelector =
+  (portalKey: string) => (selector: string) => {
+    return toArray(
+      document.querySelectorAll(
+        `[${constants.DATA_PORTAL_KEY}="${portalKey}"]${selector}`
+      )
     )
-  )
-}
+  }
 const createFlipperScopedSelector = (containerEl: HTMLElement) => {
   const tempFlipperId = Math.random().toFixed(5)
   containerEl.dataset.flipperId = tempFlipperId
@@ -74,14 +73,13 @@ const onFlipKeyUpdate = ({
   onComplete,
   onStart
 }: OnFlipKeyUpdateArgs) => {
-  const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
+  const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
   if (mediaQuery.matches) return
-  const flippedElementPositionsAfterUpdate = getFlippedElementPositionsAfterUpdate(
-    {
+  const flippedElementPositionsAfterUpdate =
+    getFlippedElementPositionsAfterUpdate({
       element: containerEl,
       portalKey
-    }
-  )
+    })
 
   const scopedSelector = createScopedSelector({
     containerEl,

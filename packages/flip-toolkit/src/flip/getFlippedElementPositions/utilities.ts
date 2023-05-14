@@ -22,8 +22,10 @@ export const getAllElements = (
 export const getRects = (
   flippedElements: HTMLElement[]
 ): [HTMLElement, BoundingClientRect][] => {
-  return flippedElements.map((child: HTMLElement): [
-    HTMLElement,
-    BoundingClientRect
-  ] => [child, child.getBoundingClientRect()])
+  return flippedElements.map(
+    (child: HTMLElement): [HTMLElement, BoundingClientRect] => [
+      child,
+      child.getBoundingClientRect()
+    ]
+  )
 }
