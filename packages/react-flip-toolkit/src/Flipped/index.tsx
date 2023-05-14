@@ -110,8 +110,8 @@ export const FlippedWithContext: FunctionComponent<FlippedProps> = ({
   )
 }
 if (process.env.NODE_ENV !== 'production') {
-  // @ts-ignore
   FlippedWithContext.propTypes = {
+  // @ts-expect-error
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
     inverseFlipId: PropTypes.string,
     flipId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),

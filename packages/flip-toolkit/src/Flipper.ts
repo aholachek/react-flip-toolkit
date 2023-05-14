@@ -34,7 +34,7 @@ class Flipper {
   private spring!: SpringOption
   private inProgressAnimations: InProgressAnimations
   private flipCallbacks: FlipCallbacks
-  private snapshot!: {
+  private snapshot?: {
     flippedElementPositions: FlippedElementPositionsBeforeUpdate
     cachedOrderedFlipIds: FlippedIds
   }
