@@ -49,7 +49,7 @@
   },
   "dependencies": {
     "flip-toolkit": "7.1.0",
-    "prop-types": "^15.8.1"
+    "prop-types": "^15.7.1"
   },
   "peerDependencies": {
     "react": ">= 16.x",
