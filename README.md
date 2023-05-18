@@ -486,6 +486,7 @@ spring({
 - If one of your `Flipped` components is wrapping another React component rather than a DOM element, [use a render prop to get the Flipped props](#wrapping-a-react-component) and pass down to the necessary DOM element.
 - Is the element that's receiving props from `Flipped` visible in the DOM? `react-flip-toolkit` attempts to optimize performance by not animating elements that are off-screen or elements that have no width or height.
 - `display:inline` elements cannot be animated. If you want an `inline` element to animate, set `display:inline-block`.
+- Do you have the [prefers-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion) setting turned on? As of v7.1.0 that setting will disable all animations.
 
 ### Problem #2: Things look weird / animations aren't behaving
 
