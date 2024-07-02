@@ -17,9 +17,9 @@ import {
 
 let enabled = true
 
-const disableFlip = () => enabled = false
+const disableFlip = () => (enabled = false)
 
-const enableFlip = () => enabled = true
+const enableFlip = () => (enabled = true)
 
 const isFlipEnabled = () => enabled
 
@@ -159,4 +159,4 @@ const onFlipKeyUpdate = ({
   }
 }
 
-export {disableFlip, enableFlip, isFlipEnabled, onFlipKeyUpdate}
+export { disableFlip, enableFlip, isFlipEnabled, onFlipKeyUpdate }
