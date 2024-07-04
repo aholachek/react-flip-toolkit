@@ -15,6 +15,14 @@ import {
   ScopedSelector
 } from './animateFlippedElements/types'
 
+let enabled = true
+
+const disableFlip = () => (enabled = false)
+
+const enableFlip = () => (enabled = true)
+
+const isFlipEnabled = () => enabled
+
 const createPortalScopedSelector =
   (portalKey: string) => (selector: string) => {
     return toArray(
@@ -73,6 +81,7 @@ const onFlipKeyUpdate = ({
   onComplete,
   onStart
 }: OnFlipKeyUpdateArgs) => {
+  if (!enabled) return
   const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
   if (mediaQuery.matches) return
   const flippedElementPositionsAfterUpdate =
@@ -150,4 +159,4 @@ const onFlipKeyUpdate = ({
   }
 }
 
-export default onFlipKeyUpdate
+export { disableFlip, enableFlip, isFlipEnabled, onFlipKeyUpdate }

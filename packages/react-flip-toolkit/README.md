@@ -278,6 +278,20 @@ That means any layout styles &mdash; padding, flexbox, etc&mdash;should be appli
 - [React-flip-toolkit logo](https://codepen.io/aholachek/pen/ERRpEj)
 - [Using Portals](https://react-flip-toolkit-demos.surge.sh/portal)
 
+## Global configuration
+
+### `disableFlip()`
+
+Global switch to disable all animations in all `Flipper` containers.
+
+### `enableFlip()`
+
+Global switch to (re-)enable all animations in all `Flipper` containers. Animations are enabled by default. Calling this function is needed only if animations were previously disabled with `disableFlip()`.
+
+### `isFlipEnabled()`
+
+Returns a boolean indicating whether animations are globally enabled or disabled.
+
 ## The Components
 
 ### `Flipper`
@@ -486,6 +500,8 @@ spring({
 - If one of your `Flipped` components is wrapping another React component rather than a DOM element, [use a render prop to get the Flipped props](#wrapping-a-react-component) and pass down to the necessary DOM element.
 - Is the element that's receiving props from `Flipped` visible in the DOM? `react-flip-toolkit` attempts to optimize performance by not animating elements that are off-screen or elements that have no width or height.
 - `display:inline` elements cannot be animated. If you want an `inline` element to animate, set `display:inline-block`.
+- Do you have the [prefers-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion) setting turned on? As of v7.1.0 that setting will disable all animations.
+- Make sure you didn't disable animations using `disableFlip()`. You can check if animations are enabled or disabled by calling `isFlipEnabled()`. `enableFlip()` will re-enable FLIP animations globally.
 
 ### Problem #2: Things look weird / animations aren't behaving
 

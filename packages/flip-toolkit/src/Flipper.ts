@@ -1,4 +1,4 @@
-import onFlipKeyUpdate from './flip'
+import { onFlipKeyUpdate } from './flip'
 import getFlippedElementPositionsBeforeUpdate from './flip/getFlippedElementPositions/getFlippedElementPositionsBeforeUpdate'
 import { assign } from './utilities'
 import {
