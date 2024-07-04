@@ -39,8 +39,8 @@
     "rematrix": "0.2.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.21.8",
-    "chai": "^4.3.7",
+    "@babel/core": "^7.24.7",
+    "chai": "^4.4.1",
     "microbundle": "^0.15.1",
     "mocha": "^8.4.0",
     "parcel": "^1.12.4",
