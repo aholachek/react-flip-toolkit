@@ -17,11 +17,11 @@ import {
 
 let enabled = true
 
-const disableFlip = () => (enabled = false)
+export const disableFlip = () => (enabled = false)
 
-const enableFlip = () => (enabled = true)
+export const enableFlip = () => (enabled = true)
 
-const isFlipEnabled = () => enabled
+export const isFlipEnabled = () => enabled
 
 const createPortalScopedSelector =
   (portalKey: string) => (selector: string) => {
@@ -65,7 +65,7 @@ const createGetElementFunc = (scopedSelector: ScopedSelector): GetElement => {
   }
 }
 
-const onFlipKeyUpdate = ({
+export const onFlipKeyUpdate = ({
   cachedOrderedFlipIds = [],
   inProgressAnimations = {},
   flippedElementPositionsBeforeUpdate = {},
@@ -159,4 +159,3 @@ const onFlipKeyUpdate = ({
   }
 }
 
-export { disableFlip, enableFlip, isFlipEnabled, onFlipKeyUpdate }

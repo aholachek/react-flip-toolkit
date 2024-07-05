@@ -11,7 +11,8 @@ Some unfortunately non-automated tasks that need to be done manually:
 
 Publish a beta version by doing something like:
 
-`npm version prepatch | preminor | premajor`
+- manually increment the version number as appropriate
+
 `npm publish --tag beta`
 
 in  `flip-toolkit` (first), then updating the version of `flip-toolkit` in `react-flip-toolkit` and repeating the steps.
