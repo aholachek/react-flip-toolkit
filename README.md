@@ -472,15 +472,15 @@ spring({
 
 You can programmatically call the following functions if you need to disable (or re-enable) FLIP animations everywhere.
 
-- `disableFlip()`
+#### `disableFlip()`
 
 Global switch to disable all animations in all `Flipper` containers.
 
-- `enableFlip()`
+#### `enableFlip()`
 
 Global switch to (re-)enable all animations in all `Flipper` containers. Animations are enabled by default. Calling this function is needed only if animations were previously disabled with `disableFlip()`.
 
-- `isFlipEnabled()`
+#### `isFlipEnabled()`
 
 Returns a boolean indicating whether animations are globally enabled or disabled.
 
