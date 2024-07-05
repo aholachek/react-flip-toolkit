@@ -6,20 +6,15 @@ Some unfortunately non-automated tasks that need to be done manually:
 2. Run `yarn format-and-fix` in the top level dir
 3. Make sure readme is up-to-date
 4. Verify that no unintended deps were added to `dependencies` in either package.json.
-
-### Beta Version
-
-Publish a beta version by doing something like:
-
-- manually increment the version number as appropriate
-
-`npm publish --tag beta`
-
-in  `flip-toolkit` (first), then updating the version of `flip-toolkit` in `react-flip-toolkit` and repeating the steps.
-
+ 
 ### Real release
 
-1. Release `flip-toolkit`, wait a bit (30mins+) and ensure the correct version shows up on:
+1. Release `flip-toolkit`:
+  - increment version number 
+  - run yarn build
+  - run npm publish
+
+  Then, wait a bit (30mins+) and ensure the correct version shows up on:
   - npm: https://www.npmjs.com/package/flip-toolkit
   - unpkg: https://unpkg.com/flip-toolkit
   - package-phobia: https://packagephobia.com/result?p=flip-toolkit

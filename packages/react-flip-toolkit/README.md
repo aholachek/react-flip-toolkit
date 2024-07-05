@@ -467,14 +467,31 @@ spring({
   <img src="./example-assets/spring.gif" alt="spring example" width="200px"/>
 </a>
 
+
+## Global configuration functions
+
+You can programmatically call the following functions if you need to disable (or re-enable) FLIP animations everywhere.
+
+#### `disableFlip()`
+
+Global switch to disable all animations in all `Flipper` containers.
+
+#### `enableFlip()`
+
+Global switch to (re-)enable all animations in all `Flipper` containers. Animations are enabled by default. Calling this function is needed only if animations were previously disabled with `disableFlip()`.
+
+#### `isFlipEnabled()`
+
+Returns a boolean indicating whether animations are globally enabled or disabled.
+
+
 ## Library details
 
 <a href="https://www.browserstack.com/">
 <img src="./example-assets/browserstack.png" alt="browserstack" width="140"/>
 </a>
 
-- Tested in latest Chrome, Firefox, Safari, Edge, and IE 11 with [Browserstack](https://www.browserstack.com/).
-- For IE11 compatability, make sure you're polyfilling the `window.Promise` object.
+- Tested in latest Chrome, Firefox, Safari, and Edge with [Browserstack](https://www.browserstack.com/).
 - Requires React 16+
 - Uses [Rematrix](https://github.com/jlmakes/rematrix) for matrix calculations and a simplified fork of [Rebound](https://github.com/facebook/rebound-js) for spring animations
 
@@ -517,4 +534,4 @@ When you trigger a complex FLIP animation with `react-flip-toolkit`, `React` cou
 }
 ```
 
-This [CSS property](https://dev.opera.com/articles/css-will-change-property/) tells the browser to anticipate changes to an element. It should be used with caution, because it can increase browser resource usage. If you notice rendering issues in your animation, I would recommend trying it out and seeing if it increases the performance of the animation.
+This [CSS property](https://dev.opera.com/articles/css-will-change-property/) tells the browser to anticipate changes to an element. It should be used with caution, because it can increase browser resource usage. If you notice rendering issues in your animation, try seeing if it increases the performance of the animation.
