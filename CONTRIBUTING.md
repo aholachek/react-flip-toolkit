@@ -23,6 +23,7 @@ Sometimes, you will want to test out changes before publishing them widely. In t
 1. Release `flip-toolkit`:
   - increment version number 
   - run yarn build
+  - commit with message formatted like:  `git commit -m 'flip-toolkit@7.4.0'`
   - run npm publish
 
   Then, wait a bit (30mins+) and ensure the correct version shows up on:
@@ -32,7 +33,14 @@ Sometimes, you will want to test out changes before publishing them widely. In t
   - bundle-phobia: https://bundlephobia.com/package/flip-toolkit
   - type declarations: https://arethetypeswrong.github.io/?p=flip-toolkit
   - and is working on this codesandbox which fetches the latest version of flip-toolkit: https://codesandbox.io/s/5v1k1nwz8l. Also check that type completions work in the sandbox.
-2. Once everything looks good, release `react-flip-toolkit` after upgrading package.json to the new version of `flip-toolkit` (`yarn upgrade flip-toolkit@^1.0.0`). 
+
+2. Once everything looks good, release `react-flip-toolkit`:
+  - `yarn upgrade flip-toolkit@^XXX`
+  - increment version number 
+  - run yarn build
+  - commit with message formatted like:  `git commit -m 'react-flip-toolkit@7.4.0'`
+  - run npm publish
+
 
 Once again, verify that everything looks good:
    - npm: https://www.npmjs.com/package/react-flip-toolkit
