@@ -1,16 +1,12 @@
 {
   "name": "react-flip-toolkit",
-  "version": "7.2.0",
+  "version": "7.2.4",
   "description": "Configurable FLIP animation helpers for React",
   "license": "MIT",
   "source": "src/index.ts",
   "main": "lib/index.js",
   "module": "lib/index.es.js",
   "types": "lib/index.d.ts",
-  "exports": {
-    "default": "./lib/index.modern.mjs",
-    "types": "./lib/index.d.ts"
-  },
   "amdName": "ReactFlipToolkit",
   "repository": {
     "type": "git",
@@ -51,7 +47,7 @@
     "prepublish": "npm run build"
   },
   "dependencies": {
-    "flip-toolkit": "7.2.0",
+    "flip-toolkit": "7.2.4",
     "prop-types": "^15.8.1"
   },
   "peerDependencies": {
