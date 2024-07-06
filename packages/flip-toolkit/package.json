@@ -7,7 +7,11 @@
   "main": "lib/index.js",
   "umd:main": "lib/index.umd.js",
   "module": "lib/index.es.js",
-  "exports": "./lib/index.modern.mjs",
+  "types": "./lib/index.d.ts",
+  "exports": {
+    "default": "./lib/index.modern.mjs",
+    "types": "./lib/index.d.ts"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/aholachek/react-flip-toolkit"
