@@ -1,5 +1,5 @@
-import { isObject, assign } from '../utilities'
-import { SpringPresets, SpringConfig, SpringOption } from './types'
+import { isObject, assign } from '../utilities/index.js'
+import { SpringPresets, SpringConfig, SpringOption } from './types.js'
 
 // adapted from
 // https://github.com/chenglou/react-motion/blob/master/src/presets.js

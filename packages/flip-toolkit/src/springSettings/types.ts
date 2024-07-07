@@ -1,4 +1,4 @@
-import { IndexableObject } from '../utilities/types'
+import { IndexableObject } from '../utilities/types.js'
 
 export interface SpringConfig {
   stiffness?: number

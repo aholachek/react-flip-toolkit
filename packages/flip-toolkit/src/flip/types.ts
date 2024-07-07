@@ -6,11 +6,11 @@ import {
   OnFlipperComplete,
   OnFlipperStart,
   DecisionData
-} from '../types'
-import { FlippedElementPositionsBeforeUpdate } from './getFlippedElementPositions/getFlippedElementPositionsBeforeUpdate/types'
-import { FlippedElementPositionsAfterUpdate } from './getFlippedElementPositions/getFlippedElementPositionsAfterUpdate/types'
-import { CachedOrderedFlipIds } from './getFlippedElementPositions/getFlippedElementPositionsBeforeUpdate/types'
-import { SpringOption } from '../springSettings/types'
+} from '../types.js'
+import { FlippedElementPositionsBeforeUpdate } from './getFlippedElementPositions/getFlippedElementPositionsBeforeUpdate/types.js'
+import { FlippedElementPositionsAfterUpdate } from './getFlippedElementPositions/getFlippedElementPositionsAfterUpdate/types.js'
+import { CachedOrderedFlipIds } from './getFlippedElementPositions/getFlippedElementPositionsBeforeUpdate/types.js'
+import { SpringOption } from '../springSettings/types.js'
 
 export type FlippedIds = string[]
 

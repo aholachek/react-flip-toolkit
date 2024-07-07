@@ -1,4 +1,4 @@
-import { BaseFlippedElementPositions } from '../types'
+import { BaseFlippedElementPositions } from '../types.js'
 
 export interface FlippedElementPositionDatumAfterUpdate
   extends BaseFlippedElementPositions {

@@ -1,6 +1,6 @@
-import { toArray, assign } from '../../utilities'
-import * as constants from '../../constants'
-import { BoundingClientRect } from './types'
+import { toArray, assign } from '../../utilities/index.js'
+import * as constants from '../../constants.js'
+import { BoundingClientRect } from './types.js'
 
 export const addTupleToObject = <T>(
   acc: Record<string, T>,

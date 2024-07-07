@@ -1,5 +1,5 @@
-import { BoundingClientRect, BaseFlippedElementPositions } from '../types'
-import { InProgressAnimations, FlipCallbacks, FlipId } from '../../../types'
+import { BoundingClientRect, BaseFlippedElementPositions } from '../types.js'
+import { InProgressAnimations, FlipCallbacks, FlipId } from '../../../types.js'
 
 export interface DomDataForExitAnimations {
   element: HTMLElement

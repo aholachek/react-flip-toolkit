@@ -1,4 +1,4 @@
-import { IndexableObject } from './types'
+import { IndexableObject } from './types.js'
 
 export const isNumber = (x: any) => typeof x === 'number'
 
