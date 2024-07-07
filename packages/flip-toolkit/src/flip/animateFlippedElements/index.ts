@@ -1,5 +1,5 @@
 import * as Rematrix from 'rematrix'
-import { getSpringConfig } from '../../springSettings'
+import { getSpringConfig } from '../../springSettings/index.js'
 import {
   toArray,
   isFunction,
@@ -7,8 +7,8 @@ import {
   getDuplicateValsAsStrings,
   assign,
   tweenProp
-} from '../../utilities'
-import * as constants from '../../constants'
+} from '../../utilities/index.js'
+import * as constants from '../../constants.js'
 import {
   GetOnUpdateFunc,
   OnUpdate,
@@ -19,12 +19,12 @@ import {
   FlipDataArray,
   FlipData,
   InitializeFlip
-} from './types'
-import { BoundingClientRect } from '../getFlippedElementPositions/types'
-import { FlippedIds } from '../types'
-import { createSpring, createStaggeredSprings } from './spring'
-import { IndexableObject } from '../../utilities/types'
-import { FlipId } from '../../types'
+} from './types.js'
+import { BoundingClientRect } from '../getFlippedElementPositions/types.js'
+import { FlippedIds } from '../types.js'
+import { createSpring, createStaggeredSprings } from './spring/index.js'
+import { IndexableObject } from '../../utilities/types.js'
+import { FlipId } from '../../types.js'
 
 // 3d transforms were causing weird issues in chrome,
 // especially when opacity was also being tweened,

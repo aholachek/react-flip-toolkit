@@ -1,5 +1,5 @@
-import { SpringOption } from './springSettings/types'
-export type { FlippedElementPositionsBeforeUpdateReturnVals } from './flip/getFlippedElementPositions/getFlippedElementPositionsBeforeUpdate/types'
+import { SpringOption } from './springSettings/types.js'
+export type { FlippedElementPositionsBeforeUpdateReturnVals } from './flip/getFlippedElementPositions/getFlippedElementPositionsBeforeUpdate/types.js'
 
 export type FlipId = string | number
 

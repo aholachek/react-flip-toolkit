@@ -1,19 +1,19 @@
-import animateUnflippedElements from './animateUnflippedElements'
-import animateFlippedElements from './animateFlippedElements'
-import getFlippedElementPositionsAfterUpdate from './getFlippedElementPositions/getFlippedElementPositionsAfterUpdate'
-import * as constants from '../constants'
-import { assign, toArray } from '../utilities'
+import animateUnflippedElements from './animateUnflippedElements/index.js'
+import animateFlippedElements from './animateFlippedElements/index.js'
+import getFlippedElementPositionsAfterUpdate from './getFlippedElementPositions/getFlippedElementPositionsAfterUpdate/index.js'
+import * as constants from '../constants.js'
+import { assign, toArray } from '../utilities/index.js'
 import {
   GetElement,
   BaseFlipArgs,
   OnFlipKeyUpdateArgs,
   FlippedIds
-} from './types'
-import { AnimateUnflippedElementsArgs } from './animateUnflippedElements/types'
+} from './types.js'
+import { AnimateUnflippedElementsArgs } from './animateUnflippedElements/types.js'
 import {
   AnimateFlippedElementsArgs,
   ScopedSelector
-} from './animateFlippedElements/types'
+} from './animateFlippedElements/types.js'
 
 let enabled = true
 

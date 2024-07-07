@@ -1,4 +1,4 @@
-import { SpringOption } from '../springSettings/types'
+import { SpringOption } from '../springSettings/types.js'
 
 type TweenStart = number
 type TweenEnd = number

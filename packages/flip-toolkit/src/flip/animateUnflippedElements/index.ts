@@ -1,4 +1,4 @@
-import { AnimateUnflippedElementsArgs, FragmentTuple } from './types'
+import { AnimateUnflippedElementsArgs, FragmentTuple } from './types.js'
 
 const animateUnflippedElements = ({
   unflippedIds,

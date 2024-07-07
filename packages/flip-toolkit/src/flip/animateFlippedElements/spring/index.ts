@@ -1,10 +1,10 @@
-import { SpringSystem } from '../../../forked-rebound'
-import { StaggerConfigValue } from '../../../types'
-import { FlipData, FlipDataArray } from '../types'
+import { SpringSystem } from '../../../forked-rebound/index.js'
+import { StaggerConfigValue } from '../../../types.js'
+import { FlipData, FlipDataArray } from '../types.js'
 import {
   SpringSystemInterface,
   AddListenerArgs
-} from '../../../forked-rebound/types'
+} from '../../../forked-rebound/types.js'
 
 // this should get created only 1x
 const springSystem: SpringSystemInterface = new SpringSystem()

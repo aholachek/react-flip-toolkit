@@ -1,6 +1,6 @@
-import { onFlipKeyUpdate } from './flip'
-import getFlippedElementPositionsBeforeUpdate from './flip/getFlippedElementPositions/getFlippedElementPositionsBeforeUpdate'
-import { assign } from './utilities'
+import { onFlipKeyUpdate } from './flip/index.js'
+import getFlippedElementPositionsBeforeUpdate from './flip/getFlippedElementPositions/getFlippedElementPositionsBeforeUpdate/index.js'
+import { assign } from './utilities/index.js'
 import {
   StaggerConfig,
   HandleEnterUpdateDelete,
@@ -9,10 +9,10 @@ import {
   OnFlipperComplete,
   FlippedProps,
   OnFlipperStart
-} from './types'
-import { SpringOption } from './springSettings/types'
-import { FlippedElementPositionsBeforeUpdate } from './flip/getFlippedElementPositions/getFlippedElementPositionsBeforeUpdate/types'
-import { FlippedIds } from './flip/types'
+} from './types.js'
+import { SpringOption } from './springSettings/types.js'
+import { FlippedElementPositionsBeforeUpdate } from './flip/getFlippedElementPositions/getFlippedElementPositionsBeforeUpdate/types.js'
+import { FlippedIds } from './flip/types.js'
 
 interface Options {
   element: HTMLElement

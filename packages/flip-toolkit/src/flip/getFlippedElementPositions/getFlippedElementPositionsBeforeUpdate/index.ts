@@ -1,6 +1,6 @@
-import { addTupleToObject, getAllElements, getRects } from '../utilities'
-import * as constants from '../../../constants'
-import { toArray, assign } from '../../../utilities'
+import { addTupleToObject, getAllElements, getRects } from '../utilities.js'
+import * as constants from '../../../constants.js'
+import { toArray, assign } from '../../../utilities/index.js'
 import {
   FlippedElementPositionsBeforeUpdateReturnVals,
   FlippedElementPositionDatumBeforeUpdate,
@@ -8,8 +8,8 @@ import {
   ParentBCRs,
   ChildIdsToParentBCRs,
   ChildIdsToParents
-} from './types'
-import { InProgressAnimations } from '../../../types'
+} from './types.js'
+import { InProgressAnimations } from '../../../types.js'
 
 export const cancelInProgressAnimations = (
   inProgressAnimations: InProgressAnimations,
