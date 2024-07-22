@@ -15,13 +15,12 @@ import {
   ScopedSelector
 } from './animateFlippedElements/types'
 
-let enabled = true
+export type FlipToggleOptions = 'system' | 'on' | 'off'
 
-export const disableFlip = () => (enabled = false)
+let toggle: FlipToggleOptions = 'system'
 
-export const enableFlip = () => (enabled = true)
-
-export const isFlipEnabled = () => enabled
+export const getFlipToggle = () => toggle
+export const setFlipToggle = (value: FlipToggleOptions) => (toggle = value)
 
 const createPortalScopedSelector =
   (portalKey: string) => (selector: string) => {
@@ -81,9 +80,11 @@ export const onFlipKeyUpdate = ({
   onComplete,
   onStart
 }: OnFlipKeyUpdateArgs) => {
-  if (!enabled) return
-  const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
-  if (mediaQuery.matches) return
+  if (toggle === 'off') return
+  if (toggle === 'system') {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+    if (mediaQuery.matches) return
+  }
   const flippedElementPositionsAfterUpdate =
     getFlippedElementPositionsAfterUpdate({
       element: containerEl,
@@ -158,4 +159,3 @@ export const onFlipKeyUpdate = ({
     flip()
   }
 }
-
