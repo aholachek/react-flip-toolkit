@@ -53,6 +53,7 @@
     - [Transform props](#transform-props)
     - [Advanced props](#advanced-props)
   - [`Spring`](#spring)
+- [`Global configuration`](#global-configuration)
 - [Library details](#library-details)
 - [Troubleshooting](#troubleshooting)
   - [Problem #1: Nothing is happening](#problem-1-nothing-is-happening)
@@ -468,22 +469,13 @@ spring({
 </a>
 
 
-## Global configuration functions
+## Global configuration
 
-You can programmatically call the following functions if you need to disable (or re-enable) FLIP animations everywhere.
+By default, FLIP animations respect the reduced motion preferences as defined in the operating system. This means that they are enabled if the operating system's reduced motion setting is turned off, and disabled when it is turned on. You can programmatically call `setFlipToggle(value)` if you need to disable (or re-enable) FLIP animations everywhere, and `getFlipToggle()` to know whether FLIP animations are currently enabled or not. The toggle accepts the following values:
 
-#### `disableFlip()`
-
-Global switch to disable all animations in all `Flipper` containers.
-
-#### `enableFlip()`
-
-Global switch to (re-)enable all animations in all `Flipper` containers. Animations are enabled by default. Calling this function is needed only if animations were previously disabled with `disableFlip()`.
-
-#### `isFlipEnabled()`
-
-Returns a boolean indicating whether animations are globally enabled or disabled.
-
+- `'system'` (default): respects the reduced motion preferences of the operating system,
+- `'on'`: enables all animations,
+- `'off'`: disables all animations.
 
 ## Library details
 
@@ -503,7 +495,7 @@ Returns a boolean indicating whether animations are globally enabled or disabled
 - If one of your `Flipped` components is wrapping another React component rather than a DOM element, [use a render prop to get the Flipped props](#wrapping-a-react-component) and pass down to the necessary DOM element.
 - Is the element that's receiving props from `Flipped` visible in the DOM? `react-flip-toolkit` attempts to optimize performance by not animating elements that are off-screen or elements that have no width or height.
 - `display:inline` elements cannot be animated. If you want an `inline` element to animate, set `display:inline-block`.
-- Do you have the [prefers-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion) setting turned on? As of v7.1.0 that setting will disable all animations.
+- Do you have the [prefers-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion) setting turned on? As of v7.1.0 that setting will disable all animations. From v7.3.0 you can use `setFlipToggle('on')` to override the OS reduced motion settings.
 
 ### Problem #2: Things look weird / animations aren't behaving
 
