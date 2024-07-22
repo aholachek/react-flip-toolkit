@@ -80,11 +80,14 @@ export const onFlipKeyUpdate = ({
   onComplete,
   onStart
 }: OnFlipKeyUpdateArgs) => {
-  if (toggle === 'off') return
-  if (toggle === 'system') {
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
-    if (mediaQuery.matches) return
+  const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+
+  if (toggle === 'off' || (toggle === 'system' && mediaQuery.matches)) {
+    onStart?.(containerEl, decisionData)
+    onComplete?.(containerEl, decisionData)
+    return
   }
+
   const flippedElementPositionsAfterUpdate =
     getFlippedElementPositionsAfterUpdate({
       element: containerEl,
