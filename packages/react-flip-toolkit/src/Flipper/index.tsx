@@ -64,15 +64,14 @@ class Flipper extends Component<FlipperProps> {
   }
 
   public render() {
-    const { element, className, portalKey } = this.props
-    const Element = element
+    const { element: Element, portalKey, ...other } = this.props
 
     let flipperMarkup = (
       <FlipContext.Provider value={this.flipCallbacks}>
         {/*
         // @ts-ignore */}
         <Element
-          className={className}
+          {...other}
           ref={(el: HTMLElement) => (this.el = el)}
         >
           {this.props.children}
